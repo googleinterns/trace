@@ -1,3 +1,3 @@
 # Project TRACE
-Google STEP 2020 Intern Capstone
-dterr@ ccjeane@ erickez@ - Travel Planning
+Google *STEP* 2020 Intern Capstone  
+dterr@ ccjeane@ erickez@ - Travel Planning  
