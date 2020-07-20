@@ -1,2 +1,5 @@
+<<<<<<< HEAD
 Roll call who can edit this file:
 Dominic
+=======
+>>>>>>> 5a9edf470079b1915b6f154fc93a927af276c4a8
