@@ -1,4 +1,4 @@
- .wrapper {
+ .searchWrapper {
     position: relative;
     display: flex;
     min-width: 100px;
@@ -39,4 +39,5 @@
   font-size: 28px;
   font-family: arial;
   color: black;
+  visibility: hidden;
 }
