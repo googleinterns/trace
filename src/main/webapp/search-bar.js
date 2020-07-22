@@ -1,4 +1,5 @@
 const clearIcon = document.querySelector(".clear-icon");
+const searchIcon = document.querySelector(".search-icon");
 const searchBar = document.querySelector(".search");
 const logInButton = document.querySelector("#logIn");
 
@@ -15,6 +16,9 @@ clearIcon.addEventListener("click", () => {
   clearIcon.style.visibility = "hidden";
 });
 
+searchIcon.addEventListener("click", () => {
+    return; // TO-DO: Send search bar info to places API.
+});
 logInButton.addEventListener("click", () => {
     return; // TO-DO: Fetch log-in info here.
 });
