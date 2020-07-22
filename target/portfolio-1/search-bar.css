@@ -1,3 +1,12 @@
+ .mainButtonsWrapper {
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    margin-left: -350px;
+    margin-top: -400px;
+    border-width: 3px;
+ }
+
  .searchWrapper {
     position: relative;
     display: flex;
@@ -5,10 +14,9 @@
 }
 
 .search {
-  border: 1px solid grey;
   border-radius: 35px;
   height: 35px;
-  width: 30%;
+  width: 700px;
   padding: 2px 23px 2px 40px;
   outline: 0;
   background-color: white;
@@ -16,7 +24,6 @@
 }
 
 .search:hover, .search:focus {
-  border: 1px solid;
   background-color: #f5f5f5; /* Grey. */
 }
    
@@ -46,18 +53,18 @@
   height: 30px;
   width: 30%;
   position: relative;
-  left: 5.5%;
+  left: 30%;
 }
 
 #logIn {
   background-color: #f5f5f5;
+  font-size: 18px;
   height:100%;
   width:100px;
   border-radius: 30px;
   margin: 0 auto;
   position: relative;
-  left: 30%;
-  font-size: 22px;
+  left: 50%;
 }
 
 #logIn:hover {
