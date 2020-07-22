@@ -2,33 +2,15 @@
 <html>
   <head>
     <meta charset="UTF-8">
-    <title>TRACE</title>
-    <link rel="stylesheet" href="index-style.css">
-    <script src="index-script.js"></script>
-    <style>
-      .wrapper {
-        position: relative;
-        display: flex;
-        min-width: 100px;
-      }
-       .search {
-    border: 1px solid grey;
-    border-radius: 5px;
-    height: 20px;
-    width: 100%;
-    padding: 2px 23px 2px 30px;
-    outline: 0;
-    background-color: #f5f5f5;
-  }
-   .search:hover, .search:focus {
-    border: 1.5px solid #009688;
-    background-color: white;
-  }
-  </style>
+    <title>Search Bar</title>
+    <link rel="stylesheet" href="search-bar.css">
+    <script src="search-bar.js"></script>
   </head>
   <body>
   <div class="wrapper">
-    <input class="search" placeholder="Search" type="text" >  
+    <div class="search-icon">.</div>
+    <input class="search" placeholder="Search" type="text" >
+    <div class="clear-icon">x</div>
   </div>
   </body>
 </html>
