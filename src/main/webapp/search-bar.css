@@ -41,3 +41,25 @@
   color: black;
   visibility: hidden;
 }
+
+.loginButton {
+  height: 30px;
+  width: 30%;
+  position: relative;
+  left: 5.5%;
+}
+
+#logIn {
+  background-color: #f5f5f5;
+  height:100%;
+  width:100px;
+  border-radius: 30px;
+  margin: 0 auto;
+  position: relative;
+  left: 30%;
+  font-size: 18px;
+}
+
+#logIn:hover {
+  background-color: rgb(180, 180, 180);
+}
