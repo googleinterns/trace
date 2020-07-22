@@ -6,27 +6,45 @@
   position:relative;
   margin: 0 auto;
 }
+
 #header {
-  border-radius: inherit;
-  border-width: inherit;
-  border-color: inherit;
-  border-style: inherit;
-  border-radius: 20px 20px 0px 0px;
-  background-color: #FAC302; /* Google yellow. */
-  color: white;
-  height: 20%;
-  width: 100%;
-  vertical-align: middle;
+border-radius: inherit;
+border-width: inherit;
+border-color: inherit;
+border-style: inherit;
+border-radius: 20px 20px 0px 0px;
+background-color: #FAC302;
+color: white;
+height: 20%;
+width: 100%;
+vertical-align: middle;
+display: inline-block;
 }
-#headerText {
+
+#exit {
+  height: 30px;
+  width: 30px;
+  color: #EA4235;
   font-family: arial;
-  font-size: 80px;
-  height: 200px;
-  width: 1200px;
-  text-align: center;
-  line-height: 0%;
-  position: relative;
+  font-size: 54px;
+  margin-top: 0px;
+  margin-left: 1140px;
 }
+
+#exit:hover {
+    color: rgba(230, 230, 230); /* Grey. */
+}
+
+#headerText {
+font-family: arial;
+font-size: 80px;
+height: 200px;
+width: 1200px;
+text-align: center;
+line-height: 0%;
+position: relative;
+}
+
 #lower {
   border-radius: inherit;
   border-width: inherit;
@@ -38,6 +56,7 @@
   width: 100%;
   display: inline-block;
 }
+
 #lowerCenter {
   background-color: white;
   border-radius: 20px;
@@ -48,6 +67,7 @@
   margin: 7% auto;
   display: inline-block;
 }
+
 #centralText {
   font-size: 64px;
   font-family: Arial;
@@ -58,6 +78,7 @@
   margin: 0 auto;
   padding-top: 40px;
 }
+
 #navButtons {
   height: 20%;
   width: 97%;
@@ -96,5 +117,5 @@
 
 /* On hover, add a black background color with a little bit see-through */
 .prev:hover, .next:hover {
-  color: rgba(230, 230, 230);
+  color: rgba(230, 230, 230); /* Grey. */
 }
