@@ -1,12 +1,10 @@
-body {
-  background-color: black;
-}
-
 #popUp {
   border-radius: 20px;
   text-align: center;
   height: 800px;
   width: 1200px;
+  position:relative;
+  margin: 0 auto;
 }
 #header {
   border-radius: inherit;
@@ -57,6 +55,7 @@ body {
   height: 90%;
   width: 70%;
   margin: 0 auto;
+  padding-top: 40px;
 }
 #navButtons {
   height: 20%;
@@ -85,13 +84,13 @@ body {
   right: 0;
   border-radius: 0px 6px 6px 0px;
   position: relative;
-  left: 35%;
+  left: 30%;
 }
 
 .prev {
   border-radius: 6px 0px 0px 6px;
   position: relative;
-  right: 31%;
+  right: 30%;
 }
 
 /* On hover, add a black background color with a little bit see-through */
