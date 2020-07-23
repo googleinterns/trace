@@ -10,7 +10,25 @@ function loadPage() {
 function createMap() {
   const map = new google.maps.Map(
     document.getElementById('map'),
-    {center: {lat: 37.422, lng: -122.0841}, zoom: 13}); 
+    {center: {lat: 37.422, lng: -122.0841}, zoom: 13,
+    mapTypeControlOptions: {mapTypeIds: ['roadmap']}});
+
+  // Create the initial InfoWindow.
+  var infoWindow = new google.maps.InfoWindow(
+      {content: 'Click the map to get Lat/Lng!', position: {lat: 37.422, lng: -122.0841}});
+  infoWindow.open(map);
+
+  // Configure the click listener.
+  map.addListener('click', function(mapsMouseEvent) {
+    // Close the current InfoWindow.
+      infoWindow.close();
+
+    // Create a new InfoWindow.
+      infoWindow = new google.maps.InfoWindow({position: mapsMouseEvent.latLng});
+      infoWindow.setContent(mapsMouseEvent.latLng.toString());
+      infoWindow.open(map);
+      // TO-DO: Call Places API passing through mapsMouseEvent.latLng as the query.
+  });
 }
 
 // Activates functionality for search bar and log-in button.
