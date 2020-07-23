@@ -38,3 +38,26 @@ function loadMainButtons() {
     return; // TO-DO: Fetch log-in info here.
   });
 }
+
+// Search using text query
+function searchByText(){
+  // Create the places service.
+  const service = new google.maps.places.PlacesService(map);
+  
+  // Perform a query (hard-coded to be the Googleplex for right now)
+  var request = {
+      query: 'Googleplex',
+      fields: ['place_id', 'geometry']
+  }
+
+  service.findPlaceFromQuery(request, function(results, status) {
+    if (status === google.maps.places.PlacesServiceStatus.OK) {
+      for (var i = 0; i < results.length; i++){
+          // Populate the screen
+      }
+      if (results.length > 0) { 
+        map.setCenter(results[0].geometry.location);
+      }
+    }
+  });
+}
