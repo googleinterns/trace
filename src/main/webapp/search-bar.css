@@ -1,16 +1,16 @@
  .mainButtonsWrapper {
-    position: absolute;
-    left: 50%;
-    top: 50%;
-    margin-left: -375px;
-    margin-top: -400px;
-    border-width: 3px;
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  margin-left: -375px;
+  margin-top: -400px;
+  border-width: 3px;
  }
 
  .searchWrapper {
-    position: relative;
-    display: flex;
-    min-width: 100px;
+  position: relative;
+  display: flex;
+  min-width: 100px;
 }
 
 .search {
