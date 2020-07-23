@@ -8,8 +8,8 @@ function createMap() {
   const map = new google.maps.Map(
       document.getElementById('map'),
       {center: {lat: 37.422, lng: -122.0841}, zoom: 13, mapTypeId: 'satellite'}); 
-}
-/*  // Initialize the map!
+
+  // Initialize the map!
   const googleplex = {lat: 37.422, lng: -122.0841};
   const map = new google.maps.Map(document.getElementById("map"), {
     center: googleplex,
@@ -27,7 +27,7 @@ function createMap() {
       createMarkers(results, map);
     }
   );
-*/
+}
 
 // Activates functionality for search bar and log-in button.
 function loadMainButtons() {
