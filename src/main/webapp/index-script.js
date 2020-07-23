@@ -33,6 +33,7 @@ function searchByCoordinates(coordinate) {
   var request = {
     location: coordinate,
     radius: '50',
+    rankBy: google.maps.places.RankBy.PROMINENCE
   };
 
   var service = new google.maps.places.PlacesService(map);
