@@ -1,3 +1,6 @@
+// Class Variables
+const map;
+
 function loadPage() {
     createMap();
     loadMainButtons();
@@ -5,9 +8,9 @@ function loadPage() {
 
 // Creates a map centered at the Googleplex!
 function createMap() {
-  const map = new google.maps.Map(
-      document.getElementById('map'),
-      {center: {lat: 37.422, lng: -122.0841}, zoom: 13, mapTypeId: 'satellite'}); 
+  map = new google.maps.Map(
+    document.getElementById('map'),
+    {center: {lat: 37.422, lng: -122.0841}, zoom: 13, mapTypeId: 'satellite'}); 
 }
 
 // Activates functionality for search bar and log-in button.
@@ -47,6 +50,7 @@ function searchByText(){
   // Perform a query (hard-coded to be the Googleplex for right now)
   var request = {
       query: 'Googleplex',
+      radius: '1000',
       fields: ['place_id', 'geometry']
   }
 
