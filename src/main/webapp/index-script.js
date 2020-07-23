@@ -9,24 +9,12 @@ function createMap() {
       document.getElementById('map'),
       {center: {lat: 37.422, lng: -122.0841}, zoom: 13, mapTypeId: 'satellite'}); 
 
-  // Initialize the map!
+  // Initialize the map with hardcoded data : 
   const googleplex = {lat: 37.422, lng: -122.0841};
   const map = new google.maps.Map(document.getElementById("map"), {
     center: googleplex,
     zoom: 13
   });
-
-  // Create the places service.
-  const service = new google.maps.places.PlacesService(map);
-  
-  // Perform a nearby search.
-  service.nearbySearch(
-    { location: googleplex, radius: 500, type: "food" },
-    (results, status, pagination) => {
-      if (status !== "OK") return;
-      createMarkers(results, map);
-    }
-  );
 }
 
 // Activates functionality for search bar and log-in button.
@@ -55,5 +43,27 @@ function loadMainButtons() {
 
   logInButton.addEventListener("click", () => {
     return; // TO-DO: Fetch log-in info here.
+  });
+}
+
+function searchByTest(){
+  // Create the places service.
+  const service = new google.maps.places.PlacesService(map);
+  
+  // Perform a query (hard-coded to be the Googleplex for right now)
+  var request = {
+      query: 'Googleplex',
+      fields: ['place_id', 'geometry']
+  }
+
+  service.findPlaceFromQuery(request, function(results, status) {
+    if (status === google.maps.places.PlacesServiceStatus.OK) {
+      for (var i = 0; i < results.length; i++){
+          // Populate the screen
+      }
+      if (results.length > 0) { 
+        map.setCenter(results[0].geometry.location);
+      }
+    }
   });
 }
