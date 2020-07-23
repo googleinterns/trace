@@ -31,10 +31,6 @@ function loadMainButtons() {
   searchIcon.addEventListener("click", () => {
     return; // TO-DO: Send search bar info to places API.
   });
-
-  logInButton.addEventListener("click", () => {
-    return; // TO-DO: Fetch log-in info here.
-  });
 }
 
 /* Creates a map centered at the Googleplex! .*/
