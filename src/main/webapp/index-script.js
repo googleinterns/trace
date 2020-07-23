@@ -1,37 +1,74 @@
 // Class Variables
-const map;
-
+var map;
+/* Loades page and main buttons. */
 function loadPage() {
     createMap();
     loadMainButtons();
 }
 
-// Creates a map centered at the Googleplex!
+/* Creates a map centered at the Googleplex! .*/
 function createMap() {
-  const map = new google.maps.Map(
+  map = new google.maps.Map(
     document.getElementById('map'),
     {center: {lat: 37.422, lng: -122.0841}, zoom: 13,
     mapTypeControlOptions: {mapTypeIds: ['roadmap']}});
 
   // Create the initial InfoWindow.
   var infoWindow = new google.maps.InfoWindow(
-      {content: 'Click the map to get Lat/Lng!', position: {lat: 37.422, lng: -122.0841}});
+      {content: 'Open javascript console (ctrl + shift + j) then click the map to see the placeIDs of nearby locations (within 50m)',
+       position: {lat: 37.422, lng: -122.0841}});
   infoWindow.open(map);
 
   // Configure the click listener.
   map.addListener('click', function(mapsMouseEvent) {
     // Close the current InfoWindow.
-      infoWindow.close();
+    infoWindow.close();
 
-    // Create a new InfoWindow.
-      infoWindow = new google.maps.InfoWindow({position: mapsMouseEvent.latLng});
-      infoWindow.setContent(mapsMouseEvent.latLng.toString());
-      infoWindow.open(map);
-      // TO-DO: Call Places API passing through mapsMouseEvent.latLng as the query.
+    searchByCoordinates(mapsMouseEvent.latLng);
   });
 }
 
-// Activates functionality for search bar and log-in button.
+/* Takes coordinates from mouseclick and searches for locations within a given radius of those coordinates. */
+function searchByCoordinates(coordinate) {
+  var request = {
+    location: coordinate,
+    radius: '50',
+  };
+
+  var service = new google.maps.places.PlacesService(map);
+  // Print resulting IDs to log.
+  service.nearbySearch(request, (results, status) => {
+    if (status == google.maps.places.PlacesServiceStatus.OK) {
+      results.forEach((result)=> {
+        var request = {
+          placeId: result.place_id,
+          fields: ['name']
+        };
+        service.getDetails(request, (place, status) => {
+          if (status == google.maps.places.PlacesServiceStatus.OK) {
+            console.log(place.name);
+          }
+        })
+      });
+      newInfoWindow(results, coordinate)
+    }
+  });
+}
+
+/* Temporary tool for debugging. */
+function newInfoWindow(results, coordinate) {
+  var ids = [];
+  results.forEach((result) => {
+      ids.push(result.place_id);
+  });
+  var infoWindow = new google.maps.InfoWindow(
+      {content: ids.toString(),
+       position: coordinate});
+  infoWindow.open(map);
+  createMap();
+}
+
+/* Activates functionality for search bar and log-in button. */
 function loadMainButtons() {
   const clearIcon = document.querySelector(".clear-icon");
   const searchIcon = document.querySelector(".search-icon");
