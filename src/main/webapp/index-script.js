@@ -55,6 +55,8 @@ function searchByText(){
       for (var i = 0; i < results.length; i++){
           // Populate the screen
       }
+
+      // Center on the queried location
       if (results.length > 0) { 
         map.setCenter(results[0].geometry.location);
       }
