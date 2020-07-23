@@ -46,6 +46,8 @@ function loadMainButtons() {
   });
 }
 
+
+// Search using text query
 function searchByTest(){
   // Create the places service.
   const service = new google.maps.places.PlacesService(map);
