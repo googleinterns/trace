@@ -10,9 +10,10 @@
   <body onload="loadPage();">
     <div id="map"></div>
     <div class="mainButtonsWrapper">
-      <div class="searchWrapper" onload="activateSearch()">
+      <form action="/search" method="POST">
         <div class="search-icon">.</div>
         <input class="search" placeholder="Search" type="text" >
+        <input type="submit"/>
         <div class="clear-icon">x</div>
       </div>
       <br>

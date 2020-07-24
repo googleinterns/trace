@@ -92,21 +92,38 @@ function searchByText(){
   
   // Perform a query (hard-coded to be the Googleplex for right now)
   var request = {
-      query: 'Googleplex',
-      radius: '1000',
+      query: document.getElementsByClassName('search'),
+      radius: '100',
       fields: ['place_id', 'geometry']
   }
 
   service.findPlaceFromQuery(request, function(results, status) {
     if (status === google.maps.places.PlacesServiceStatus.OK) {
-      for (var i = 0; i < results.length; i++){
-          // Populate the screen
-      }
+      results.forEach((result)=> {
+        var location = {
+          placeId: result.place_id,
+          fields: ['name']
+        };
+        service.getDetails(request, (place, status) => {
+          if (status == google.maps.places.PlacesServiceStatus.OK) {
+            console.log(place.name);
+            console.log(request.query);
+          }
+        })
+      });
 
       // Center on the queried location
       if (results.length > 0) { 
         map.setCenter(results[0].geometry.location);
       }
     }
+  });
+}
+
+function loadQuery() {
+  fetch('/search').then(response => response.json()).then((query) => {
+    // Build the list of comments
+    const historyEl = document.getElementById('history');
+
   });
 }
