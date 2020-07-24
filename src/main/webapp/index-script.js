@@ -1,28 +1,14 @@
 // Class Variables
-<<<<<<< HEAD
-const map;
-
-=======
 var map;
+
 /* Loads page and main buttons. */
->>>>>>> 7c5d1483561ca584bd49c9e5260e5c2409eb2ddf
 function loadPage() {
     createMap();
     loadMainButtons();
 }
 
-<<<<<<< HEAD
-// Creates a map centered at the Googleplex!
-function createMap() {
-  map = new google.maps.Map(
-    document.getElementById('map'),
-    {center: {lat: 37.422, lng: -122.0841}, zoom: 13, mapTypeId: 'satellite'}); 
-}
 
-// Activates functionality for search bar and log-in button.
-=======
 /* Activates functionality for search bar and log-in button. */
->>>>>>> 7c5d1483561ca584bd49c9e5260e5c2409eb2ddf
 function loadMainButtons() {
   const clearIcon = document.querySelector(".clear-icon");
   const searchIcon = document.querySelector(".search-icon");
@@ -49,8 +35,6 @@ function loadMainButtons() {
   });
 }
 
-<<<<<<< HEAD
-=======
 /* Creates a map centered at the Googleplex! .*/
 function createMap() {
   const googleplex = {lat: 37.422, lng: -122.0841};
@@ -99,7 +83,6 @@ function searchByCoordinates(coordinate) {
   });
 }
 
->>>>>>> 7c5d1483561ca584bd49c9e5260e5c2409eb2ddf
 // Search using text query
 function searchByText(){
   // Create the places service.
