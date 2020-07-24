@@ -88,28 +88,40 @@ function searchByText(textQuery){
 
   service.findPlaceFromQuery(request, function(results, status) {
     if (status === google.maps.places.PlacesServiceStatus.OK) {
-      handleSearchResults(results, service);
+      handleSearchResults(results, service);.
     }
   });
 }
 
-// Takes the results from a given search and prints them to the console
+/* Accepts results from places query and returns array of details for nearby locations. */
 function handleSearchResults(results, service) {
-  results.forEach((result)=> {
-    var request = {
-      placeId: result.place_id,
-      fields: ['name']
-    };
-    // Finds the exact details about the place
-    service.getDetails(request, (place, status) => {
-      if (status == google.maps.places.PlacesServiceStatus.OK) {
-        console.log(place.name);
-      }
-    })
-  });
-
   // Center on the queried location
   if (results.length > 0) { 
     map.setCenter(results[0].geometry.location);
   }
+  
+  var places = [];
+  results.forEach((result)=> {
+    var request = {
+      placeId: result.place_id,
+      fields: [
+        'name',
+        'vicinity',
+        'reviews',
+        'place_id',
+        'opening_hours',
+        'geometry',
+        'icon',
+        'name',
+        'international_phone_number'
+      ]
+    };
+
+    service.getDetails(request, (place, status) => {
+      if (status == google.maps.places.PlacesServiceStatus.OK) {
+        places.push(place);
+      }
+    });
+  });
+  return places;
 }
