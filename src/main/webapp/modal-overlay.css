@@ -37,3 +37,13 @@
 .modal-body {
   padding: 10px 15px;
 }
+
+#overlay {
+  position: fixed;
+  /* Unsure how to shorthand these */
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: black;
+}
