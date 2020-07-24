@@ -1,28 +1,29 @@
-/* iFrame overlayer */
+/* Modal and Overlay stylings, both with dormant and active states */
 
 .modal {
+  background-color: white;
+  border: 1px solid black;
+  border-radius: 10px;
   position: fixed;
   top: 50%;
   left: 50%;
-  transform: translate(-50%, -50%) scale(0);
-  border: 1px solid black;
-  border-radius: 10px;
-  z-index: 10; /* Max Height */
-  background-color: white;
+  transform: translate(-50%, -50%) scale(0); /* Variable sizing. Hidden in dormant state */
   width: 500px;
   max-width: 80%;
+  z-index: 10; /* Top layer of webpage*/
 }
 
+/* Active modal, keep same location but make visible. */
 .modal.active {
   transform: translate(-50%, -50%) scale(1);
 }
 
 .modal-header {
-  padding: 30px 35px;
-  display: flex;
-  justify-content: space-between;
   align-items: center;
   border-bottom: 1px solid black;
+  display: flex;
+  justify-content: space-between;
+  padding: 15px 25px;
 }
 
 .modal-header .title {
@@ -31,27 +32,23 @@
 }
 
 .modal-header .close-button {
-  cursor: pointer;
   border: none;
-  outline: none;
+  cursor: pointer;
   font-size: 1.25rem;
   font-weight: bold;
+  outline: none;
 }
 
 .modal-body {
   padding: 10px 15px;
 }
 
+/* The gray overlay of the map background */
 #overlay {
-  position: fixed;
-  /* Unsure how to shorthand these */
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
+  background-color: rgba(0,0,0,.5); /* Black with 50% opacity */
   opacity: 0;
-  background-color: rgba(0,0,0,.5);
   pointer-events: none;
+  position: fixed;
 }
 
 #overlay.active {
