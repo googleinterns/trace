@@ -20,3 +20,16 @@
   align-items: center;
   border-bottom: 1px solid black;
 }
+
+.modal-header .title {
+  font-size: 1.25rem;
+  font-weight: bold;
+}
+
+.modal0header .close-button {
+  cursor: pointer;
+  border: none;
+  outline: none;
+  font-size: 1.25rem;
+  font-weight: bold;
+}
