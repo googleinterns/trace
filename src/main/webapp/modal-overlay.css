@@ -26,7 +26,7 @@
   font-weight: bold;
 }
 
-.modal0header .close-button {
+.modal-header .close-button {
   cursor: pointer;
   border: none;
   outline: none;
