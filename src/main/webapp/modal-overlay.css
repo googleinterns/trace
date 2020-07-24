@@ -12,3 +12,11 @@
   width: 500px;
   max-width: 80%;
 }
+
+.modal-header {
+  padding: 30px 35px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-bottom: 1px solid black;
+}
