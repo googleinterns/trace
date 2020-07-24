@@ -84,17 +84,7 @@ function searchByCoordinates(coordinate) {
   // Print resulting IDs to log.
   service.nearbySearch(request, (results, status) => {
     if (status == google.maps.places.PlacesServiceStatus.OK) {
-      results.forEach((result)=> {
-        var request = {
-          placeId: result.place_id,
-          fields: ['name']
-        };
-        service.getDetails(request, (place, status) => {
-          if (status == google.maps.places.PlacesServiceStatus.OK) {
-            console.log(place.name);
-          }
-        })
-      });
+        handleSearchResults(results);
     }
   });
 }
@@ -114,14 +104,43 @@ function searchByText(){
 
   service.findPlaceFromQuery(request, function(results, status) {
     if (status === google.maps.places.PlacesServiceStatus.OK) {
-      for (var i = 0; i < results.length; i++){
-          // Populate the screen
-      }
-
-      // Center on the queried location
-      if (results.length > 0) { 
-        map.setCenter(results[0].geometry.location);
-      }
+      handleSearchResults(results);
     }
   });
+}
+
+/* Accepts results from places query and returns array of details for nearby locations. */
+function handleSearchResults(results) {
+  // Center on the queried location
+  if (results.length > 0) { 
+    map.setCenter(results[0].geometry.location);
+  }
+  // Create the places service.
+  const service = new google.maps.places.PlacesService(map);
+  
+  var places = [];
+  results.forEach((result)=> {
+    var request = {
+      placeId: result.place_id,
+      fields: [
+        'name',
+        'vicinity',
+        'reviews',
+        'place_id',
+        'opening_hours',
+        'geometry',
+        'icon',
+        'name',
+        'international_phone_number'
+      ]
+    };
+
+    service.getDetails(request, (place, status) => {
+      if (status == google.maps.places.PlacesServiceStatus.OK) {
+        places.push(place);
+      }
+    });
+  });
+  return places;
+
 }
