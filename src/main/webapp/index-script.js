@@ -1,3 +1,6 @@
+// Class Variables
+const map;
+
 function loadPage() {
     createMap();
     loadMainButtons();
@@ -5,9 +8,9 @@ function loadPage() {
 
 // Creates a map centered at the Googleplex!
 function createMap() {
-  const map = new google.maps.Map(
-      document.getElementById('map'),
-      {center: {lat: 37.422, lng: -122.0841}, zoom: 13, mapTypeId: 'satellite'}); 
+  map = new google.maps.Map(
+    document.getElementById('map'),
+    {center: {lat: 37.422, lng: -122.0841}, zoom: 13, mapTypeId: 'satellite'}); 
 }
 
 // Activates functionality for search bar and log-in button.
@@ -36,5 +39,31 @@ function loadMainButtons() {
 
   logInButton.addEventListener("click", () => {
     return; // TO-DO: Fetch log-in info here.
+  });
+}
+
+// Search using text query
+function searchByText(){
+  // Create the places service.
+  const service = new google.maps.places.PlacesService(map);
+  
+  // Perform a query (hard-coded to be the Googleplex for right now)
+  var request = {
+      query: 'Googleplex',
+      radius: '1000',
+      fields: ['place_id', 'geometry']
+  }
+
+  service.findPlaceFromQuery(request, function(results, status) {
+    if (status === google.maps.places.PlacesServiceStatus.OK) {
+      for (var i = 0; i < results.length; i++){
+          // Populate the screen
+      }
+
+      // Center on the queried location
+      if (results.length > 0) { 
+        map.setCenter(results[0].geometry.location);
+      }
+    }
   });
 }
