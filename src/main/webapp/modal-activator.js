@@ -18,11 +18,13 @@ function setupModalButtons() {
 }
 
 function triggerModal(modal) {
+  if (modal == null) return;
   overlay.classList.add('active');
   modal.classList.add('active');
 }
 
 function closeModal(modal) {
+  if (modal == null) return;
   overlay.classList.remove('active');
   modal.classList.remove('active');
 }
