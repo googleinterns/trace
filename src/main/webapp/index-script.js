@@ -1,29 +1,61 @@
 // Class Variables
 var map;
-/* Loades page and main buttons. */
+/* Loads page and main buttons. */
 function loadPage() {
     createMap();
     loadMainButtons();
 }
 
+/* Activates functionality for search bar and log-in button. */
+function loadMainButtons() {
+  const clearIcon = document.querySelector(".clear-icon");
+  const searchIcon = document.querySelector(".search-icon");
+  const searchBar = document.querySelector(".search");
+  const logInButton = document.querySelector("#logIn");
+
+  // Make 'clear-icon' visible when user starts typing.
+  searchBar.addEventListener("keyup", () => {
+    if(searchBar.value && clearIcon.style.visibility != "visible"){
+      clearIcon.style.visibility = "visible";
+    } else if(!searchBar.value) {
+      clearIcon.style.visibility = "hidden";
+    }
+  });
+
+  // Delete text and hide 'clear-icon' on click.
+  clearIcon.addEventListener("click", () => {
+    searchBar.value = "";
+    clearIcon.style.visibility = "hidden";
+  });
+
+  searchIcon.addEventListener("click", () => {
+    return; // TO-DO: Send search bar info to places API.
+  });
+
+  logInButton.addEventListener("click", () => {
+    return; // TO-DO: Fetch log-in info here.
+  });
+}
+
 /* Creates a map centered at the Googleplex! .*/
 function createMap() {
+  const googleplex = {lat: 37.422, lng: -122.0841};
+  
   map = new google.maps.Map(
     document.getElementById('map'),
-    {center: {lat: 37.422, lng: -122.0841}, zoom: 13,
+    {center: googleplex, zoom: 13,
     mapTypeControlOptions: {mapTypeIds: ['roadmap']}});
 
   // Create the initial InfoWindow.
   var infoWindow = new google.maps.InfoWindow(
       {content: 'Open javascript console (ctrl + shift + j) then click the map to see the placeIDs of nearby locations (within 50m)',
-       position: {lat: 37.422, lng: -122.0841}});
+       position: googleplex});
   infoWindow.open(map);
 
   // Configure the click listener.
   map.addListener('click', function(mapsMouseEvent) {
     // Close the current InfoWindow.
     infoWindow.close();
-
     searchByCoordinates(mapsMouseEvent.latLng);
   });
 }
@@ -51,50 +83,7 @@ function searchByCoordinates(coordinate) {
           }
         })
       });
-      newInfoWindow(results, coordinate)
     }
-  });
-}
-
-/* Temporary tool for debugging. */
-function newInfoWindow(results, coordinate) {
-  var ids = [];
-  results.forEach((result) => {
-      ids.push(result.place_id);
-  });
-  var infoWindow = new google.maps.InfoWindow(
-      {content: ids.toString(),
-       position: coordinate});
-  infoWindow.open(map);
-  createMap();
-}
-
-/* Activates functionality for search bar and log-in button. */
-function loadMainButtons() {
-  const clearIcon = document.querySelector(".clear-icon");
-  const searchIcon = document.querySelector(".search-icon");
-  const searchBar = document.querySelector(".search");
-  const logInButton = document.querySelector("#logIn");
-
-  searchBar.addEventListener("keyup", () => {
-    if(searchBar.value && clearIcon.style.visibility != "visible"){
-      clearIcon.style.visibility = "visible";
-    } else if(!searchBar.value) {
-      clearIcon.style.visibility = "hidden";
-    }
-  });
-
-  clearIcon.addEventListener("click", () => {
-    searchBar.value = "";
-    clearIcon.style.visibility = "hidden";
-  });
-
-  searchIcon.addEventListener("click", () => {
-    return; // TO-DO: Send search bar info to places API.
-  });
-
-  logInButton.addEventListener("click", () => {
-    return; // TO-DO: Fetch log-in info here.
   });
 }
 
