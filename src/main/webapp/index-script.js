@@ -7,7 +7,6 @@ function loadPage() {
     loadMainButtons();
 }
 
-
 /* Activates functionality for search bar and log-in button. */
 function loadMainButtons() {
   const clearIcon = document.querySelector(".clear-icon");
