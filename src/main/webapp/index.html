@@ -1,18 +1,18 @@
-<!DOCTYPE html>
 <html>
   <head>
     <meta charset="UTF-8">
     <title>TRACE</title>
+    <script src="https://polyfill.io/v3/polyfill.min.js?features=default"></script>
     <link rel="stylesheet" href="index-style.css">
-    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyB-kjcAxxbrQeJJEvSg5XgkTmGI4aZLS5E"></script>
+    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyB-kjcAxxbrQeJJEvSg5XgkTmGI4aZLS5E&callback=initAutocomplete&libraries=places&v=weekly"></script>
     <script src="index-script.js"></script>
   </head>
   <body onload="loadPage();">
     <div id="map"></div>
     <div class="mainButtonsWrapper">
-      <div class="searchWrapper" onload="activateSearch()">
-        <div class="search-icon">.</div>
-        <input class="search" placeholder="Search" type="text" >
+      <div class="searchWrapper">
+        <div class="search-icon">Go</div>
+        <input id="search" class="controls" placeholder="Search" type="text" >
         <div class="clear-icon">x</div>
       </div>
     </div>
