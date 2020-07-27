@@ -29,7 +29,8 @@ function loadMainButtons() {
   });
 
   searchIcon.addEventListener("click", () => {
-    return; // TO-DO: Send search bar info to places API.
+    var query = document.getElementById('searchForm').elements[0].value;
+    searchByText(query);
   });
 }
 
@@ -50,6 +51,7 @@ function createMap() {
   // Search by coordinates on map click.
   map.addListener('click', function(mapsMouseEvent) {
     infoWindow.close();
+    console.log(mapsMouseEvent);
     searchByCoordinates(mapsMouseEvent.latLng);
   });
 }
@@ -82,22 +84,30 @@ function searchByCoordinates(coordinate) {
 }
 
 // Search using text query
-function searchByText(){
+function searchByText(textQuery){
   // Create the places service.
-  const service = new google.maps.places.PlacesService(map);
-  
+
   // Perform a query (hard-coded to be the Googleplex for right now)
   var request = {
-      query: 'Googleplex',
-      radius: '1000',
+      query: textQuery,
       fields: ['place_id', 'geometry']
-  }
+  };
+
+  var service = new google.maps.places.PlacesService(map);
 
   service.findPlaceFromQuery(request, function(results, status) {
     if (status === google.maps.places.PlacesServiceStatus.OK) {
-      for (var i = 0; i < results.length; i++){
-          // Populate the screen
-      }
+      results.forEach((result)=> {
+        var request = {
+          placeId: result.place_id,
+          fields: ['name']
+        };
+        service.getDetails(request, (place, status) => {
+          if (status == google.maps.places.PlacesServiceStatus.OK) {
+            console.log(place.name);
+          }
+        })
+      });
 
       // Center on the queried location
       if (results.length > 0) { 
