@@ -28,6 +28,7 @@ function loadMainButtons() {
     clearIcon.style.visibility = "hidden";
   });
 
+  // Search Icon registers clicks and searches for location.
   searchIcon.addEventListener("click", () => {
     var query = document.getElementById('searchForm').elements[0].value;
     searchByText(query);
