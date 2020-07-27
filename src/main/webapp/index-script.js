@@ -1,4 +1,5 @@
-// Class Variables
+
+/* Class Variables. */
 var map;
 
 /* Loads page and main buttons. */
@@ -12,7 +13,6 @@ function loadMainButtons() {
   const clearIcon = document.querySelector(".clear-icon");
   const searchIcon = document.querySelector("#search-icon");
   const searchBar = document.querySelector(".search");
-  const logInButton = document.querySelector("#logIn");
 
   // Make 'clear-icon' visible when user starts typing.
   searchBar.addEventListener("keyup", () => {
@@ -48,7 +48,7 @@ function createMap() {
   var infoWindow = new google.maps.InfoWindow(
       {content: 'Open javascript console (ctrl + shift + j) then click the map to see the placeIDs of nearby locations (within 50m)',
        position: googleplex});
-  infoWindow.open(map);
+       infoWindow.open(map);
 
   // Search by coordinates on map click.
   map.addListener('click', function(mapsMouseEvent) {
@@ -74,10 +74,8 @@ function searchByCoordinates(coordinate) {
   });
 }
 
-// Search using text query
+/* Search Places API for relevant locations using text query. */
 function searchByText(textQuery){
-  // Create the places service.
-
   // Perform a query (hard-coded to be the Googleplex for right now)
   var request = {
       query: textQuery,
@@ -88,7 +86,7 @@ function searchByText(textQuery){
 
   service.findPlaceFromQuery(request, function(results, status) {
     if (status === google.maps.places.PlacesServiceStatus.OK) {
-      handleSearchResults(results, service);.
+      handleSearchResults(results, service);
     }
   });
 }
@@ -112,16 +110,25 @@ function handleSearchResults(results, service) {
         'opening_hours',
         'geometry',
         'icon',
-        'name',
-        'international_phone_number'
+        'international_phone_number',
+        'website'
       ]
     };
 
     service.getDetails(request, (place, status) => {
       if (status == google.maps.places.PlacesServiceStatus.OK) {
         places.push(place);
+        console.log(place);
       }
     });
+  }).then(() =>  populateSearch(places));
+}
+
+function populateSearch(places) {
+  console.log(places);
+  console.log(places[0]);
+  places.forEach((place) => {
+    console.log('a');
+    console.log(place.name);
   });
-  return places;
 }
