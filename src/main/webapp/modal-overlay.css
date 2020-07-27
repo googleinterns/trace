@@ -10,6 +10,7 @@
   transform: translate(-50%, -50%) scale(0); /* Variable sizing. Hidden in dormant state */
   width: 500px;
   max-width: 80%;
+  max-height: 80%;
   z-index: 10; /* Top layer of webpage*/
 }
 
@@ -58,6 +59,33 @@
 #overlay.active {
   opacity: 1;
   pointer-events: all;
+}
+
+.result {
+  background: #BFBFBF; /* Gray */
+  position: sticky;
+  height: 72px;
+}
+
+.result .prvw-img {
+  position: absolute;
+  width: 42px;
+  height: 36px;
+  left: 15px;
+  top: 18px;
+  background-image: url(https://images7.alphacoders.com/909/909467.jpg);
+}
+
+.result .text {
+  position: sticky;
+  width: 153px;
+  left: 638px;
+  top: 294px;
+  font-style: normal;
+  font-weight: normal;
+  font-size: 42px;
+  line-height: 54px;
+  color: #000000;
 }
 
 ul {
