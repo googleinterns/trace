@@ -121,13 +121,15 @@ function handleSearchResults(results) {
         console.log(place);
       }
     });
-  }).then(() =>  populateSearch(places));
+  });
+  populateSearch(places);
 }
 
 function populateSearch(places) {
-  console.log(places);
-  console.log(places[0]);
-  places.forEach((place) => {
+  console.log(places); // Prints appropriate locations
+  console.log(places.length); // Prints 0
+  
+  places.forEach((place) => { // Does not enter loop.
     console.log('a');
     console.log(place.name);
   });
