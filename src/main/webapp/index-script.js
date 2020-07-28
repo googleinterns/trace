@@ -47,7 +47,7 @@ function createMap() {
   var infoWindow = new google.maps.InfoWindow(
       {content: 'Open javascript console (ctrl + shift + j) then click the map to see the placeIDs of nearby locations (within 50m)',
        position: googleplex});
-       infoWindow.open(map);
+  infoWindow.open(map);
 
   // Search by coordinates on map click.
   map.addListener('click', function(mapsMouseEvent) {
