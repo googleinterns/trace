@@ -10,7 +10,7 @@ function loadPage() {
 /* Activates functionality for search bar and log-in button. */
 function loadMainButtons() {
   const clearIcon = document.querySelector(".clear-icon");
-  const searchIcon = document.querySelector(".search-icon");
+  const searchIcon = document.querySelector("#search-icon");
   const searchBar = document.querySelector(".search");
   const logInButton = document.querySelector("#logIn");
 
@@ -29,8 +29,10 @@ function loadMainButtons() {
     clearIcon.style.visibility = "hidden";
   });
 
+  // Search Icon registers clicks and searches for location.
   searchIcon.addEventListener("click", () => {
-    return; // TO-DO: Send search bar info to places API.
+    var query = document.getElementById('searchForm').elements[0].value;
+    searchByText(query);
   });
 }
 
@@ -67,43 +69,47 @@ function searchByCoordinates(coordinate) {
   // Print resulting IDs to log.
   service.nearbySearch(request, (results, status) => {
     if (status == google.maps.places.PlacesServiceStatus.OK) {
-      results.forEach((result)=> {
-        var request = {
-          placeId: result.place_id,
-          fields: ['name']
-        };
-        service.getDetails(request, (place, status) => {
-          if (status == google.maps.places.PlacesServiceStatus.OK) {
-            console.log(place.name);
-          }
-        })
-      });
+      handleSearchResults(results, service);
     }
   });
 }
 
 // Search using text query
-function searchByText(){
+function searchByText(textQuery){
   // Create the places service.
-  const service = new google.maps.places.PlacesService(map);
-  
+
   // Perform a query (hard-coded to be the Googleplex for right now)
   var request = {
-      query: 'Googleplex',
-      radius: '1000',
+      query: textQuery,
       fields: ['place_id', 'geometry']
-  }
+  };
+
+  var service = new google.maps.places.PlacesService(map);
 
   service.findPlaceFromQuery(request, function(results, status) {
     if (status === google.maps.places.PlacesServiceStatus.OK) {
-      for (var i = 0; i < results.length; i++){
-          // Populate the screen
-      }
-
-      // Center on the queried location
-      if (results.length > 0) { 
-        map.setCenter(results[0].geometry.location);
-      }
+      handleSearchResults(results, service);
     }
   });
+}
+
+// Takes the results from a given search and prints them to the console
+function handleSearchResults(results, service) {
+  results.forEach((result)=> {
+    var request = {
+      placeId: result.place_id,
+      fields: ['name']
+    };
+    // Finds the exact details about the place
+    service.getDetails(request, (place, status) => {
+      if (status == google.maps.places.PlacesServiceStatus.OK) {
+        console.log(place.name);
+      }
+    })
+  });
+
+  // Center on the queried location
+  if (results.length > 0) { 
+    map.setCenter(results[0].geometry.location);
+  }
 }
