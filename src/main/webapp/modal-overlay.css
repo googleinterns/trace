@@ -58,7 +58,7 @@ div#results-list ul {
   margin: 0;
   padding: 0;
   border: 2px solid #ccc;
-  max-height: 400px;
+  max-height: 75vh;
   font-size: 16px;
   font-family: Arial, sans-serif;
   -webkit-overflow-scrolling: touch;
