@@ -52,7 +52,6 @@ function createMap() {
   // Search by coordinates on map click.
   map.addListener('click', function(mapsMouseEvent) {
     infoWindow.close();
-    console.log(mapsMouseEvent);
     searchByCoordinates(mapsMouseEvent.latLng);
   });
 }
@@ -69,17 +68,7 @@ function searchByCoordinates(coordinate) {
   // Print resulting IDs to log.
   service.nearbySearch(request, (results, status) => {
     if (status == google.maps.places.PlacesServiceStatus.OK) {
-      results.forEach((result)=> {
-        var request = {
-          placeId: result.place_id,
-          fields: ['name']
-        };
-        service.getDetails(request, (place, status) => {
-          if (status == google.maps.places.PlacesServiceStatus.OK) {
-            console.log(place.name);
-          }
-        })
-      });
+      handleSearchResults(results, service);
     }
   });
 }
@@ -98,22 +87,26 @@ function searchByText(textQuery){
 
   service.findPlaceFromQuery(request, function(results, status) {
     if (status === google.maps.places.PlacesServiceStatus.OK) {
-      results.forEach((result)=> {
-        var request = {
-          placeId: result.place_id,
-          fields: ['name']
-        };
-        service.getDetails(request, (place, status) => {
-          if (status == google.maps.places.PlacesServiceStatus.OK) {
-            console.log(place.name);
-          }
-        })
-      });
-
-      // Center on the queried location
-      if (results.length > 0) { 
-        map.setCenter(results[0].geometry.location);
-      }
+      handleSearchResults(results, service);
     }
   });
+}
+
+function handleSearchResults(results, service) {
+  results.forEach((result)=> {
+    var request = {
+      placeId: result.place_id,
+      fields: ['name']
+    };
+    service.getDetails(request, (place, status) => {
+      if (status == google.maps.places.PlacesServiceStatus.OK) {
+        console.log(place.name);
+      }
+    })
+  });
+
+  // Center on the queried location
+  if (results.length > 0) { 
+    map.setCenter(results[0].geometry.location);
+  }
 }
