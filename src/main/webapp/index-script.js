@@ -1,5 +1,6 @@
 // Class Variables
 var map;
+
 /* Loads page and main buttons. */
 function loadPage() {
     createMap();

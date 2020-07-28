@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <title>TRACE</title>
     <link rel="stylesheet" href="index-style.css">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
     <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyB-kjcAxxbrQeJJEvSg5XgkTmGI4aZLS5E&libraries=places"></script>
     <script src="index-script.js"></script>
   </head>
@@ -11,7 +12,7 @@
     <div id="map"></div>
     <div class="mainButtonsWrapper">
       <div class="searchWrapper" onload="activateSearch()">
-        <div class="search-icon">.</div>
+        <i id="search-icon" class="material-icons">search</i>
         <form id="searchForm">
           <input id="search" class="search" placeholder="Search" type="text" >
         </form>
