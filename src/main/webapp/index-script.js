@@ -133,6 +133,7 @@ function handleSearchResults(results, service) {
 
 // Place-holder for function that fills out search results page.
 function populateSearch(places) {
+  places = sortPlacesByRating(places);
   return null; 
   // TO-DO: Implement or replace this function.
 }
