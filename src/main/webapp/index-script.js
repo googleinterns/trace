@@ -98,7 +98,7 @@ function handleSearchResults(results, service) {
     map.setCenter(results[0].geometry.location);
   }
   
-  var places = [];
+  var promises = [];
   results.forEach((result)=> {
     var request = {
       placeId: result.place_id,
@@ -114,19 +114,24 @@ function handleSearchResults(results, service) {
         'website'
       ]
     };
-
-    service.getDetails(request, (place, status) => {
-      if (status == google.maps.places.PlacesServiceStatus.OK) {
-        places.push(place);
-        console.log(place);
-      }
+ 
+    const promise = new Promise((resolve, reject) => {
+      service.getDetails(request, (place, status) => {
+        if (status == google.maps.places.PlacesServiceStatus.OK) {
+          resolve(place);
+        }
+      });
     });
-  }).then(() =>  populateSearch(places));
+    promises.push(promise);
+    
+  });
+ 
+  Promise.all(promises).then(places => {
+    populateSearch(places);
+  });
 }
 
 function populateSearch(places) {
-  console.log(places);
-  console.log(places[0]);
   places.forEach((place) => {
     console.log('a');
     console.log(place.name);
