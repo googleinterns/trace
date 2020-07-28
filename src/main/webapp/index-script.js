@@ -92,12 +92,15 @@ function searchByText(textQuery){
   });
 }
 
+
+// Takes the results from a given search and prints them to the console
 function handleSearchResults(results, service) {
   results.forEach((result)=> {
     var request = {
       placeId: result.place_id,
       fields: ['name']
     };
+    // Finds the exact details about the place
     service.getDetails(request, (place, status) => {
       if (status == google.maps.places.PlacesServiceStatus.OK) {
         console.log(place.name);
