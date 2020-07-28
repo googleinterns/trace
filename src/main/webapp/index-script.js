@@ -1,4 +1,3 @@
-
 /* Class Variables. */
 var map;
 
@@ -127,13 +126,12 @@ function handleSearchResults(results, service) {
   });
  
   Promise.all(promises).then(places => {
-    populateSearch(places);
+    populateSearch(places); // Placeholder
   });
 }
 
+// Place-holder for function that fills out search results page.
 function populateSearch(places) {
-  places.forEach((place) => {
-    console.log('a');
-    console.log(place.name);
-  });
+  return null; 
+  // TO-DO: Implement or replace this function.
 }
