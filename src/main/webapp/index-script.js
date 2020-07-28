@@ -91,6 +91,7 @@ function searchByText(){
 
 /* Accepts results from places query and returns array of details for nearby locations. */
 function handleSearchResults(results) {
+    console.log(results.length);
   // Center on the queried location
   if (results.length > 0) { 
     map.setCenter(results[0].geometry.location);
@@ -98,7 +99,7 @@ function handleSearchResults(results) {
   // Create the places service.
   const service = new google.maps.places.PlacesService(map);
   
-  var places = [];
+  var promises = [];
   results.forEach((result)=> {
     var request = {
       placeId: result.place_id,
@@ -114,19 +115,24 @@ function handleSearchResults(results) {
         'website'
       ]
     };
-
-    service.getDetails(request, (place, status) => {
-      if (status == google.maps.places.PlacesServiceStatus.OK) {
-        places.push(place);
-        console.log(place);
-      }
+ 
+    const promise = new Promise((resolve, reject) => {
+      service.getDetails(request, (place, status) => {
+        if (status == google.maps.places.PlacesServiceStatus.OK) {
+          resolve(place);
+        }
+      });
     });
-  }).then(() =>  populateSearch(places));
+    promises.push(promise);
+    
+  });
+ 
+  Promise.all(promises).then(places => {
+    populateSearch(places);
+  });
 }
 
 function populateSearch(places) {
-  console.log(places);
-  console.log(places[0]);
   places.forEach((place) => {
     console.log('a');
     console.log(place.name);
