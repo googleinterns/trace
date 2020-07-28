@@ -10,7 +10,7 @@ function loadPage() {
 /* Activates functionality for search bar and log-in button. */
 function loadMainButtons() {
   const clearIcon = document.querySelector(".clear-icon");
-  const searchIcon = document.querySelector(".search-icon");
+  const searchIcon = document.querySelector("#search-icon");
   const searchBar = document.querySelector(".search");
   const logInButton = document.querySelector("#logIn");
 
@@ -92,7 +92,6 @@ function searchByText(textQuery){
     }
   });
 }
-
 
 // Takes the results from a given search and prints them to the console
 function handleSearchResults(results, service) {
