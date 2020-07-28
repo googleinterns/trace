@@ -74,7 +74,9 @@ function searchByCoordinates(coordinate) {
 }
 
 /* Search Places API for relevant locations using text query. */
-function searchByText(textQuery){
+function searchByText(textQuery) {
+  // Create the places service.
+  const service = new google.maps.places.PlacesService(map);
   // Perform a query (hard-coded to be the Googleplex for right now)
   var request = {
       query: textQuery,
@@ -96,6 +98,8 @@ function handleSearchResults(results, service) {
   if (results.length > 0) { 
     map.setCenter(results[0].geometry.location);
   }
+  // Create the places service.
+  const service = new google.maps.places.PlacesService(map);
   
   var promises = [];
   results.forEach((result)=> {
