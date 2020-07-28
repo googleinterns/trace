@@ -139,6 +139,8 @@ function populateSearch(places) {
   // TO-DO: Implement or replace this function.
 }
 
+/* Adds a field 'rating' to each place with a random integer to
+ * simulate sorting locations by their ratings. */
 function sortPlacesByRating(places) {
   places.forEach((place) => {
     let rand = Math.floor(Math.random() * 10);
