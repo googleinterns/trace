@@ -117,7 +117,8 @@ function handleSearchResults(results, service) {
         'website'
       ]
     };
- 
+
+    // Creates a promise to return details from places api request.
     const promise = new Promise((resolve, reject) => {
       service.getDetails(request, (place, status) => {
         if (status == google.maps.places.PlacesServiceStatus.OK) {
@@ -128,7 +129,8 @@ function handleSearchResults(results, service) {
     promises.push(promise);
     
   });
- 
+
+  // Waits on all promises to complete before passing the results into the next function.
   Promise.all(promises).then(places => {
     populateSearch(places); // Placeholder
   });
