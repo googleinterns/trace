@@ -136,3 +136,9 @@ function populateSearch(places) {
   return null; 
   // TO-DO: Implement or replace this function.
 }
+
+function sortPlacesByRating(places) {
+  places.sort((a, b) =>
+    (a.rating > b.rating) ? 1 : -1);
+    return places;
+}
