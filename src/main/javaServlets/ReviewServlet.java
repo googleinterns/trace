@@ -27,6 +27,7 @@ public class ReviewServlet extends HttpServlet {
     PreparedQuery results = datastore.prepare(query);
 
     List<String> reviews = new ArrayList<>();
+    // Adds each review entity to a list
     for (Entity entity : results.asIterable()) {
       // Get desired information from Datastore
       long id = entity.getKey().getId();
@@ -34,7 +35,8 @@ public class ReviewServlet extends HttpServlet {
       Date timestamp = (Date) entity.getProperty("date");
       reviews.add(message + " - " + timestamp.toString());
     }
-        
+
+    // Adds the review list to a GSON/JSON object so that can be used in Javascript code    
     response.setContentType("application/json");
     String json = new Gson().toJson(reviews);
     response.getWriter().println(json);
@@ -53,6 +55,7 @@ public class ReviewServlet extends HttpServlet {
       Date date = new Date();
       reviewEntity.setProperty("date", date);
 
+      // Add the new review to a Datastore
       DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
       datastore.put(reviewEntity);
 
