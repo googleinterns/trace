@@ -133,6 +133,18 @@ function handleSearchResults(results, service) {
 
 // Place-holder for function that fills out search results page.
 function populateSearch(places) {
+  places = sortPlacesByRating(places);
+  console.log(places);
   return null; 
   // TO-DO: Implement or replace this function.
+}
+
+function sortPlacesByRating(places) {
+  places.forEach((place) => {
+    let rand = Math.floor(Math.random() * 10);
+    place.rating = rand;
+  });
+  places.sort((a, b) =>
+    (a.rating > b.rating) ? 1 : -1);
+  return places;
 }
