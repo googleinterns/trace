@@ -38,14 +38,12 @@
   background-color: #f5f5f5; /* Grey. */
 }
    
-.search-icon {
+#search-icon {
   position: relative;
   top: 9px;
   left: 40px;
   height: 25px;
   width: 25px;
-  color: black;
-  background-color: black;
 }
 
 .clear-icon {
