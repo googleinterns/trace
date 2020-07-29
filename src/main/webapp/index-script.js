@@ -17,7 +17,7 @@ function loadMainButtons() {
   const prev = document.querySelector(".prev");
   const next = document.querySelector(".next");
   const tutorialText = document.getElementById("centralText");
-  const modalClosers = document.getQuerySelectorAll('[data-modal-close-button]');
+  const modalClosers = document.querySelectorAll('[data-modal-close-button]');
 
   // Make 'clear-icon' visible when user starts typing.
   searchBar.addEventListener("keyup", () => {
@@ -169,9 +169,11 @@ function handleSearchResults(results, service) {
 // Place-holder for function that fills out search results page.
 function populateSearch(places) {
   places = sortPlacesByRating(places);
+  console.log("*** Places array ***");
   console.log(places);
-  return null; 
-  // TO-DO: Implement or replace this function.
+  console.log("**********");
+  populateResults(places);
+  console.log("Finished populating modal.");
 }
 
 /* Adds a field 'rating' to each place with a random integer to
@@ -219,11 +221,11 @@ function populateResults(placesArray) {
 
 /* create result element function
  * This function takes in a JavaScript place object and populates a list entry of its information.
- *    ___________result Grid_____________
+ *    ___________________________________
  *   |       |  Relevant information   |_|
  *   | icon  |  Relevant information   |_|
  *   |       |  Relevant information   |_|
- *   |_______|__Relevant information   |_|
+ *   |_______|__Relevant information___|_|
  */
 function generateResult(place) {
   const resultGrid = document.createElement('div');
