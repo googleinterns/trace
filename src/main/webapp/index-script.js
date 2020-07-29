@@ -218,6 +218,7 @@ function populateResults(places) {
   places.forEach(place => {
     entireList.appendChild(generateResult(place));
   });
+  listContainer.appendChild(entireList);
 }
 
 /* create result element function
@@ -229,22 +230,31 @@ function populateResults(places) {
  *   |_______|__Relevant information___|_|
  */
 function generateResult(place) {
+  const resultEntry = document.createElement('li');
   const resultGrid = document.createElement('div');
   resultGrid.className += 'result-grid';
 
+  /*
   const imagePreview = document.createElement('div');
   imagePreview.className += 'prvw-img';
   const suggestedIcon = document.createElement('icon');
   suggestedIcon.innerHTML = place.icon;
   imagePreview.appendChild(suggestedIcon);
-  resultGrid.appendChild(imagePreivew);
+  resultGrid.appendChild(imagePreivew); */
 
   const infoText = document.createElement('ul');
-  places.forEach(tidbit, () => {
+  const infoEntry = document.createElement('li');
+  infoEntry.innerHTML = place.name;
+  infoText.appendChild(infoEntry);
+
+  /*
+  place.forEach(tidbit => {
     const infoEntry = document.createElement('li');
     infoEntry.innerHTML = tidbit;
     infoText.appendChild(infoEntry);
-  });
+  });*/
 
   resultGrid.appendChild(infoText);
+  resultEntry.appendChild(resultGrid);
+  return resultEntry;
 }
