@@ -38,7 +38,7 @@ function loadMainButtons() {
     var query = document.getElementById('searchForm').elements[0].value;
     searchByText(query);
   });
-
+  
   // Stub for previous button.
   prev.addEventListener("click", function prevClick() {
     tutorialText.innerHTML = "This button will take you to the previous page.";
@@ -55,6 +55,10 @@ function loadMainButtons() {
     prev.removeEventListener("click", prevClick);
     next.removeEventListener("click", nextClick);
     closeTutorial.removeEventListener("click", close);
+  });
+  
+  logInButton.addEventListener("click", () => {
+    window.location.href = "/login"
   });
 }
 
