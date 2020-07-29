@@ -194,8 +194,8 @@ function sortPlacesByRating(places) {
 function triggerModal(modal) {
   console.log("Triggering modal.");
   if (modal == null) return;
-  overlay.classList.add('active');
-  modal.classList.add('active');
+  overlay.classList.add('active'); // Activates overlay opacity styling
+  modal.classList.add('active'); // Makes modal appear by activating styling
 }
 
 /* close modal
@@ -203,8 +203,17 @@ function triggerModal(modal) {
  */
 function closeModal(modal) {
   if (modal == null) return;
-  overlay.classList.remove('active');
-  modal.classList.remove('active');
+  overlay.classList.remove('active'); // Removes overlay and click blocker
+  modal.classList.remove('active'); // Hides modal
+  cleanModal(modal);
+}
+
+/* remove modal content function
+ * Calls on closing of modal, wipes all results from inside of it.
+ */
+function cleanModal(modal) {
+  const listContainer = document.getElementById('results-list');
+  listContainer.innerHTML = ''; // Clean wrapper of all DOM elements
 }
 
 /* populate modal result list function
@@ -234,9 +243,7 @@ function generateResult(place) {
   const resultGrid = document.createElement('div');
   resultGrid.className += 'result-grid';
 
-  console.log("icon: " + place.icon);
-
-  const imagePreview = document.createElement('div');
+  const imagePreview = document.createElement('div'); // Wrapper for icon
   imagePreview.className += 'prvw-img';
   const suggestedIcon = document.createElement('img');
   suggestedIcon.src = place.icon;
@@ -244,13 +251,14 @@ function generateResult(place) {
   resultGrid.appendChild(imagePreview);
 
   const infoText = document.createElement('ul');
+  
+  // Relevant information to be displayed
   var tidbits = [
     place.name,
     place.international_phone_number,
     place.website,
     place.vicinity + " away"
   ];
-
   tidbits.forEach(fact => {
     const infoEntry = document.createElement('li');
     infoEntry.innerHTML = fact;
