@@ -42,13 +42,10 @@
 
 .modal-body {
   padding: 10px 15px;
-}
-
-div#results-list {
   max-height: 80%;
 }
 
-div#results-list ul {
+.modal-body ul {
   position: static;
   top: 20px;
   bottom: 20px;
@@ -58,10 +55,14 @@ div#results-list ul {
   margin: 0;
   padding: 0;
   border: 2px solid #ccc;
-  max-height: 75vh;
+  max-height: inherit;
   font-size: 16px;
   font-family: Arial, sans-serif;
   -webkit-overflow-scrolling: touch;
+}
+
+.modal-body div#results-list {
+  max-height: inherit;
 }
 
 /* The gray overlay of the map background */
@@ -85,6 +86,24 @@ div#results-list ul {
   background: #BFBFBF; /* Gray */
   position: sticky;
   height: 72px;
+
+}
+
+.result-grid {
+  display: grid;
+  grid-template-columns: 120px auto auto 20px;
+  grid-template-rows: 35px 35px 35px 30px;
+  align-self: center;
+}
+
+.result-grid .img {
+  grid-column-start: 1;
+  grid-column-end: 2;
+  grid-row: 2 / 3;
+}
+
+.result-grid .text {
+
 }
 
 .result .prvw-img {
@@ -110,7 +129,6 @@ div#results-list ul {
 
 li {
   padding: 10px 20px;
-  
   border-bottom: 1px solid #ccc;
 }
 
