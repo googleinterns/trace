@@ -34,6 +34,11 @@ function loadMainButtons() {
     var query = document.getElementById('searchForm').elements[0].value;
     searchByText(query);
   });
+
+  logInButton.addEventListener("click", () => {
+    window.location.href = "/login"
+  });
+
 }
 
 /* Creates a map centered at the Googleplex! .*/
