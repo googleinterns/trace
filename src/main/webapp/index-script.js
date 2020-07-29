@@ -1,10 +1,11 @@
-// Class Variables
+/* Class Variables. */
 var map;
 
 /* Loads page and main buttons. */
 function loadPage() {
     createMap();
     loadMainButtons();
+    toggleLoginLogout();
 }
 
 /* Activates functionality for search bar and log-in button. */
@@ -58,7 +59,23 @@ function loadMainButtons() {
   });
   
   logInButton.addEventListener("click", () => {
-    window.location.href = "/login"
+    window.location.href="/login" 
+  }); 
+}
+
+// Chooses whether to display 'Login' or 'Logout' button.
+function toggleLoginLogout(){
+  const logInButton = document.querySelector("#login");
+  fetch('/login').then(response => response.text()).then(data => {
+    // Fetches the first line of the /login file and splits it based on the dot symbol.
+    const split = data.split(".")[0];
+    console.log(split);
+    // If the split contains a user email, 
+    // then a user is logged in and we can display the 'Logout' button
+      if (split.length > 0){
+        logInButton.innerHTML = logInButton.getAttribute("data-text-swap");
+      } 
+      // Otherwise, we know a user isn't logged in and the login button will stay as "Login"
   });
 }
 
@@ -100,10 +117,8 @@ function searchByCoordinates(coordinate) {
   });
 }
 
-// Search using text query
-function searchByText(textQuery){
-  // Create the places service.
-
+/* Search Places API for relevant locations using text query. */
+function searchByText(textQuery) {
   // Perform a query (hard-coded to be the Googleplex for right now)
   var request = {
       query: textQuery,
@@ -111,7 +126,6 @@ function searchByText(textQuery){
   };
 
   var service = new google.maps.places.PlacesService(map);
-
   service.findPlaceFromQuery(request, function(results, status) {
     if (status === google.maps.places.PlacesServiceStatus.OK) {
       handleSearchResults(results, service);
@@ -119,23 +133,64 @@ function searchByText(textQuery){
   });
 }
 
-// Takes the results from a given search and prints them to the console
+/* Accepts results from places query and returns array of details for nearby locations. */
 function handleSearchResults(results, service) {
-  results.forEach((result)=> {
-    var request = {
-      placeId: result.place_id,
-      fields: ['name']
-    };
-    // Finds the exact details about the place
-    service.getDetails(request, (place, status) => {
-      if (status == google.maps.places.PlacesServiceStatus.OK) {
-        console.log(place.name);
-      }
-    })
-  });
-
   // Center on the queried location
   if (results.length > 0) { 
     map.setCenter(results[0].geometry.location);
   }
+  
+  var promises = [];
+  results.forEach((result)=> {
+    var request = {
+      placeId: result.place_id,
+      fields: [
+        'name',
+        'vicinity',
+        'reviews',
+        'place_id',
+        'opening_hours',
+        'geometry',
+        'icon',
+        'international_phone_number',
+        'website'
+      ]
+    };
+
+    // Creates a promise to return details from places api request.
+    const promise = new Promise((resolve, reject) => {
+      service.getDetails(request, (place, status) => {
+        if (status == google.maps.places.PlacesServiceStatus.OK) {
+          resolve(place);
+        }
+      });
+    });
+    promises.push(promise);
+    
+  });
+
+  // Waits on all promises to complete before passing the results into the next function.
+  Promise.all(promises).then(places => {
+    populateSearch(places); // Placeholder
+  });
+}
+
+// Place-holder for function that fills out search results page.
+function populateSearch(places) {
+  places = sortPlacesByRating(places);
+  console.log(places);
+  return null; 
+  // TO-DO: Implement or replace this function.
+}
+
+/* Adds a field 'rating' to each place with a random integer to
+ * simulate sorting locations by their ratings. */
+function sortPlacesByRating(places) {
+  places.forEach((place) => {
+    let rand = Math.floor(Math.random() * 10);
+    place.rating = rand;
+  });
+  places.sort((a, b) =>
+    (a.rating > b.rating) ? 1 : -1);
+  return places;
 }
