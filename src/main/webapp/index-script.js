@@ -234,18 +234,28 @@ function generateResult(place) {
   const resultGrid = document.createElement('div');
   resultGrid.className += 'result-grid';
 
-  /*
+  console.log("icon: " + place.icon);
+
   const imagePreview = document.createElement('div');
   imagePreview.className += 'prvw-img';
-  const suggestedIcon = document.createElement('icon');
-  suggestedIcon.innerHTML = place.icon;
+  const suggestedIcon = document.createElement('img');
+  suggestedIcon.src = place.icon;
   imagePreview.appendChild(suggestedIcon);
-  resultGrid.appendChild(imagePreivew); */
+  resultGrid.appendChild(imagePreview);
 
   const infoText = document.createElement('ul');
   const infoEntry = document.createElement('li');
   infoEntry.innerHTML = place.name;
   infoText.appendChild(infoEntry);
+
+  
+  var tidbits = [
+    place.name,
+    place.international_phone_number,
+    place.website,
+    place.vicinity + " away",
+
+  ]
 
   /*
   place.forEach(tidbit => {
