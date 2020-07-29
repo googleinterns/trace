@@ -12,7 +12,7 @@ function loadMainButtons() {
   const clearIcon = document.querySelector(".clear-icon");
   const searchIcon = document.querySelector("#search-icon");
   const searchBar = document.querySelector(".search");
-  const logInButton = document.querySelector("#logIn");
+  const logInButton = document.querySelector("#login");
   const closeTutorial = document.querySelector("#exit");
   const prev = document.querySelector(".prev");
   const next = document.querySelector(".next");
