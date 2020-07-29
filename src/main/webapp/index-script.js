@@ -17,7 +17,7 @@ function loadMainButtons() {
   const prev = document.querySelector(".prev");
   const next = document.querySelector(".next");
   const tutorialText = document.getElementById("centralText");
-  const modalClosers = document.getQuerySelectorAll('[data-modal-close-button']);
+  const modalClosers = document.getQuerySelectorAll('[data-modal-close-button]');
 
   // Make 'clear-icon' visible when user starts typing.
   searchBar.addEventListener("keyup", () => {
