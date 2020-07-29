@@ -36,15 +36,21 @@ public class LoginServlet extends HttpServlet {
       String userEmail = userService.getCurrentUser().getEmail();
       String urlToRedirectToAfterUserLogsOut = "/index.html";
       String logoutUrl = userService.createLogoutURL(urlToRedirectToAfterUserLogsOut);
-      // Print the log out url.
-      response.getWriter().println("<p>Hello " + userEmail + "!</p>");
+
+      // Prints the user email followed by a dot. The dot is then used by a split function 
+      // within login() in index-script.js to see if a user email is displayed or not. 
+      response.getWriter().println("<p>" + userEmail + ".</p>");
+      // Prints the logout url 
       response.getWriter().println("<p>Logout <a href=\"" + logoutUrl + "\">here</a>.</p>");
     } else {
       // Otherwise, allow them to log in. 
       String urlToRedirectToAfterUserLogsIn = "/index.html";
       String loginUrl = userService.createLoginURL(urlToRedirectToAfterUserLogsIn);
-      // Print the login url. 
-      response.getWriter().println("<p>Hello.</p>");
+
+      // Prints a single dot to be used in index-script.js login() split function
+      // to determine if a user is logged in.
+      response.getWriter().println(".");
+      // Prints the login url
       response.getWriter().println("<p>Login <a href=\"" + loginUrl + "\">here</a>.</p>");
     }
   }

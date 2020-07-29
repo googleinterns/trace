@@ -5,6 +5,7 @@ var map;
 function loadPage() {
     createMap();
     loadMainButtons();
+    toggleLoginLogout();
 }
 
 /* Activates functionality for search bar and log-in button. */
@@ -58,7 +59,23 @@ function loadMainButtons() {
   });
   
   logInButton.addEventListener("click", () => {
-    window.location.href = "/login"
+    window.location.href="/login" 
+  }); 
+}
+
+// Chooses whether to display 'Login' or 'Logout' button.
+function toggleLoginLogout(){
+  const logInButton = document.querySelector("#login");
+  fetch('/login').then(response => response.text()).then(data => {
+    // Fetches the first line of the /login file and splits it based on the dot symbol.
+    const split = data.split(".")[0];
+    console.log(split);
+    // If the split contains a user email, 
+    // then a user is logged in and we can display the 'Logout' button
+      if (split.length > 0){
+        logInButton.innerHTML = logInButton.getAttribute("data-text-swap");
+      } 
+      // Otherwise, we know a user isn't logged in and the login button will stay as "Login"
   });
 }
 
