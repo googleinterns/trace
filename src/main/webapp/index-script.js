@@ -12,6 +12,11 @@ function loadMainButtons() {
   const clearIcon = document.querySelector(".clear-icon");
   const searchIcon = document.querySelector("#search-icon");
   const searchBar = document.querySelector(".search");
+  const logInButton = document.querySelector("#login");
+  const closeTutorial = document.querySelector("#exit");
+  const prev = document.querySelector(".prev");
+  const next = document.querySelector(".next");
+  const tutorialText = document.getElementById("centralText");
 
   // Make 'clear-icon' visible when user starts typing.
   searchBar.addEventListener("keyup", () => {
@@ -32,6 +37,28 @@ function loadMainButtons() {
   searchIcon.addEventListener("click", () => {
     var query = document.getElementById('searchForm').elements[0].value;
     searchByText(query);
+  });
+  
+  // Stub for previous button.
+  prev.addEventListener("click", function prevClick() {
+    tutorialText.innerHTML = "This button will take you to the previous page.";
+  });
+
+  // Stub for next button.
+  next.addEventListener("click", function nextClick() {
+    tutorialText.innerHTML = "This button will take you to the next page.";
+  });
+
+  // Close tutorial window on exit click. Remove popUp listeners.
+  closeTutorial.addEventListener("click", function close() {
+    document.getElementById("popUp").style.display = "none";
+    prev.removeEventListener("click", prevClick);
+    next.removeEventListener("click", nextClick);
+    closeTutorial.removeEventListener("click", close);
+  });
+  
+  logInButton.addEventListener("click", () => {
+    window.location.href = "/login"
   });
 }
 
