@@ -17,6 +17,7 @@ function loadMainButtons() {
   const prev = document.querySelector(".prev");
   const next = document.querySelector(".next");
   const tutorialText = document.getElementById("centralText");
+  const modalClosers = document.getQuerySelectorAll('[data-modal-close-button']);
 
   // Make 'clear-icon' visible when user starts typing.
   searchBar.addEventListener("keyup", () => {
@@ -60,6 +61,14 @@ function loadMainButtons() {
   logInButton.addEventListener("click", () => {
     window.location.href = "/login"
   });
+
+  // Button to close the modal and deactiviate overlay
+  modalClosers.forEach(button => {
+    button.addEventListener('click', () => {
+      const modal = button.closest('.modal');
+      closeModal(modal);
+    })
+  })
 }
 
 /* Creates a map centered at the Googleplex! .*/
@@ -138,27 +147,6 @@ function handleSearchResults(results, service) {
   if (results.length > 0) { 
     map.setCenter(results[0].geometry.location);
   }
-}
-
-/* init() function
- * Collects the button objects on the page and populates them with relevenat action events.
- */
-function setupModalButtons() {
-  const modalTriggers = document.querySelectorAll('[data-modal-target]');
-  const modalClosers = document.querySelectorAll('[data-modal-close-button]');
-  
-  modalTriggers.forEach(button => {
-    button.addEventListener('click', () => {
-      const modal = document.querySelector(button.dataset.modalTarget);
-      triggerModal(modal);
-    })
-  })
-  modalClosers.forEach(button => {
-    button.addEventListener('click', () => {
-      const modal = button.closest('.modal');
-      closeModal(modal);
-    })
-  })
 }
 
 /* open modal function
