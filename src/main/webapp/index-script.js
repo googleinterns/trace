@@ -244,25 +244,18 @@ function generateResult(place) {
   resultGrid.appendChild(imagePreview);
 
   const infoText = document.createElement('ul');
-  const infoEntry = document.createElement('li');
-  infoEntry.innerHTML = place.name;
-  infoText.appendChild(infoEntry);
-
-  
   var tidbits = [
     place.name,
     place.international_phone_number,
     place.website,
-    place.vicinity + " away",
+    place.vicinity + " away"
+  ];
 
-  ]
-
-  /*
-  place.forEach(tidbit => {
+  tidbits.forEach(fact => {
     const infoEntry = document.createElement('li');
-    infoEntry.innerHTML = tidbit;
+    infoEntry.innerHTML = fact;
     infoText.appendChild(infoEntry);
-  });*/
+  });
 
   resultGrid.appendChild(infoText);
   resultEntry.appendChild(resultGrid);
