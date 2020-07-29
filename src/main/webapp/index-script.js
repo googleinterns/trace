@@ -169,10 +169,10 @@ function handleSearchResults(results, service) {
 // Place-holder for function that fills out search results page.
 function populateSearch(places) {
   places = sortPlacesByRating(places);
-  console.log("*** Places array ***");
   console.log(places);
-  console.log("**********");
+  triggerModal(document.getElementById("results-popup"));
   populateResults(places);
+  
   console.log("Finished populating modal.");
 }
 
@@ -192,6 +192,7 @@ function sortPlacesByRating(places) {
  * This triggers the modal, and overlay, to follow the active CSS styling, making it appear.
  */
 function triggerModal(modal) {
+  console.log("Triggering modal.");
   if (modal == null) return;
   overlay.classList.add('active');
   modal.classList.add('active');
@@ -210,11 +211,11 @@ function closeModal(modal) {
  * This function takes in an array of JS places
  * It creates an unorder list container to be populated
  */
-function populateResults(placesArray) {
+function populateResults(places) {
   console.log('Populating results modal...');
   const listContainer = document.getElementById('results-list');
   const entireList = document.createElement('ul');
-  places.forEach(place, () => {
+  places.forEach(place => {
     entireList.appendChild(generateResult(place));
   });
 }
