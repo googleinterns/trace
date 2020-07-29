@@ -179,6 +179,10 @@ function closeModal(modal) {
   modal.classList.remove('active');
 }
 
+/* populate modal result list function
+ * This function takes in an array of JS places
+ * It creates an unorder list container to be populated
+ */
 function populateResults(placesArray) {
   console.log('Populating results modal...');
   const listContainer = document.getElementById('results-list');
@@ -188,6 +192,14 @@ function populateResults(placesArray) {
   });
 }
 
+/* create result element function
+ * This function takes in a JavaScript place object and populates a list entry of its information.
+ *    ___________result Grid_____________
+ *   |       |  Relevant information   |_|
+ *   | icon  |  Relevant information   |_|
+ *   |       |  Relevant information   |_|
+ *   |_______|__Relevant information   |_|
+ */
 function generateResult(place) {
   const resultGrid = document.createElement('div');
   resultGrid.className += 'result-grid';
