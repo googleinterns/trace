@@ -82,13 +82,6 @@
   pointer-events: all;
 }
 
-.result {
-  background: #BFBFBF; /* Gray */
-  position: sticky;
-  height: 72px;
-
-}
-
 .result-grid {
   display: grid;
   grid-template-columns: 120px auto auto 20px;
@@ -106,28 +99,7 @@
   grid-column: 2 / 4;
   columns: 2;
   overflow: -moz-hidden-unscrollable;
-  
-}
 
-.result .prvw-img {
-  position: absolute;
-  width: 42px;
-  height: 36px;
-  left: 15px;
-  top: 18px;
-  background-image: url(https://images7.alphacoders.com/909/909467.jpg);
-}
-
-.result .text {
-  position: sticky;
-  width: 153px;
-  left: 638px;
-  top: 294px;
-  font-style: normal;
-  font-weight: normal;
-  font-size: 42px;
-  line-height: 54px;
-  color: #000000;
 }
 
 li {

@@ -36,3 +36,16 @@ function closeModal(modal) {
   overlay.classList.remove('active');
   modal.classList.remove('active');
 }
+
+function addResults(placesArray) {
+  console.log('Populating results modal...');
+  const container = document.getElementById('results-list');
+  const listElement = document.createElement("ul");
+  places.forEach(place, () => {
+    listElement.appendChild(generateResult(place));
+  });
+}
+
+function generateResult(place) {
+  
+}
