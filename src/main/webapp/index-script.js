@@ -5,6 +5,7 @@ var map;
 function loadPage() {
     createMap();
     loadMainButtons();
+    login();
 }
 
 /* Activates functionality for search bar and log-in button. */
@@ -12,7 +13,7 @@ function loadMainButtons() {
   const clearIcon = document.querySelector(".clear-icon");
   const searchIcon = document.querySelector("#search-icon");
   const searchBar = document.querySelector(".search");
-  const logInButton = document.querySelector("#logIn");
+  const logInButton = document.querySelector("#login");
 
   // Make 'clear-icon' visible when user starts typing.
   searchBar.addEventListener("keyup", () => {
@@ -36,9 +37,20 @@ function loadMainButtons() {
   });
 
   logInButton.addEventListener("click", () => {
-    window.location.href = "/login"
-  });
+    window.location.href="/login" 
+  }); 
+}
 
+function login(){
+
+  const logInButton = document.querySelector("#login");
+  fetch('/login').then(response => response.text()).then(data => {
+    const split = data.split(".")[0];
+    console.log(split);
+      if (split.length > 0){
+        logInButton.innerHTML = logInButton.getAttribute("data-text-swap");
+      }
+  });
 }
 
 /* Creates a map centered at the Googleplex! .*/
