@@ -275,6 +275,11 @@ function generateResult(place) {
     "<a href=\"" + place.website + "\">Site</a>",
     place.vicinity + " away"
   ];
+
+  tidbits = tidbits.filter(function (element) {
+    return element != null;
+  });
+
   tidbits.forEach(fact => {
     const infoEntry = document.createElement('li');
     infoEntry.innerHTML = fact;
