@@ -85,7 +85,7 @@ function toggleLoginLogout(){
       const modal = button.closest('.modal');
       closeModal(modal);
     })
-  })
+  });
 }
 
 /* Creates a map centered at the Googleplex! .*/
