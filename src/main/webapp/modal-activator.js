@@ -36,3 +36,33 @@ function closeModal(modal) {
   overlay.classList.remove('active');
   modal.classList.remove('active');
 }
+
+function populateResults(placesArray) {
+  console.log('Populating results modal...');
+  const listContainer = document.getElementById('results-list');
+  const entireList = document.createElement('ul');
+  places.forEach(place, () => {
+    entireList.appendChild(generateResult(place));
+  });
+}
+
+function generateResult(place) {
+  const resultGrid = document.createElement('div');
+  resultGrid.className += 'result-grid';
+
+  const imagePreview = document.createElement('div');
+  imagePreview.className += 'prvw-img';
+  const suggestedIcon = document.createElement('icon');
+  suggestedIcon.innerHTML = place.icon;
+  imagePreview.appendChild(suggestedIcon);
+  resultGrid.appendChild(imagePreivew);
+
+  const infoText = document.createElement('ul');
+  places.forEach(tidbit, () => {
+    const infoEntry = document.createElement('li');
+    infoEntry.innerHTML = tidbit;
+    infoText.appendChild(infoEntry);
+  });
+
+  resultGrid.appendChild(infoText);
+}
