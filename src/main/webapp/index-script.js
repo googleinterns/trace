@@ -272,7 +272,7 @@ function generateResult(place) {
   var tidbits = [
     place.name,
     place.international_phone_number,
-    "<a href=\"" + place.website + "\"> Site </a>",
+    "<a href=\"" + place.website + "\">Site</a>",
     place.vicinity + " away"
   ];
   tidbits.forEach(fact => {
