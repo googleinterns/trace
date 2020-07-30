@@ -274,8 +274,13 @@ function generateResult(place) {
     place.name,
     place.international_phone_number,
     place.website,
-    place.vicinity + " away"
+    place.vicinity
   ];
+
+  tidbits = tidbits.filter(function (element) {
+    return element == null;
+  });
+
   tidbits.forEach(fact => {
     const infoEntry = document.createElement('li');
     infoEntry.innerHTML = fact;
