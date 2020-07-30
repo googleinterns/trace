@@ -278,7 +278,7 @@ function generateResult(place) {
   ];
 
   tidbits = tidbits.filter(function (element) {
-    return element == null;
+    return element != null;
   });
 
   tidbits.forEach(fact => {
