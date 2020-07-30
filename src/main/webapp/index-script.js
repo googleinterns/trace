@@ -75,6 +75,15 @@ function loadMainButtons() {
   searchForm.addEventListener('submit', function(event) {
       event.preventDefault();
   });
+
+
+  searchForm.addEventListener("keyup", function(event) {
+    if (event.keyCode === 13) {
+      event.preventDefault();
+      var query = document.getElementById('searchForm').elements[0].value;
+      searchByText(query);
+    }
+  });
 }
 
 // Chooses whether to display 'Login' or 'Logout' button.
