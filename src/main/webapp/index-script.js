@@ -72,20 +72,6 @@ function loadMainButtons() {
     window.location.href="/login" 
   }); 
 
-
-
-
-  // Execute a function when the user releases a key on the keyboard
-  searchForm.addEventListener("keyup", function(event) {
-  // Number 13 is the "Enter" key on the keyboard
-    if (event.keyCode === 13) {
-      // Cancel the default action, if needed
-      event.preventDefault();
-      // Trigger the button element with a click
-      var query = document.getElementById('searchForm').elements[0].value;
-      searchByText(query);
-    }
-  });
 }
 
 // Chooses whether to display 'Login' or 'Logout' button.
