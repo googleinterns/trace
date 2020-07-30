@@ -79,7 +79,6 @@ function loadMainButtons() {
 
   searchForm.addEventListener("keyup", function(event) {
     if (event.keyCode === 13) {
-      event.preventDefault();
       var query = document.getElementById('searchForm').elements[0].value;
       searchByText(query);
     }
