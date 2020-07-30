@@ -273,7 +273,7 @@ function generateResult(place) {
     place.name,
     place.international_phone_number,
     "<a href=\"" + place.website + "\">Site</a>",
-    place.vicinity + " away"
+    place.vicinity
   ];
 
   tidbits = tidbits.filter(function (element) {
