@@ -18,6 +18,7 @@ function loadMainButtons() {
   const prev = document.querySelector(".prev");
   const next = document.querySelector(".next");
   const tutorialText = document.getElementById("centralText");
+  const modalClosers = document.querySelectorAll('[data-modal-close-button]');
 
   // Make 'clear-icon' visible when user starts typing.
   searchBar.addEventListener("keyup", () => {
@@ -56,6 +57,14 @@ function loadMainButtons() {
     prev.removeEventListener("click", prevClick);
     next.removeEventListener("click", nextClick);
     closeTutorial.removeEventListener("click", close);
+  });
+
+  // Button to close the modal and deactiviate overlay
+  modalClosers.forEach(button => {
+    button.addEventListener('click', () => {
+      const modal = button.closest('.modal');
+      closeModal(modal);
+    })
   });
   
   logInButton.addEventListener("click", () => {
@@ -168,7 +177,6 @@ function handleSearchResults(results, service) {
     promises.push(promise);
     
   });
-
   // Waits on all promises to complete before passing the results into the next function.
   Promise.all(promises).then(places => {
     populateSearch(places); // Placeholder
@@ -179,8 +187,10 @@ function handleSearchResults(results, service) {
 function populateSearch(places) {
   places = sortPlacesByRating(places);
   console.log(places);
-  return null; 
-  // TO-DO: Implement or replace this function.
+  triggerModal(document.getElementById("results-popup"));
+  populateResults(places);
+  
+  console.log("Finished populating modal.");
 }
 
 /* Adds a field 'rating' to each place with a random integer to
@@ -193,4 +203,86 @@ function sortPlacesByRating(places) {
   places.sort((a, b) =>
     (a.rating > b.rating) ? 1 : -1);
   return places;
+}
+
+/* open modal function
+ * This triggers the modal, and overlay, to follow the active CSS styling, making it appear.
+ */
+function triggerModal(modal) {
+  console.log("Triggering modal.");
+  if (modal == null) return;
+  overlay.classList.add('active'); // Activates overlay opacity styling
+  modal.classList.add('active'); // Makes modal appear by activating styling
+}
+
+/* close modal
+ * Undoes the modal opening, by removing the active classifier.
+ */
+function closeModal(modal) {
+  if (modal == null) return;
+  overlay.classList.remove('active'); // Removes overlay and click blocker
+  modal.classList.remove('active'); // Hides modal
+  cleanModal(modal);
+}
+
+/* remove modal content function
+ * Calls on closing of modal, wipes all results from inside of it.
+ */
+function cleanModal(modal) {
+  const listContainer = document.getElementById('results-list');
+  listContainer.innerHTML = ''; // Clean wrapper of all DOM elements
+}
+
+/* populate modal result list function
+ * This function takes in an array of JS places
+ * It creates an unorder list container to be populated
+ */
+function populateResults(places) {
+  console.log('Populating results modal...');
+  const listContainer = document.getElementById('results-list');
+  const entireList = document.createElement('ul');
+  places.forEach(place => {
+    entireList.appendChild(generateResult(place));
+  });
+  listContainer.appendChild(entireList);
+}
+
+/* create result element function
+ * This function takes in a JavaScript place object and populates a list entry of its information.
+ *    ___________________________________
+ *   |       |  Relevant information   |_|
+ *   | icon  |  Relevant information   |_|
+ *   |       |  Relevant information   |_|
+ *   |_______|__Relevant information___|_|
+ */
+function generateResult(place) {
+  const resultEntry = document.createElement('li');
+  const resultGrid = document.createElement('div');
+  resultGrid.className += 'result-grid';
+
+  const imagePreview = document.createElement('div'); // Wrapper for icon
+  imagePreview.className += 'prvw-img';
+  const suggestedIcon = document.createElement('img');
+  suggestedIcon.src = place.icon;
+  imagePreview.appendChild(suggestedIcon);
+  resultGrid.appendChild(imagePreview);
+
+  const infoText = document.createElement('ul');
+  
+  // Relevant information to be displayed
+  var tidbits = [
+    place.name,
+    place.international_phone_number,
+    place.website,
+    place.vicinity + " away"
+  ];
+  tidbits.forEach(fact => {
+    const infoEntry = document.createElement('li');
+    infoEntry.innerHTML = fact;
+    infoText.appendChild(infoEntry);
+  });
+
+  resultGrid.appendChild(infoText);
+  resultEntry.appendChild(resultGrid);
+  return resultEntry;
 }
