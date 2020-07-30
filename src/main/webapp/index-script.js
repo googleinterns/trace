@@ -266,14 +266,13 @@ function generateResult(place) {
   suggestedIcon.src = place.icon;
   imagePreview.appendChild(suggestedIcon);
   resultGrid.appendChild(imagePreview);
-
   const infoText = document.createElement('ul');
   
   // Relevant information to be displayed
   var tidbits = [
     place.name,
     place.international_phone_number,
-    place.website,
+    "<a href=\"" + place.website + "\">Site</a>",
     place.vicinity + " away"
   ];
   tidbits.forEach(fact => {
