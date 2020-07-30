@@ -72,10 +72,10 @@ function loadMainButtons() {
     window.location.href="/login" 
   }); 
 
+ // Prevent page from refreshing when you submit the form
   searchForm.addEventListener('submit', function(event) {
       event.preventDefault();
   });
-
 
   searchForm.addEventListener("keyup", function(event) {
     if (event.keyCode === 13) {
