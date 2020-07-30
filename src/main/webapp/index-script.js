@@ -72,6 +72,9 @@ function loadMainButtons() {
     window.location.href="/login" 
   }); 
 
+  searchForm.addEventListener('submit', function(event) {
+      event.preventDefault();
+  });
 }
 
 // Chooses whether to display 'Login' or 'Logout' button.
