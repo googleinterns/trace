@@ -1,0 +1,116 @@
+/* Modal and Overlay stylings, both with dormant and active states */
+
+.modal {
+  background-color: white;
+  border: 1px solid black;
+  border-radius: 10px;
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%) scale(0); /* Variable sizing. Hidden in dormant state */
+  width: 60%;
+  max-width: 80%;
+  max-height: 80%;
+  z-index: 10; /* Top layer of webpage*/
+}
+
+/* Active modal, keep same location but make visible. */
+.modal.active {
+  transform: translate(-50%, -50%) scale(1);
+}
+
+.modal-header {
+  align-items: center;
+  border-bottom: 1px solid black;
+  display: flex;
+  justify-content: space-between;
+  padding: 15px 25px;
+}
+
+.modal-header .title {
+  font-size: 1.25rem;
+  font-weight: bold;
+}
+
+.modal-header .close-button {
+  border: none;
+  cursor: pointer;
+  font-size: 1.25rem;
+  font-weight: bold;
+  outline: none;
+}
+
+.modal-body {
+  padding: 10px 15px;
+  max-height: 80%;
+}
+
+.modal-body ul {
+  position: static;
+  top: 20px;
+  bottom: 20px;
+  left: 20px;
+  right: 20px;
+  overflow: scroll;
+  margin: 0;
+  padding: 0;
+  border: 2px solid #ccc;
+  max-height: inherit;
+  font-size: 16px;
+  font-family: Arial, sans-serif;
+  -webkit-overflow-scrolling: touch;
+}
+
+.modal-body div#results-list {
+  max-height: inherit;
+}
+
+/* The gray overlay of the map background */
+#overlay {
+  background-color: rgba(0,0,0,.5); /* Black with 50% opacity */
+  opacity: 0;
+  pointer-events: none;
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+}
+
+#overlay.active {
+  opacity: 1;
+  pointer-events: all;
+}
+
+.result-grid {
+  display: grid;
+  grid-template-columns: 120px auto auto 20px;
+  grid-template-rows: 35px 35px 35px 30px;
+  align-self: center;
+}
+
+.result-grid .img {
+  grid-column: 1 / 2;
+  grid-row: 2 / 4;
+}
+
+.result-grid ul {
+  grid-row: 1 / 5;
+  grid-column: 2 / 4;
+  columns: 2;
+  overflow: -moz-hidden-unscrollable;
+
+}
+
+li {
+  padding: 10px 20px;
+  border-bottom: 1px solid #ccc;
+}
+
+li:last-child{
+  border-bottom: none;
+}
+
+li:nth-child(even) {
+  background: #f8f8f8;
+}

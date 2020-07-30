@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8">
+    <title>TRACE</title>
+    <link rel="stylesheet" href="index-style.css">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyB-kjcAxxbrQeJJEvSg5XgkTmGI4aZLS5E&libraries=places"></script>
+    <script src="index-script.js"></script>
+  </head>
+  <body onload="loadPage();">
+    <div id="map"></div>
+    <div class="mainButtonsWrapper">
+      <div class="searchWrapper">
+        <i id="search-icon" class="material-icons">search</i>
+        <form id="searchForm">
+          <input id="search" class="search" placeholder="Search" type="text" >
+        </form>
+        <div class="clear-icon">x</div>
+      </div>
+      <div class="loginButton">
+        <button id="login" data-text-swap="Logout">Login</button>
+      </div>
+    </div>
+    <div id="popUp">
+      <div id="header">
+        <div id="exit">x</div>
+          <p id="headerText">Welcome To TRACE</p>
+      </div>
+      <div id="lower">
+        <div id="lowerCenter">
+          <div id="centralDiv"> 
+            <p id="centralText">Scroll through this tutorial to learn how to explore our site.</p>
+          </div>
+          <div class="float-container" id="navButtons">
+            <a class="prev" onclick="">&#10094;</a>
+            <a class="next" onclick="">&#10095;</a>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div name="results-overlay"> 
+      <div class="modal" id="results-popup">
+        <div class="modal-header"> 
+          <div class="modal-title">Results</div>
+          <button data-modal-close-button class="exit-button">&times;</button>
+        </div>
+        <div class="modal-body">
+          <div id="results-list"></div>
+        </div>
+      </div>
+      <div id="overlay"></div>
+    </div>
+  </body>
+</html>
