@@ -58,6 +58,14 @@ function loadMainButtons() {
     next.removeEventListener("click", nextClick);
     closeTutorial.removeEventListener("click", close);
   });
+
+  // Button to close the modal and deactiviate overlay
+  modalClosers.forEach(button => {
+    button.addEventListener('click', () => {
+      const modal = button.closest('.modal');
+      closeModal(modal);
+    })
+  });
   
   logInButton.addEventListener("click", () => {
     window.location.href="/login" 
@@ -77,14 +85,6 @@ function toggleLoginLogout(){
         logInButton.innerHTML = logInButton.getAttribute("data-text-swap");
       } 
       // Otherwise, we know a user isn't logged in and the login button will stay as "Login"
-  });
-
-  // Button to close the modal and deactiviate overlay
-  modalClosers.forEach(button => {
-    button.addEventListener('click', () => {
-      const modal = button.closest('.modal');
-      closeModal(modal);
-    })
   });
 }
 
