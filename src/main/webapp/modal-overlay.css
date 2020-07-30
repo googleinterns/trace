@@ -61,6 +61,7 @@
   -webkit-overflow-scrolling: touch;
 }
 
+/* Custom max-height to not overrun modal body */
 .modal-body ul#results-list {
   max-height: 74vh;
 }
