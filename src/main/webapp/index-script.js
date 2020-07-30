@@ -72,6 +72,19 @@ function loadMainButtons() {
     window.location.href="/login" 
   }); 
 
+  // Prevent page from refreshing when you submit the form
+  searchForm.addEventListener('submit', function(event) {
+      event.preventDefault();
+  });
+
+  // Search by Text when enter is pressed 
+  searchForm.addEventListener("keyup", function(event) {
+    // 13 is the key code for 'Enter' 
+    if (event.keyCode === 13) {
+      var query = document.getElementById('searchForm').elements[0].value;
+      searchByText(query);
+    }
+  });
 }
 
 // Chooses whether to display 'Login' or 'Logout' button.
