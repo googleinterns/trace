@@ -244,7 +244,7 @@ function closeModal(modal) {
  * Calls on closing of modal, wipes all results from inside of it.
  */
 function cleanModal(modal) {
-  const listContainer = document.getElementById('results-list');
+  const listContainer = document.getElementById('results-list-container');
   listContainer.innerHTML = ''; // Clean wrapper of all DOM elements
 }
 
@@ -254,8 +254,9 @@ function cleanModal(modal) {
  */
 function populateResults(places) {
   console.log('Populating results modal...');
-  const listContainer = document.getElementById('results-list');
-  const entireList = document.createElement('ul');
+  const listContainer = document.getElementById('results-list-container');
+  const entireList = document.createElement('ul'); // Results ul
+  entireList.id += "results-list";
   places.forEach(place => {
     entireList.appendChild(generateResult(place));
   });
@@ -281,7 +282,7 @@ function generateResult(place) {
   suggestedIcon.src = place.icon;
   imagePreview.appendChild(suggestedIcon);
   resultGrid.appendChild(imagePreview);
-  const infoText = document.createElement('ul');
+  const infoText = document.createElement('ul'); // Tidbits ul
   
   // Relevant information to be displayed
   var tidbits = [

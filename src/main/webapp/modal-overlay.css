@@ -61,8 +61,9 @@
   -webkit-overflow-scrolling: touch;
 }
 
-.modal-body div#results-list {
-  max-height: inherit;
+/* Custom max-height to not overrun modal body */
+.modal-body ul#results-list {
+  max-height: 74vh;
 }
 
 /* The gray overlay of the map background */
