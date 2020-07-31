@@ -143,15 +143,14 @@ function searchByCoordinates(coordinate) {
 
 /* Search Places API for relevant locations using text query. */
 function searchByText(textQuery) {
-  // Perform a query (hard-coded to be the Googleplex for right now)
   var request = {
-      query: textQuery,
-      fields: ['place_id', 'geometry']
+    query: textQuery,
+    fields: ['place_id', 'geometry']
   };
 
   var service = new google.maps.places.PlacesService(map);
-  service.textSearch(request, function(results, status) {
-    if (status === google.maps.places.PlacesServiceStatus.OK) {
+  service.textSearch(request, (results, status) => {
+    if (status == google.maps.places.PlacesServiceStatus.OK) {
       handleSearchResults(results, service);
     }
   });
@@ -162,6 +161,7 @@ function handleSearchResults(results, service) {
   // Center on the queried location
   if (results.length > 0) { 
     map.setCenter(results[0].geometry.location);
+    console.log(results.length);
   }
   
   var promises = [];
