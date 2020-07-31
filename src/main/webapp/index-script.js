@@ -166,25 +166,25 @@ function handleSearchResults(results, service) {
   
   var promises = [];
   //results.forEach((result)=> {
-  for (var i = 0; i < 10; i++) {
+  for (var i = 0; i < 7; i++) {
     if (results[i] == null){
         break;
+    } else {
+      var request = {
+        placeId: results[i].place_id,
+        fields: [
+          'name',
+          'vicinity',
+          'reviews',
+          'place_id',
+          'opening_hours',
+          'geometry',
+          'icon',
+          'international_phone_number',
+          'website'
+        ]
+      };
     }
-    var request = {
-      placeId: results[i].place_id,
-      fields: [
-        'name',
-        'vicinity',
-        'reviews',
-        'place_id',
-        'opening_hours',
-        'geometry',
-        'icon',
-        'international_phone_number',
-        'website'
-      ]
-    };
-
     // Creates a promise to return details from places api request.
     const promise = new Promise((resolve, reject) => {
       service.getDetails(request, (place, status) => {
