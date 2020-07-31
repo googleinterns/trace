@@ -98,8 +98,10 @@ function toggleLoginLogout(){
     // then a user is logged in and we can display the 'Logout' button
       if (split.length > 0){
         logInButton.innerHTML = logInButton.getAttribute("data-text-swap");
-      } 
-      // Otherwise, we know a user isn't logged in and the login button will stay as "Login"
+      } else {     
+        // If a user is not logged in, also display the tutorial
+        document.getElementById("popUp").style.display = "block";
+      }
   });
 }
 
