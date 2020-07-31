@@ -143,15 +143,14 @@ function searchByCoordinates(coordinate) {
 
 /* Search Places API for relevant locations using text query. */
 function searchByText(textQuery) {
-  // Perform a query (hard-coded to be the Googleplex for right now)
   var request = {
-      query: textQuery,
-      fields: ['place_id', 'geometry']
+    query: textQuery,
+    fields: ['place_id', 'geometry']
   };
 
   var service = new google.maps.places.PlacesService(map);
-  service.findPlaceFromQuery(request, function(results, status) {
-    if (status === google.maps.places.PlacesServiceStatus.OK) {
+  service.textSearch(request, (results, status) => {
+    if (status == google.maps.places.PlacesServiceStatus.OK) {
       handleSearchResults(results, service);
     }
   });
@@ -162,24 +161,31 @@ function handleSearchResults(results, service) {
   // Center on the queried location
   if (results.length > 0) { 
     map.setCenter(results[0].geometry.location);
+    console.log(results.length);
   }
   
   var promises = [];
-  results.forEach((result)=> {
-    var request = {
-      placeId: result.place_id,
-      fields: [
-        'name',
-        'vicinity',
-        'reviews',
-        'place_id',
-        'opening_hours',
-        'geometry',
-        'icon',
-        'international_phone_number',
-        'website'
-      ]
-    };
+
+  // Modal can handle up to 9 results only
+  for (var i = 0; i < 9; i++) {
+    if (results[i] == null){
+        break;
+    } else {
+      var request = {
+        placeId: results[i].place_id,
+        fields: [
+          'name',
+          'vicinity',
+          'reviews',
+          'place_id',
+          'opening_hours',
+          'geometry',
+          'icon',
+          'international_phone_number',
+          'website'
+        ]
+      };
+    }
 
     // Creates a promise to return details from places api request.
     const promise = new Promise((resolve, reject) => {
@@ -191,7 +197,7 @@ function handleSearchResults(results, service) {
     });
     promises.push(promise);
     
-  });
+  };
   // Waits on all promises to complete before passing the results into the next function.
   Promise.all(promises).then(places => {
     populateSearch(places); // Placeholder
