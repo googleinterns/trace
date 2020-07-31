@@ -150,7 +150,7 @@ function searchByText(textQuery) {
   };
 
   var service = new google.maps.places.PlacesService(map);
-  service.findPlaceFromQuery(request, function(results, status) {
+  service.textSearch(request, function(results, status) {
     if (status === google.maps.places.PlacesServiceStatus.OK) {
       handleSearchResults(results, service);
     }
