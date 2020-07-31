@@ -166,7 +166,7 @@ function handleSearchResults(results, service) {
   
   var promises = [];
   //results.forEach((result)=> {
-  for (var i = 0; i < 7; i++) {
+  for (var i = 0; i < 8; i++) {
     if (results[i] == null){
         break;
     } else {
