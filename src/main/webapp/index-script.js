@@ -165,8 +165,8 @@ function handleSearchResults(results, service) {
   }
   
   var promises = [];
-  //results.forEach((result)=> {
-  for (var i = 0; i < 8; i++) {
+  // Modal can handle up to 9 results only
+  for (var i = 0; i < 9; i++) {
     if (results[i] == null){
         break;
     } else {
