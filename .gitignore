@@ -1,3 +1,2 @@
 target/*
-api.js
-*/src/webapp/api.js
+*/src/main/webapp/api.js
