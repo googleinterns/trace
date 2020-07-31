@@ -165,6 +165,7 @@ function handleSearchResults(results, service) {
   }
   
   var promises = [];
+
   // Modal can handle up to 9 results only
   for (var i = 0; i < 9; i++) {
     if (results[i] == null){
@@ -185,6 +186,7 @@ function handleSearchResults(results, service) {
         ]
       };
     }
+
     // Creates a promise to return details from places api request.
     const promise = new Promise((resolve, reject) => {
       service.getDetails(request, (place, status) => {
