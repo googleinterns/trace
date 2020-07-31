@@ -94,11 +94,14 @@ function toggleLoginLogout(){
     // Fetches the first line of the /login file and splits it based on the dot symbol.
     const split = data.split(".")[0];
     console.log(split);
+
     // If the split contains a user email, 
     // then a user is logged in and we can display the 'Logout' button
       if (split.length > 0){
         logInButton.innerHTML = logInButton.getAttribute("data-text-swap");
-      } 
+      } else {     
+        document.getElementById("popUp").style.display = "block";
+      }
       // Otherwise, we know a user isn't logged in and the login button will stay as "Login"
   });
 }
