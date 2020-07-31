@@ -165,9 +165,13 @@ function handleSearchResults(results, service) {
   }
   
   var promises = [];
-  results.forEach((result)=> {
+  //results.forEach((result)=> {
+  for (var i = 0; i < 10; i++) {
+    if (results[i] == null){
+        break;
+    }
     var request = {
-      placeId: result.place_id,
+      placeId: results[i].place_id,
       fields: [
         'name',
         'vicinity',
@@ -191,7 +195,7 @@ function handleSearchResults(results, service) {
     });
     promises.push(promise);
     
-  });
+  };
   // Waits on all promises to complete before passing the results into the next function.
   Promise.all(promises).then(places => {
     populateSearch(places); // Placeholder
