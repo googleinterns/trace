@@ -70,6 +70,7 @@
   left: 50%;
   transform: translate(-600px, -400px);
   z-index: 10;
+  display: none;
 }
 
 #header {
