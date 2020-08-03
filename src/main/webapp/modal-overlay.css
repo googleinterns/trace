@@ -115,7 +115,15 @@
   grid-column:  1;
 }
 
+.review-grid .img#upvote {
+  grid-column: 2 / 3;
+  grid-row: 1 / 2;
+}
 
+.review-grid .img#downvote {
+  grid-column: 2 / 3;
+  grid-row: 2 / 3;
+}
 
 li {
   padding: 10px 20px;
