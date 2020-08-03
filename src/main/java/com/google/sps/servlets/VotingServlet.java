@@ -36,7 +36,6 @@ public class ReviewServlet extends HttpServlet {
     // Check to make sure the datastore returned something
     if (results[0] != null){
       Entity review = results[0];
-      int total = (int) review.getProperty("total");
       int positive = (int) review.getProperty("positive");
       int negative = (int) review.getProperty("negative");
       if (value == 1){
