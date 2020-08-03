@@ -110,6 +110,13 @@
   align-self: center;
 }
 
+.review-grid p {
+  grid-row: 1 / 2;
+  grid-column:  1;
+}
+
+
+
 li {
   padding: 10px 20px;
   border-bottom: 1px solid #ccc;
