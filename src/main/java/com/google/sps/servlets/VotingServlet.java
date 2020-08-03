@@ -26,14 +26,15 @@ public class ReviewServlet extends HttpServlet {
     int id = request.getParameter("review-id");
     int value = request.getParameter("vote");
 
+    // Find the review that corresponds to the given id
     Query<Entity> query = Query.newEntityQueryBuilder()
       .setKind("Review")
       .setFilter(PropertyFilter.eq("id", id));
 
     PreparedQuery results = datastore.prepare(query);
 
+    // Check to make sure the datastore returned something
     if (results[0] != null){
-
       Entity review = results[0];
       int total = (int) entity.getProperty("total");
       int positive = (int) entity.getProperty("positive");
@@ -48,7 +49,7 @@ public class ReviewServlet extends HttpServlet {
 
       review.setProperty("total", positive - negative);
 
-      // Add the review back to a Datastore
+      // Adds the review back to the Datastore
       datastore.put(review);
 
     }
