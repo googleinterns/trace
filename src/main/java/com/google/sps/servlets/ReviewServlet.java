@@ -34,8 +34,6 @@ public class ReviewServlet extends HttpServlet {
       String message = (String) entity.getProperty("message");
       Date timestamp = (Date) entity.getProperty("date");
       int total = (int) entity.getProperty("total");
-      int positive = (int) entity.getProperty("positive");
-      int negative = (int) entity.getProperty("negative");
       reviews.add(message + " - " + timestamp.toString() + " ; " + total);
     }
 
