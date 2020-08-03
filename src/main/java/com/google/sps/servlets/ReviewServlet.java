@@ -33,7 +33,10 @@ public class ReviewServlet extends HttpServlet {
       long id = entity.getKey().getId();
       String message = (String) entity.getProperty("message");
       Date timestamp = (Date) entity.getProperty("date");
-      reviews.add(message + " - " + timestamp.toString());
+      int total = (int) entity.getProperty("total");
+      int positive = (int) entity.getProperty("positive");
+      int negative = (int) entity.getProperty("negative");
+      reviews.add(message + " - " + timestamp.toString() + " ; " + total);
     }
 
     // Adds the review list to a GSON/JSON object so that can be used in Javascript code    
@@ -54,6 +57,10 @@ public class ReviewServlet extends HttpServlet {
 
       Date date = new Date();
       reviewEntity.setProperty("date", date);
+      // Total + Postive + Negative all set at 0 to start.
+      reviewEntity.setProperty("total", 0);
+      reviewEntity.setProperty("negative", 0);
+      reviewEntity.setProperty("positive", 0);
 
       // Add the new review to a Datastore
       DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
