@@ -16,7 +16,7 @@ import javax.servlet.http.HttpServletResponse;
 
 /** Servlet that allows users to vote on the reviews.*/
 @WebServlet("/vote")
-public class ReviewServlet extends HttpServlet {
+public class VotingServlet extends HttpServlet {
 
   @Override
   public void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
