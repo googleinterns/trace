@@ -328,3 +328,20 @@ function populateReviews(reviewList) {
   });
   listContainer.appendChild(entireList);
 }
+
+/** Creates a review element using grid styling
+ * Puts the review text in a <p> element
+ */
+function generateReview(review) {
+  const reviewEntry = document.createElement('li');
+
+  const reviewGrid = document.createElement('div');
+  reviewGrid.className += review-grid;
+
+  const reviewText = document.createElement('p');
+  reviewText.innerHTML = review.text;
+
+  reviewGrid.appendChild(reviewText);
+  reviewEntry.appendChild(reviewGrid);
+  return reviewEntry;
+}
