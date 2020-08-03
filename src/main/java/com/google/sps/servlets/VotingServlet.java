@@ -23,19 +23,17 @@ public class VotingServlet extends HttpServlet {
       
     DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
 
-    int id = request.getParameter("review-id");
-    int value = request.getParameter("vote");
+    int id = 0; //(int) request.getParameter("review-id");
+    int value = 0; //(int) request.getParameter("vote");
 
     // Find the review that corresponds to the given id
-    Query<Entity> query = Query.newEntityQueryBuilder()
-      .setKind("Review")
-      .setFilter(PropertyFilter.eq("id", id));
+    Query query = new Query("Review"); 
 
     PreparedQuery results = datastore.prepare(query);
 
     // Check to make sure the datastore returned something
-    if (results[0] != null){
-      Entity review = results[0];
+    if (results.asSingleEntity() != null){
+      Entity review = results.asSingleEntity();
       int positive = (int) review.getProperty("positive");
       int negative = (int) review.getProperty("negative");
       if (value == 1){
