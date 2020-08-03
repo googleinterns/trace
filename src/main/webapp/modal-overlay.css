@@ -103,6 +103,13 @@
 
 }
 
+.review-grid {
+  display: grid;
+  grid-template-columns: auto 40px;
+  grid-template-rows: auto auto;
+  align-self: center;
+}
+
 li {
   padding: 10px 20px;
   border-bottom: 1px solid #ccc;
