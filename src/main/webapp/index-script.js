@@ -314,3 +314,17 @@ function generateResult(place) {
   resultEntry.appendChild(resultGrid);
   return resultEntry;
 }
+
+/** Creates a structure to put reviews in modal
+ * Takes in array of JS reviews
+ */
+function populateReviews(reviewList) {
+  Console.log('Populating reviews in modal...');
+  const listContainer = document.getElementById('results-list-container');
+  const entireList = document.createElement('ul');
+  entireList.id += 'reviews-list';
+  reviews.forEach(review => {
+    entireList.appendChild(generateReview(review));
+  });
+  listContainer.appendChild(entireList);
+}
