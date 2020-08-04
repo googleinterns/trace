@@ -74,7 +74,6 @@ public class PlacesServlet extends HttpServlet {
     // Retrieve comment, comment quantity, and current user.
     String place_ID = request.getParameter("place_ID");
 
-
     // Create entity for datastore.
     Entity placeEntity = new Entity("place");
     placeEntity.setProperty("id", place_ID);
