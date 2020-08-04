@@ -339,6 +339,10 @@ function fetchReviews(elementID) {
  * Review modal activation function
  */
 function displayReviewModal() {
+  const button = document.getElementById('modal-backarrow');
+  button.classList.add("exit-button");
+  button.innerHTML += "&larr;";
+
   const reviewBody = document.getElementById('reviews-body');
   const resultsBody = document.getElementById('results-body');
   reviewBody.classList.remove('hidden');
