@@ -51,6 +51,7 @@ public class VotingServlet extends HttpServlet {
 
     }
     // Redirect back
+    // TODO: Update value in place without redirecting
     response.sendRedirect("/index.html");
   }
 }
