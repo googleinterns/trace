@@ -1,3 +1,4 @@
+/* Tutorial Pop-Up */
 #popUp {
   border-radius: 20px;
   text-align: center;
@@ -9,41 +10,41 @@
 }
 
 #header {
-border-radius: inherit;
-border-width: inherit;
-border-color: inherit;
-border-style: inherit;
-border-radius: 20px 20px 0px 0px;
-background-color: #FAC302;
-color: white;
-height: 20%;
-width: 100%;
-vertical-align: middle;
-display: inline-block;
+  border-radius: inherit;
+  border-width: inherit;
+  border-color: inherit;
+  border-style: inherit;
+  border-radius: 20px 20px 0px 0px;
+  background-color: #FAC302;
+  color: white;
+  height: 20%;
+  width: 100%;
+  vertical-align: middle;
+  display: inline-block;
 }
 
 #exit {
-  height: 30px;
-  width: 30px;
   color: #EA4235;
   font-family: arial;
   font-size: 54px;
-  margin-top: 0px;
+  height: 30px;
   margin-left: 1140px;
+  margin-top: 0px;
+  width: 30px;
 }
 
 #exit:hover {
-    color: rgba(230, 230, 230); /* Grey. */
+  color: rgba(230, 230, 230); /* Grey. */
 }
 
 #headerText {
-font-family: arial;
-font-size: 80px;
-height: 200px;
-width: 1200px;
-text-align: center;
-line-height: 0%;
-position: relative;
+  font-family: arial;
+  font-size: 80px;
+  height: 200px;
+  line-height: 0%;
+  position: relative;
+  text-align: center;
+  width: 1200px;
 }
 
 #lower {
@@ -53,61 +54,61 @@ position: relative;
   border-style: inherit;
   border-radius: 0px 0px 20px 20px;
   background-color: #4286F5;
+  display: inline-block;
   height: 80%;
   width: 100%;
-  display: inline-block;
 }
 
 #lowerCenter {
   background-color: white;
   border-radius: 20px;
+  display: inline-block;
   height: 75%;
-  width: 90%;
+  margin: 7% auto;
   padding: 10px;
   position: relative;
-  margin: 7% auto;
-  display: inline-block;
+  width: 90%;
 }
 
 #centralText {
+  color: #35A853;
   font-size: 64px;
   font-family: Arial;
-  color: #35A853;
-  text-align: center;
   height: 90%;
-  width: 70%;
   margin: 0 auto;
   padding-top: 40px;
+  text-align: center;
+  width: 70%;
 }
 
-#navButtons {
-  height: 20%;
-  width: 97%;
-  position: relative;
-  top: -110px;
-  display: inline-block;
-}
 
 /* Next & previous buttons */
-.prev, .next {
-  cursor: pointer;
+#navButtons {
+  display: inline-block;
+  height: 20%;
   position: relative;
-  width: auto;
-  padding: 16px;
-  color: black;
+  top: -110px;
+  width: 97%;
+}
+
+.prev, .next {
+  color: #EA4235; /* Google Red. */
+  cursor: pointer;
   font-weight: bold;
   font-size: 60px;
+  padding: 16px;
+  position: relative;
   transition: 0.6s ease;
   user-select: none;
-  color: #EA4235; /* Google Red. */
+  width: auto;
 }
 
 /* Position the "next button" to the right */
 .next {
-  right: 0;
   border-radius: 0px 10px 10px 0px;
-  position: relative;
   left: 30%;
+  position: relative;
+  right: 0;
 }
 
 .prev {
