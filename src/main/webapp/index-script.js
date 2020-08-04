@@ -325,9 +325,24 @@ function fetchReviews(elementID) {
   });
 }
 
+/**
+ * Review modal activation function
+ */
 function activateReviewModal() {
-  // TODO: handoff between modals
-  // Activate the review modal
+  const reviewBody = document.getElementById('reviews-body');
+  const resultsBody = document.getElementById('results-body');
+  reviewBody.classList.remove('hidden');
+  resultsBody.classList.add('hidden');
+}
+
+/**
+ * Review modal deactivation function
+ */
+function hideReviewModal() {
+  const reviewBody = document.getElementById('reviews-body');
+  const resultsBody = document.getElementById('results-body');
+  reviewBody.classList.add('hidden');
+  resultsBody.classList.remove('hidden');
 }
 
 /** Creates a structure to put reviews in modal

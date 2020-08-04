@@ -45,6 +45,10 @@
   max-height: 80%;
 }
 
+.modal-body.hidden {
+  transform: translate(-50%, -50%) scale(1);
+}
+
 .modal-body ul {
   position: static;
   top: 20px;
