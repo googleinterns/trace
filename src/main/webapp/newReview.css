@@ -54,6 +54,7 @@ input[type=submit] {
   }
 }
 
+<<<<<<< HEAD
 /* Responsive 5-star rating system. */
 *{
     margin: 0;
@@ -99,3 +100,9 @@ input[type=submit] {
 }
 
 /* Modified from: https://github.com/mukulkant/Star-rating-using-pure-css */
+=======
+/** Stars marked check are orange. */
+.checked {
+  color: orange;
+}
+>>>>>>> Style review page.
