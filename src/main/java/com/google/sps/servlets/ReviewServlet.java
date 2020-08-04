@@ -73,9 +73,13 @@ public class ReviewServlet extends HttpServlet {
     String lastName = request.getParameter("lastname");
     String rating = request.getParameter("rate");
 <<<<<<< HEAD
+<<<<<<< HEAD
     String place_id = request.getParameter("place_id");
 =======
 >>>>>>> Add rating system and expand ReviewServlet.java doPost() to receive all the information from this form.
+=======
+    String place_id = request.getParameter("place_id");
+>>>>>>> Attempts at including place_id in form.
 
     if (newReview != null && newReview.length() > 0){
       // Entity containing public reviews
@@ -104,7 +108,11 @@ public class ReviewServlet extends HttpServlet {
       reviewEntity.setProperty("fullName", firstName + " " + lastName);
       reviewEntity.setProperty("rating", rating);
       reviewEntity.setProperty("email", userEmail);
+<<<<<<< HEAD
 >>>>>>> Create property 'email' for new reviews.
+=======
+      reviewEntity.setProperty("place_id", place_id);
+>>>>>>> Attempts at including place_id in form.
       
       // Total + Postive + Negative all set at 0 to start.
       reviewEntity.setProperty("total", 0);
