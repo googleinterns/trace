@@ -323,7 +323,7 @@ function populateReviews(reviewList) {
   const listContainer = document.getElementById('results-list-container');
   const entireList = document.createElement('ul');
   entireList.id += 'reviews-list';
-  reviews.forEach(review => {
+  reviewList.forEach(review => {
     entireList.appendChild(generateReview(review));
   });
   listContainer.appendChild(entireList);
@@ -339,7 +339,7 @@ function generateReview(review) {
   reviewGrid.className += review-grid;
 
   const reviewText = document.createElement('p');
-  reviewText.innerHTML = review.text;
+  reviewText.innerHTML += "review.text placeholder = Great food and even better service.  Beer pizza Italian Beef. Who could ask for more.";
 
   reviewGrid.appendChild(reviewText);
   reviewEntry.appendChild(reviewGrid);
