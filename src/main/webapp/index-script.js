@@ -315,6 +315,17 @@ function generateResult(place) {
   return resultEntry;
 }
 
+/** Fetch Reviews
+ * Queries ReviewServlet with elementID to find internal datastore
+ *
+ */
+function fetchReviews(elementID) {
+  console.log("Fetching reviews for ID: #" + elementID);
+  fetch('/review').then(response => response.json()).then((reviewsArr) => {
+    populateReviews(reviewsArr);
+  });
+}
+
 /** Creates a structure to put reviews in modal
  * Takes in array of JS reviews
  */
@@ -323,9 +334,11 @@ function populateReviews(reviewList) {
   const listContainer = document.getElementById('results-list-container');
   const entireList = document.createElement('ul');
   entireList.id += 'reviews-list';
+
   reviewList.forEach(review => {
     entireList.appendChild(generateReview(review));
   });
+  
   listContainer.appendChild(entireList);
 }
 
@@ -345,3 +358,5 @@ function generateReview(review) {
   reviewEntry.appendChild(reviewGrid);
   return reviewEntry;
 }
+
+
