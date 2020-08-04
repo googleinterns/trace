@@ -165,7 +165,6 @@ function handleSearchResults(results, service) {
   // Center on the queried location
   if (results.length > 0) { 
     map.setCenter(results[0].geometry.location);
-    console.log(results.length);
   }
   
   var promises = [];
