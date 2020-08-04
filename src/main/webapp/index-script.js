@@ -375,7 +375,7 @@ function generateReview(review) {
   reviewGrid.className += review-grid;
 
   const reviewText = document.createElement('p');
-  reviewText.innerHTML += "review.text placeholder = Great food and even better service.  Beer pizza Italian Beef. Who could ask for more.";
+  reviewText.innerHTML += review.text;
 
   reviewGrid.appendChild(reviewText);
   reviewEntry.appendChild(reviewGrid);
