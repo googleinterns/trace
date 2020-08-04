@@ -46,11 +46,16 @@ public class ReviewServlet extends HttpServlet {
   }
 
 <<<<<<< HEAD
+<<<<<<< HEAD
   /** Retrieves data from new-review submission form and creates relevant entity.
       Assumes user is logged in before posting review. */
 =======
   /** Retrieves data from new-review submission form and creates relevant entity. */
 >>>>>>> Add rating system and expand ReviewServlet.java doPost() to receive all the information from this form.
+=======
+  /** Retrieves data from new-review submission form and creates relevant entity.
+      Assumes user is logged in before posting review. */
+>>>>>>> Create property 'email' for new reviews.
   @Override
   public void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
     UserService userService = UserServiceFactory.getUserService();
@@ -62,6 +67,7 @@ public class ReviewServlet extends HttpServlet {
     String newReview = request.getParameter("comment");
     String firstName = request.getParameter("firstname");
     String lastName = request.getParameter("lastname");
+    String userEmail = userService.getCurrentUser().getEmail();
     String rating = request.getParameter("rate");
 <<<<<<< HEAD
     String place_id = request.getParameter("place_id");
@@ -71,6 +77,7 @@ public class ReviewServlet extends HttpServlet {
     if (newReview != null && newReview.length() > 0){
       // Entity containing public reviews
       Entity reviewEntity = new Entity("Review");
+<<<<<<< HEAD
 <<<<<<< HEAD
 =======
       reviewEntity.setProperty("message", newReview);
@@ -86,6 +93,15 @@ public class ReviewServlet extends HttpServlet {
       reviewEntity.setProperty("rating", rating);
       reviewEntity.setProperty("email", userEmail);
       reviewEntity.setProperty("place_id", place_id);
+=======
+      Date date = new Date();
+      reviewEntity.setProperty("date", date);
+
+      reviewEntity.setProperty("message", newReview);
+      reviewEntity.setProperty("fullName", firstName + " " + lastName);
+      reviewEntity.setProperty("rating", rating);
+      reviewEntity.setProperty("email", userEmail);
+>>>>>>> Create property 'email' for new reviews.
       
       // Total + Postive + Negative all set at 0 to start.
       reviewEntity.setProperty("total", 0);
