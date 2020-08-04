@@ -326,10 +326,13 @@ function fetchReviews(elementID) {
 }
 
 /**
+ * Review modal activation function
  */
 function activateReviewModal() {
-  // TODO: handoff between modals
-  // Activate the review modal
+  const reviewBody = document.getElementById('reviews-body');
+  const resultsBody = document.getElementById('results-body');
+  reviewBody.classList.remove('hidden');
+  resultsBody.classList.add('hidden');
 }
 
 /** Creates a structure to put reviews in modal
