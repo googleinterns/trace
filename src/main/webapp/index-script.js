@@ -317,7 +317,6 @@ function generateResult(place) {
 
 /** Fetch Reviews
  * Queries ReviewServlet with elementID to find internal datastore
- *
  */
 function fetchReviews(elementID) {
   console.log("Fetching reviews for ID: #" + elementID);
@@ -326,12 +325,17 @@ function fetchReviews(elementID) {
   });
 }
 
+function activateReviewModal() {
+  // TODO: handoff between modals
+  // Activate the review modal
+}
+
 /** Creates a structure to put reviews in modal
  * Takes in array of JS reviews
  */
 function populateReviews(reviewList) {
   Console.log('Populating reviews in modal...');
-  const listContainer = document.getElementById('results-list-container');
+  const listContainer = document.getElementById('reviews-list-container');
   const entireList = document.createElement('ul');
   entireList.id += 'reviews-list';
 
@@ -363,9 +367,13 @@ function generateReview(review) {
   return reviewEntry;
 }
 
+/** Function that populates the review list when there aren't any
+ */
 function noReviews() {
   const reviewEntry = document.createElement('li');
   const entryText = document.createElement('p');
   entryText.innerHTML = "No reviews yet!";
+  reviewEntry.appendChild(entryText);
+  return reviewEntry;
 }
 
