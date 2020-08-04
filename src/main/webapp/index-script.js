@@ -22,14 +22,6 @@ function loadMainButtons() {
   const next = document.querySelector(".next");
   const tutorialText = document.getElementById("centralText");
   const modalClosers = document.querySelectorAll('[data-modal-close-button]');
-  var script = document.createElement('script'); 
-
-  // Link to googleMaps
-  script.type = 'text/javascript';
-  script.src = 'https://maps.googleapis.com/maps/api/js?key=' + config.API_KEY + '&libraries=places';
-  console.log(script);
-  head.appendChild(script);
-  console.log(head);
 
   // Make 'clear-icon' visible when user starts typing.
   searchBar.addEventListener("keyup", () => {
