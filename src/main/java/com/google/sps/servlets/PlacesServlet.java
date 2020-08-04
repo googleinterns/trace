@@ -50,25 +50,25 @@ public class PlacesServlet extends HttpServlet {
     DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
     PreparedQuery results = datastore.prepare(query);
 
-    JSONArray reviewArray = new JSONArray();
-JSONObject item = new JSONObject();
-item.put("information", "test");
-item.put("id", 3);
-item.put("name", "course1");
-array.add(item);
-    List<String> reviews = new ArrayList<>();
-    // Adds each review entity to a list
+    JSONArray reviews = new JSONArray();
+    // Adds each review entity to a JSONArray.
     for (Entity entity : results.asIterable()) {
       JSONObject review = new JSONObject();
       review.put("message", (String) entity.getProperty("message"));
+      review.put("fullName", (String) entity.getProperty("fullName"));
       review.put("timestamp", (Date) entity.getProperty("date"));
+
+      // Currently includes total, positive, and negative votes. Not all need be displayed.
       review.put("total", (int) entity.getProperty("total"));
-      reviews.add(message + "-" + timestamp.toString() + " ; " + total);
+      review.put("positive", (int) entity.getProperty("positive"));
+      review.put("negative", (int) entity.getProperty("negative"));
+      review.put("rating", (int) entity.getProperty("rating"));
+      reviews.add(review);
     }
 
     // Set response and return JSON.
-    response.setContentType("text/json;");
-    String json = convertToJsonUsingGson(strResponse);
+    response.setContentType("application/json;");
+    String json = new Gson().toJson(reviews);
     response.getWriter().println(json);
   }
 
@@ -93,12 +93,5 @@ array.add(item);
     datastore.put(placeEntity);
     response.setContentType("text/html");
     response.sendRedirect("/index.html"); //Perhaps a different redirect may make more sense here.
-  }
-
-  /** Converts ArrayList of Strings to JSON using GSON. */
-  private String convertToJsonUsingGson(ArrayList<String> comments) {
-    Gson gson = new Gson();
-    String json = gson.toJson(comments);
-    return json;
   }
 }
