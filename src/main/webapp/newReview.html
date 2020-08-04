@@ -3,47 +3,43 @@
   <head>
     <meta charset="UTF-8">
     <title>newReview</title>
+    <link rel="stylesheet" href="newReview.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
   </head>
   <body>
     <div class="container">
-      <form action="action_page.php">
-        <div class="row">
-          <div class="col-25">
+      <form action="/review" method="POST">
+        <div class="review-row">
+          <div class="col">
             <label for="fname">First Name</label>
-          </div>
-          <div class="col-75">
             <input type="text" id="fname" name="firstname" placeholder="Your name..">
           </div>
         </div>
-        <div class="row">
-          <div class="col-25">
+        <div class="review-row">
+          <div class="col">
             <label for="lname">Last Name</label>
-          </div>
-          <div class="col-75">
             <input type="text" id="lname" name="lastname" placeholder="Your last name..">
+            <script src="newReview.js"></script>
           </div>
         </div>
-        <div class="row">
-          <div class="col-25">
-            <label for="country">Country</label>
-          </div>
-          <div class="col-75">
-            <select id="country" name="country">
-              <option value="australia">Australia</option>
-              <option value="canada">Canada</option>
-              <option value="usa">USA</option>
-            </select>
-          </div>
-        </div>
-        <div class="row">
-          <div class="col-25">
-            <label for="subject">Subject</label>
-          </div>
-          <div class="col-75">
-            <textarea id="subject" name="subject" placeholder="Write something.." style="height:200px"></textarea>
+        <div class="review-row">
+          <div class="col">
+            <label for="country">How safe were this store's COVID practices?</label>
+            <br>
+            <span class="fa fa-star checked"></span>
+            <span class="fa fa-star checked"></span>
+            <span class="fa fa-star checked"></span>
+            <span class="fa fa-star"></span>
+            <span class="fa fa-star"></span>
           </div>
         </div>
-        <div class="row">
+        <div class="review-row">
+          <div class="col">
+            <label for="subject">Why did you feel this way?</label>
+            <textarea id="subject" name="subject" placeholder="Please be as specific as possible..." style="height:200px"></textarea>
+          </div>
+        </div>
+        <div class="review-row">
           <input type="submit" value="Submit">
         </div>
       </form>
