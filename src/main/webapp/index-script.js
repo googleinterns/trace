@@ -329,3 +329,10 @@ function generateResult(place) {
 function newReviewsPage() {
   window.location.href = "newReview.html";
 }
+
+/* Loads currentLocation into newReview form. */
+function loadPlaceID() {
+  let value = document.getElementById("place_id").value;
+  console.log(currentLocation);
+  value = currentLocation;
+}
