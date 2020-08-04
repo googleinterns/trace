@@ -335,6 +335,9 @@ function activateReviewModal() {
   resultsBody.classList.add('hidden');
 }
 
+/**
+ * Review modal deactivation function
+ */
 function hideReviewModal() {
   const reviewBody = document.getElementById('reviews-body');
   const resultsBody = document.getElementById('results-body');
