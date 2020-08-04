@@ -335,10 +335,14 @@ function populateReviews(reviewList) {
   const entireList = document.createElement('ul');
   entireList.id += 'reviews-list';
 
-  reviewList.forEach(review => {
-    entireList.appendChild(generateReview(review));
-  });
-  
+  if (reviewList.asSingleElement() == null) {
+    entireList.appendChild(noReviews());
+  } else { 
+    reviewList.forEach(review => {
+      entireList.appendChild(generateReview(review));
+    });
+  }
+
   listContainer.appendChild(entireList);
 }
 
