@@ -43,24 +43,28 @@ public class ReviewServlet extends HttpServlet {
     response.getWriter().println(json);
   }
 
-  /** Retrieves data from new-review submission form and creates relevant entity. */
+  /** Retrieves data from new-review submission form and creates relevant entity.
+      Assumes user is logged in before posting review. */
   @Override
   public void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
 
     String newReview = request.getParameter("comment");
     String firstName = request.getParameter("firstname");
     String lastName = request.getParameter("lastname");
+    String userEmail = userService.getCurrentUser().getEmail();
     String rating = request.getParameter("rate");
 
     if (newReview != null && newReview.length() > 0){
       // Entity containing public reviews
       Entity reviewEntity = new Entity("Review");
+      Date date = new Date();
+      reviewEntity.setProperty("date", date);
+
       reviewEntity.setProperty("message", newReview);
       reviewEntity.setProperty("fullName", firstName + " " + lastName);
       reviewEntity.setProperty("rating", rating);
-
-      Date date = new Date();
-      reviewEntity.setProperty("date", date);
+      reviewEntity.setProperty("email", userEmail);
+      
       // Total + Postive + Negative all set at 0 to start.
       reviewEntity.setProperty("total", 0);
       reviewEntity.setProperty("negative", 0);
