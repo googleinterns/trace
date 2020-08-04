@@ -332,7 +332,5 @@ function newReviewsPage() {
 
 /* Loads currentLocation into newReview form. */
 function loadPlaceID() {
-  let value = document.getElementById("place_id").value;
-  console.log(currentLocation);
-  value = currentLocation;
+  document.getElementById("place_id").value = currentLocation;
 }
