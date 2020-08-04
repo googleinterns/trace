@@ -315,6 +315,9 @@ function generateResult(place) {
   return resultEntry;
 }
 
+/** Pseudomaster Review Function
+ * One central function that is called to trigger entire review interface
+ */
 function showReviews(placeID) {
   let reviewsArray = fetchReviews(placeID);
   displayReviewModal();
