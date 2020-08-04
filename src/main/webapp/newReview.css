@@ -55,6 +55,9 @@ input[type=submit] {
 }
 
 <<<<<<< HEAD
+<<<<<<< HEAD
+=======
+>>>>>>> Add rating system and expand ReviewServlet.java doPost() to receive all the information from this form.
 /* Responsive 5-star rating system. */
 *{
     margin: 0;
@@ -95,6 +98,7 @@ input[type=submit] {
 .rate > label:hover ~ input:checked ~ label {
     color: #c59b08;
 }
+<<<<<<< HEAD
 * {
  margin: auto;
 }
@@ -106,3 +110,7 @@ input[type=submit] {
   color: orange;
 }
 >>>>>>> Style review page.
+=======
+
+/* Modified from: https://github.com/mukulkant/Star-rating-using-pure-css */
+>>>>>>> Add rating system and expand ReviewServlet.java doPost() to receive all the information from this form.
