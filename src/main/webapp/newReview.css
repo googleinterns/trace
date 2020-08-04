@@ -94,5 +94,8 @@ input[type=submit] {
 .rate > label:hover ~ input:checked ~ label {
     color: #c59b08;
 }
+* {
+ margin: auto;
+}
 
 /* Modified from: https://github.com/mukulkant/Star-rating-using-pure-css */
