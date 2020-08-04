@@ -6,6 +6,8 @@ import com.google.appengine.api.datastore.Entity;
 import com.google.appengine.api.datastore.PreparedQuery;
 import com.google.appengine.api.datastore.Query;
 import com.google.appengine.api.datastore.Query.SortDirection;
+import com.google.appengine.api.users.UserService;
+import com.google.appengine.api.users.UserServiceFactory;
 import java.util.*;
 import java.io.IOException;
 import com.google.gson.Gson;
@@ -47,6 +49,7 @@ public class ReviewServlet extends HttpServlet {
       Assumes user is logged in before posting review. */
   @Override
   public void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
+    UserService userService = UserServiceFactory.getUserService();
 
     String newReview = request.getParameter("comment");
     String firstName = request.getParameter("firstname");
