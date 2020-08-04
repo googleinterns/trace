@@ -315,6 +315,11 @@ function generateResult(place) {
   return resultEntry;
 }
 
+function showReviews(placeID) {
+  
+
+}
+
 /** Fetch Reviews
  * Queries ReviewServlet with elementID to find internal datastore
  */
@@ -328,7 +333,7 @@ function fetchReviews(elementID) {
 /**
  * Review modal activation function
  */
-function activateReviewModal() {
+function displayReviewModal() {
   const reviewBody = document.getElementById('reviews-body');
   const resultsBody = document.getElementById('results-body');
   reviewBody.classList.remove('hidden');
