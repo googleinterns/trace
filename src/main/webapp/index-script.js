@@ -1,7 +1,6 @@
 /* Class Variables. */
 var map;
-var currentLocation;
-var currentUser;
+var currentLocation = "newID";
 
 /* Loads page and main buttons. */
 function loadPage() {
@@ -324,4 +323,9 @@ function generateResult(place) {
   resultGrid.appendChild(infoText);
   resultEntry.appendChild(resultGrid);
   return resultEntry;
+}
+
+/* Redirect user to newReviews.html. */
+function newReviewsPage() {
+  window.location.href = "newReview.html";
 }

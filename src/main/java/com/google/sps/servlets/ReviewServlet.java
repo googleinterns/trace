@@ -56,6 +56,7 @@ public class ReviewServlet extends HttpServlet {
     String firstName = request.getParameter("firstname");
     String lastName = request.getParameter("lastname");
     String rating = request.getParameter("rate");
+    String place_id = request.getParameter("place_id");
 
     if (newReview != null && newReview.length() > 0){
       // Entity containing public reviews
@@ -67,6 +68,7 @@ public class ReviewServlet extends HttpServlet {
       reviewEntity.setProperty("fullName", firstName + " " + lastName);
       reviewEntity.setProperty("rating", rating);
       reviewEntity.setProperty("email", userEmail);
+      reviewEntity.setProperty("place_id", place_id);
       
       // Total + Postive + Negative all set at 0 to start.
       reviewEntity.setProperty("total", 0);
