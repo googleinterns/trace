@@ -61,13 +61,16 @@ public class ReviewServlet extends HttpServlet {
     UserService userService = UserServiceFactory.getUserService();
 
 <<<<<<< HEAD
+<<<<<<< HEAD
     String userEmail = userService.getCurrentUser().getEmail(); // Used to restrict user to one review/location.
 =======
 >>>>>>> Add rating system and expand ReviewServlet.java doPost() to receive all the information from this form.
+=======
+    String userEmail = userService.getCurrentUser().getEmail(); // Used to restrict uset to one review/location.
+>>>>>>> Add inline comment.
     String newReview = request.getParameter("comment");
     String firstName = request.getParameter("firstname");
     String lastName = request.getParameter("lastname");
-    String userEmail = userService.getCurrentUser().getEmail();
     String rating = request.getParameter("rate");
 <<<<<<< HEAD
     String place_id = request.getParameter("place_id");

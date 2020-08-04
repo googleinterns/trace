@@ -98,19 +98,12 @@ input[type=submit] {
 .rate > label:hover ~ input:checked ~ label {
     color: #c59b08;
 }
-<<<<<<< HEAD
+
 * {
  margin: auto;
 }
 
-/* Modified from: https://github.com/mukulkant/Star-rating-using-pure-css */
-=======
 /** Stars marked check are orange. */
 .checked {
   color: orange;
 }
->>>>>>> Style review page.
-=======
-
-/* Modified from: https://github.com/mukulkant/Star-rating-using-pure-css */
->>>>>>> Add rating system and expand ReviewServlet.java doPost() to receive all the information from this form.
