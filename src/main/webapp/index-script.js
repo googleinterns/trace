@@ -1,5 +1,7 @@
 /* Class Variables. */
 var map;
+var currentLocation;
+var currentUser;
 
 /* Loads page and main buttons. */
 function loadPage() {
