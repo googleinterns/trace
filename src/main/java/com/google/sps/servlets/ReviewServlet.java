@@ -43,15 +43,21 @@ public class ReviewServlet extends HttpServlet {
     response.getWriter().println(json);
   }
 
+  /** Retrieves data from new-review submission form and creates relevant entity. */
   @Override
   public void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
 
-    String newReview = request.getParameter("new-review");
+    String newReview = request.getParameter("comment");
+    String firstName = request.getParameter("firstname");
+    String lastName = request.getParameter("lastname");
+    String rating = request.getParameter("rate");
 
     if (newReview != null && newReview.length() > 0){
       // Entity containing public reviews
       Entity reviewEntity = new Entity("Review");
       reviewEntity.setProperty("message", newReview);
+      reviewEntity.setProperty("fullName", firstName + " " + lastName);
+      reviewEntity.setProperty("rating", rating);
 
       Date date = new Date();
       reviewEntity.setProperty("date", date);
@@ -63,7 +69,6 @@ public class ReviewServlet extends HttpServlet {
       // Add the new review to a Datastore
       DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
       datastore.put(reviewEntity);
-
     }
     // Redirect back so review appears on screen
     response.sendRedirect("/index.html");
