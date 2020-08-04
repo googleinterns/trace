@@ -325,6 +325,8 @@ function fetchReviews(elementID) {
   });
 }
 
+/**
+ */
 function activateReviewModal() {
   // TODO: handoff between modals
   // Activate the review modal
