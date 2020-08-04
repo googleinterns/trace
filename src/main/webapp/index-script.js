@@ -335,6 +335,13 @@ function activateReviewModal() {
   resultsBody.classList.add('hidden');
 }
 
+function hideReviewModal() {
+  const reviewBody = document.getElementById('reviews-body');
+  const resultsBody = document.getElementById('results-body');
+  reviewBody.classList.add('hidden');
+  resultsBody.classList.remove('hidden');
+}
+
 /** Creates a structure to put reviews in modal
  * Takes in array of JS reviews
  */
