@@ -363,4 +363,9 @@ function generateReview(review) {
   return reviewEntry;
 }
 
+function noReviews() {
+  const reviewEntry = document.createElement('li');
+  const entryText = document.createElement('p');
+  entryText.innerHTML = "No reviews yet!";
+}
 
