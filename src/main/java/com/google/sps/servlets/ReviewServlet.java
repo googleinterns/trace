@@ -45,53 +45,23 @@ public class ReviewServlet extends HttpServlet {
     response.getWriter().println(json);
   }
 
-<<<<<<< HEAD
-<<<<<<< HEAD
   /** Retrieves data from new-review submission form and creates relevant entity.
       Assumes user is logged in before posting review. */
-=======
-  /** Retrieves data from new-review submission form and creates relevant entity. */
->>>>>>> Add rating system and expand ReviewServlet.java doPost() to receive all the information from this form.
-=======
-  /** Retrieves data from new-review submission form and creates relevant entity.
-      Assumes user is logged in before posting review. */
->>>>>>> Create property 'email' for new reviews.
   @Override
   public void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
     UserService userService = UserServiceFactory.getUserService();
 
-<<<<<<< HEAD
-<<<<<<< HEAD
-    String userEmail = userService.getCurrentUser().getEmail(); // Used to restrict user to one review/location.
-=======
->>>>>>> Add rating system and expand ReviewServlet.java doPost() to receive all the information from this form.
-=======
-    String userEmail = userService.getCurrentUser().getEmail(); // Used to restrict uset to one review/location.
->>>>>>> Add inline comment.
+    String userEmail = userService.getCurrentUser().getEmail(); // Used to restrict user to one review/location
     String newReview = request.getParameter("comment");
     String firstName = request.getParameter("firstname");
     String lastName = request.getParameter("lastname");
     String rating = request.getParameter("rate");
-<<<<<<< HEAD
-<<<<<<< HEAD
     String place_id = request.getParameter("place_id");
-=======
->>>>>>> Add rating system and expand ReviewServlet.java doPost() to receive all the information from this form.
-=======
-    String place_id = request.getParameter("place_id");
->>>>>>> Attempts at including place_id in form.
 
     if (newReview != null && newReview.length() > 0){
       // Entity containing public reviews
       Entity reviewEntity = new Entity("Review");
-<<<<<<< HEAD
-<<<<<<< HEAD
-=======
-      reviewEntity.setProperty("message", newReview);
-      reviewEntity.setProperty("fullName", firstName + " " + lastName);
       reviewEntity.setProperty("rating", rating);
-
->>>>>>> Add rating system and expand ReviewServlet.java doPost() to receive all the information from this form.
       Date date = new Date();
       reviewEntity.setProperty("date", date);
 
@@ -100,19 +70,6 @@ public class ReviewServlet extends HttpServlet {
       reviewEntity.setProperty("rating", rating);
       reviewEntity.setProperty("email", userEmail);
       reviewEntity.setProperty("place_id", place_id);
-=======
-      Date date = new Date();
-      reviewEntity.setProperty("date", date);
-
-      reviewEntity.setProperty("message", newReview);
-      reviewEntity.setProperty("fullName", firstName + " " + lastName);
-      reviewEntity.setProperty("rating", rating);
-      reviewEntity.setProperty("email", userEmail);
-<<<<<<< HEAD
->>>>>>> Create property 'email' for new reviews.
-=======
-      reviewEntity.setProperty("place_id", place_id);
->>>>>>> Attempts at including place_id in form.
       
       // Total + Postive + Negative all set at 0 to start.
       reviewEntity.setProperty("total", 0);
