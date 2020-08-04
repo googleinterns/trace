@@ -51,7 +51,7 @@ public class ReviewServlet extends HttpServlet {
   public void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
     UserService userService = UserServiceFactory.getUserService();
 
-    String userEmail = userService.getCurrentUser().getEmail(); // Used to restrict uset to one review/location.
+    String userEmail = userService.getCurrentUser().getEmail(); // Used to restrict user to one review/location.
     String newReview = request.getParameter("comment");
     String firstName = request.getParameter("firstname");
     String lastName = request.getParameter("lastname");
