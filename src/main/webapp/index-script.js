@@ -41,7 +41,8 @@ function loadMainButtons() {
   // Search Icon registers clicks and searches for location.
   searchIcon.addEventListener("click", () => {
     var query = document.getElementById('searchForm').elements[0].value;
-    searchByText(query);
+    var zipcode = document.getElementById('searchForm').elements[1].value;
+    searchByText(query, zipcode);
   });
   
   // Stub for previous button.
@@ -84,7 +85,8 @@ function loadMainButtons() {
     // 13 is the key code for 'Enter' 
     if (event.keyCode === 13) {
       var query = document.getElementById('searchForm').elements[0].value;
-      searchByText(query);
+      var location = document.getElementById('searchForm').elements[1].value;
+      searchByText(query, location);
     }
   });
 }
@@ -146,17 +148,37 @@ function searchByCoordinates(coordinate) {
 }
 
 /* Search Places API for relevant locations using text query. */
-function searchByText(textQuery) {
-  var request = {
-    query: textQuery,
-    fields: ['place_id', 'geometry']
-  };
-
-  var service = new google.maps.places.PlacesService(map);
-  service.textSearch(request, (results, status) => {
-    if (status == google.maps.places.PlacesServiceStatus.OK) {
-      handleSearchResults(results, service);
-    }
+function searchByText(textQuery, textLocation) {
+  // Get the coordinates of a requested location. 
+  const locationPromise = new Promise((resolve, reject) => {
+    var geocoder = new google.maps.Geocoder();
+    geocoder.geocode({ 'address': textLocation}, function (results, status) {
+      if (status == google.maps.GeocoderStatus.OK) {
+        var latitude = results[0].geometry.location.lat();
+        var longitude = results[0].geometry.location.lng();
+        console.log(new google.maps.LatLng(latitude, longitude));
+        resolve(new google.maps.LatLng(latitude, longitude));
+      } else {
+        // If no location given, defaults to your cookie-d location.
+        resolve();
+      }
+    });
+  }); 
+ 
+  // Waits for location to be chosen, then runs search
+  locationPromise.then((locationRequest) => {
+    var request = {
+      query: textQuery,
+      location: locationRequest,
+      fields: ['place_id', 'geometry']
+    };
+ 
+    var service = new google.maps.places.PlacesService(map);
+    service.textSearch(request, (results, status) => {
+      if (status == google.maps.places.PlacesServiceStatus.OK) {
+        handleSearchResults(results, service);
+      }
+    });
   });
 }
 
