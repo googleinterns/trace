@@ -10,7 +10,7 @@ public class Comment {
 
   private final String author;
   private final String messageContent;
-  private final Date timeStamp;
+  private final Date timestamp;
 
   /** Order Comparator
    * This comparator uses the compare function from the Date class to order Comments.
@@ -26,12 +26,12 @@ public class Comment {
    *
    * @param author the message author
    * @param message the content of the message
-   * @param timeStamp the time of writing
+   * @param timestamp the time of writing
    */
-  public Comment(String author, String message, Date timeStamp) {
+  public Comment(String author, String message, Date timestamp) {
     this.author = author;
     this.messageContent = message;
-    this.timeStamp = timeStamp;
+    this.timestamp = timestamp;
   }
 
   /** Author Accessor method
@@ -52,15 +52,15 @@ public class Comment {
    * Accesses private variable
    */
   public Date getTime() {
-    return this.timeStamp;
+    return this.timestamp;
   }
 
   /** Update Comment
    * This function is used when a author want's to submit a new comment for a location.
    * This prevents the 'double voting' or 'duplicate feedback' of certain patrons.
    */
-  public void updateComment(String message, Date timeStamp) {
+  public void updateComment(String message, Date timestamp) {
     this.messageContent = message;
-    this.timeStamp = timeStamp;
+    this.timestamp = timestamp;
   }
 }
