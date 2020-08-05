@@ -25,7 +25,9 @@ public class PlaceReviews {
   }
 
   public addReview(Comment review) {
-    this.reviews.append(review);
+    if (!reviewers.contains(review.getAuthor())) {
+      this.reviews.append(review);
+    }
   }
 
   public addRating(double rating) {
