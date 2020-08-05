@@ -323,7 +323,6 @@ function showReviews(placeID) {
   let reviewsArray = fetchReviews(placeID);
   displayReviewModal();
   populateReviews(reviewsArray);
-
 }
 
 /** Fetch Reviews
