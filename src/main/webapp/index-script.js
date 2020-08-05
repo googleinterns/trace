@@ -390,14 +390,13 @@ function noReviews() {
  * Puts the review text in a <p> element
  */
 function generateReview(review) {
-  console.log('generate');
   const reviewEntry = document.createElement('li');
 
   const reviewGrid = document.createElement('div');
-  reviewGrid.className += review-grid;
+  reviewGrid.className += 'review-grid';
 
   const reviewText = document.createElement('p');
-  reviewText.innerHTML += review.text;
+  reviewText.innerHTML += review;
 
   reviewGrid.appendChild(reviewText);
   reviewEntry.appendChild(reviewGrid);
