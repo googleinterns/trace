@@ -26,4 +26,9 @@ public class Comment {
     return this.timeStamp;
   }
 
+  public void updateComment(String message, Date timeStamp) {
+    this.messageContent = message;
+    this.timeStamp = timeStamp;
+  }
+
 }
