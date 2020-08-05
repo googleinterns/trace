@@ -153,11 +153,7 @@ function getCoordinates(zipcode) {
         if (status == google.maps.GeocoderStatus.OK) {
             var latitude = results[0].geometry.location.lat();
             var longitude = results[0].geometry.location.lng();
-            console.log("coo: " + new google.maps.LatLng(latitude, longitude));
-            //location = new google.maps.LatLng(latitude, longitude);
-            //var string = ("lat: " + latitude + ", lng: " + longitude);
-            //console.log(string);
-            //return string;
+            console.log("coordinates: " + new google.maps.LatLng(latitude, longitude));
             return new google.maps.LatLng(latitude, longitude);
         } else {
             alert("Request failed.")
