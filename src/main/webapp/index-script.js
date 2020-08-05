@@ -45,20 +45,18 @@ function loadMainButtons() {
   });
   
   // Stub for previous button.
-  prev.addEventListener("click", function prevClick() {
+  prev.addEventListener("click", () => {
     tutorialText.innerHTML = "This button will take you to the previous page.";
   });
 
   // Stub for next button.
-  next.addEventListener("click", function nextClick() {
+  next.addEventListener("click", () => {
     tutorialText.innerHTML = "This button will take you to the next page.";
   });
 
   // Close tutorial window on exit click. Remove popUp listeners.
   closeTutorial.addEventListener("click", function close() {
     document.getElementById("popUp").style.display = "none";
-    prev.removeEventListener("click", prevClick);
-    next.removeEventListener("click", nextClick);
     closeTutorial.removeEventListener("click", close);
   });
 
