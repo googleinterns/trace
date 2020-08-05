@@ -341,8 +341,6 @@ function generateResult(place) {
     "<a href=\"" + place.website + "\">Site</a>",
     place.vicinity
   ];
-  console.log(tidbits[0]);
-  console.log(typeof place.place_id);
 
   tidbits = tidbits.filter(function (element) {
     return element != null;
@@ -409,6 +407,16 @@ function populateReviews(reviewList) {
   listContainer.appendChild(entireList);
 }
 
+/** Function that populates the review list when there aren't any
+ */
+function noReviews() {
+  const reviewEntry = document.createElement('li');
+  const entryText = document.createElement('p');
+  entryText.innerHTML = "No reviews yet!";
+  reviewEntry.appendChild(entryText);
+  return reviewEntry;
+}
+
 /** Creates a review element using grid styling
  * Puts the review text in a <p> element
  */
@@ -426,7 +434,8 @@ function generateReview(review) {
   return reviewEntry;
 }
 
-/** Function that populates the review list when there aren't any
+/**
+ * Review modal activation function
  */
 function noReviews() {
   const reviewEntry = document.createElement('li');
