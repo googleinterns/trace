@@ -65,10 +65,39 @@ function activateSearchBar() {
   // Search Icon registers clicks and searches for location.
   searchIcon.addEventListener("click", () => {
     var query = document.getElementById('searchForm').elements[0].value;
-    var location = document.getElementById('searchForm').elements[1].value;
-    searchByText(query, location);
+    var zipcode = document.getElementById('searchForm').elements[1].value;
+    searchByText(query, zipcode);
+  });
+  
+  // Stub for previous button.
+  prev.addEventListener("click", () => {
+    tutorialText.innerHTML = "This button will take you to the previous page.";
   });
 
+  // Stub for next button.
+  next.addEventListener("click", () => {
+    tutorialText.innerHTML = "This button will take you to the next page.";
+  });
+
+  // Close tutorial window on exit click. Remove popUp listeners.
+  closeTutorial.addEventListener("click", function close() {
+    document.getElementById("popUp").style.display = "none";
+    closeTutorial.removeEventListener("click", close);
+  });
+
+  // Button to close the modal and deactiviate overlay
+  modalClosers.forEach(button => {
+    button.addEventListener('click', () => {
+      const modal = button.closest('.modal');
+      closeModal(modal);
+    })
+  });
+  
+  logInButton.addEventListener("click", () => {
+    window.location.href="/login" 
+  }); 
+
+>>>>>>> delete prevClick and nextClick functions.
   // Prevent page from refreshing when you submit the form
   searchForm.addEventListener('submit', function(event) {
       event.preventDefault();
