@@ -22,6 +22,7 @@ public class ReviewServlet extends HttpServlet {
 
   @Override
   public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
+    System.out.println("test");
     // Consider all data involved as preliminary
     Query query = new Query("Review").addSort("date", SortDirection.DESCENDING);
 
@@ -38,6 +39,7 @@ public class ReviewServlet extends HttpServlet {
       int total = (int) entity.getProperty("total");
       reviews.add(message + " - " + timestamp.toString() + " ; " + total);
     }
+    System.out.println(reviews);
 
     // Adds the review list to a GSON/JSON object so that can be used in Javascript code    
     response.setContentType("application/json");
@@ -57,6 +59,7 @@ public class ReviewServlet extends HttpServlet {
     String lastName = request.getParameter("lastname");
     String rating = request.getParameter("rate");
     String place_id = request.getParameter("place_id");
+    System.out.println("test2");
 
     if (newReview != null && newReview.length() > 0){
       // Entity containing public reviews
