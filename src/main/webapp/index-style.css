@@ -215,3 +215,36 @@
   position: relative;
   right: 30%;
 }
+<<<<<<< HEAD
+=======
+
+/* Login Button Specs. */
+.loginButton {
+  height: 30px;
+  width: 30%;
+  position: relative;
+  left: 30%;
+}
+
+/* On hover, add a black background color with a little bit see-through */
+.prev:hover, .next:hover {
+  color: rgba(230, 230, 230); /* Grey. */
+}
+
+#login {
+  background-color: #f5f5f5;
+  position: fixed;
+  top: 30%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  font-size: 18px;
+  height:50px;
+  width:100px;
+  border-radius: 30px;
+  margin: 0 auto;
+}
+
+#login:hover {
+  background-color: rgb(180, 180, 180);
+}
+>>>>>>> Enables user to click on a search result and load the relevant reviews.
