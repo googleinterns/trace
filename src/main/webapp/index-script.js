@@ -1,15 +1,17 @@
 /* Class Variables. */
 var map;
+var currentLocation = "newID";
 
 /* Loads page and main buttons. */
 function loadPage() {
-    createMap();
     loadMainButtons();
+    createMap();
     toggleLoginLogout();
 }
 
 /* Activates functionality for search bar and log-in button. */
 function loadMainButtons() {
+  const head = document.getElementsByTagName('head');
   const clearIcon = document.querySelector(".clear-icon");
   const searchIcon = document.querySelector("#search-icon");
   const searchForm = document.querySelector("#searchForm");
@@ -163,7 +165,6 @@ function handleSearchResults(results, service) {
   // Center on the queried location
   if (results.length > 0) { 
     map.setCenter(results[0].geometry.location);
-    console.log(results.length);
   }
   
   var promises = [];
@@ -406,3 +407,12 @@ function noReviews() {
   return reviewEntry;
 }
 
+/* Redirect user to newReviews.html. */
+function newReviewsPage() {
+  window.location.href = "newReview.html";
+}
+
+/* Loads currentLocation into newReview form. */
+function loadPlaceID() {
+  document.getElementById("place_id").value = currentLocation;
+}

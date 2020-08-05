@@ -6,6 +6,8 @@ import com.google.appengine.api.datastore.Entity;
 import com.google.appengine.api.datastore.PreparedQuery;
 import com.google.appengine.api.datastore.Query;
 import com.google.appengine.api.datastore.Query.SortDirection;
+import com.google.appengine.api.users.UserService;
+import com.google.appengine.api.users.UserServiceFactory;
 import java.util.*;
 import java.io.IOException;
 import com.google.gson.Gson;
@@ -43,18 +45,32 @@ public class ReviewServlet extends HttpServlet {
     response.getWriter().println(json);
   }
 
+  /** Retrieves data from new-review submission form and creates relevant entity.
+      Assumes user is logged in before posting review. */
   @Override
   public void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
+    UserService userService = UserServiceFactory.getUserService();
 
-    String newReview = request.getParameter("new-review");
+    String userEmail = userService.getCurrentUser().getEmail(); // Used to restrict user to one review/location
+    String newReview = request.getParameter("comment");
+    String firstName = request.getParameter("firstname");
+    String lastName = request.getParameter("lastname");
+    String rating = request.getParameter("rate");
+    String place_id = request.getParameter("place_id");
 
     if (newReview != null && newReview.length() > 0){
       // Entity containing public reviews
       Entity reviewEntity = new Entity("Review");
-      reviewEntity.setProperty("message", newReview);
-
+      reviewEntity.setProperty("rating", rating);
       Date date = new Date();
       reviewEntity.setProperty("date", date);
+
+      reviewEntity.setProperty("message", newReview);
+      reviewEntity.setProperty("fullName", firstName + " " + lastName);
+      reviewEntity.setProperty("rating", rating);
+      reviewEntity.setProperty("email", userEmail);
+      reviewEntity.setProperty("place_id", place_id);
+      
       // Total + Postive + Negative all set at 0 to start.
       reviewEntity.setProperty("total", 0);
       reviewEntity.setProperty("negative", 0);
@@ -63,7 +79,6 @@ public class ReviewServlet extends HttpServlet {
       // Add the new review to a Datastore
       DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
       datastore.put(reviewEntity);
-
     }
     // Redirect back so review appears on screen
     response.sendRedirect("/index.html");

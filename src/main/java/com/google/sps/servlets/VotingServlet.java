@@ -27,6 +27,7 @@ public class VotingServlet extends HttpServlet {
     int value = 0; //(int) request.getParameter("vote");
 
     // Find the review that corresponds to the given id
+    // TODO: Modify query to find review that corresponds to the id. 
     Query query = new Query("Review"); 
 
     PreparedQuery results = datastore.prepare(query);
@@ -51,6 +52,7 @@ public class VotingServlet extends HttpServlet {
 
     }
     // Redirect back
+    // TODO: Update value in place without redirecting
     response.sendRedirect("/index.html");
   }
 }
