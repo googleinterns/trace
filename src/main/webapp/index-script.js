@@ -150,20 +150,23 @@ function searchByCoordinates(coordinate) {
 
 /* Search Places API for relevant locations using text query. */
 function searchByText(textQuery, textLocation) {
+  // Get the coordinates of a requested location. 
   const locationPromise = new Promise((resolve, reject) => {
     var geocoder = new google.maps.Geocoder();
     geocoder.geocode({ 'address': textLocation}, function (results, status) {
       if (status == google.maps.GeocoderStatus.OK) {
         var latitude = results[0].geometry.location.lat();
         var longitude = results[0].geometry.location.lng();
-        console.log("request0: " + new google.maps.LatLng(latitude, longitude));
+        console.log(new google.maps.LatLng(latitude, longitude));
         resolve(new google.maps.LatLng(latitude, longitude));
       } else {
+        // If no location given, defaults to your cookie-d location.
         resolve();
       }
     });
   }); 
-
+ 
+  // Waits for location to be chosen, then runs search
   locationPromise.then((locationRequest) => {
     console.log("request1: " + locationRequest);
     var request = {
