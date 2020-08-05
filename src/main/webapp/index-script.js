@@ -115,12 +115,6 @@ function createMap() {
     {center: googleplex, zoom: 13,
     mapTypeControlOptions: {mapTypeIds: ['roadmap']}});
 
-  // Create the initial InfoWindow.
-  var infoWindow = new google.maps.InfoWindow(
-      {content: 'Open javascript console (ctrl + shift + j) then click the map to see the placeIDs of nearby locations (within 50m)',
-       position: googleplex});
-  infoWindow.open(map);
-
   // Search by coordinates on map click.
   map.addListener('click', function(mapsMouseEvent) {
     infoWindow.close();
