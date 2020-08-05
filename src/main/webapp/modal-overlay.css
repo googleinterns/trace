@@ -159,10 +159,10 @@ a:hover {
 }
 
 #no-reviews {
-  border-color: black;
-  border-style: solid;
-  border-width: 4px;
   font-size: 300%;
+<<<<<<< HEAD
   color: orange;
 >>>>>>> Forgot to commit sooner. Change modal display values onclick and generlaly toyed with some other settings.
+=======
+>>>>>>> Attempting to load reviews onto modal.
 }

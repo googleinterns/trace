@@ -410,7 +410,6 @@ function populateReviews(reviewList) {
 /** Function that populates the review list when there aren't any
  */
 function noReviews() {
-  console.log('no reviews');
   const reviewEntry = document.createElement('li');
   const entryText = document.createElement('p');
   entryText.id = 'no-reviews';
