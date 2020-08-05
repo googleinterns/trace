@@ -41,7 +41,7 @@
 }
    
 #search-icon {
-  font-size: 225%;
+  font-size: 2.5vw;
   height: 100%;
   left: -3.5%;
   position: absolute;
@@ -53,7 +53,7 @@
 .clear-icon {
   color: black;
   cursor: pointer;
-  font-size: 225%;
+  font-size: 2.5vw;
   font-family: arial;
   position: absolute;
   right: -3.5%;
@@ -65,7 +65,7 @@
 
 /* Login Button Specs. */
 .loginButton {
-  height: 15%;
+  height: 10%;
   left: 50%;
   min-width: 100px;
   top: 30%;
