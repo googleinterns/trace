@@ -147,10 +147,31 @@ function searchByCoordinates(coordinate) {
   });
 }
 
+function getCoordinates(zipcode) {
+    var geocoder = new google.maps.Geocoder();
+    geocoder.geocode({ 'address': zipcode}, function (results, status) {
+        if (status == google.maps.GeocoderStatus.OK) {
+            var latitude = results[0].geometry.location.lat();
+            var longitude = results[0].geometry.location.lng();
+            console.log("coo: " + new google.maps.LatLng(latitude, longitude));
+            //location = new google.maps.LatLng(latitude, longitude);
+            //var string = ("lat: " + latitude + ", lng: " + longitude);
+            //console.log(string);
+            //return string;
+            return new google.maps.LatLng(latitude, longitude);
+        } else {
+            alert("Request failed.")
+        }
+    });
+}
+
 /* Search Places API for relevant locations using text query. */
 function searchByText(textQuery, textLocation) {
+  var locationRequest = getCoordinates(textLocation);
+  console.log("request: " + locationRequest);
   var request = {
     query: textQuery,
+    location: getCoordinates(textLocation),
     fields: ['place_id', 'geometry']
   };
 
