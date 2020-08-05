@@ -1,6 +1,7 @@
 package com.google.sps.data;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.com.sps.data.Comment;
 import java.com.sps.data.RatingHistory;
 
@@ -8,8 +9,8 @@ public class PlaceReviews {
 
   private final int placeID;
   private ArrayList<Comment> reviews;
+  private HashSet<String> reviewers;
   private double rating;
-  private int entries = 0;
   private RatingHistory history;
 
   public PlaceReviews(int placeID) {
@@ -20,7 +21,7 @@ public class PlaceReviews {
     this.placeID = placeID;
     this.reviews.append(firstReview);
     this.rating = initialRating;
-    this.entries++;
+    this.reviewers.add(firstReview.getAuthor());
   }
 
   public addReview(Comment review) {
