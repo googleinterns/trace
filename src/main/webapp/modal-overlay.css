@@ -140,3 +140,11 @@ li:last-child{
 li:nth-child(even) {
   background: #f8f8f8;
 }
+
+a {
+  text-decoration: none;
+}
+
+a:hover {
+  color: rgba(230, 230, 230); /* Grey. */ 
+}

@@ -233,28 +233,9 @@ function sortPlacesByRating(places) {
  * This triggers the modal, and overlay, to follow the active CSS styling, making it appear.
  */
 function triggerModal(modal) {
-  console.log("Triggering modal.");
   if (modal == null) return;
-  overlay.classList.add('active'); // Activates overlay opacity styling
-  modal.classList.add('active'); // Makes modal appear by activating styling
-}
-
-/* close modal
- * Undoes the modal opening, by removing the active classifier.
- */
-function closeModal(modal) {
-  if (modal == null) return;
-  overlay.classList.remove('active'); // Removes overlay and click blocker
-  modal.classList.remove('active'); // Hides modal
-  cleanModal(modal);
-}
-
-/* remove modal content function
- * Calls on closing of modal, wipes all results from inside of it.
- */
-function cleanModal(modal) {
-  const listContainer = document.getElementById('results-list-container');
-  listContainer.innerHTML = ''; // Clean wrapper of all DOM elements
+  overlay.classList.add('active');
+  modal.classList.add('active');
 }
 
 /* populate modal result list function
@@ -295,11 +276,12 @@ function generateResult(place) {
   
   // Relevant information to be displayed
   var tidbits = [
-    place.name,
+    "<a onclick=\"showReviews(" + place.place_id + ");\">" + place.name + "</a>",
     place.international_phone_number,
     "<a href=\"" + place.website + "\">Site</a>",
     place.vicinity
   ];
+  console.log(tidbits[0]);
 
   tidbits = tidbits.filter(function (element) {
     return element != null;
@@ -404,6 +386,24 @@ function noReviews() {
   entryText.innerHTML = "No reviews yet!";
   reviewEntry.appendChild(entryText);
   return reviewEntry;
+}
+
+/* close modal
+ * Undoes the modal opening, by removing the active classifier.
+ */
+function closeModal(modal) {
+  if (modal == null) return;
+  overlay.classList.remove('active'); // Removes overlay and click blocker
+  modal.classList.remove('active'); // Hides modal
+  cleanModal(modal);
+}
+
+/* remove modal content function
+ * Calls on closing of modal, wipes all results from inside of it.
+ */
+function cleanModal(modal) {
+  const listContainer = document.getElementById('results-list-container');
+  listContainer.innerHTML = ''; // Clean wrapper of all DOM elements
 }
 
 /* Redirect user to newReviews.html. */
