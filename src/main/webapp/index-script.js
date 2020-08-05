@@ -327,8 +327,6 @@ function displayReviewModal() {
  * Takes in array of JS reviews
  */
 function populateReviews(reviewList) {
-  console.log('Populating reviews in modal...');
-  console.log(reviewList);
   const listContainer = document.getElementById('reviews-list-container');
   const entireList = document.createElement('ul');
   entireList.id += 'reviews-list';
@@ -347,7 +345,6 @@ function populateReviews(reviewList) {
 /** Function that populates the review list when there aren't any
  */
 function noReviews() {
-  console.log('no reviews');
   const reviewEntry = document.createElement('li');
   const entryText = document.createElement('p');
   entryText.id = 'no-reviews';
