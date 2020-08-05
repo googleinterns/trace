@@ -52,13 +52,25 @@ public class ReviewServlet extends HttpServlet {
   public void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
     UserService userService = UserServiceFactory.getUserService();
 
+    String place_id = request.getParameter("place_id");
     String userEmail = userService.getCurrentUser().getEmail(); // Used to restrict user to one review/location
-    String newReview = request.getParameter("comment");
+    String reviewText = request.getParameter("comment");
+    Date time = request.getParameter("timeStamp");
     String firstName = request.getParameter("firstname");
     String lastName = request.getParameter("lastname");
-    String rating = request.getParameter("rate");
-    String place_id = request.getParameter("place_id");
+    double rating = request.getParameter("rate");
 
+    Comment newReview = new Comment(userEmail, newReview, time);
+    PlaceReviews curLocation = new PlaceReviews(); // TODO grab current location by ID
+
+
+    if (curLocation != null) {
+      // TODO: Add or modify current review
+    } else {
+      // TODO: Create new PlaceReviews and initialize
+    }
+
+    // TODO: Put back the new PlaceReviews
     if (newReview != null && newReview.length() > 0){
       // Entity containing public reviews
       Entity reviewEntity = new Entity("Review");
