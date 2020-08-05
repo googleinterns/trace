@@ -147,23 +147,7 @@ function searchByCoordinates(coordinate) {
     }
   });
 }
-/*
-function getCoordinates(zipcode) {
-  const promise = new Promise((resolve, reject) => {
-    var geocoder = new google.maps.Geocoder();
-    geocoder.geocode({ 'address': zipcode}, function (results, status) {
-      if (status == google.maps.GeocoderStatus.OK) {
-        var latitude = results[0].geometry.location.lat();
-        var longitude = results[0].geometry.location.lng();
-        console.log("request0: " + new google.maps.LatLng(latitude, longitude));
-            resolve(new google.maps.LatLng(latitude, longitude));
-        } else {
-            resolve(alert("Request failed."));
-        }
-    });
-  });
-}
-*/
+
 /* Search Places API for relevant locations using text query. */
 function searchByText(textQuery, textLocation) {
   const locationPromise = new Promise((resolve, reject) => {
@@ -173,12 +157,13 @@ function searchByText(textQuery, textLocation) {
         var latitude = results[0].geometry.location.lat();
         var longitude = results[0].geometry.location.lng();
         console.log("request0: " + new google.maps.LatLng(latitude, longitude));
-            resolve(new google.maps.LatLng(latitude, longitude));
-        } else {
-            resolve();
-        }
+        resolve(new google.maps.LatLng(latitude, longitude));
+      } else {
+        resolve();
+      }
     });
   }); 
+
   locationPromise.then((locationRequest) => {
     console.log("request1: " + locationRequest);
     var request = {
