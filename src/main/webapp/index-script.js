@@ -410,8 +410,10 @@ function populateReviews(reviewList) {
 /** Function that populates the review list when there aren't any
  */
 function noReviews() {
+  console.log('no reviews');
   const reviewEntry = document.createElement('li');
   const entryText = document.createElement('p');
+  entryText.id = 'no-reviews';
   entryText.innerHTML = "No reviews yet!";
   reviewEntry.appendChild(entryText);
   return reviewEntry;
@@ -421,6 +423,7 @@ function noReviews() {
  * Puts the review text in a <p> element
  */
 function generateReview(review) {
+  console.log('generate');
   const reviewEntry = document.createElement('li');
 
   const reviewGrid = document.createElement('div');

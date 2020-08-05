@@ -148,10 +148,21 @@ a {
 a:hover {
   color: rgba(230, 230, 230); /* Grey. */ 
 <<<<<<< HEAD
+<<<<<<< HEAD
 }
 
 #no-reviews {
   font-size: 300%;
 =======
 >>>>>>> Enables user to click on a search result and load the relevant reviews.
+=======
+}
+
+#no-reviews {
+  border-color: black;
+  border-style: solid;
+  border-width: 4px;
+  font-size: 300%;
+  color: orange;
+>>>>>>> Forgot to commit sooner. Change modal display values onclick and generlaly toyed with some other settings.
 }
