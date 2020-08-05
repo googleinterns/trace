@@ -1,6 +1,8 @@
 package com.google.sps.data;
 
 import java.util.ArrayList;
+import java.com.sps.data.Comment;
+import java.com.sps.data.RatingHistory;
 
 public class PlaceReviews {
 
