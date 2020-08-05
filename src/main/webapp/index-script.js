@@ -25,17 +25,17 @@ function loadMainButtons() {
 
   // Make 'clear-icon' visible when user starts typing.
   searchBar.addEventListener("keyup", () => {
-    if(searchBar.value && clearIcon.style.visibility != "visible"){
-      clearIcon.style.visibility = "visible";
+    if(searchBar.value && clearIcon.style.display != "block"){
+      clearIcon.style.display = "block";
     } else if(!searchBar.value) {
-      clearIcon.style.visibility = "hidden";
+      clearIcon.style.display = "none";
     }
   });
 
   // Delete text and hide 'clear-icon' on click.
   clearIcon.addEventListener("click", () => {
     searchBar.value = "";
-    clearIcon.style.visibility = "hidden";
+    clearIcon.style.display = "none";
   });
 
   // Search Icon registers clicks and searches for location.
@@ -333,11 +333,24 @@ function fetchReviews(elementID) {
   });
 }
 
+/**
+ * Review modal activation function
+ */
+function displayReviewModal() {
+  const button = document.getElementById('modal-backarrow');
+  button.classList.add("exit-button");
+  button.innerHTML += "&larr;";
+
+  document.getElementById('results-body').style.display = "none";
+  document.getElementById('reviews-body').style.display = "block"
+}
+
 /** Creates a structure to put reviews in modal
  * Takes in array of JS reviews
  */
 function populateReviews(reviewList) {
-  Console.log('Populating reviews in modal...');
+  console.log('Populating reviews in modal...');
+  console.log(reviewList);
   const listContainer = document.getElementById('reviews-list-container');
   const entireList = document.createElement('ul');
   entireList.id += 'reviews-list';
@@ -356,8 +369,10 @@ function populateReviews(reviewList) {
 /** Function that populates the review list when there aren't any
  */
 function noReviews() {
+  console.log('no reviews');
   const reviewEntry = document.createElement('li');
   const entryText = document.createElement('p');
+  entryText.id = 'no-reviews';
   entryText.innerHTML = "No reviews yet!";
   reviewEntry.appendChild(entryText);
   return reviewEntry;
@@ -367,6 +382,7 @@ function noReviews() {
  * Puts the review text in a <p> element
  */
 function generateReview(review) {
+  console.log('generate');
   const reviewEntry = document.createElement('li');
 
   const reviewGrid = document.createElement('div');
@@ -378,30 +394,6 @@ function generateReview(review) {
   reviewGrid.appendChild(reviewText);
   reviewEntry.appendChild(reviewGrid);
   return reviewEntry;
-}
-
-/**
- * Review modal activation function
- */
-function displayReviewModal() {
-  const button = document.getElementById('modal-backarrow');
-  button.classList.add("exit-button");
-  button.innerHTML += "&larr;";
-
-  const reviewBody = document.getElementById('reviews-body');
-  const resultsBody = document.getElementById('results-body');
-  reviewBody.classList.remove('hidden');
-  resultsBody.classList.add('hidden');
-}
-
-/**
- * Review modal deactivation function
- */
-function hideReviewModal() {
-  const reviewBody = document.getElementById('reviews-body');
-  const resultsBody = document.getElementById('results-body');
-  reviewBody.classList.add('hidden');
-  resultsBody.classList.remove('hidden');
 }
 
 /* close modal
