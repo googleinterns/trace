@@ -26,7 +26,5 @@ public class RatingHistory {
   public List<double> getHistory() {
     return this.history();
   }
-
   // TODO: Implement an updater function
-
 }
