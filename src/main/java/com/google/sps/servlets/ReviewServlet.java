@@ -16,10 +16,11 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-/** Servlet that returns reviews.*/
+/* Servlet that returns reviews.*/
 @WebServlet("/review")
 public class ReviewServlet extends HttpServlet {
 
+  /* Collect and return all reviews in datastore. */
   @Override
   public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
     // Consider all data involved as preliminary
@@ -45,7 +46,7 @@ public class ReviewServlet extends HttpServlet {
     response.getWriter().println(json);
   }
 
-  /** Retrieves data from new-review submission form and creates relevant entity.
+  /* Retrieves data from new-review submission form and creates relevant entity.
       Assumes user is logged in before posting review. */
   @Override
   public void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
