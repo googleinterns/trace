@@ -313,6 +313,7 @@ function generateResult(place) {
     place.vicinity
   ];
   console.log(tidbits[0]);
+  console.log(typeof place.place_id);
 
   tidbits = tidbits.filter(function (element) {
     return element != null;
