@@ -41,7 +41,8 @@ function loadMainButtons() {
   // Search Icon registers clicks and searches for location.
   searchIcon.addEventListener("click", () => {
     var query = document.getElementById('searchForm').elements[0].value;
-    searchByText(query);
+    var zipcode = document.getElementById('searchForm').elements[1].value;
+    searchByText(query, zipcode);
   });
   
   // Stub for previous button.
@@ -84,7 +85,8 @@ function loadMainButtons() {
     // 13 is the key code for 'Enter' 
     if (event.keyCode === 13) {
       var query = document.getElementById('searchForm').elements[0].value;
-      searchByText(query);
+      var zipcode = document.getElementById('searchForm').elements[1].value;
+      searchByText(query, zipcode);
     }
   });
 }
@@ -146,7 +148,7 @@ function searchByCoordinates(coordinate) {
 }
 
 /* Search Places API for relevant locations using text query. */
-function searchByText(textQuery) {
+function searchByText(textQuery, textLocation) {
   var request = {
     query: textQuery,
     fields: ['place_id', 'geometry']
