@@ -85,8 +85,8 @@ function loadMainButtons() {
     // 13 is the key code for 'Enter' 
     if (event.keyCode === 13) {
       var query = document.getElementById('searchForm').elements[0].value;
-      var zipcode = document.getElementById('searchForm').elements[1].value;
-      searchByText(query, zipcode);
+      var location = document.getElementById('searchForm').elements[1].value;
+      searchByText(query, location);
     }
   });
 }
