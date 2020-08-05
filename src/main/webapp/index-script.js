@@ -276,12 +276,13 @@ function generateResult(place) {
   
   // Relevant information to be displayed
   var tidbits = [
-    "<a onclick=\"showReviews(" + place.place_id + ");\">" + place.name + "</a>",
+    "<a onclick=\"showReviews(\'" + place.place_id + "\');\">" + place.name + "</a>",
     place.international_phone_number,
     "<a href=\"" + place.website + "\">Site</a>",
     place.vicinity
   ];
   console.log(tidbits[0]);
+  console.log(typeof place.place_id);
 
   tidbits = tidbits.filter(function (element) {
     return element != null;
@@ -302,6 +303,7 @@ function generateResult(place) {
  * One central function that is called to trigger entire review interface
  */
 function showReviews(placeID) {
+  console.log(placeID);
   let reviewsArray = fetchReviews(placeID);
   displayReviewModal();
   populateReviews(reviewsArray);
