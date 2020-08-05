@@ -117,10 +117,9 @@
 #exit {
   color: #EA4235;
   font-family: arial;
-  font-size: 100%;
-  height: 10%;
-  margin-top: 0px;
-  margin-left: 90%;
+  font-size: 300%;
+  position: absolute;
+  right: 0%;
   width: 10%;
 }
 
@@ -130,11 +129,10 @@
 
 #headerText {
   font-family: arial;
-  font-size: calc(3vw);
-  height: 100%;
-  line-height: 0%;
-  position: relative;
-  text-align: center;
+  font-size: 500%;
+  height: 20%;
+  position: absolute;
+  top: -5%;
   width: 100%;
 }
 
