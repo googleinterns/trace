@@ -27,26 +27,22 @@ public class ReviewServlet extends HttpServlet {
   */
   @Override
   public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
+    int placeID = request.getParameter("place_ID");
     // Consider all data involved as preliminary
-    Query query = new Query("Review").addSort("date", SortDirection.DESCENDING);
+    Filter placeFilter = new FilterPredicate("place_ID", FilterOperator.EQUAL, place_ID);
+    Query query = new Query("PlaceReviews").setFilter(placeFilter);
 
     DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
     PreparedQuery results = datastore.prepare(query);
-
-    List<String> reviews = new ArrayList<>();
-    // Adds each review entity to a list
-    for (Entity entity : results.asIterable()) {
-      // Get desired information from Datastore
-      long id = entity.getKey().getId();
-      String message = (String) entity.getProperty("message");
-      Date timestamp = (Date) entity.getProperty("date");
-      int total = (int) entity.getProperty("total");
-      reviews.add(message + " - " + timestamp.toString() + " ; " + total);
+    List<PlaceReviews> allLocations = new ArrayList<>();
+  
+    for (Entity entity: results.asIterable()) {
+        PlaceReviews cur = entity.getProperty("placeData");
     }
-
+    
     // Adds the review list to a GSON/JSON object so that can be used in Javascript code    
     response.setContentType("application/json");
-    String json = new Gson().toJson(reviews);
+    String json = new Gson().toJson(allLocations);
     response.getWriter().println(json);
   }
 
