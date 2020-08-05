@@ -86,7 +86,6 @@ function loadMainButtons() {
     if (event.keyCode === 13) {
       var query = document.getElementById('searchForm').elements[0].value;
       var zipcode = document.getElementById('searchForm').elements[1].value;
-      console.log("-2!~!!~");
       searchByText(query, zipcode);
     }
   });
