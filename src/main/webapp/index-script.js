@@ -95,7 +95,6 @@ function toggleLoginLogout(){
   fetch('/login').then(response => response.text()).then(data => {
     // Fetches the first line of the /login file and splits it based on the dot symbol.
     const split = data.split(".")[0];
-    console.log(split);
     // If the split contains a user email, 
     // then a user is logged in and we can display the 'Logout' button
       if (split.length > 0){
@@ -230,7 +229,6 @@ function handleSearchResults(results, service) {
 // Place-holder for function that fills out search results page.
 function populateSearch(places) {
   places = sortPlacesByRating(places);
-  console.log(places);
   triggerModal(document.getElementById("results-popup"));
   populateResults(places);
   
@@ -301,8 +299,6 @@ function generateResult(place) {
     "<a href=\"" + place.website + "\">Site</a>",
     place.vicinity
   ];
-  console.log(tidbits[0]);
-  console.log(typeof place.place_id);
 
   tidbits = tidbits.filter(function (element) {
     return element != null;
@@ -323,10 +319,8 @@ function generateResult(place) {
  * One central function that is called to trigger entire review interface
  */
 function showReviews(placeID) {
-  console.log(placeID);
-  let reviewsArray = fetchReviews(placeID);
+  fetchReviews(placeID);
   displayReviewModal();
-  populateReviews(reviewsArray);
 }
 
 /** Fetch Reviews
@@ -337,6 +331,53 @@ function fetchReviews(elementID) {
   fetch('/review').then(response => response.json()).then((reviewsArr) => {
     populateReviews(reviewsArr);
   });
+}
+
+/** Creates a structure to put reviews in modal
+ * Takes in array of JS reviews
+ */
+function populateReviews(reviewList) {
+  Console.log('Populating reviews in modal...');
+  const listContainer = document.getElementById('reviews-list-container');
+  const entireList = document.createElement('ul');
+  entireList.id += 'reviews-list';
+
+  if (reviewList.length == 0) {
+    entireList.appendChild(noReviews());
+  } else { 
+    reviewList.forEach(review => {
+      entireList.appendChild(generateReview(review));
+    });
+  }
+
+  listContainer.appendChild(entireList);
+}
+
+/** Function that populates the review list when there aren't any
+ */
+function noReviews() {
+  const reviewEntry = document.createElement('li');
+  const entryText = document.createElement('p');
+  entryText.innerHTML = "No reviews yet!";
+  reviewEntry.appendChild(entryText);
+  return reviewEntry;
+}
+
+/** Creates a review element using grid styling
+ * Puts the review text in a <p> element
+ */
+function generateReview(review) {
+  const reviewEntry = document.createElement('li');
+
+  const reviewGrid = document.createElement('div');
+  reviewGrid.className += review-grid;
+
+  const reviewText = document.createElement('p');
+  reviewText.innerHTML += review.text;
+
+  reviewGrid.appendChild(reviewText);
+  reviewEntry.appendChild(reviewGrid);
+  return reviewEntry;
 }
 
 /**
@@ -361,53 +402,6 @@ function hideReviewModal() {
   const resultsBody = document.getElementById('results-body');
   reviewBody.classList.add('hidden');
   resultsBody.classList.remove('hidden');
-}
-
-/** Creates a structure to put reviews in modal
- * Takes in array of JS reviews
- */
-function populateReviews(reviewList) {
-  Console.log('Populating reviews in modal...');
-  const listContainer = document.getElementById('reviews-list-container');
-  const entireList = document.createElement('ul');
-  entireList.id += 'reviews-list';
-
-  if (reviewList.asSingleElement() == null) {
-    entireList.appendChild(noReviews());
-  } else { 
-    reviewList.forEach(review => {
-      entireList.appendChild(generateReview(review));
-    });
-  }
-
-  listContainer.appendChild(entireList);
-}
-
-/** Creates a review element using grid styling
- * Puts the review text in a <p> element
- */
-function generateReview(review) {
-  const reviewEntry = document.createElement('li');
-
-  const reviewGrid = document.createElement('div');
-  reviewGrid.className += review-grid;
-
-  const reviewText = document.createElement('p');
-  reviewText.innerHTML += review.text;
-
-  reviewGrid.appendChild(reviewText);
-  reviewEntry.appendChild(reviewGrid);
-  return reviewEntry;
-}
-
-/** Function that populates the review list when there aren't any
- */
-function noReviews() {
-  const reviewEntry = document.createElement('li');
-  const entryText = document.createElement('p');
-  entryText.innerHTML = "No reviews yet!";
-  reviewEntry.appendChild(entryText);
-  return reviewEntry;
 }
 
 /* close modal
