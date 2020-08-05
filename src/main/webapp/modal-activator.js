@@ -10,13 +10,14 @@ function setupModalButtons() {
       const modal = document.querySelector(button.dataset.modalTarget);
       triggerModal(modal);
     })
-  })
+  });
+
   modalClosers.forEach(button => {
     button.addEventListener('click', () => {
       const modal = button.closest('.modal');
       closeModal(modal);
     })
-  })
+  });
 }
 
 /* open modal function
