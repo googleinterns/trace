@@ -316,6 +316,97 @@ function generateResult(place) {
   return resultEntry;
 }
 
+/** Pseudomaster Review Function
+ * One central function that is called to trigger entire review interface
+ */
+function showReviews(placeID) {
+  let reviewsArray = fetchReviews(placeID);
+  displayReviewModal();
+  populateReviews(reviewsArray);
+
+}
+
+/** Fetch Reviews
+ * Queries ReviewServlet with elementID to find internal datastore
+ */
+function fetchReviews(elementID) {
+  console.log("Fetching reviews for ID: #" + elementID);
+  fetch('/review').then(response => response.json()).then((reviewsArr) => {
+    populateReviews(reviewsArr);
+  });
+}
+
+/**
+ * Review modal activation function
+ */
+function displayReviewModal() {
+  const button = document.getElementById('modal-backarrow');
+  button.classList.add("exit-button");
+  button.innerHTML += "&larr;";
+
+  const reviewBody = document.getElementById('reviews-body');
+  const resultsBody = document.getElementById('results-body');
+  reviewBody.classList.remove('hidden');
+  resultsBody.classList.add('hidden');
+}
+
+/**
+ * Review modal deactivation function
+ */
+function hideReviewModal() {
+  const reviewBody = document.getElementById('reviews-body');
+  const resultsBody = document.getElementById('results-body');
+  reviewBody.classList.add('hidden');
+  resultsBody.classList.remove('hidden');
+}
+
+/** Creates a structure to put reviews in modal
+ * Takes in array of JS reviews
+ */
+function populateReviews(reviewList) {
+  Console.log('Populating reviews in modal...');
+  const listContainer = document.getElementById('reviews-list-container');
+  const entireList = document.createElement('ul');
+  entireList.id += 'reviews-list';
+
+  if (reviewList.asSingleElement() == null) {
+    entireList.appendChild(noReviews());
+  } else { 
+    reviewList.forEach(review => {
+      entireList.appendChild(generateReview(review));
+    });
+  }
+
+  listContainer.appendChild(entireList);
+}
+
+/** Creates a review element using grid styling
+ * Puts the review text in a <p> element
+ */
+function generateReview(review) {
+  const reviewEntry = document.createElement('li');
+
+  const reviewGrid = document.createElement('div');
+  reviewGrid.className += review-grid;
+
+  const reviewText = document.createElement('p');
+  reviewText.innerHTML += review.text;
+
+  reviewGrid.appendChild(reviewText);
+  reviewEntry.appendChild(reviewGrid);
+  return reviewEntry;
+}
+
+/** Function that populates the review list when there aren't any
+ */
+function noReviews() {
+  const reviewEntry = document.createElement('li');
+  const entryText = document.createElement('p');
+  entryText.innerHTML = "No reviews yet!";
+  reviewEntry.appendChild(entryText);
+  return reviewEntry;
+}
+
 /* Redirect user to newReviews.html. */
 function newReviewsPage() {
   window.location.href = "newReview.html";

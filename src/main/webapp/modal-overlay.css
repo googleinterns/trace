@@ -45,6 +45,10 @@
   max-height: 80%;
 }
 
+.modal-body.hidden {
+  transform: translate(-50%, -50%) scale(1);
+}
+
 .modal-body ul {
   position: static;
   top: 20px;
@@ -101,6 +105,28 @@
   columns: 2;
   overflow: -moz-hidden-unscrollable;
 
+}
+
+.review-grid {
+  display: grid;
+  grid-template-columns: auto 40px;
+  grid-template-rows: auto auto;
+  align-self: center;
+}
+
+.review-grid p {
+  grid-row: 1 / 2;
+  grid-column: 1;
+}
+
+.review-grid .img#upvote {
+  grid-column: 2 / 3;
+  grid-row: 1 / 2;
+}
+
+.review-grid .img#downvote {
+  grid-column: 2 / 3;
+  grid-row: 2 / 3;
 }
 
 li {
