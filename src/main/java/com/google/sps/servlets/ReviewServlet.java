@@ -20,6 +20,11 @@ import javax.servlet.http.HttpServletResponse;
 @WebServlet("/review")
 public class ReviewServlet extends HttpServlet {
 
+
+  /**
+  * fetch method: retrieves all reviews of a given place
+  * @param request ServletRequest with field 'place_ID'
+  */
   @Override
   public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
     // Consider all data involved as preliminary
