@@ -64,13 +64,13 @@
 #popUp {
   border-radius: 10%;
   display: none;
-  height: 70%;
+  height: 65%;
   left: 50%;
   position: absolute;
   text-align: center;
   top: 50%;
-  transform: translate(-50%, -60%);
-  width: 80%;
+  transform: translate(-50%, -50%);
+  width: 50%;
   z-index: 10;
 }
 
@@ -139,9 +139,9 @@
   color: #35A853;
   font-size: calc(3vw);
   font-family: Arial;
-  height: 90%;
+  height: 60%;
   margin: 0 auto;
-  padding-top: 40px;
+  top: 10%;
   text-align: center;
   width: 70%;
 }
@@ -150,7 +150,6 @@
   display: inline-block;
   height: 20%;
   position: relative;
-  top: -110px;
   width: 97%;
 }
 
@@ -159,8 +158,7 @@
   color: #EA4235; /* Google Red. */
   cursor: pointer;
   font-weight: bold;
-  font-size: 60px;
-  padding: 16px;
+  font-size: 3vw;
   position: relative;
   transition: 0.6s ease;
   user-select: none;
@@ -181,7 +179,7 @@
 
 /* Login Button Specs. */
 .loginButton {
-  height: 30px;
+  height: 5%;
   left: 30%;
   position: relative;
   width: 30%;
