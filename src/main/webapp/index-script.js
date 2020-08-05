@@ -86,6 +86,7 @@ function loadMainButtons() {
     if (event.keyCode === 13) {
       var query = document.getElementById('searchForm').elements[0].value;
       var zipcode = document.getElementById('searchForm').elements[1].value;
+      console.log("-2!~!!~");
       searchByText(query, zipcode);
     }
   });
@@ -146,38 +147,46 @@ function searchByCoordinates(coordinate) {
     }
   });
 }
-
+/*
 function getCoordinates(zipcode) {
+  const promise = new Promise((resolve, reject) => {
     var geocoder = new google.maps.Geocoder();
     geocoder.geocode({ 'address': zipcode}, function (results, status) {
-        if (status == google.maps.GeocoderStatus.OK) {
-            var latitude = results[0].geometry.location.lat();
-            var longitude = results[0].geometry.location.lng();
-            console.log("request0: " + new google.maps.LatLng(latitude, longitude));
-            return new google.maps.LatLng(latitude, longitude);
+      if (status == google.maps.GeocoderStatus.OK) {
+        var latitude = results[0].geometry.location.lat();
+        var longitude = results[0].geometry.location.lng();
+        console.log("request0: " + new google.maps.LatLng(latitude, longitude));
+            resolve(new google.maps.LatLng(latitude, longitude));
         } else {
-            alert("Request failed.")
+            resolve(alert("Request failed."));
         }
     });
+  });
 }
-
+*/
 /* Search Places API for relevant locations using text query. */
 function searchByText(textQuery, textLocation) {
-  var locationRequest = null;
   const locationPromise = new Promise((resolve, reject) => {
-    locationRequest = getCoordinates(textLocation);
-    console.log("request1: " + locationRequest);
-    resolve(getCoordinates(textLocation));
-  }) 
-
+    var geocoder = new google.maps.Geocoder();
+    geocoder.geocode({ 'address': textLocation}, function (results, status) {
+      if (status == google.maps.GeocoderStatus.OK) {
+        var latitude = results[0].geometry.location.lat();
+        var longitude = results[0].geometry.location.lng();
+        console.log("request0: " + new google.maps.LatLng(latitude, longitude));
+            resolve(new google.maps.LatLng(latitude, longitude));
+        } else {
+            resolve();
+        }
+    });
+  }); 
   locationPromise.then((locationRequest) => {
-    console.log("request2: " + locationRequest);
+    console.log("request1: " + locationRequest);
     var request = {
       query: textQuery,
       location: locationRequest,
       fields: ['place_id', 'geometry']
     };
-
+ 
     var service = new google.maps.places.PlacesService(map);
     service.textSearch(request, (results, status) => {
       if (status == google.maps.places.PlacesServiceStatus.OK) {
