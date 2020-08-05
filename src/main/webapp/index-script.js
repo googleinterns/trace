@@ -168,7 +168,6 @@ function searchByText(textQuery, textLocation) {
  
   // Waits for location to be chosen, then runs search
   locationPromise.then((locationRequest) => {
-    console.log("request1: " + locationRequest);
     var request = {
       query: textQuery,
       location: locationRequest,
