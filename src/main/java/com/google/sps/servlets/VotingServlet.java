@@ -43,7 +43,7 @@ public class VotingServlet extends HttpServlet {
         review.setProperty("positive", ++positive);
         review.setProperty("total", ++total);
       } else {
-        int positive = (int) review.getProperty("negative");
+        int negative = (int) review.getProperty("negative");
         review.setProperty("negative", --negative);
         review.setProperty("total", --total);
       }
