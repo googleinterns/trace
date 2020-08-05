@@ -148,3 +148,11 @@ a {
 a:hover {
   color: rgba(230, 230, 230); /* Grey. */ 
 }
+
+#no-reviews {
+  border-color: black;
+  border-style: solid;
+  border-width: 4px;
+  font-size: 300%;
+  color: orange;
+}
