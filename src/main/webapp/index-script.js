@@ -153,7 +153,7 @@ function getCoordinates(zipcode) {
         if (status == google.maps.GeocoderStatus.OK) {
             var latitude = results[0].geometry.location.lat();
             var longitude = results[0].geometry.location.lng();
-            console.log("coordinates: " + new google.maps.LatLng(latitude, longitude));
+            console.log("request0: " + new google.maps.LatLng(latitude, longitude));
             return new google.maps.LatLng(latitude, longitude);
         } else {
             alert("Request failed.")
@@ -163,19 +163,27 @@ function getCoordinates(zipcode) {
 
 /* Search Places API for relevant locations using text query. */
 function searchByText(textQuery, textLocation) {
-  var locationRequest = getCoordinates(textLocation);
-  console.log("request: " + locationRequest);
-  var request = {
-    query: textQuery,
-    location: getCoordinates(textLocation),
-    fields: ['place_id', 'geometry']
-  };
+  var locationRequest = null;
+  const locationPromise = new Promise((resolve, reject) => {
+    locationRequest = getCoordinates(textLocation);
+    console.log("request1: " + locationRequest);
+    resolve(getCoordinates(textLocation));
+  }) 
 
-  var service = new google.maps.places.PlacesService(map);
-  service.textSearch(request, (results, status) => {
-    if (status == google.maps.places.PlacesServiceStatus.OK) {
-      handleSearchResults(results, service);
-    }
+  locationPromise.then((locationRequest) => {
+    console.log("request2: " + locationRequest);
+    var request = {
+      query: textQuery,
+      location: locationRequest,
+      fields: ['place_id', 'geometry']
+    };
+
+    var service = new google.maps.places.PlacesService(map);
+    service.textSearch(request, (results, status) => {
+      if (status == google.maps.places.PlacesServiceStatus.OK) {
+        handleSearchResults(results, service);
+      }
+    });
   });
 }
 
