@@ -147,8 +147,11 @@ a {
 
 a:hover {
   color: rgba(230, 230, 230); /* Grey. */ 
+<<<<<<< HEAD
 }
 
 #no-reviews {
   font-size: 300%;
+=======
+>>>>>>> Enables user to click on a search result and load the relevant reviews.
 }
