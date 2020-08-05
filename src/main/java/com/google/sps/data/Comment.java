@@ -2,12 +2,19 @@ package com.google.sps.data;
 
 import java.util.Date;
 
+/** Comment object class
+ * This class decribes the Comment object, used in storing information about an individual review
+ * that was left by a specific user. It works as an atomic block for keeping track of reviews.
+ */
 public class Comment {
 
   private final String author;
   private final String messageContent;
   private final Date timeStamp;
 
+  /** Order Comparator
+   * This comparator uses the compare function from the Date class to order Comments.
+   */
   public static final Comparator<Comment> ORDER_BY_DATE = new Comparator<Comment>() {
     @Override
     public int compare(Comment a, Comment b) {
@@ -15,24 +22,43 @@ public class Comment {
     }
   }
   
+  /** Constructor
+   *
+   * @param author the message author
+   * @param message the content of the message
+   * @param timeStamp the time of writing
+   */
   public Comment(String author, String message, Date timeStamp) {
     this.author = author;
     this.messageContent = message;
     this.timeStamp = timeStamp;
   }
 
+  /** Author Accessor method
+   * Accesses private variable
+   */
   public String getAuthor() {
     return this.author;
   }
 
+  /** Message Accessor method
+   * Accesses private variable
+   */
   public String getMessage() {
     return this.messageContent;
   }
 
+  /** Time Accessor method
+   * Accesses private variable
+   */
   public Date getTime() {
     return this.timeStamp;
   }
 
+  /** Update Comment
+   * This function is used when a author want's to submit a new comment for a location.
+   * This prevents the 'double voting' or 'duplicate feedback' of certain patrons.
+   */
   public void updateComment(String message, Date timeStamp) {
     this.messageContent = message;
     this.timeStamp = timeStamp;
