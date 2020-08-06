@@ -1,6 +1,7 @@
 package com.google.sps.data;
 
 import java.util.Date;
+import java.util.Comparator;
 
 /** 
  * Comment object class
@@ -10,8 +11,8 @@ import java.util.Date;
 public class Comment {
 
   private final String author;
-  private final String messageContent;
-  private final Date timestamp;
+  private String messageContent;
+  private Date timestamp;
 
   /**
    * Order Comparator
@@ -22,7 +23,7 @@ public class Comment {
     public int compare(Comment a, Comment b) {
       return a.getTime().compareTo(b.getTime());
     }
-  }
+  };
   
   /** 
    * Constructor

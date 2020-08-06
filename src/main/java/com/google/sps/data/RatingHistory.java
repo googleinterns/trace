@@ -12,7 +12,7 @@ public class RatingHistory {
 
   private final Date start;
   private int length;
-  private List<double> history;
+  private List<Double> history;
 
   /** 
    * Constructor
@@ -26,8 +26,8 @@ public class RatingHistory {
    * Accessor Method
    * Returns the array of aggregates
    */
-  public List<double> getHistory() {
-    return this.history();
+  public List<Double> getHistory() {
+    return this.history;
   }
   // TODO: Implement an updater function
 }
