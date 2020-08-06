@@ -101,6 +101,11 @@ public class ReviewServlet extends HttpServlet {
     location.addReview(review);
   }
 
+  /**
+   * Retrieval of PlaceReviews by id
+   * @param place_id The Maps API id for a location
+   * @return List<PlaceReviews> prepared query of the results
+   */
   public PlaceReviews getLocation(String place_id) {
     Filter placeFilter = new FilterPredicate("place_id", FilterOperator.EQUAL, place_id);
     Query query = new Query("PlaceReviews").setFilter(placeFilter);
