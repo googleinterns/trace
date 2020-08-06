@@ -94,8 +94,11 @@ public class ReviewServlet extends HttpServlet {
     response.sendRedirect("/index.html");
   }
 
+  /**
+   * This function interfaces with the ReviewServlet object
+   */
   public void postComment(PlaceReviews location, Comment review) {
-    // TODO Implement this function
+    location.addReview(review);
   }
 }
 
