@@ -55,8 +55,18 @@ public class PlaceReviews {
    * Replaces previous review with the new review for a given author
    */
    private void replaceReview(Comment review) {
-
+    Comment prevReview = getPrevReview(review.getAuthor());
    } 
+
+  /**
+   * Accessor Method
+   * Searches the existing Array of comments to find the other by the same author
+   * Assumes that there was a previous post by author
+   * @return Comment the previous comment
+   */
+   private Comment getPrevReview(String author) {
+     ArrayList<Comment> sortedComments = Collection.sort(this.reviews, ORDER_BY_AUTHOR);
+   }
 
   /** 
    * Updater method
