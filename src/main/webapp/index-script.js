@@ -118,10 +118,18 @@ function closeModal(modal) {
   overlay.classList.remove('active'); // Removes overlay and click blocker
   modal.classList.remove('active'); // Hides modal
 
-  document.getElementById('results-list-container').innerHTML = ''; // Clean results wrapper of all DOM elements
-  document.getElementById('reviews-list-container').innerHTML = ''; // Clean reviews wrapper of all DOM elements;
-  document.getElementById('results-body').style.display = "block"; // Set up results page for later use.
-  document.getElementById('reviews-body').style.display = "none"; // Hide reviews page.
+  // Clean reviews and results.
+  document.querySelectorAll('.list').forEach((item) => {
+    item.innerHTML = "";
+  });
+  // Hide modal content.
+  document.querySelectorAll('.modal-body').forEach((item) => {
+    item.style.display = "none";
+  });
+}
+
+/** Hide modal-backarrow. */
+function hideBackArrow() {
   const button = document.getElementById("modal-backarrow");
   button.style.display = "none"; // Hide back arrow.
   button.classList.remove("exit-button"); // Hide exit-button.
@@ -283,6 +291,7 @@ function triggerModal(modal) {
   if (modal == null) return;
   overlay.classList.add('active');
   modal.classList.add('active');
+  document.getElementById('results-body').style.display = "block";
   document.getElementById("modal-backarrow").style.display = "none";
 }
 
@@ -346,7 +355,6 @@ function generateResult(place) {
  * One central function that is called to trigger entire review interface
  */
 function showReviews(placeID) {
-  document.getElementById("modal-backarrow").style.display = "block";
   fetchReviews(placeID);
   displayReviewModal();
 }
@@ -359,6 +367,7 @@ function displayReviewModal() {
   button.classList.add("exit-button");
   button.innerHTML += "&larr;";
 
+  document.getElementById("modal-backarrow").style.display = "block";
   document.getElementById('results-body').style.display = "none";
   document.getElementById('reviews-body').style.display = "block";
 }
@@ -398,17 +407,19 @@ function newReviewButton(place_id) {
   button.type = "button";
   button.id = "new-review-button";
   button.innerHTML = "Add New Review " + "&oplus;";
-  button.addEventListener("click", () => {
-    window.location.href = 'newReview.html';
-    setPlaceID(place_id);
+  button.addEventListener("click", function() {
+    triggerNewReviewForm(place_id);
   });
   return button;
 }
 
-/** Wrapper function for newReview.html to set place_id onload. */
-function setPlaceID(place_id) {
+/** Hides reviews page and displays new-review form. */
+function triggerNewReviewForm(place_id) {
   document.getElementById("place_id").value = place_id;
+  document.getElementById("reviews-body").style.display = "none"; // Hide reviews page.
+  document.getElementById("rev-form-body").style.display = "block";
 }
+
 
 /**
  * Review modal activation function

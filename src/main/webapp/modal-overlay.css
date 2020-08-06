@@ -43,6 +43,7 @@
 .modal-body {
   padding: 10px 15px;
   max-height: 80%;
+  display: none;
 }
 
 .modal-body.hidden {
