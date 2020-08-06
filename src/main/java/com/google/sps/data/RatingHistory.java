@@ -3,7 +3,8 @@ package com.google.sps.data;
 import java.util.Date;
 import java.util.List;
 
-/** RatingHistory Class
+/** 
+ * RatingHistory Class
  * This object class is used to track the history of a locations aggregate score each month
  * Used as an object in the PlaceReviews
  */
@@ -13,7 +14,8 @@ public class RatingHistory {
   private int length;
   private List<double> history;
 
-  /** Constructor
+  /** 
+   * Constructor
    * Requires a start date for its constructor
    */
   public RatingHistory(Date start) {
