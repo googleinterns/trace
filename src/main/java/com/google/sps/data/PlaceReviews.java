@@ -14,7 +14,7 @@ import java.com.sps.data.RatingHistory;
  */
 public class PlaceReviews {
 
-  private final int place_id;
+  private final String place_id;
   private ArrayList<Comment> reviews;
   private HashSet<String> reviewers;
   private double rating;
@@ -24,7 +24,7 @@ public class PlaceReviews {
     * Constructor
     * This is the minimal, and avoided, constructor that makes an object without reviews.
     */
-  public PlaceReviews(int place_id) {
+  public PlaceReviews(String place_id) {
     this.place_id = place_id;
   }
 
@@ -32,7 +32,7 @@ public class PlaceReviews {
    * Constructor
    * This constructor provides an initial rating and review.
    */
-  public PlaceReviews(int place_id, Comment firstReview, double initialRating) {
+  public PlaceReviews(String place_id, Comment firstReview, double initialRating) {
     this.place_id = place_id;
     this.reviews.append(firstReview);
     this.rating = initialRating;
