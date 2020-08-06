@@ -55,7 +55,7 @@ public class ReviewServlet extends HttpServlet {
     Double rating = (Double) request.getParameter("rate");
 
     Comment newReview = new Comment(userEmail, reviewText, time);
-    PlaceReviews curLocation = new PlaceReviews(); // TODO grab current location by ID
+    List<PlaceReviews> curLocation = getLocation(place_id);
 
     // TODO: Add or modify current review
     // TODO: Create new PlaceReviews and initialize
