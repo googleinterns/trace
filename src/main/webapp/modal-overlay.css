@@ -112,6 +112,7 @@
   grid-template-columns: auto 40px;
   grid-template-rows: auto auto;
   align-self: center;
+  text-align: center;
 }
 
 .review-grid p {
