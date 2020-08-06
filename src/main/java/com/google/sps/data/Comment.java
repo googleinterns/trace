@@ -24,7 +24,8 @@ public class Comment {
     }
   }
   
-  /** Constructor
+  /** 
+   * Constructor
    *
    * @param author the message author
    * @param message the content of the message
