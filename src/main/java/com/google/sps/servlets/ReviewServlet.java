@@ -100,5 +100,9 @@ public class ReviewServlet extends HttpServlet {
   public void postComment(PlaceReviews location, Comment review) {
     location.addReview(review);
   }
+
+  public PlaceReviews getLocation(long place_id) {
+    // TODO Implement this function
+  }
 }
 
