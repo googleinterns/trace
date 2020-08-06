@@ -24,9 +24,20 @@ function loadMainButtons() {
   // Button to close the modal and deactiviate overlay
   modalClosers.forEach(button => {
     button.addEventListener('click', () => {
-      const modal = button.closest('.modal');
-      closeModal(modal);
-    })
+        const modal = button.closest('.modal');
+        closeModal(modal);
+    });
+  });
+  
+  const modalBackArrow = document.getElementById("modal-backarrow");
+  // Hide reviews page and display results page.
+  modalBackArrow.addEventListener("click", () => {
+    const button = document.getElementById("modal-backarrow");
+    button.innerHTML = '';
+    button.style.display = "none";
+    document.getElementById('results-body').style.display = "block"; // Display results page.
+    document.getElementById('reviews-body').style.display = "none"; // Hide reviews page.
+    document.getElementById('reviews-list-container').innerHTML = ''; // Clean reviews wrapper of all DOM elements;
   });
 }
 
@@ -39,24 +50,24 @@ function activateSearchBar() {
 
   // Make 'clear-icon' visible when user starts typing.
   searchBar.addEventListener("keyup", () => {
-    if(searchBar.value && clearIcon.style.visibility != "visible"){
-      clearIcon.style.visibility = "visible";
+    if(searchBar.value && clearIcon.style.display != "block"){
+      clearIcon.style.display = "block";
     } else if(!searchBar.value) {
-      clearIcon.style.visibility = "hidden";
+      clearIcon.style.display = "none";
     }
   });
 
   // Delete text and hide 'clear-icon' on click.
   clearIcon.addEventListener("click", () => {
     searchBar.value = "";
-    clearIcon.style.visibility = "hidden";
+    clearIcon.style.display = "none";
   });
 
   // Search Icon registers clicks and searches for location.
   searchIcon.addEventListener("click", () => {
     var query = document.getElementById('searchForm').elements[0].value;
-    var location = document.getElementById('searchForm').elements[1].value;
-    searchByText(query, location);
+    var zipcode = document.getElementById('searchForm').elements[1].value;
+    searchByText(query, zipcode);
   });
 
   // Prevent page from refreshing when you submit the form
@@ -69,8 +80,7 @@ function activateSearchBar() {
     // 13 is the key code for 'Enter' 
     if (event.keyCode === 13) {
       var query = document.getElementById('searchForm').elements[0].value;
-      var location = document.getElementById('searchForm').elements[1].value;
-      searchByText(query, location);
+      searchByText(query);
     }
   });
 }
@@ -83,22 +93,38 @@ function activateTutorial() {
   const tutorialText = document.getElementById("centralText");
 
   // Stub for previous button.
-  prev.addEventListener("click", function prevClick() {
+  prev.addEventListener("click", () => {
     tutorialText.innerHTML = "This button will take you to the previous page.";
   });
 
   // Stub for next button.
-  next.addEventListener("click", function nextClick() {
+  next.addEventListener("click", () => {
     tutorialText.innerHTML = "This button will take you to the next page.";
   });
 
   // Close tutorial window on exit click. Remove popUp listeners.
   closeTutorial.addEventListener("click", function close() {
     document.getElementById("popUp").style.display = "none";
-    prev.removeEventListener("click", prevClick);
-    next.removeEventListener("click", nextClick);
     closeTutorial.removeEventListener("click", close);
   });
+}
+
+/* close modal
+ * Undoes the modal opening, by removing the active classifier.
+ */
+function closeModal(modal) {
+  if (modal == null) return;
+  overlay.classList.remove('active'); // Removes overlay and click blocker
+  modal.classList.remove('active'); // Hides modal
+
+  document.getElementById('results-list-container').innerHTML = ''; // Clean results wrapper of all DOM elements
+  document.getElementById('reviews-list-container').innerHTML = ''; // Clean reviews wrapper of all DOM elements;
+  document.getElementById('results-body').style.display = "block"; // Set up results page for later use.
+  document.getElementById('reviews-body').style.display = "none"; // Hide reviews page.
+  const button = document.getElementById("modal-backarrow");
+  button.style.display = "none"; // Hide back arrow.
+  button.classList.remove("exit-button"); // Hide exit-button.
+  button.innerHTML = ''; // Clean exit button.
 }
 
 // Chooses whether to display 'Login' or 'Logout' button.
@@ -107,8 +133,6 @@ function toggleLoginLogout(){
   fetch('/login').then(response => response.text()).then(data => {
     // Fetches the first line of the /login file and splits it based on the dot symbol.
     const split = data.split(".")[0];
-    console.log(split);
-
     // If the split contains a user email, 
     // then a user is logged in and we can display the 'Logout' button
       if (split.length > 0){
@@ -255,24 +279,10 @@ function sortPlacesByRating(places) {
 
 /* Triggers the modal, and overlay, to follow the active CSS styling, making it appear. */
 function triggerModal(modal) {
-  console.log("Triggering modal.");
   if (modal == null) return;
-  overlay.classList.add('active'); // Activates overlay opacity styling
-  modal.classList.add('active'); // Makes modal appear by activating styling
-}
-
-/* Undoes the modal opening, by removing the active classifier. */
-function closeModal(modal) {
-  if (modal == null) return;
-  overlay.classList.remove('active'); // Removes overlay and click blocker
-  modal.classList.remove('active'); // Hides modal
-  cleanModal(modal);
-}
-
-/* Calls on closing of modal, wipes all results from inside of it. */
-function cleanModal(modal) {
-  const listContainer = document.getElementById('results-list-container');
-  listContainer.innerHTML = ''; // Clean wrapper of all DOM elements
+  overlay.classList.add('active');
+  modal.classList.add('active');
+  document.getElementById("modal-backarrow").style.display = "none";
 }
 
 /* This function takes in an array of JS places and creates an unordered
@@ -310,7 +320,7 @@ function generateResult(place) {
   
   // Relevant information to be displayed
   var tidbits = [
-    place.name,
+    "<a onclick=\"showReviews(\'" + place.place_id + "\');\">" + place.name + "</a>",
     place.international_phone_number,
     "<a href=\"" + place.website + "\">Site</a>",
     place.vicinity
@@ -335,9 +345,9 @@ function generateResult(place) {
  * One central function that is called to trigger entire review interface
  */
 function showReviews(placeID) {
-  let reviewsArray = fetchReviews(placeID);
+  document.getElementById("modal-backarrow").style.display = "block";
+  fetchReviews(placeID);
   displayReviewModal();
-  populateReviews(reviewsArray);
 }
 
 /** Fetch Reviews
@@ -358,32 +368,19 @@ function displayReviewModal() {
   button.classList.add("exit-button");
   button.innerHTML += "&larr;";
 
-  const reviewBody = document.getElementById('reviews-body');
-  const resultsBody = document.getElementById('results-body');
-  reviewBody.classList.remove('hidden');
-  resultsBody.classList.add('hidden');
-}
-
-/**
- * Review modal deactivation function
- */
-function hideReviewModal() {
-  const reviewBody = document.getElementById('reviews-body');
-  const resultsBody = document.getElementById('results-body');
-  reviewBody.classList.add('hidden');
-  resultsBody.classList.remove('hidden');
+  document.getElementById('results-body').style.display = "none";
+  document.getElementById('reviews-body').style.display = "block";
 }
 
 /** Creates a structure to put reviews in modal
  * Takes in array of JS reviews
  */
 function populateReviews(reviewList) {
-  Console.log('Populating reviews in modal...');
   const listContainer = document.getElementById('reviews-list-container');
   const entireList = document.createElement('ul');
   entireList.id += 'reviews-list';
 
-  if (reviewList.asSingleElement() == null) {
+  if (reviewList.length == 0) {
     entireList.appendChild(noReviews());
   } else { 
     reviewList.forEach(review => {
@@ -394,6 +391,18 @@ function populateReviews(reviewList) {
   listContainer.appendChild(entireList);
 }
 
+/**
+ * Review modal activation function
+ */
+function noReviews() {
+  const reviewEntry = document.createElement('li');
+  const entryText = document.createElement('p');
+  entryText.id = 'no-reviews';
+  entryText.innerHTML = "No reviews yet!";
+  reviewEntry.appendChild(entryText);
+  return reviewEntry;
+}
+
 /** Creates a review element using grid styling
  * Puts the review text in a <p> element
  */
@@ -401,23 +410,13 @@ function generateReview(review) {
   const reviewEntry = document.createElement('li');
 
   const reviewGrid = document.createElement('div');
-  reviewGrid.className += review-grid;
+  reviewGrid.className += 'review-grid';
 
   const reviewText = document.createElement('p');
-  reviewText.innerHTML += review.text;
+  reviewText.innerHTML += review;
 
   reviewGrid.appendChild(reviewText);
   reviewEntry.appendChild(reviewGrid);
-  return reviewEntry;
-}
-
-/** Function that populates the review list when there aren't any
- */
-function noReviews() {
-  const reviewEntry = document.createElement('li');
-  const entryText = document.createElement('p');
-  entryText.innerHTML = "No reviews yet!";
-  reviewEntry.appendChild(entryText);
   return reviewEntry;
 }
 

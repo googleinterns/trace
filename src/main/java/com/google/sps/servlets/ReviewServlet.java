@@ -36,7 +36,7 @@ public class ReviewServlet extends HttpServlet {
       long id = entity.getKey().getId();
       String message = (String) entity.getProperty("message");
       Date timestamp = (Date) entity.getProperty("date");
-      int total = (int) entity.getProperty("total");
+      long total = (long) entity.getProperty("total");
       reviews.add(message + " - " + timestamp.toString() + " ; " + total);
     }
 
