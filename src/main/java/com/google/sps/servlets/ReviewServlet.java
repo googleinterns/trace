@@ -93,4 +93,9 @@ public class ReviewServlet extends HttpServlet {
     // Redirect back so review appears on screen
     response.sendRedirect("/index.html");
   }
+
+  public void postComment(PlaceReviews location, Comment review) {
+    // TODO Implement this function
+  }
 }
+
