@@ -52,6 +52,8 @@
 }
    
 #search-icon {
+  background-color: white;
+  border-radius: 3vw;
   font-size: 2.5vw;
   height: 100%;
   left: -3.5%;
