@@ -416,11 +416,15 @@ function generateReview(review) {
   const reviewText = document.createElement('p');
   reviewText.innerHTML += review;
 
+
+  // TODO: Change innerHTML of both buttons to be something else or add an icon 
   const upvoteButton = document.createElement('button');
   upvoteButton.innerHTML += "Good";
+  upvote.id += "upvote";
 
   const downvoteButton = document.createElement('button');
   downvoteButton += "Bad";
+  downvote.id += "downvote";
 
   reviewGrid.appendChild(reviewText);
   reviewEntry.appendChild(reviewGrid);
