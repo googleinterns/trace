@@ -20,9 +20,10 @@ public class PlaceReviews {
   private double rating;
   private RatingHistory history;
 
-   Constructor
-   * This is the minimal, and avoided, constructor that makes an object without reviews.
-   */
+   /**
+    * Constructor
+    * This is the minimal, and avoided, constructor that makes an object without reviews.
+    */
   public PlaceReviews(int placeID) {
     this.placeID = placeID;
   }
