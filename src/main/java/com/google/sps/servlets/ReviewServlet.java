@@ -34,10 +34,11 @@ public class ReviewServlet extends HttpServlet {
   public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
     String place_id = request.getParameter("place_id");
     List<PlaceReviews> allLocations = queryLocation(place_id);
+    PlaceReviews location = trimQuery(allLocations);
   
     // Adds the review list to a GSON/JSON object so that can be used in Javascript code    
     response.setContentType("application/json");
-    String json = new Gson().toJson(allLocations);
+    String json = new Gson().toJson(location);
     response.getWriter().println(json);
   }
 
@@ -60,14 +61,14 @@ public class ReviewServlet extends HttpServlet {
 
     Comment newReview = new Comment(userEmail, reviewText, time);
     List<PlaceReviews> queryResults = queryLocation(place_id);
-
     PlaceReviews curLocation;
-    if (curLocation.size() == 0) { // There has not been a review before
-      curLocation = new PlaceReviews(place_id, newReview, rating);
-    } else { // Need to update review
-      curLocation.addReview(newReview);
-    }
 
+    if (queryResults.size() == 0) { // There has not been a review before
+      curLocation = new PlaceReviews(place_id, newReview, rating);
+    } else { // Add review
+      curLocation = trimQuery(queryResults);
+      curLocation.addReview(newReview); // Handles duplicate
+    }
     // TODO: Put back the new PlaceReviews
   
     // Redirect back so review appears on screen
