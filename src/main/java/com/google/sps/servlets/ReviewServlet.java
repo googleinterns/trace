@@ -22,13 +22,13 @@ public class ReviewServlet extends HttpServlet {
 
   /**
   * fetch method: retrieves all reviews of a given place
-  * @param request ServletRequest with field 'place_ID'
+  * @param request ServletRequest with field 'place_id'
   */
   @Override
   public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
-    int placeID = request.getParameter("place_ID");
+    String place_id = request.getParameter("place_id");
     // Consider all data involved as preliminary
-    Filter placeFilter = new FilterPredicate("place_ID", FilterOperator.EQUAL, place_ID);
+    Filter placeFilter = new FilterPredicate("place_id", FilterOperator.EQUAL, place_id);
     Query query = new Query("PlaceReviews").setFilter(placeFilter);
 
     DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
@@ -101,7 +101,7 @@ public class ReviewServlet extends HttpServlet {
     location.addReview(review);
   }
 
-  public PlaceReviews getLocation(long place_id) {
+  public PlaceReviews getLocation(String place_id) {
     // TODO Implement this function
   }
 }
