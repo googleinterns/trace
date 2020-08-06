@@ -44,10 +44,6 @@ function loadMainButtons() {
     var query = document.getElementById('searchForm').elements[0].value;
     var zipcode = document.getElementById('searchForm').elements[1].value;
     searchByText(query, zipcode);
-    let searchText = document.getElementById('search').value;
-    const query = searchText;
-    searchByText(query);
-    searchText = '';
   });
   
   // Stub for previous button.
