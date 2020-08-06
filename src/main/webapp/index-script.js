@@ -24,9 +24,19 @@ function loadMainButtons() {
   // Button to close the modal and deactiviate overlay
   modalClosers.forEach(button => {
     button.addEventListener('click', () => {
-      const modal = button.closest('.modal');
-      closeModal(modal);
-    })
+        const modal = button.closest('.modal');
+        closeModal(modal);
+    });
+  });
+
+  // Hide reviews page and display results page.
+  modalBackArrow.addEventListener("click", () => {
+    const button = document.getElementById("modal-backarrow");
+    button.innerHTML = '';
+    button.style.display = "none";
+    document.getElementById('results-body').style.display = "block"; // Display results page.
+    document.getElementById('reviews-body').style.display = "none"; // Hide reviews page.
+    document.getElementById('reviews-list-container').innerHTML = ''; // Clean reviews wrapper of all DOM elements;
   });
 }
 
@@ -69,8 +79,7 @@ function activateSearchBar() {
     // 13 is the key code for 'Enter' 
     if (event.keyCode === 13) {
       var query = document.getElementById('searchForm').elements[0].value;
-      var location = document.getElementById('searchForm').elements[1].value;
-      searchByText(query, location);
+      searchByText(query);
     }
   });
 }
@@ -97,6 +106,24 @@ function activateTutorial() {
     document.getElementById("popUp").style.display = "none";
     closeTutorial.removeEventListener("click", close);
   });
+}
+
+/* close modal
+ * Undoes the modal opening, by removing the active classifier.
+ */
+function closeModal(modal) {
+  if (modal == null) return;
+  overlay.classList.remove('active'); // Removes overlay and click blocker
+  modal.classList.remove('active'); // Hides modal
+
+  document.getElementById('results-list-container').innerHTML = ''; // Clean results wrapper of all DOM elements
+  document.getElementById('reviews-list-container').innerHTML = ''; // Clean reviews wrapper of all DOM elements;
+  document.getElementById('results-body').style.display = "block"; // Set up results page for later use.
+  document.getElementById('reviews-body').style.display = "none"; // Hide reviews page.
+  const button = document.getElementById("modal-backarrow");
+  button.style.display = "none"; // Hide back arrow.
+  button.classList.remove("exit-button"); // Hide exit-button.
+  button.innerHTML = ''; // Clean exit button.
 }
 
 // Chooses whether to display 'Login' or 'Logout' button.
@@ -252,8 +279,9 @@ function sortPlacesByRating(places) {
 /* Triggers the modal, and overlay, to follow the active CSS styling, making it appear. */
 function triggerModal(modal) {
   if (modal == null) return;
-  overlay.classList.add('active'); // Activates overlay opacity styling
-  modal.classList.add('active'); // Makes modal appear by activating styling
+  overlay.classList.add('active');
+  modal.classList.add('active');
+  document.getElementById("modal-backarrow").style.display = "none";
 }
 
 /* Undoes the modal opening, by removing the active classifier. */
@@ -330,6 +358,7 @@ function generateResult(place) {
  * One central function that is called to trigger entire review interface
  */
 function showReviews(placeID) {
+  document.getElementById("modal-backarrow").style.display = "block";
   fetchReviews(placeID);
   displayReviewModal();
 }
@@ -353,7 +382,7 @@ function displayReviewModal() {
   button.innerHTML += "&larr;";
 
   document.getElementById('results-body').style.display = "none";
-  document.getElementById('reviews-body').style.display = "block"
+  document.getElementById('reviews-body').style.display = "block";
 }
 
 /** Creates a structure to put reviews in modal
@@ -401,24 +430,6 @@ function generateReview(review) {
   reviewGrid.appendChild(reviewText);
   reviewEntry.appendChild(reviewGrid);
   return reviewEntry;
-}
-
-/* close modal
- * Undoes the modal opening, by removing the active classifier.
- */
-function closeModal(modal) {
-  if (modal == null) return;
-  overlay.classList.remove('active'); // Removes overlay and click blocker
-  modal.classList.remove('active'); // Hides modal
-  cleanModal(modal);
-}
-
-/* remove modal content function
- * Calls on closing of modal, wipes all results from inside of it.
- */
-function cleanModal(modal) {
-  const listContainer = document.getElementById('results-list-container');
-  listContainer.innerHTML = ''; // Clean wrapper of all DOM elements
 }
 
 /* Redirect user to newReviews.html. */
