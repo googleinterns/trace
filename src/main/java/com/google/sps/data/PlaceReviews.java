@@ -34,7 +34,7 @@ public class PlaceReviews {
    */
   public PlaceReviews(String place_id, Comment firstReview, double initialRating) {
     this.place_id = place_id;
-    this.reviews.append(firstReview);
+    this.reviews.add(firstReview);
     this.rating = initialRating;
     this.reviewers.add(firstReview.getAuthor());
   }
@@ -45,7 +45,7 @@ public class PlaceReviews {
    */
   public void addReview(Comment review) {
     if (!reviewers.contains(review.getAuthor())) {
-      this.reviews.append(review);
+      this.reviews.add(review);
     }
   }
 
