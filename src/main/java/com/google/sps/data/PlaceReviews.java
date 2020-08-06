@@ -2,8 +2,8 @@ package com.google.sps.data;
 
 import java.util.ArrayList;
 import java.util.HashSet;
-import java.com.google.sps.data.Comment;
-import java.com.google.sps.data.RatingHistory;
+import com.google.sps.data.Comment;
+import com.google.sps.data.RatingHistory;
 
 /** 
  * PlaceReviews object class
