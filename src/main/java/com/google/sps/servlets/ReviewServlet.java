@@ -63,11 +63,8 @@ public class ReviewServlet extends HttpServlet {
     Comment newReview = new Comment(userEmail, newReview, time);
     PlaceReviews curLocation = new PlaceReviews(); // TODO grab current location by ID
 
-    if (curLocation != null) {
-      // TODO: Add or modify current review
-    } else {
-      // TODO: Create new PlaceReviews and initialize
-    }
+    // TODO: Add or modify current review
+    // TODO: Create new PlaceReviews and initialize
 
     // TODO: Put back the new PlaceReviews
     if (newReview != null && newReview.length() > 0){
