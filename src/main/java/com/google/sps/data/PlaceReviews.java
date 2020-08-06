@@ -43,7 +43,7 @@ public class PlaceReviews {
    * Updater method
    * Adds a review to the existing PlaceReviews list of reviews
    */
-  public addReview(Comment review) {
+  public void addReview(Comment review) {
     if (!reviewers.contains(review.getAuthor())) {
       this.reviews.append(review);
     }
@@ -54,7 +54,7 @@ public class PlaceReviews {
    * This adds a rating to a given PlaceReviews aggregate rating
    * This does not permit a rating outside of [0, 10]
    */
-  public addRating(double rating) {
+  public void addRating(double rating) {
     if (rating > 10) {
       addRating(10);
     } else if (rating < 0) {
