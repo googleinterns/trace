@@ -59,16 +59,14 @@ public class ReviewServlet extends HttpServlet {
     Double rating = Double.parseDouble(ratingStr);
 
     Comment newReview = new Comment(userEmail, reviewText, time);
-    List<PlaceReviews> curLocation = queryLocation(place_id);
+    List<PlaceReviews> queryResults = queryLocation(place_id);
 
+    PlaceReviews curLocation;
     if (curLocation.size() == 0) { // There has not been a review before
-      PlaceReviews newLocation = new PlaceReviews(place_id, newReview, rating);
+      curLocation = new PlaceReviews(place_id, newReview, rating);
     } else { // Need to update review
-      
+      curLocation = trimQuery(queryResults);
     }
-
-    // TODO: Add or modify current review
-    // TODO: Create new PlaceReviews and initialize
 
     // TODO: Put back the new PlaceReviews
   
