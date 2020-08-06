@@ -2,8 +2,8 @@ package com.google.sps.data;
 
 import java.util.ArrayList;
 import java.util.HashSet;
-import java.com.sps.data.Comment;
-import java.com.sps.data.RatingHistory;
+import java.com.google.sps.data.Comment;
+import java.com.google.sps.data.RatingHistory;
 
 /** 
  * PlaceReviews object class
@@ -68,7 +68,7 @@ public class PlaceReviews {
    * Checks if author has posted at this location before
    * @return if the user has posted a review before for this location
    */
-  public bool hasReviewed(String person) {
+  public boolean hasReviewed(String person) {
     return this.reviewers.contains(person);
   }
 }
