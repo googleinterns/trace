@@ -55,11 +55,17 @@ public class ReviewServlet extends HttpServlet {
     Date time = new Date();
     String firstName = request.getParameter("firstname");
     String lastName = request.getParameter("lastname");
-    String rating = request.getParameter("rate"); // Convert to double or keep as string?
+    String ratingStr = request.getParameter("rate"); // Convert to double or keep as string?
+    Double rating = Double.parseDouble(ratingStr);
 
     Comment newReview = new Comment(userEmail, reviewText, time);
     List<PlaceReviews> curLocation = getLocation(place_id);
-    // TODO: Check if null
+
+    if (curLocation.asSingleElement() == null) { // There has not been a review before
+      PlaceReviews newLocation = new PlaceReviews(place_id, newReview, rating);
+    } else { // Need to update review
+      
+    }
 
     // TODO: Add or modify current review
     // TODO: Create new PlaceReviews and initialize
@@ -97,5 +103,14 @@ public class ReviewServlet extends HttpServlet {
 
     return places;
   }
+
+  /**
+   * Assert function
+   * Helper function from query to ensure only one location has been returned
+   * @return PlaceReviews single element
+   */
+   public PlaceReviews trimQuery(List<PlaceReviews>) {
+
+   }
 }
 
