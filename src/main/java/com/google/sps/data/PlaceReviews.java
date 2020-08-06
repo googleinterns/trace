@@ -64,6 +64,10 @@ public class PlaceReviews {
     }
   }
 
+  /**
+   * Checks if author has posted at this location before
+   * @return if the user has posted a review before for this location
+   */
   public bool hasReviewed(String person) {
     return this.reviewers.contains(person);
   }
