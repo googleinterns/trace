@@ -61,7 +61,7 @@ public class ReviewServlet extends HttpServlet {
     Comment newReview = new Comment(userEmail, reviewText, time);
     List<PlaceReviews> curLocation = getLocation(place_id);
 
-    if (curLocation.asSingleElement() == null) { // There has not been a review before
+    if (curLocation.size() == 0) { // There has not been a review before
       PlaceReviews newLocation = new PlaceReviews(place_id, newReview, rating);
     } else { // Need to update review
       
@@ -109,8 +109,12 @@ public class ReviewServlet extends HttpServlet {
    * Helper function from query to ensure only one location has been returned
    * @return PlaceReviews single element
    */
-   public PlaceReviews trimQuery(List<PlaceReviews>) {
-
+   public PlaceReviews trimQuery(List<PlaceReviews> queryResults) throws IOException {
+     if (queryResults.size() > 1 || queryResults.size() == 0) {
+       throw new IOException("Database Error: Multiple locations with same ID.");
+     } else {
+       return queryResults[0];
+     }
    }
 }
 
