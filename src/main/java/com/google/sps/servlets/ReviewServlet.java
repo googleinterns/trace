@@ -33,7 +33,7 @@ public class ReviewServlet extends HttpServlet {
   @Override
   public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
     String place_id = request.getParameter("place_id");
-    List<PlaceReviews> allLocations = getLocation(place_id);
+    List<PlaceReviews> allLocations = queryLocation(place_id);
   
     // Adds the review list to a GSON/JSON object so that can be used in Javascript code    
     response.setContentType("application/json");
@@ -59,7 +59,7 @@ public class ReviewServlet extends HttpServlet {
     Double rating = Double.parseDouble(ratingStr);
 
     Comment newReview = new Comment(userEmail, reviewText, time);
-    List<PlaceReviews> curLocation = getLocation(place_id);
+    List<PlaceReviews> curLocation = queryLocation(place_id);
 
     if (curLocation.size() == 0) { // There has not been a review before
       PlaceReviews newLocation = new PlaceReviews(place_id, newReview, rating);
@@ -88,7 +88,7 @@ public class ReviewServlet extends HttpServlet {
    * @param place_id The Maps API id for a location
    * @return List<PlaceReviews> prepared query of the results, expected to be singleton
    */
-  public List<PlaceReviews> getLocation(String place_id) {
+  public List<PlaceReviews> queryLocation(String place_id) {
     Filter placeFilter = new FilterPredicate("place_id", FilterOperator.EQUAL, place_id);
     Query query = new Query("PlaceReviews").setFilter(placeFilter);
 
