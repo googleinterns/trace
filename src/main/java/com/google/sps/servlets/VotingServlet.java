@@ -36,7 +36,6 @@ public class VotingServlet extends HttpServlet {
     // Check to make sure the datastore returned something
     if (results.asSingleEntity() != null){
       Entity review = results.asSingleEntity();
-      int negative = (int) review.getProperty("negative");
       int total = (int) review.getProperty("total");
       if (value == 1){
         int positive = (int) review.getProperty("positive");
