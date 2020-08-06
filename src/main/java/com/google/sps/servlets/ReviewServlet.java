@@ -66,6 +66,11 @@ public class ReviewServlet extends HttpServlet {
       curLocation = new PlaceReviews(place_id, newReview, rating);
     } else { // Need to update review
       curLocation = trimQuery(queryResults);
+      if (curLocation.reviewedBy(author)) {
+
+      } else {
+        
+      }
     }
 
     // TODO: Put back the new PlaceReviews
