@@ -28,7 +28,8 @@ public class PlaceReviews {
     this.placeID = placeID;
   }
 
-  /** Constructor
+  /** 
+   * Constructor
    * This constructor provides an initial rating and review.
    */
   public PlaceReviews(int placeID, Comment firstReview, double initialRating) {
