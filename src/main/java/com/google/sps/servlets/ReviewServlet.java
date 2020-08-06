@@ -56,7 +56,7 @@ public class ReviewServlet extends HttpServlet {
     String place_id = request.getParameter("place_id");
     String userEmail = userService.getCurrentUser().getEmail(); // Used to restrict user to one review/location
     String reviewText = request.getParameter("comment");
-    Date time = request.getParameter("timeStamp");
+    Date time = request.getParameter("timestamp");
     String firstName = request.getParameter("firstname");
     String lastName = request.getParameter("lastname");
     double rating = request.getParameter("rate");
