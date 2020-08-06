@@ -4,6 +4,9 @@ import com.google.appengine.api.datastore.DatastoreService;
 import com.google.appengine.api.datastore.DatastoreServiceFactory;
 import com.google.appengine.api.datastore.Entity;
 import com.google.appengine.api.datastore.PreparedQuery;
+import com.google.appengine.api.datastore.Query.Filter;
+import com.google.appengine.api.datastore.Query.FilterPredicate;
+import com.google.appengine.api.datastore.Query.FilterOperator;
 import com.google.appengine.api.datastore.Query;
 import com.google.appengine.api.datastore.Query.SortDirection;
 import java.util.*;
@@ -29,7 +32,7 @@ public class VotingServlet extends HttpServlet {
     // Find the review that corresponds to the clicked review
     String review_ID = request.getParameter("review_ID");
 
-    Filter reviewFilter = new FilterPredicate("review_ID", FilterOperator.EQUAL, place_ID);
+    Filter reviewFilter = new FilterPredicate("review_ID", FilterOperator.EQUAL, review_ID);
     Query query = new Query("Review").setFilter(reviewFilter);
 
     PreparedQuery results = datastore.prepare(query);
