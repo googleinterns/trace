@@ -46,8 +46,10 @@ public class ReviewServlet extends HttpServlet {
     response.getWriter().println(json);
   }
 
-  /** Retrieves data from new-review submission form and creates relevant entity.
-      Assumes user is logged in before posting review. */
+  /** 
+   * Retrieves data from new-review submission form and creates relevant entity.
+   * Assumes user is logged in before posting review.
+   */
   @Override
   public void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
     UserService userService = UserServiceFactory.getUserService();
