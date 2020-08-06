@@ -27,7 +27,7 @@ public class RatingHistory {
    * Returns the array of aggregates
    */
   public List<Double> getHistory() {
-    return this.history();
+    return this.history;
   }
   // TODO: Implement an updater function
 }
