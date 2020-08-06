@@ -11,7 +11,7 @@ import java.util.Comparator;
 public class Comment {
 
   private final String author;
-  private final String messageContent;
+  private String messageContent;
   private final Date timestamp;
 
   /**
