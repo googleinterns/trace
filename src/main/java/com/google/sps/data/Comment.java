@@ -26,7 +26,7 @@ public class Comment {
   
   /** 
    * Constructor
-   *
+   * Creates a full Comment object, used when an author leaves a review for the first time
    * @param author the message author
    * @param message the content of the message
    * @param timestamp the time of writing
