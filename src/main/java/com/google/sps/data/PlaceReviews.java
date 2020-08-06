@@ -45,8 +45,11 @@ public class PlaceReviews {
    * Adds a review to the existing PlaceReviews list of reviews
    */
   public void addReview(Comment review) {
-    if (!reviewers.contains(review.getAuthor())) {
+    if (this.reviewedBy(review.author)) {
+      replaceReview(review);
+    } else {
       this.reviews.add(review);
+      this.reviewers.add(review.author);
     }
   }
 

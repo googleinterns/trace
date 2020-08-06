@@ -65,12 +65,7 @@ public class ReviewServlet extends HttpServlet {
     if (curLocation.size() == 0) { // There has not been a review before
       curLocation = new PlaceReviews(place_id, newReview, rating);
     } else { // Need to update review
-      curLocation = trimQuery(queryResults);
-      if (curLocation.reviewedBy(author)) {
-
-      } else {
-        
-      }
+      curLocation.addReview(newReview);
     }
 
     // TODO: Put back the new PlaceReviews
