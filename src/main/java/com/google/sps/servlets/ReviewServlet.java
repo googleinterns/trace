@@ -104,14 +104,22 @@ public class ReviewServlet extends HttpServlet {
   /**
    * Retrieval of PlaceReviews by id
    * @param place_id The Maps API id for a location
-   * @return List<PlaceReviews> prepared query of the results
+   * @return List<PlaceReviews> prepared query of the results, expected to be singleton
    */
-  public PlaceReviews getLocation(String place_id) {
+  public List<PlaceReviews> getLocation(String place_id) {
     Filter placeFilter = new FilterPredicate("place_id", FilterOperator.EQUAL, place_id);
     Query query = new Query("PlaceReviews").setFilter(placeFilter);
 
     DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
     PreparedQuery results = datastore.prepare(query);
+
+    List<PlaceReviews> places = new ArrayList<PlaceReviews>();
+    for (Entity entity : results.asIterable()) {
+      PlaceReviews cur = entity.getProperty("placeData");
+      places.add(cur);
+    }
+
+    return places;
   }
 }
 
