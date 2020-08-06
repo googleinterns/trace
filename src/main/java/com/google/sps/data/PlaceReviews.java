@@ -56,6 +56,7 @@ public class PlaceReviews {
    */
    private void replaceReview(Comment review) {
     Comment prevReview = getPrevReview(review.getAuthor());
+    prevReview.updateComment(review);
    } 
 
   /**
@@ -63,6 +64,7 @@ public class PlaceReviews {
    * Searches the existing Array of comments to find the other by the same author
    * Assumes that there was a previous post by author
    * @return Comment the previous comment
+   *                  TODO: Implement with Binary Search
    */
    private Comment getPrevReview(String author) {
      ArrayList<Comment> sortedComments = Collection.sort(this.reviews, ORDER_BY_AUTHOR);
@@ -71,6 +73,7 @@ public class PlaceReviews {
          return cur;
        }
      }
+     return sortedComments[0];
    }
 
   /** 
