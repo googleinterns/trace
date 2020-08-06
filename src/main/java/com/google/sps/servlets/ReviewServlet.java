@@ -16,7 +16,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-/** Servlet that returns reviews.*/
+/* Servlet that returns reviews.*/
 @WebServlet("/review")
 public class ReviewServlet extends HttpServlet {
 
@@ -49,7 +49,6 @@ public class ReviewServlet extends HttpServlet {
    * Retrieves data from new-review submission form and creates relevant entity.
    * Assumes user is logged in before posting review.
    */
-  @Override
   public void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
     UserService userService = UserServiceFactory.getUserService();
 
