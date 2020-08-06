@@ -11,17 +11,31 @@ function loadPage() {
 
 /* Activates functionality for search bar and log-in button. */
 function loadMainButtons() {
-  const head = document.getElementsByTagName('head');
-  const clearIcon = document.querySelector(".clear-icon");
-  const searchIcon = document.querySelector("#search-icon");
-  const searchForm = document.querySelector("#searchForm");
-  const searchBar = document.querySelector(".search");
+  activateSearchBar();
+  activateTutorial();
+
   const logInButton = document.querySelector("#login");
-  const closeTutorial = document.querySelector("#exit");
-  const prev = document.querySelector(".prev");
-  const next = document.querySelector(".next");
-  const tutorialText = document.getElementById("centralText");
+  // Calls login servlet onclick.
+  logInButton.addEventListener("click", () => {
+    window.location.href = "/login";
+  }); 
+
   const modalClosers = document.querySelectorAll('[data-modal-close-button]');
+  // Button to close the modal and deactiviate overlay
+  modalClosers.forEach(button => {
+    button.addEventListener('click', () => {
+      const modal = button.closest('.modal');
+      closeModal(modal);
+    })
+  });
+}
+
+/* Adds mouse listeners to searchBar-related html items. */
+function activateSearchBar() {
+  const searchIcon = document.querySelector("#search-icon");
+  const searchBar = document.querySelector(".search");
+  const searchForm = document.querySelector("#searchForm");
+  const clearIcon = document.querySelector(".clear-icon");
 
   // Make 'clear-icon' visible when user starts typing.
   searchBar.addEventListener("keyup", () => {
@@ -41,39 +55,9 @@ function loadMainButtons() {
   // Search Icon registers clicks and searches for location.
   searchIcon.addEventListener("click", () => {
     var query = document.getElementById('searchForm').elements[0].value;
-    var zipcode = document.getElementById('searchForm').elements[1].value;
-    searchByText(query, zipcode);
+    var location = document.getElementById('searchForm').elements[1].value;
+    searchByText(query, location);
   });
-  
-  // Stub for previous button.
-  prev.addEventListener("click", function prevClick() {
-    tutorialText.innerHTML = "This button will take you to the previous page.";
-  });
-
-  // Stub for next button.
-  next.addEventListener("click", function nextClick() {
-    tutorialText.innerHTML = "This button will take you to the next page.";
-  });
-
-  // Close tutorial window on exit click. Remove popUp listeners.
-  closeTutorial.addEventListener("click", function close() {
-    document.getElementById("popUp").style.display = "none";
-    prev.removeEventListener("click", prevClick);
-    next.removeEventListener("click", nextClick);
-    closeTutorial.removeEventListener("click", close);
-  });
-
-  // Button to close the modal and deactiviate overlay
-  modalClosers.forEach(button => {
-    button.addEventListener('click', () => {
-      const modal = button.closest('.modal');
-      closeModal(modal);
-    })
-  });
-  
-  logInButton.addEventListener("click", () => {
-    window.location.href="/login" 
-  }); 
 
   // Prevent page from refreshing when you submit the form
   searchForm.addEventListener('submit', function(event) {
@@ -91,6 +75,32 @@ function loadMainButtons() {
   });
 }
 
+/* Adds mouse listeners to tutorial-related html items. */
+function activateTutorial() {
+  const closeTutorial = document.querySelector("#exit");
+  const prev = document.querySelector(".prev");
+  const next = document.querySelector(".next");
+  const tutorialText = document.getElementById("centralText");
+
+  // Stub for previous button.
+  prev.addEventListener("click", function prevClick() {
+    tutorialText.innerHTML = "This button will take you to the previous page.";
+  });
+
+  // Stub for next button.
+  next.addEventListener("click", function nextClick() {
+    tutorialText.innerHTML = "This button will take you to the next page.";
+  });
+
+  // Close tutorial window on exit click. Remove popUp listeners.
+  closeTutorial.addEventListener("click", function close() {
+    document.getElementById("popUp").style.display = "none";
+    prev.removeEventListener("click", prevClick);
+    next.removeEventListener("click", nextClick);
+    closeTutorial.removeEventListener("click", close);
+  });
+}
+
 // Chooses whether to display 'Login' or 'Logout' button.
 function toggleLoginLogout(){
   const logInButton = document.querySelector("#login");
@@ -98,6 +108,7 @@ function toggleLoginLogout(){
     // Fetches the first line of the /login file and splits it based on the dot symbol.
     const split = data.split(".")[0];
     console.log(split);
+
     // If the split contains a user email, 
     // then a user is logged in and we can display the 'Logout' button
       if (split.length > 0){
@@ -116,12 +127,6 @@ function createMap() {
     document.getElementById('map'),
     {center: googleplex, zoom: 13,
     mapTypeControlOptions: {mapTypeIds: ['roadmap']}});
-
-  // Create the initial InfoWindow.
-  var infoWindow = new google.maps.InfoWindow(
-      {content: 'Open javascript console (ctrl + shift + j) then click the map to see the placeIDs of nearby locations (within 50m)',
-       position: googleplex});
-  infoWindow.open(map);
 
   // Search by coordinates on map click.
   map.addListener('click', function(mapsMouseEvent) {
@@ -229,14 +234,11 @@ function handleSearchResults(results, service) {
   });
 }
 
-// Place-holder for function that fills out search results page.
+/* Fills out search results page. */
 function populateSearch(places) {
   places = sortPlacesByRating(places);
-  console.log(places);
   triggerModal(document.getElementById("results-popup"));
   populateResults(places);
-  
-  console.log("Finished populating modal.");
 }
 
 /* Adds a field 'rating' to each place with a random integer to
@@ -251,9 +253,7 @@ function sortPlacesByRating(places) {
   return places;
 }
 
-/* open modal function
- * This triggers the modal, and overlay, to follow the active CSS styling, making it appear.
- */
+/* Triggers the modal, and overlay, to follow the active CSS styling, making it appear. */
 function triggerModal(modal) {
   console.log("Triggering modal.");
   if (modal == null) return;
@@ -261,9 +261,7 @@ function triggerModal(modal) {
   modal.classList.add('active'); // Makes modal appear by activating styling
 }
 
-/* close modal
- * Undoes the modal opening, by removing the active classifier.
- */
+/* Undoes the modal opening, by removing the active classifier. */
 function closeModal(modal) {
   if (modal == null) return;
   overlay.classList.remove('active'); // Removes overlay and click blocker
@@ -271,20 +269,15 @@ function closeModal(modal) {
   cleanModal(modal);
 }
 
-/* remove modal content function
- * Calls on closing of modal, wipes all results from inside of it.
- */
+/* Calls on closing of modal, wipes all results from inside of it. */
 function cleanModal(modal) {
   const listContainer = document.getElementById('results-list-container');
   listContainer.innerHTML = ''; // Clean wrapper of all DOM elements
 }
 
-/* populate modal result list function
- * This function takes in an array of JS places
- * It creates an unorder list container to be populated
- */
+/* This function takes in an array of JS places and creates an unordered
+ * list container to be populated. */
 function populateResults(places) {
-  console.log('Populating results modal...');
   const listContainer = document.getElementById('results-list-container');
   const entireList = document.createElement('ul'); // Results ul
   entireList.id += "results-list";
