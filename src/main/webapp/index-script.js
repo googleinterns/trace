@@ -68,10 +68,6 @@ function activateSearchBar() {
     var query = document.getElementById('searchForm').elements[0].value;
     var zipcode = document.getElementById('searchForm').elements[1].value;
     searchByText(query, zipcode);
-    let searchText = document.getElementById('search').value;
-    const query = searchText;
-    searchByText(query);
-    searchText = '';
   });
 
   // Prevent page from refreshing when you submit the form
@@ -87,24 +83,6 @@ function activateSearchBar() {
       searchByText(query);
     }
   });
-}
-
-/* close modal
- * Undoes the modal opening, by removing the active classifier.
- */
-function closeModal(modal) {
-  if (modal == null) return;
-  overlay.classList.remove('active'); // Removes overlay and click blocker
-  modal.classList.remove('active'); // Hides modal
-
-  document.getElementById('results-list-container').innerHTML = ''; // Clean results wrapper of all DOM elements
-  document.getElementById('reviews-list-container').innerHTML = ''; // Clean reviews wrapper of all DOM elements;
-  document.getElementById('results-body').style.display = "block"; // Set up results page for later use.
-  document.getElementById('reviews-body').style.display = "none"; // Hide reviews page.
-  const button = document.getElementById("modal-backarrow");
-  button.style.display = "none"; // Hide back arrow.
-  button.classList.remove("exit-button"); // Hide exit-button.
-  button.innerHTML = ''; // Clean exit button.
 }
 
 /* Adds mouse listeners to tutorial-related html items. */
@@ -129,6 +107,24 @@ function activateTutorial() {
     document.getElementById("popUp").style.display = "none";
     closeTutorial.removeEventListener("click", close);
   });
+}
+
+/* close modal
+ * Undoes the modal opening, by removing the active classifier.
+ */
+function closeModal(modal) {
+  if (modal == null) return;
+  overlay.classList.remove('active'); // Removes overlay and click blocker
+  modal.classList.remove('active'); // Hides modal
+
+  document.getElementById('results-list-container').innerHTML = ''; // Clean results wrapper of all DOM elements
+  document.getElementById('reviews-list-container').innerHTML = ''; // Clean reviews wrapper of all DOM elements;
+  document.getElementById('results-body').style.display = "block"; // Set up results page for later use.
+  document.getElementById('reviews-body').style.display = "none"; // Hide reviews page.
+  const button = document.getElementById("modal-backarrow");
+  button.style.display = "none"; // Hide back arrow.
+  button.classList.remove("exit-button"); // Hide exit-button.
+  button.innerHTML = ''; // Clean exit button.
 }
 
 // Chooses whether to display 'Login' or 'Logout' button.
@@ -289,12 +285,6 @@ function triggerModal(modal) {
   document.getElementById("modal-backarrow").style.display = "none";
 }
 
-/* Calls on closing of modal, wipes all results from inside of it. */
-function cleanModal(modal) {
-  const listContainer = document.getElementById('results-list-container');
-  listContainer.innerHTML = ''; // Clean wrapper of all DOM elements
-}
-
 /* This function takes in an array of JS places and creates an unordered
  * list container to be populated. */
 function populateResults(places) {
@@ -401,7 +391,8 @@ function populateReviews(reviewList) {
   listContainer.appendChild(entireList);
 }
 
-/** Function that populates the review list when there aren't any
+/**
+ * Review modal activation function
  */
 function noReviews() {
   const reviewEntry = document.createElement('li');
@@ -427,36 +418,6 @@ function generateReview(review) {
   reviewGrid.appendChild(reviewText);
   reviewEntry.appendChild(reviewGrid);
   return reviewEntry;
-}
-
-/**
- * Review modal activation function
- */
-function noReviews() {
-  const reviewEntry = document.createElement('li');
-  const entryText = document.createElement('p');
-  entryText.id = 'no-reviews';
-  entryText.innerHTML = "No reviews yet!";
-  reviewEntry.appendChild(entryText);
-  return reviewEntry;
-}
-
-/* close modal
- * Undoes the modal opening, by removing the active classifier.
- */
-function closeModal(modal) {
-  if (modal == null) return;
-  overlay.classList.remove('active'); // Removes overlay and click blocker
-  modal.classList.remove('active'); // Hides modal
-
-  document.getElementById('results-list-container').innerHTML = ''; // Clean results wrapper of all DOM elements
-  document.getElementById('reviews-list-container').innerHTML = ''; // Clean reviews wrapper of all DOM elements;
-  document.getElementById('results-body').style.display = "block"; // Set up results page for later use.
-  document.getElementById('reviews-body').style.display = "none"; // Hide reviews page.
-  const button = document.getElementById("modal-backarrow");
-  button.style.display = "none"; // Hide back arrow.
-  button.classList.remove("exit-button"); // Hide exit-button.
-  button.innerHTML = ''; // Clean exit button.
 }
 
 /* Redirect user to newReviews.html. */
