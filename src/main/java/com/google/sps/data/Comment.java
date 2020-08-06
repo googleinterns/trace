@@ -37,21 +37,24 @@ public class Comment {
     this.timestamp = timestamp;
   }
 
-  /** Author Accessor method
+  /** 
+   * Author Accessor method
    * Accesses private variable
    */
   public String getAuthor() {
     return this.author;
   }
 
-  /** Message Accessor method
+  /** 
+   * Message Accessor method
    * Accesses private variable
    */
   public String getMessage() {
     return this.messageContent;
   }
 
-  /** Time Accessor method
+  /** 
+   * Time Accessor method
    * Accesses private variable
    */
   public Date getTime() {
