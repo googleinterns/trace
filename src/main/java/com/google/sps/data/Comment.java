@@ -82,4 +82,14 @@ public class Comment {
     this.messageContent = message;
     this.timestamp = timestamp;
   }
+
+  /** 
+   * Update Comment
+   * This function is used when a author want's to submit a new comment for a location.
+   * This prevents the 'double voting' or 'duplicate feedback' of certain patrons.
+   */
+  public void updateComment(Comment newReview) {
+    this.messageContent = newReview.message;
+    this.timestamp = newReview.timestamp;
+  }
 }
