@@ -22,7 +22,7 @@ public class Comment {
     public int compare(Comment a, Comment b) {
       return a.getTime().compareTo(b.getTime());
     }
-  }
+  };
   
   /** 
    * Constructor
