@@ -61,7 +61,8 @@ public class Comment {
     return this.timestamp;
   }
 
-  /** Update Comment
+  /** 
+   * Update Comment
    * This function is used when a author want's to submit a new comment for a location.
    * This prevents the 'double voting' or 'duplicate feedback' of certain patrons.
    */
