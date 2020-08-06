@@ -27,7 +27,7 @@ public class VotingServlet extends HttpServlet {
       
     DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
 
-    int value = 0; //(int) request.getParameter("vote");
+    String value = "";//request.body;
 
     // Find the review that corresponds to the clicked review
     String review_ID = request.getParameter("review_ID");
@@ -41,7 +41,7 @@ public class VotingServlet extends HttpServlet {
     if (results.asSingleEntity() != null){
       Entity review = results.asSingleEntity();
       int total = (int) review.getProperty("total");
-      if (value == 1){
+      if (value == "1"){
         int positive = (int) review.getProperty("positive");
         review.setProperty("positive", ++positive);
         review.setProperty("total", ++total);
