@@ -52,37 +52,17 @@ public class ReviewServlet extends HttpServlet {
     Date time = new Date();
     String firstName = request.getParameter("firstname");
     String lastName = request.getParameter("lastname");
-    Double rating = (Double) request.getParameter("rate");
+    String rating = request.getParameter("rate"); // Convert to double or keep as string?
 
     Comment newReview = new Comment(userEmail, reviewText, time);
     List<PlaceReviews> curLocation = getLocation(place_id);
+    // TODO: Check if null
 
     // TODO: Add or modify current review
     // TODO: Create new PlaceReviews and initialize
 
     // TODO: Put back the new PlaceReviews
-    if (newReview != null && newReview.length() > 0){
-      // Entity containing public reviews
-      Entity reviewEntity = new Entity("Review");
-      reviewEntity.setProperty("rating", rating);
-      Date date = new Date();
-      reviewEntity.setProperty("date", date);
-
-      reviewEntity.setProperty("message", newReview);
-      reviewEntity.setProperty("fullName", firstName + " " + lastName);
-      reviewEntity.setProperty("rating", rating);
-      reviewEntity.setProperty("email", userEmail);
-      reviewEntity.setProperty("place_id", place_id);
-      
-      // Total + Postive + Negative all set at 0 to start.
-      reviewEntity.setProperty("total", 0);
-      reviewEntity.setProperty("negative", 0);
-      reviewEntity.setProperty("positive", 0);
-
-      // Add the new review to a Datastore
-      DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
-      datastore.put(reviewEntity);
-    }
+  
     // Redirect back so review appears on screen
     response.sendRedirect("/index.html");
   }
