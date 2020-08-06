@@ -22,7 +22,8 @@ public class RatingHistory {
     this.start = start;
   }
 
-  /** Accessor Method
+  /** 
+   * Accessor Method
    * Returns the array of aggregates
    */
   public List<double> getHistory() {
