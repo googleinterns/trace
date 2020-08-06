@@ -90,7 +90,7 @@ public class ReviewServlet extends HttpServlet {
 
     List<PlaceReviews> places = new ArrayList<PlaceReviews>();
     for (Entity entity : results.asIterable()) {
-      PlaceReviews cur = entity.getProperty("placeData");
+      PlaceReviews cur = (PlaceReviews) entity.getProperty("placeData");
       places.add(cur);
     }
 
