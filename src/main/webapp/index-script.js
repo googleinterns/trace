@@ -351,16 +351,6 @@ function showReviews(placeID) {
   displayReviewModal();
 }
 
-/** Fetch Reviews
- * Queries ReviewServlet with elementID to find internal datastore
- */
-function fetchReviews(elementID) {
-  console.log("Fetching reviews for ID: #" + elementID);
-  fetch('/review').then(response => response.json()).then((reviewsArr) => {
-    populateReviews(reviewsArr);
-  });
-}
-
 /**
  * Review modal activation function
  */
@@ -373,10 +363,20 @@ function displayReviewModal() {
   document.getElementById('reviews-body').style.display = "block";
 }
 
+/** Fetch Reviews
+ * Queries ReviewServlet with elementID to find internal datastore
+ */
+function fetchReviews(placeID) {
+  console.log("Fetching reviews for ID: #" + placeID);
+  fetch('/review').then(response => response.json()).then((reviewsArr) => {
+    populateReviews(reviewsArr, placeID);
+  });
+}
+
 /** Creates a structure to put reviews in modal
  * Takes in array of JS reviews
  */
-function populateReviews(reviewList) {
+function populateReviews(reviewList, placeID) {
   const listContainer = document.getElementById('reviews-list-container');
   const entireList = document.createElement('ul');
   entireList.id += 'reviews-list';
@@ -388,8 +388,26 @@ function populateReviews(reviewList) {
       entireList.appendChild(generateReview(review));
     });
   }
-
+  entireList.appendChild(newReviewButton(placeID));
   listContainer.appendChild(entireList);
+}
+
+/** Creates a new-review button for users to post their own review. */
+function newReviewButton(place_id) {
+  const button = document.createElement('button');
+  button.type = "button";
+  button.id = "new-review-button";
+  button.innerHTML = "Add New Review " + "&oplus;";
+  button.addEventListener("click", () => {
+    window.location.href = 'newReview.html';
+    setPlaceID(place_id);
+  });
+  return button;
+}
+
+/** Wrapper function for newReview.html to set place_id onload. */
+function setPlaceID(place_id) {
+  document.getElementById("place_id").value = place_id;
 }
 
 /**
@@ -419,14 +437,4 @@ function generateReview(review) {
   reviewGrid.appendChild(reviewText);
   reviewEntry.appendChild(reviewGrid);
   return reviewEntry;
-}
-
-/* Redirect user to newReviews.html. */
-function newReviewsPage() {
-  window.location.href = "newReview.html";
-}
-
-/* Loads currentLocation into newReview form. */
-function loadPlaceID() {
-  document.getElementById("place_id").value = currentLocation;
 }
