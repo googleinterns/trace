@@ -102,7 +102,11 @@ public class ReviewServlet extends HttpServlet {
   }
 
   public PlaceReviews getLocation(String place_id) {
-    // TODO Implement this function
+    Filter placeFilter = new FilterPredicate("place_id", FilterOperator.EQUAL, place_id);
+    Query query = new Query("PlaceReviews").setFilter(placeFilter);
+
+    DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
+    PreparedQuery results = datastore.prepare(query);
   }
 }
 
