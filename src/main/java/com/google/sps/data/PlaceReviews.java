@@ -39,7 +39,8 @@ public class PlaceReviews {
     this.reviewers.add(firstReview.getAuthor());
   }
 
-  /** Updater method
+  /** 
+   * Updater method
    * Adds a review to the existing PlaceReviews list of reviews
    */
   public addReview(Comment review) {
