@@ -54,7 +54,7 @@ public class ReviewServlet extends HttpServlet {
     String lastName = request.getParameter("lastname");
     Double rating = (Double) request.getParameter("rate");
 
-    Comment newReview = new Comment(userEmail, newReview, time);
+    Comment newReview = new Comment(userEmail, reviewText, time);
     PlaceReviews curLocation = new PlaceReviews(); // TODO grab current location by ID
 
     // TODO: Add or modify current review

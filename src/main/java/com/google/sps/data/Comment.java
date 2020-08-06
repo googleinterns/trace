@@ -12,7 +12,7 @@ public class Comment {
 
   private final String author;
   private String messageContent;
-  private final Date timestamp;
+  private Date timestamp;
 
   /**
    * Order Comparator
