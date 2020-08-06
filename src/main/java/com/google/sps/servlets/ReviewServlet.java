@@ -52,7 +52,7 @@ public class ReviewServlet extends HttpServlet {
     Date time = new Date();
     String firstName = request.getParameter("firstname");
     String lastName = request.getParameter("lastname");
-    double rating = request.getParameter("rate");
+    Double rating = (Double) request.getParameter("rate");
 
     Comment newReview = new Comment(userEmail, newReview, time);
     PlaceReviews curLocation = new PlaceReviews(); // TODO grab current location by ID
