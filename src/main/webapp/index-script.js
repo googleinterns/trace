@@ -32,12 +32,11 @@ function loadMainButtons() {
   const modalBackArrow = document.getElementById("modal-backarrow");
   // Hide reviews page and display results page.
   modalBackArrow.addEventListener("click", () => {
-    const button = document.getElementById("modal-backarrow");
-    button.innerHTML = '';
-    button.style.display = "none";
+    hideBackArrow();
     document.getElementById('results-body').style.display = "block"; // Display results page.
     document.getElementById('reviews-body').style.display = "none"; // Hide reviews page.
     document.getElementById('reviews-list-container').innerHTML = ''; // Clean reviews wrapper of all DOM elements;
+    document.getElementById('rev-form-body').style.display = "none";
   });
 }
 
@@ -126,14 +125,14 @@ function closeModal(modal) {
   document.querySelectorAll('.modal-body').forEach((item) => {
     item.style.display = "none";
   });
+  hideBackArrow();
 }
 
 /** Hide modal-backarrow. */
 function hideBackArrow() {
   const button = document.getElementById("modal-backarrow");
-  button.style.display = "none"; // Hide back arrow.
-  button.classList.remove("exit-button"); // Hide exit-button.
-  button.innerHTML = ''; // Clean exit button.
+  button.innerHTML = '';
+  button.style.display = "none";
 }
 
 // Chooses whether to display 'Login' or 'Logout' button.

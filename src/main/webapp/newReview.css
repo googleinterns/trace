@@ -1,5 +1,5 @@
 /* Style inputs, select elements and textareas */
-input[type=text], select, textarea{
+input[class=text], select, textarea{
   border: 1px solid #ccc;
   border-radius: 4px;
   box-sizing: border-box;
