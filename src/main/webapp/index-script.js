@@ -416,8 +416,16 @@ function generateReview(review) {
   const reviewText = document.createElement('p');
   reviewText.innerHTML += review;
 
+  const upvoteButton = document.createElement('button');
+  upvoteButton.innerHTML += "Good";
+
+  const downvoteButton = document.createElement('button');
+  downvoteButton += "Bad";
+
   reviewGrid.appendChild(reviewText);
   reviewEntry.appendChild(reviewGrid);
+  reviewEntry.appendChild(upvoteButton);
+  reviewEntry.appendChild(downvoteButton);
   return reviewEntry;
 }
 
