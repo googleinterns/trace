@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.HashSet;
 import com.google.sps.data.Comment;
 import com.google.sps.data.RatingHistory;
+import java.util.Collections;
 
 /** 
  * PlaceReviews object class
@@ -54,7 +55,7 @@ public class PlaceReviews {
    * Replaces previous review with the new review for a given author
    */
    private void replaceReview(Comment review) {
-     
+
    } 
 
   /** 

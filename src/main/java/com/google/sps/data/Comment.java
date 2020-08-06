@@ -2,7 +2,6 @@ package com.google.sps.data;
 
 import java.util.Date;
 import java.util.Comparator;
-import java.util.Collections;
 
 /** 
  * Comment object class
