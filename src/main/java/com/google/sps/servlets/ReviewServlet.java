@@ -33,11 +33,12 @@ public class ReviewServlet extends HttpServlet {
   @Override
   public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
     String place_id = request.getParameter("place_id");
-    List<PlaceReviews> allLocations = getLocation(place_id);
+    List<PlaceReviews> allLocations = queryLocation(place_id);
+    PlaceReviews location = trimQuery(allLocations);
   
     // Adds the review list to a GSON/JSON object so that can be used in Javascript code    
     response.setContentType("application/json");
-    String json = new Gson().toJson(allLocations);
+    String json = new Gson().toJson(location);
     response.getWriter().println(json);
   }
 
@@ -54,15 +55,19 @@ public class ReviewServlet extends HttpServlet {
     Date time = new Date();
     String firstName = request.getParameter("firstname");
     String lastName = request.getParameter("lastname");
-    String rating = request.getParameter("rate"); // Convert to double or keep as string?
+    String ratingStr = request.getParameter("rate"); // Convert to double or keep as string?
+    Double rating = Double.parseDouble(ratingStr);
 
     Comment newReview = new Comment(userEmail, reviewText, time);
-    List<PlaceReviews> curLocation = getLocation(place_id);
-    // TODO: Check if null
+    List<PlaceReviews> queryResults = queryLocation(place_id);
+    PlaceReviews curLocation;
 
-    // TODO: Add or modify current review
-    // TODO: Create new PlaceReviews and initialize
-
+    if (queryResults.size() == 0) { // There has not been a review before
+      curLocation = new PlaceReviews(place_id, newReview, rating);
+    } else { // Add review
+      curLocation = trimQuery(queryResults);
+      curLocation.addReview(newReview); // Handles duplicate
+    }
     // TODO: Put back the new PlaceReviews
   
     // Redirect back so review appears on screen
@@ -81,7 +86,7 @@ public class ReviewServlet extends HttpServlet {
    * @param place_id The Maps API id for a location
    * @return List<PlaceReviews> prepared query of the results, expected to be singleton
    */
-  public List<PlaceReviews> getLocation(String place_id) {
+  public List<PlaceReviews> queryLocation(String place_id) {
     Filter placeFilter = new FilterPredicate("place_id", FilterOperator.EQUAL, place_id);
     Query query = new Query("PlaceReviews").setFilter(placeFilter);
 
@@ -96,5 +101,18 @@ public class ReviewServlet extends HttpServlet {
 
     return places;
   }
+
+  /**
+   * Assert function
+   * Helper function from query to ensure only one location has been returned
+   * @return PlaceReviews single element
+   */
+   public PlaceReviews trimQuery(List<PlaceReviews> queryResults) throws IOException {
+     if (queryResults.size() > 1 || queryResults.size() == 0) {
+       throw new IOException("Database Error: Multiple locations with same ID.");
+     } else {
+       return queryResults[0];
+     }
+   }
 }
 

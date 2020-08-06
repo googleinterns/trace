@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.HashSet;
 import com.google.sps.data.Comment;
 import com.google.sps.data.RatingHistory;
+import java.util.Collections;
 
 /** 
  * PlaceReviews object class
@@ -44,10 +45,39 @@ public class PlaceReviews {
    * Adds a review to the existing PlaceReviews list of reviews
    */
   public void addReview(Comment review) {
-    if (!reviewers.contains(review.getAuthor())) {
+    if (this.reviewedBy(review.author)) {
+      replaceReview(review);
+    } else {
       this.reviews.add(review);
+      this.reviewers.add(review.author);
     }
   }
+
+  /**
+   * Updater method
+   * Replaces previous review with the new review for a given author
+   */
+   private void replaceReview(Comment review) {
+    Comment prevReview = getPrevReview(review.getAuthor());
+    prevReview.updateComment(review);
+   } 
+
+  /**
+   * Accessor Method
+   * Searches the existing Array of comments to find the other by the same author
+   * Assumes that there was a previous post by author
+   * @return Comment the previous comment
+   *                  TODO: Implement with Binary Search
+   */
+   private Comment getPrevReview(String author) {
+     ArrayList<Comment> sortedComments = Collection.sort(this.reviews, ORDER_BY_AUTHOR);
+     for (Comment cur : sortedComments) {
+       if (cur.getAuthor() == author) {
+         return cur;
+       }
+     }
+     return sortedComments[0];
+   }
 
   /** 
    * Updater method
@@ -68,7 +98,7 @@ public class PlaceReviews {
    * Checks if author has posted at this location before
    * @return if the user has posted a review before for this location
    */
-  public boolean hasReviewed(String person) {
+  public boolean reviewedBy(String person) {
     return this.reviewers.contains(person);
   }
 }
