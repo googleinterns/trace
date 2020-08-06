@@ -49,6 +49,14 @@ public class PlaceReviews {
     }
   }
 
+  /**
+   * Updater method
+   * Replaces previous review with the new review for a given author
+   */
+   private void replaceReview(Comment review) {
+     
+   } 
+
   /** 
    * Updater method
    * This adds a rating to a given PlaceReviews aggregate rating

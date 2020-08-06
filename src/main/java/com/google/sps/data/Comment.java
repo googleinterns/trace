@@ -24,6 +24,17 @@ public class Comment {
       return a.getTime().compareTo(b.getTime());
     }
   };
+
+  /**
+   * Order Comparator by Author
+   * This comparator orders the comments by their author
+   */
+  public static final Comparator<Comment> ORDER_BY_AUTHOR = new Comparator<Comment>() {
+    @Override
+    public int compare(Comment a, Comment b) {
+      return a.author.compareTo(b.author);
+    }
+  };
   
   /** 
    * Constructor
