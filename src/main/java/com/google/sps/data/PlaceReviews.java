@@ -49,7 +49,8 @@ public class PlaceReviews {
     }
   }
 
-  /** Updater method
+  /** 
+   * Updater method
    * This adds a rating to a given PlaceReviews aggregate rating
    * This does not permit a rating outside of [0, 10]
    */
