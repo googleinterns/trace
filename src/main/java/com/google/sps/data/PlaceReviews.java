@@ -63,4 +63,8 @@ public class PlaceReviews {
       this.rating += (rating / entries);
     }
   }
+
+  public bool hasReviewed(String person) {
+    return this.reviewers.contains(person);
+  }
 }
