@@ -66,6 +66,11 @@ public class PlaceReviews {
    */
    private Comment getPrevReview(String author) {
      ArrayList<Comment> sortedComments = Collection.sort(this.reviews, ORDER_BY_AUTHOR);
+     for (Comment cur : sortedComments) {
+       if (cur.getAuthor() == author) {
+         return cur;
+       }
+     }
    }
 
   /** 
