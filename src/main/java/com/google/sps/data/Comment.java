@@ -2,7 +2,8 @@ package com.google.sps.data;
 
 import java.util.Date;
 
-/** Comment object class
+/** 
+ * Comment object class
  * This class decribes the Comment object, used in storing information about an individual review
  * that was left by a specific user. It works as an atomic block for keeping track of reviews.
  */
@@ -12,7 +13,8 @@ public class Comment {
   private final String messageContent;
   private final Date timestamp;
 
-  /** Order Comparator
+  /**
+   * Order Comparator
    * This comparator uses the compare function from the Date class to order Comments.
    */
   public static final Comparator<Comment> ORDER_BY_DATE = new Comparator<Comment>() {
