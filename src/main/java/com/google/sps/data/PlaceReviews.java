@@ -60,7 +60,7 @@ public class PlaceReviews {
     } else if (rating < 0) {
       addRating(0);
     } else {
-      this.rating += (rating / entries);
+      this.rating += (rating / reviewers.size());
     }
   }
 
