@@ -28,7 +28,8 @@ function loadMainButtons() {
         closeModal(modal);
     });
   });
-
+  
+  const modalBackArrow = document.getElementById("modal-backarrow");
   // Hide reviews page and display results page.
   modalBackArrow.addEventListener("click", () => {
     const button = document.getElementById("modal-backarrow");
@@ -67,37 +68,12 @@ function activateSearchBar() {
     var query = document.getElementById('searchForm').elements[0].value;
     var zipcode = document.getElementById('searchForm').elements[1].value;
     searchByText(query, zipcode);
-  });
-  
-  // Stub for previous button.
-  prev.addEventListener("click", () => {
-    tutorialText.innerHTML = "This button will take you to the previous page.";
-  });
-
-  // Stub for next button.
-  next.addEventListener("click", () => {
-    tutorialText.innerHTML = "This button will take you to the next page.";
+    let searchText = document.getElementById('search').value;
+    const query = searchText;
+    searchByText(query);
+    searchText = '';
   });
 
-  // Close tutorial window on exit click. Remove popUp listeners.
-  closeTutorial.addEventListener("click", function close() {
-    document.getElementById("popUp").style.display = "none";
-    closeTutorial.removeEventListener("click", close);
-  });
-
-  // Button to close the modal and deactiviate overlay
-  modalClosers.forEach(button => {
-    button.addEventListener('click', () => {
-      const modal = button.closest('.modal');
-      closeModal(modal);
-    })
-  });
-  
-  logInButton.addEventListener("click", () => {
-    window.location.href="/login" 
-  }); 
-
->>>>>>> delete prevClick and nextClick functions.
   // Prevent page from refreshing when you submit the form
   searchForm.addEventListener('submit', function(event) {
       event.preventDefault();
@@ -111,6 +87,24 @@ function activateSearchBar() {
       searchByText(query);
     }
   });
+}
+
+/* close modal
+ * Undoes the modal opening, by removing the active classifier.
+ */
+function closeModal(modal) {
+  if (modal == null) return;
+  overlay.classList.remove('active'); // Removes overlay and click blocker
+  modal.classList.remove('active'); // Hides modal
+
+  document.getElementById('results-list-container').innerHTML = ''; // Clean results wrapper of all DOM elements
+  document.getElementById('reviews-list-container').innerHTML = ''; // Clean reviews wrapper of all DOM elements;
+  document.getElementById('results-body').style.display = "block"; // Set up results page for later use.
+  document.getElementById('reviews-body').style.display = "none"; // Hide reviews page.
+  const button = document.getElementById("modal-backarrow");
+  button.style.display = "none"; // Hide back arrow.
+  button.classList.remove("exit-button"); // Hide exit-button.
+  button.innerHTML = ''; // Clean exit button.
 }
 
 /* Adds mouse listeners to tutorial-related html items. */
