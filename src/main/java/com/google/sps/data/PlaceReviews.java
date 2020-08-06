@@ -5,7 +5,8 @@ import java.util.HashSet;
 import java.com.sps.data.Comment;
 import java.com.sps.data.RatingHistory;
 
-/** PlaceReviews object class
+/** 
+ * PlaceReviews object class
  * The PlaceReviews object, used as the master object detailing a locations reviews and ratings
  * Uses implementations of smaller Comment and RatingHistory class.
  * Does not permit multiple reviews by one author for a given location.
@@ -19,7 +20,7 @@ public class PlaceReviews {
   private double rating;
   private RatingHistory history;
 
-  /** Constructor
+   Constructor
    * This is the minimal, and avoided, constructor that makes an object without reviews.
    */
   public PlaceReviews(int placeID) {
