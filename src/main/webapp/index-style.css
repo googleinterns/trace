@@ -41,13 +41,14 @@
 }
 
 #zipcode {
-  border-radius: 35px;
-  height: 35px;
-  width: 100px;
-  padding: 2px 23px 2px 40px;
-  outline: 0;
-  background-color: white;
-  font-size: 25px;
+  height: 50%;
+  left: 50%;
+  min-width: 100px;
+  top: 60%;
+  transform: translate(-50%, -50%);
+  padding-left: 12.5%;
+  position: absolute;
+  width: 55%;
 }
    
 #search-icon {
