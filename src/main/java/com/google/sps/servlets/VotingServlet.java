@@ -21,7 +21,7 @@ public class VotingServlet extends HttpServlet {
   /* Captures request to vote and records it in the appropriate entity. */
   @Override
   public void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
-      
+      /*
     String place_ID = request.getParameter("place_ID");
     Filter placeFilter = new FilterPredicate("place_ID", FilterOperator.EQUAL, place_ID);
     Query query = new Query("Review").setFilter(placeFilter);
@@ -50,5 +50,6 @@ public class VotingServlet extends HttpServlet {
     // Redirect back
     // TODO: Update value in place without redirecting
     response.sendRedirect("/index.html");
+    */
   }
 }
