@@ -67,18 +67,20 @@ public class ReviewServlet extends HttpServlet {
     
     // Query for reviews from place_id.
     String place_id = request.getParameter("place_id");
-    PlaceReviews curLocation = queryLocation(place_id);
+    PlaceReviews curLocation = queryLocation(place_id, false);
 
-    if (queryResults.size() == 0) { // There has not been a review before
+    if (!curLocation) { // There has not been a review before
       String ratingStr = request.getParameter("rate"); // Convert to double or keep as string?
       Double rating = Double.parseDouble(ratingStr);
       curLocation = new PlaceReviews(place_id, newReview, rating);
+      Entity entity = new Entity("PlaceReviews");
     } else { // Add review
       curLocation.addReview(newReview); // Handles duplicate
+      Entity entity = queryLocation(curLocation.place_id, true); // Retrieve existing entity.
     }
-    // TODO: Put back the new PlaceReviews
-    Entity newReview = new Entity("PlaceReviews");
-    entity.setProperty("placeData", curLocation);
+
+    entity.setProperty("placeData", location);
+    datastore.put(entity);
 
     // Redirect back so review appears on screen
     response.sendRedirect("/index.html");
@@ -96,7 +98,7 @@ public class ReviewServlet extends HttpServlet {
    * @param place_id The Maps API id for a location
    * @return Returns a single instance of PlaceReviews which contains all reviews for a single place.
    */
-  public PlaceReviews queryLocation(String place_id) {
+  public PlaceReviews queryLocation(String place_id, boolean forEntity) {
     Filter placeFilter = new FilterPredicate("place_id", FilterOperator.EQUAL, place_id);
     Query query = new Query("PlaceReviews").setFilter(placeFilter);
 
@@ -104,24 +106,32 @@ public class ReviewServlet extends HttpServlet {
     PreparedQuery results = datastore.prepare(query);
 
     List<PlaceReviews> places = new ArrayList<PlaceReviews>();
+    List<Entity> correspondingEntities = new ArrayList<Entity>();
     for (Entity entity : results.asIterable()) {
       PlaceReviews cur = (PlaceReviews) entity.getProperty("placeData");
+      correspondingEntities.add(entity);
       places.add(cur);
     }
-    return trimQuery(places);
+    PlaceReviews location = trimQuery(places);
+    if(location == null) {
+      return location;
+    }
+    // Returns either the PlaceReviews or the corresponding Entity.
+    return forEntity ? correspondingEntities.get(0) : location;
   }
 
   /**
    * Assert function
-   * Helper function from query to ensure only one location has been returned
+   * Helper function from query to ensure only one or no locations have been returned.
    * @return PlaceReviews single element
    */
   public PlaceReviews trimQuery(List<PlaceReviews> queryResults) throws IOException {
     if (queryResults.size() > 1) {
       throw new IOException("Database Error: Multiple locations with same ID.");
-    } else {
-      return queryResults.get(0);
+    } else if(queryResults.size() == 0) {
+      return null;
     }
+    return queryResults.get(0);
   }
 }
 
