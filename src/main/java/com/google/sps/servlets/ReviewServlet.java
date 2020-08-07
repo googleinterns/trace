@@ -80,7 +80,9 @@ public class ReviewServlet extends HttpServlet {
       curLocation.addReview(newReview); // Handles duplicate
     }
     // TODO: Put back the new PlaceReviews
-  
+    Entity newReview = new Entity("PlaceReviews");
+    entity.setProperty("placeData", curLocation);
+
     // Redirect back so review appears on screen
     response.sendRedirect("/index.html");
   }
@@ -95,9 +97,9 @@ public class ReviewServlet extends HttpServlet {
   /**
    * Retrieval of PlaceReviews by id
    * @param place_id The Maps API id for a location
-   * @return List<PlaceReviews> prepared query of the results, expected to be singleton
+   * @return Returns a single instance of PlaceReviews which contains all reviews for a single place.
    */
-  public List<PlaceReviews> queryLocation(String place_id) {
+  public PlaceReviews queryLocation(String place_id) {
     Filter placeFilter = new FilterPredicate("place_id", FilterOperator.EQUAL, place_id);
     Query query = new Query("PlaceReviews").setFilter(placeFilter);
 
@@ -109,8 +111,7 @@ public class ReviewServlet extends HttpServlet {
       PlaceReviews cur = (PlaceReviews) entity.getProperty("placeData");
       places.add(cur);
     }
-
-    return places;
+    return trimQuery(places);
   }
 
   /**
