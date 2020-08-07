@@ -67,16 +67,13 @@ public class ReviewServlet extends HttpServlet {
     
     // Query for reviews from place_id.
     String place_id = request.getParameter("place_id");
-    List<PlaceReviews> queryResults = queryLocation(place_id);
+    PlaceReviews curLocation = queryLocation(place_id);
 
-    // Post review.
-    PlaceReviews curLocation;
     if (queryResults.size() == 0) { // There has not been a review before
       String ratingStr = request.getParameter("rate"); // Convert to double or keep as string?
       Double rating = Double.parseDouble(ratingStr);
       curLocation = new PlaceReviews(place_id, newReview, rating);
     } else { // Add review
-      curLocation = trimQuery(queryResults);
       curLocation.addReview(newReview); // Handles duplicate
     }
     // TODO: Put back the new PlaceReviews
@@ -120,7 +117,7 @@ public class ReviewServlet extends HttpServlet {
    * @return PlaceReviews single element
    */
   public PlaceReviews trimQuery(List<PlaceReviews> queryResults) throws IOException {
-    if (queryResults.size() > 1 || queryResults.size() == 0) {
+    if (queryResults.size() > 1) {
       throw new IOException("Database Error: Multiple locations with same ID.");
     } else {
       return queryResults.get(0);
