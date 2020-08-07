@@ -54,6 +54,7 @@ public class ReviewServlet extends HttpServlet {
    */
   public void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
     UserService userService = UserServiceFactory.getUserService();
+    DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
 
     // Currently unused.
     String firstName = request.getParameter("firstname");
@@ -67,16 +68,16 @@ public class ReviewServlet extends HttpServlet {
     
     // Query for reviews from place_id.
     String place_id = request.getParameter("place_id");
-    PlaceReviews curLocation = queryLocation(place_id, false);
-
+    PlaceReviews curLocation = queryLocation(place_id, datastore, false);
+    Entity entity;
     if (!curLocation) { // There has not been a review before
       String ratingStr = request.getParameter("rate"); // Convert to double or keep as string?
       Double rating = Double.parseDouble(ratingStr);
       curLocation = new PlaceReviews(place_id, newReview, rating);
-      Entity entity = new Entity("PlaceReviews");
+      entity = new Entity("PlaceReviews");
     } else { // Add review
       curLocation.addReview(newReview); // Handles duplicate
-      Entity entity = queryLocation(curLocation.place_id, true); // Retrieve existing entity.
+      entity = queryLocation(curLocation.place_id, datastore, true); // Retrieve existing entity.
     }
 
     entity.setProperty("placeData", location);
@@ -96,13 +97,15 @@ public class ReviewServlet extends HttpServlet {
   /**
    * Retrieval of PlaceReviews by id
    * @param place_id The Maps API id for a location
+   * @param datastore Current DatastoreService for saving PlaceReviews
+   * @param forEntity Boolean that indicates whether the user is requesting a PlaceReviews
+   * or Entity instance for the corresponding place_id.
    * @return Returns a single instance of PlaceReviews which contains all reviews for a single place.
    */
-  public PlaceReviews queryLocation(String place_id, boolean forEntity) {
+  public PlaceReviews queryLocation(String place_id, DatastoreService datastore, boolean forEntity) {
     Filter placeFilter = new FilterPredicate("place_id", FilterOperator.EQUAL, place_id);
     Query query = new Query("PlaceReviews").setFilter(placeFilter);
 
-    DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
     PreparedQuery results = datastore.prepare(query);
 
     List<PlaceReviews> places = new ArrayList<PlaceReviews>();
