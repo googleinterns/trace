@@ -5,8 +5,8 @@
     <title>TRACE</title>
     <link rel="stylesheet" href="index-style.css">
     <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
-    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyB-kjcAxxbrQeJJEvSg5XgkTmGI4aZLS5E&libraries=places"></script>
     <script src="index-script.js"></script>
+    <script src="api.js"></script>
   </head>
   <body onload="loadPage();">
     <div id="map"></div>
@@ -15,17 +15,18 @@
         <i id="search-icon" class="material-icons">search</i>
         <form id="searchForm">
           <input id="search" class="search" placeholder="Search" type="text" >
+          <input id="zipcode" placeholder="Located by..." type="text">
         </form>
         <div class="clear-icon">x</div>
       </div>
       <div class="loginButton">
         <button id="login" data-text-swap="Logout">Login</button>
       </div>
-    </div>
+    </div> 
     <div id="popUp">
       <div id="header">
+        <p id="headerText">Welcome To TRACE</p>
         <div id="exit">x</div>
-          <p id="headerText">Welcome To TRACE</p>
       </div>
       <div id="lower">
         <div id="lowerCenter">
@@ -43,10 +44,14 @@
       <div class="modal" id="results-popup">
         <div class="modal-header"> 
           <div class="modal-title">Results</div>
+          <button id="modal-backarrow"></button>
           <button data-modal-close-button class="exit-button">&times;</button>
         </div>
-        <div class="modal-body">
-          <div id="results-list"></div>
+        <div class="modal-body" id="results-body">
+          <div id="results-list-container"></div>
+        </div>
+        <div class="modal-body" id="reviews-body">
+          <div id="reviews-list-container"></div>
         </div>
       </div>
       <div id="overlay"></div>

@@ -45,6 +45,10 @@
   max-height: 80%;
 }
 
+.modal-body.hidden {
+  transform: translate(-50%, -50%) scale(1);
+}
+
 .modal-body ul {
   position: static;
   top: 20px;
@@ -61,8 +65,9 @@
   -webkit-overflow-scrolling: touch;
 }
 
-.modal-body div#results-list {
-  max-height: inherit;
+/* Custom max-height to not overrun modal body */
+.modal-body ul#results-list {
+  max-height: 74vh;
 }
 
 /* The gray overlay of the map background */
@@ -99,7 +104,28 @@
   grid-column: 2 / 4;
   columns: 2;
   overflow: -moz-hidden-unscrollable;
+}
 
+.review-grid {
+  display: grid;
+  grid-template-columns: auto 40px;
+  grid-template-rows: auto auto;
+  align-self: center;
+}
+
+.review-grid p {
+  grid-row: 1 / 2;
+  grid-column: 1;
+}
+
+.review-grid .img#upvote {
+  grid-column: 2 / 3;
+  grid-row: 1 / 2;
+}
+
+.review-grid .img#downvote {
+  grid-column: 2 / 3;
+  grid-row: 2 / 3;
 }
 
 li {
@@ -113,4 +139,21 @@ li:last-child{
 
 li:nth-child(even) {
   background: #f8f8f8;
+}
+
+a {
+  text-decoration: none;
+}
+
+a:hover {
+  color: rgba(230, 230, 230); /* Grey. */ 
+}
+
+#no-reviews {
+  font-size: 300%;
+}
+
+#no-reviews {
+  font-size: 300%;
+  color: orange;
 }
