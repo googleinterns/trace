@@ -111,7 +111,7 @@ public class ReviewServlet extends HttpServlet {
      if (queryResults.size() > 1 || queryResults.size() == 0) {
        throw new IOException("Database Error: Multiple locations with same ID.");
      } else {
-       return queryResults[0];
+       return queryResults.get(0);
      }
    }
 }
