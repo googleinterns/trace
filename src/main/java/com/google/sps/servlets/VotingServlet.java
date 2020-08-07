@@ -42,7 +42,6 @@ public class VotingServlet extends HttpServlet {
     PreparedQuery results = datastore.prepare(query);
     System.out.println(results);
     System.out.println(results.countEntities());
-
     System.out.println(results.asSingleEntity());
     // Check to make sure the datastore returned something
     if (results.asSingleEntity() != null){
