@@ -1,5 +1,6 @@
 package com.google.sps.servlets;
 
+import com.google.sps.data.*;
 import com.google.appengine.api.datastore.DatastoreService;
 import com.google.appengine.api.datastore.DatastoreServiceFactory;
 import com.google.appengine.api.datastore.Entity;
@@ -29,15 +30,14 @@ public class ReviewServlet extends HttpServlet {
     DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
     PreparedQuery results = datastore.prepare(query);
 
-    List<String> reviews = new ArrayList<>();
+    List<Comment> reviews = new ArrayList<>();
     // Adds each review entity to a list
     for (Entity entity : results.asIterable()) {
       // Get desired information from Datastore
       long id = entity.getKey().getId();
       String message = (String) entity.getProperty("message");
       Date timestamp = (Date) entity.getProperty("date");
-      long total = (long) entity.getProperty("total");
-      reviews.add(message + " - " + timestamp.toString() + " ; " + total);
+      reviews.add(new Comment(null, message, timestamp, id));
     }
 
     // Adds the review list to a GSON/JSON object so that can be used in Javascript code    
