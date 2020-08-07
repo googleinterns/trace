@@ -27,10 +27,13 @@ public class VotingServlet extends HttpServlet {
       
     DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
 
-    String value = "";//request.body;
+    String value = request.getParameter("value");
+
+    System.out.println(value);
 
     // Find the review that corresponds to the clicked review
     String review_ID = request.getParameter("review_ID");
+    System.out.println(review_ID);
 
     Filter reviewFilter = new FilterPredicate("review_ID", FilterOperator.EQUAL, review_ID);
     Query query = new Query("Review").setFilter(reviewFilter);
