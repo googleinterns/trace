@@ -443,17 +443,16 @@ function generateReview(review) {
 
   const reviewText = document.createElement('p');
   reviewText.innerHTML += review;
-
-  // TODO: Change innerHTML of both buttons to be something else or add an icon 
+  
   const upvoteButton = document.createElement('button');
-  upvoteButton.innerHTML += "Good";
+  upvoteButton.innerHTML += '&#1F44D';
   upvoteButton.id += "upvote";
   upvoteButton.addEventListener("click", () => { 
     // TODO: Figure out what to do upon click.
   });
 
   const downvoteButton = document.createElement('button');
-  downvoteButton.innerHTML += "Bad";
+  downvoteButton.innerHTML += '&#1F44E';
   downvoteButton.id += "downvote";
   downvoteButton.addEventListener("click", () => {
     // TODO: Figure out what to do upon click.
