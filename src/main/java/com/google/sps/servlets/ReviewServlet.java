@@ -69,7 +69,9 @@ public class ReviewServlet extends HttpServlet {
       curLocation = trimQuery(queryResults);
       curLocation.addReview(newReview); // Handles duplicate
     }
-    // TODO: Put back the new PlaceReviews
+    
+    DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
+    datastore.put(curLocation);
   
     // Redirect back so review appears on screen
     response.sendRedirect("/index.html");
@@ -106,6 +108,7 @@ public class ReviewServlet extends HttpServlet {
   /**
    * Assert function
    * Helper function from query to ensure only one location has been returned
+   * Checks that the query returns a Singleton array
    * @return PlaceReviews single element
    */
   public PlaceReviews trimQuery(List<PlaceReviews> queryResults) throws IOException {
