@@ -55,20 +55,25 @@ public class ReviewServlet extends HttpServlet {
   public void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
     UserService userService = UserServiceFactory.getUserService();
 
-    String place_id = request.getParameter("place_id");
+    // Currently unused.
+    String firstName = request.getParameter("firstname");
+    String lastName = request.getParameter("lastname");
+
+    // Create new Comment instance.
     String userEmail = userService.getCurrentUser().getEmail(); // Used to restrict user to one review/location
     String reviewText = request.getParameter("comment");
     Date time = new Date();
-    String firstName = request.getParameter("firstname");
-    String lastName = request.getParameter("lastname");
-    String ratingStr = request.getParameter("rate"); // Convert to double or keep as string?
-    Double rating = Double.parseDouble(ratingStr);
-
     Comment newReview = new Comment(userEmail, reviewText, time);
+    
+    // Query for reviews from place_id.
+    String place_id = request.getParameter("place_id");
     List<PlaceReviews> queryResults = queryLocation(place_id);
-    PlaceReviews curLocation;
 
+    // Post review.
+    PlaceReviews curLocation;
     if (queryResults.size() == 0) { // There has not been a review before
+      String ratingStr = request.getParameter("rate"); // Convert to double or keep as string?
+      Double rating = Double.parseDouble(ratingStr);
       curLocation = new PlaceReviews(place_id, newReview, rating);
     } else { // Add review
       curLocation = trimQuery(queryResults);
