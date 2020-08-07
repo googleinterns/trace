@@ -43,10 +43,12 @@ public class VotingServlet extends HttpServlet {
     System.out.println(results);
     System.out.println(results.countEntities());
     System.out.println(results.asSingleEntity());
+
     // Check to make sure the datastore returned something
     if (results.asSingleEntity() != null){
+      // Look at the returned review
       Entity review = results.asSingleEntity();
-      System.out.println(review);
+      System.out.println(review); // debug statement
       int total = (int) review.getProperty("total");
       if (value.equals("1")){
         int positive = (int) review.getProperty("positive");
@@ -60,10 +62,6 @@ public class VotingServlet extends HttpServlet {
 
       // Adds the review back to the Datastore
       datastore.put(review);
-
     }
-    // Redirect back
-    // TODO: Update value in place without redirecting
-    //response.sendRedirect("/index.html");
   }
 }
