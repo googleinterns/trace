@@ -22,15 +22,11 @@ public class VotingServlet extends HttpServlet {
   @Override
   public void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
       
+    String place_ID = request.getParameter("place_ID");
+    Filter placeFilter = new FilterPredicate("place_ID", FilterOperator.EQUAL, place_ID);
+    Query query = new Query("Review").setFilter(placeFilter);
+
     DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
-
-    int id = 0; //(int) request.getParameter("review-id");
-    int value = 0; //(int) request.getParameter("vote");
-
-    // Find the review that corresponds to the given id
-    // TODO: Modify query to find review that corresponds to the id. 
-    Query query = new Query("Review"); 
-
     PreparedQuery results = datastore.prepare(query);
 
     // Check to make sure the datastore returned something
