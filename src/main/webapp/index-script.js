@@ -418,21 +418,23 @@ function generateReview(review) {
 
 
   // TODO: Change innerHTML of both buttons to be something else or add an icon 
-  const value = document.createElement('p');
-  value.id = "value";
-
   const upvoteButton = document.createElement('button');
   upvoteButton.innerHTML += "Good";
   upvoteButton.id += "upvote";
   upvoteButton.addEventListener("click", () => { 
-    fetch('/vote', {method: 'POST', body: JSON.stringify("1")});
+    const params = new URLSearchParams();
+    params.append('value', "1");
+    fetch('/vote', {method: 'POST', body: params});
   });
 
   const downvoteButton = document.createElement('button');
   downvoteButton.innerHTML += "Bad";
   downvoteButton.id += "downvote";
   downvoteButton.addEventListener("click", () => {
-    fetch('/vote', {method: 'POST', body: JSON.stringify("-1")});
+    const params = new URLSearchParams();
+    params.append('value', "-1");
+    params.append('review_ID', )
+    fetch('/vote', {method: 'POST', body: params});
   });
 
   reviewGrid.appendChild(reviewText);
