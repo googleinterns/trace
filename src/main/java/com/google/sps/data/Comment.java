@@ -89,7 +89,7 @@ public class Comment {
    * This prevents the 'double voting' or 'duplicate feedback' of certain patrons.
    */
   public void updateComment(Comment newReview) {
-    this.messageContent = newReview.message;
+    this.messageContent = newReview.messageContent;
     this.timestamp = newReview.timestamp;
   }
 }

@@ -45,11 +45,11 @@ public class PlaceReviews {
    * Adds a review to the existing PlaceReviews list of reviews
    */
   public void addReview(Comment review) {
-    if (this.reviewedBy(review.author)) {
+    if (this.reviewedBy(review.getAuthor())) {
       replaceReview(review);
     } else {
       this.reviews.add(review);
-      this.reviewers.add(review.author);
+      this.reviewers.add(review.getAuthor());
     }
   }
 
@@ -70,13 +70,13 @@ public class PlaceReviews {
    *                  TODO: Implement with Binary Search
    */
    private Comment getPrevReview(String author) {
-     ArrayList<Comment> sortedComments = Collection.sort(this.reviews, ORDER_BY_AUTHOR);
-     for (Comment cur : sortedComments) {
+    Collections.sort(this.reviews, Comment.ORDER_BY_AUTHOR);
+     for (Comment cur : this.reviews) {
        if (cur.getAuthor() == author) {
          return cur;
        }
      }
-     return sortedComments[0];
+     return this.reviews.get(0);
    }
 
   /** 
