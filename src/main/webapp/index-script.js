@@ -424,6 +424,7 @@ function generateReview(review) {
   upvoteButton.addEventListener("click", () => { 
     const params = new URLSearchParams();
     params.append('value', "1");
+    params.append('review_ID', review.id);
     fetch('/vote', {method: 'POST', body: params});
   });
 
@@ -433,7 +434,7 @@ function generateReview(review) {
   downvoteButton.addEventListener("click", () => {
     const params = new URLSearchParams();
     params.append('value', "-1");
-    params.append('review_ID', )
+    params.append('review_ID', review.id);
     fetch('/vote', {method: 'POST', body: params});
   });
 
