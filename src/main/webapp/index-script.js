@@ -444,10 +444,24 @@ function generateReview(review) {
   const reviewText = document.createElement('p');
   reviewText.innerHTML += review;
 
-  const upvote = document.createElement('button');
-  
+  // TODO: Change innerHTML of both buttons to be something else or add an icon 
+  const upvoteButton = document.createElement('button');
+  upvoteButton.innerHTML += "Good";
+  upvoteButton.id += "upvote";
+  upvoteButton.addEventListener("click", () => { 
+    // TODO: Figure out what to do upon click.
+  });
+
+  const downvoteButton = document.createElement('button');
+  downvoteButton.innerHTML += "Bad";
+  downvoteButton.id += "downvote";
+  downvoteButton.addEventListener("click", () => {
+    // TODO: Figure out what to do upon click.
+  });
 
   reviewGrid.appendChild(reviewText);
   reviewEntry.appendChild(reviewGrid);
+  reviewEntry.appendChild(upvoteButton);
+  reviewEntry.appendChild(downvoteButton);
   return reviewEntry;
 }
