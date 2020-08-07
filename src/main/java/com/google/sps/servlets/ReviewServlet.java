@@ -33,9 +33,27 @@ public class ReviewServlet extends HttpServlet {
   */
   @Override
   public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
+<<<<<<< HEAD
     String place_id = request.getParameter("place_id");
     List<PlaceReviews> allLocations = queryLocation(place_id);
     PlaceReviews location = trimQuery(allLocations);
+=======
+    // Consider all data involved as preliminary
+    Query query = new Query("Review").addSort("date", SortDirection.DESCENDING);
+
+    DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
+    PreparedQuery results = datastore.prepare(query);
+
+    List<Comment> reviews = new ArrayList<>();
+    // Adds each review entity to a list
+    for (Entity entity : results.asIterable()) {
+      // Get desired information from Datastore
+      long id = entity.getKey().getId();
+      String message = (String) entity.getProperty("message");
+      Date timestamp = (Date) entity.getProperty("date");
+      reviews.add(new Comment(null, message, timestamp, id));
+    }
+>>>>>>> 274a3d9a13d22207d0c9462f9d96544c4b5cae43
 
     // Adds the review list to a GSON/JSON object so that can be used in Javascript code    
     response.setContentType("application/json");

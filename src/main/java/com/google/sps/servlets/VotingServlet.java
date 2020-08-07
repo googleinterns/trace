@@ -29,6 +29,7 @@ public class VotingServlet extends HttpServlet {
     DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
 
     String value = request.getParameter("value");
+<<<<<<< HEAD
 
     System.out.println(value);
 
@@ -43,12 +44,31 @@ public class VotingServlet extends HttpServlet {
     System.out.println(results);
     System.out.println(results.countEntities());
     System.out.println(results.asSingleEntity());
+=======
 
+    System.out.println(value);
+
+    // Find the review that corresponds to the clicked review
+    long review_ID = Long.parseLong(request.getParameter("review_ID"));
+    System.out.println(review_ID);
+>>>>>>> 274a3d9a13d22207d0c9462f9d96544c4b5cae43
+
+    Filter reviewFilter = new FilterPredicate("ID/Name", FilterOperator.EQUAL, review_ID);
+    Query query = new Query("Review").setFilter(reviewFilter);
+    
+    PreparedQuery results = datastore.prepare(query);
+    System.out.println(results);
+    System.out.println(results.countEntities());
+    System.out.println(results.asSingleEntity());
     // Check to make sure the datastore returned something
     if (results.asSingleEntity() != null){
       // Look at the returned review
       Entity review = results.asSingleEntity();
+<<<<<<< HEAD
       System.out.println(review); // debug statement
+=======
+      System.out.println(review);
+>>>>>>> 274a3d9a13d22207d0c9462f9d96544c4b5cae43
       int total = (int) review.getProperty("total");
       if (value.equals("1")){
         int positive = (int) review.getProperty("positive");
@@ -63,5 +83,11 @@ public class VotingServlet extends HttpServlet {
       // Adds the review back to the Datastore
       datastore.put(review);
     }
+<<<<<<< HEAD
+=======
+    // Redirect back
+    // TODO: Update value in place without redirecting
+    //response.sendRedirect("/index.html");
+>>>>>>> 274a3d9a13d22207d0c9462f9d96544c4b5cae43
   }
 }

@@ -13,10 +13,14 @@ public class Comment {
   private final String author;
   private String messageContent;
   private Date timestamp;
+<<<<<<< HEAD
   private long id;
   private int upvote;
   private int downvote;
   private int total;
+=======
+  private final long id;
+>>>>>>> 274a3d9a13d22207d0c9462f9d96544c4b5cae43
 
   /**
    * Order Comparator
@@ -48,7 +52,11 @@ public class Comment {
    * @param timestamp the time of writing
    * @param id the unique id of this review
    */
+<<<<<<< HEAD
   public Comment(String author, String message, Date timestamp) {
+=======
+  public Comment(String author, String message, Date timestamp, long id) {
+>>>>>>> 274a3d9a13d22207d0c9462f9d96544c4b5cae43
     this.author = author;
     this.messageContent = message;
     this.timestamp = timestamp;
@@ -79,6 +87,7 @@ public class Comment {
     return this.timestamp;
   }
 
+<<<<<<< HEAD
   /**
    * ID accessor method
    * Access private variable
@@ -89,6 +98,10 @@ public class Comment {
 
   public void setId(long id){
     this.id = id;
+=======
+  public long getId(){
+      return this.id;
+>>>>>>> 274a3d9a13d22207d0c9462f9d96544c4b5cae43
   }
 
   /** 
@@ -110,4 +123,8 @@ public class Comment {
     this.messageContent = newReview.getMessage();
     this.timestamp = newReview.getTime();
   }
+<<<<<<< HEAD
 }
+=======
+}
+>>>>>>> 274a3d9a13d22207d0c9462f9d96544c4b5cae43
