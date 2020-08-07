@@ -35,7 +35,7 @@ public class ReviewServlet extends HttpServlet {
     String place_id = request.getParameter("place_id");
     List<PlaceReviews> allLocations = queryLocation(place_id);
     PlaceReviews location = trimQuery(allLocations);
-  
+
     // Adds the review list to a GSON/JSON object so that can be used in Javascript code    
     response.setContentType("application/json");
     String json = new Gson().toJson(location);
