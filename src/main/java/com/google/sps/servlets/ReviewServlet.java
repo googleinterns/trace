@@ -34,6 +34,7 @@ public class ReviewServlet extends HttpServlet {
   public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
     String place_id = request.getParameter("place_id");
     List<PlaceReviews> allLocations = queryLocation(place_id);
+    System.out.println(place_id);
     
     PlaceReviews location;
     if (allLocations.size() == 0) {
