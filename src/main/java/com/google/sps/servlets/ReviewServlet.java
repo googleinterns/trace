@@ -107,12 +107,12 @@ public class ReviewServlet extends HttpServlet {
    * Helper function from query to ensure only one location has been returned
    * @return PlaceReviews single element
    */
-   public PlaceReviews trimQuery(List<PlaceReviews> queryResults) throws IOException {
-     if (queryResults.size() > 1 || queryResults.size() == 0) {
-       throw new IOException("Database Error: Multiple locations with same ID.");
-     } else {
-       return queryResults.get(0);
-     }
-   }
+  public PlaceReviews trimQuery(List<PlaceReviews> queryResults) throws IOException {
+    if (queryResults.size() > 1 || queryResults.size() == 0) {
+      throw new IOException("Database Error: Multiple locations with same ID.");
+    } else {
+      return queryResults.get(0);
+    }
+  }
 }
 
