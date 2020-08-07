@@ -33,18 +33,12 @@ public class ReviewServlet extends HttpServlet {
   @Override
   public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
     String place_id = request.getParameter("place_id");
-    List<PlaceReviews> allLocations = queryLocation(place_id);
-    
-    PlaceReviews location;
-    if (allLocations.size() == 0) {
-      location = null;
-    } else {
-      location = trimQuery(allLocations);
-    }
+    DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
+    PlaceReviews curLocation = queryLocation(place_id, datastore, false);
 
     // Adds the review list to a GSON/JSON object so that can be used in Javascript code    
     response.setContentType("application/json");
-    String json = new Gson().toJson(location);
+    String json = new Gson().toJson(curLocation);
     response.getWriter().println(json);
   }
 
