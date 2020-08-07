@@ -13,6 +13,7 @@ public class Comment {
   private final String author;
   private String messageContent;
   private Date timestamp;
+  private final long id;
 
   /**
    * Order Comparator
@@ -42,11 +43,13 @@ public class Comment {
    * @param author the message author
    * @param message the content of the message
    * @param timestamp the time of writing
+   * @param id the unique id of this review
    */
-  public Comment(String author, String message, Date timestamp) {
+  public Comment(String author, String message, Date timestamp, long id) {
     this.author = author;
     this.messageContent = message;
     this.timestamp = timestamp;
+    this.id = id;
   }
 
   /** 
@@ -73,6 +76,14 @@ public class Comment {
     return this.timestamp;
   }
 
+  /**
+   * ID accessor method
+   * Access private variable
+   */
+  public long getId(){
+      return this.id;
+  }
+
   /** 
    * Update Comment
    * This function is used when a author want's to submit a new comment for a location.
@@ -91,5 +102,9 @@ public class Comment {
   public void updateComment(Comment newReview) {
     this.messageContent = newReview.message;
     this.timestamp = newReview.timestamp;
+<<<<<<< HEAD
   }
 }
+=======
+  }
+>>>>>>> Grabbed Dominics Comment.java file
