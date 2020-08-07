@@ -1,5 +1,5 @@
 /* Style inputs, select elements and textareas */
-input[type=text], select, textarea{
+input[class=text], select, textarea{
   border: 1px solid #ccc;
   border-radius: 4px;
   box-sizing: border-box;
@@ -105,6 +105,33 @@ input[type=submit] {
 /** Stars marked check are orange. */
 .checked {
   color: orange;
+}
+
+#new-review-button {
+  box-shadow:inset 0px 1px 0px 0px #ffffff;
+  background:linear-gradient(to bottom, #f9f9f9 5%, #e9e9e9 100%);
+  background-color:#f9f9f9;
+  border-radius:6px;
+  border:1px solid #dcdcdc;
+  color:#666666;
+  cursor:pointer;
+  display:inline-block;
+  font-family:Arial;
+  font-size:16px;
+  font-weight:bold;
+  padding:6px 24px;
+  text-decoration:none;
+  text-shadow:0px 1px 0px #ffffff;
+}
+
+#new-review-button:hover {
+  background:linear-gradient(to bottom, #e9e9e9 5%, #f9f9f9 100%);
+  background-color:#e9e9e9;
+}
+
+#new-review-button:active {
+  position:relative;
+  top:1px;
 }
 
 /* Modified from: https://github.com/mukulkant/Star-rating-using-pure-css */

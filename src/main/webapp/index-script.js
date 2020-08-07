@@ -32,12 +32,11 @@ function loadMainButtons() {
   const modalBackArrow = document.getElementById("modal-backarrow");
   // Hide reviews page and display results page.
   modalBackArrow.addEventListener("click", () => {
-    const button = document.getElementById("modal-backarrow");
-    button.innerHTML = '';
-    button.style.display = "none";
+    hideBackArrow();
     document.getElementById('results-body').style.display = "block"; // Display results page.
     document.getElementById('reviews-body').style.display = "none"; // Hide reviews page.
     document.getElementById('reviews-list-container').innerHTML = ''; // Clean reviews wrapper of all DOM elements;
+    document.getElementById('rev-form-body').style.display = "none";
   });
 }
 
@@ -118,14 +117,22 @@ function closeModal(modal) {
   overlay.classList.remove('active'); // Removes overlay and click blocker
   modal.classList.remove('active'); // Hides modal
 
-  document.getElementById('results-list-container').innerHTML = ''; // Clean results wrapper of all DOM elements
-  document.getElementById('reviews-list-container').innerHTML = ''; // Clean reviews wrapper of all DOM elements;
-  document.getElementById('results-body').style.display = "block"; // Set up results page for later use.
-  document.getElementById('reviews-body').style.display = "none"; // Hide reviews page.
+  // Clean reviews and results.
+  document.querySelectorAll('.list').forEach((item) => {
+    item.innerHTML = "";
+  });
+  // Hide modal content.
+  document.querySelectorAll('.modal-body').forEach((item) => {
+    item.style.display = "none";
+  });
+  hideBackArrow();
+}
+
+/** Hide modal-backarrow. */
+function hideBackArrow() {
   const button = document.getElementById("modal-backarrow");
-  button.style.display = "none"; // Hide back arrow.
-  button.classList.remove("exit-button"); // Hide exit-button.
-  button.innerHTML = ''; // Clean exit button.
+  button.innerHTML = '';
+  button.style.display = "none";
 }
 
 // Chooses whether to display 'Login' or 'Logout' button.
@@ -283,6 +290,7 @@ function triggerModal(modal) {
   if (modal == null) return;
   overlay.classList.add('active');
   modal.classList.add('active');
+  document.getElementById('results-body').style.display = "block";
   document.getElementById("modal-backarrow").style.display = "none";
 }
 
@@ -346,19 +354,8 @@ function generateResult(place) {
  * One central function that is called to trigger entire review interface
  */
 function showReviews(placeID) {
-  document.getElementById("modal-backarrow").style.display = "block";
   fetchReviews(placeID);
   displayReviewModal();
-}
-
-/** Fetch Reviews
- * Queries ReviewServlet with elementID to find internal datastore
- */
-function fetchReviews(elementID) {
-  console.log("Fetching reviews for ID: #" + elementID);
-  fetch('/review').then(response => response.json()).then((reviewsArr) => {
-    populateReviews(reviewsArr);
-  });
 }
 
 /**
@@ -369,14 +366,25 @@ function displayReviewModal() {
   button.classList.add("exit-button");
   button.innerHTML += "&larr;";
 
+  document.getElementById("modal-backarrow").style.display = "block";
   document.getElementById('results-body').style.display = "none";
   document.getElementById('reviews-body').style.display = "block";
+}
+
+/** Fetch Reviews
+ * Queries ReviewServlet with elementID to find internal datastore
+ */
+function fetchReviews(placeID) {
+  console.log("Fetching reviews for ID: #" + placeID);
+  fetch('/review').then(response => response.json()).then((reviewsArr) => {
+    populateReviews(reviewsArr, placeID);
+  });
 }
 
 /** Creates a structure to put reviews in modal
  * Takes in array of JS reviews
  */
-function populateReviews(reviewList) {
+function populateReviews(reviewList, placeID) {
   const listContainer = document.getElementById('reviews-list-container');
   const entireList = document.createElement('ul');
   entireList.id += 'reviews-list';
@@ -388,9 +396,29 @@ function populateReviews(reviewList) {
       entireList.appendChild(generateReview(review));
     });
   }
-
+  entireList.appendChild(newReviewButton(placeID));
   listContainer.appendChild(entireList);
 }
+
+/** Creates a new-review button for users to post their own review. */
+function newReviewButton(place_id) {
+  const button = document.createElement('button');
+  button.type = "button";
+  button.id = "new-review-button";
+  button.innerHTML = "Add New Review " + "&oplus;";
+  button.addEventListener("click", function() {
+    triggerNewReviewForm(place_id);
+  });
+  return button;
+}
+
+/** Hides reviews page and displays new-review form. */
+function triggerNewReviewForm(place_id) {
+  document.getElementById("place_id").value = place_id;
+  document.getElementById("reviews-body").style.display = "none"; // Hide reviews page.
+  document.getElementById("rev-form-body").style.display = "block";
+}
+
 
 /**
  * Review modal activation function
@@ -419,14 +447,4 @@ function generateReview(review) {
   reviewGrid.appendChild(reviewText);
   reviewEntry.appendChild(reviewGrid);
   return reviewEntry;
-}
-
-/* Redirect user to newReviews.html. */
-function newReviewsPage() {
-  window.location.href = "newReview.html";
-}
-
-/* Loads currentLocation into newReview form. */
-function loadPlaceID() {
-  document.getElementById("place_id").value = currentLocation;
 }
