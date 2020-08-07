@@ -70,6 +70,7 @@ public class ReviewServlet extends HttpServlet {
       curLocation.addReview(newReview); // Handles duplicate
     }
     
+    
     DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
     datastore.put(curLocation);
   

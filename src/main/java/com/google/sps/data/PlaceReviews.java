@@ -101,4 +101,12 @@ public class PlaceReviews {
   public boolean reviewedBy(String person) {
     return this.reviewers.contains(person);
   }
+
+  /**
+   * Accessor method
+   * Returns the id of the location
+   */
+   public String getID() {
+     return this.place_id;
+   }
 }
