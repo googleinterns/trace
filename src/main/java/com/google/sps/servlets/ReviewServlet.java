@@ -70,9 +70,10 @@ public class ReviewServlet extends HttpServlet {
       curLocation.addReview(newReview); // Handles duplicate
     }
     
-    
+    // Put back in datastore
+    Entity locationEntity = new Entity("PlaceReviews", place_id); // Using place_id as the internal identifier
     DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
-    datastore.put(curLocation);
+    datastore.put(locationEntity);
   
     // Redirect back so review appears on screen
     response.sendRedirect("/index.html");
