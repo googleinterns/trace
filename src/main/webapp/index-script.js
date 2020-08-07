@@ -390,7 +390,7 @@ function populateReviews(reviewList, placeID) {
   const entireList = document.createElement('ul');
   entireList.id += 'reviews-list';
 
-  if (reviewList.length == 0) {
+  if (reviewList == null) {
     entireList.appendChild(noReviews());
   } else { 
     reviewList.forEach(review => {
