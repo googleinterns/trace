@@ -13,7 +13,10 @@ public class Comment {
   private final String author;
   private String messageContent;
   private Date timestamp;
-  private final long id;
+  private long id;
+  private int upvote;
+  private int downvote;
+  private int total;
 
   /**
    * Order Comparator
@@ -45,7 +48,7 @@ public class Comment {
    * @param timestamp the time of writing
    * @param id the unique id of this review
    */
-  public Comment(String author, String message, Date timestamp, long id) {
+  public Comment(String author, String message, Date timestamp) {
     this.author = author;
     this.messageContent = message;
     this.timestamp = timestamp;
@@ -81,7 +84,11 @@ public class Comment {
    * Access private variable
    */
   public long getId(){
-      return this.id;
+    return this.id;
+  }
+
+  public void setId(long id){
+    this.id = id;
   }
 
   /** 
