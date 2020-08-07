@@ -444,6 +444,9 @@ function generateReview(review) {
   const reviewText = document.createElement('p');
   reviewText.innerHTML += review;
 
+  const upvote = document.createElement('button');
+  
+
   reviewGrid.appendChild(reviewText);
   reviewEntry.appendChild(reviewGrid);
   return reviewEntry;
