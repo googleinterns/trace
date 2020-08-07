@@ -414,7 +414,7 @@ function generateReview(review) {
   reviewGrid.className += 'review-grid';
 
   const reviewText = document.createElement('p');
-  reviewText.innerHTML += review;
+  reviewText.innerHTML += review.messageContent;
 
 
   // TODO: Change innerHTML of both buttons to be something else or add an icon 

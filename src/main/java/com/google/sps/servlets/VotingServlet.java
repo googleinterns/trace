@@ -8,7 +8,8 @@ import com.google.appengine.api.datastore.Query.Filter;
 import com.google.appengine.api.datastore.Query.FilterPredicate;
 import com.google.appengine.api.datastore.Query.FilterOperator;
 import com.google.appengine.api.datastore.Query;
-import com.google.appengine.api.datastore.Query.SortDirection;
+import com.google.appengine.api.datastore.Query.*;
+
 import java.util.*;
 import java.io.IOException;
 import com.google.gson.Gson;
@@ -32,19 +33,23 @@ public class VotingServlet extends HttpServlet {
     System.out.println(value);
 
     // Find the review that corresponds to the clicked review
-    String review_ID = request.getParameter("review_ID");
+    long review_ID = Long.parseLong(request.getParameter("review_ID"));
     System.out.println(review_ID);
 
-    Filter reviewFilter = new FilterPredicate("review_ID", FilterOperator.EQUAL, review_ID);
+    Filter reviewFilter = new FilterPredicate("ID/Name", FilterOperator.EQUAL, review_ID);
     Query query = new Query("Review").setFilter(reviewFilter);
-
+    
     PreparedQuery results = datastore.prepare(query);
+    System.out.println(results);
+    System.out.println(results.countEntities());
 
+    System.out.println(results.asSingleEntity());
     // Check to make sure the datastore returned something
     if (results.asSingleEntity() != null){
       Entity review = results.asSingleEntity();
+      System.out.println(review);
       int total = (int) review.getProperty("total");
-      if (value == "1"){
+      if (value.equals("1")){
         int positive = (int) review.getProperty("positive");
         review.setProperty("positive", ++positive);
         review.setProperty("total", ++total);
@@ -60,6 +65,6 @@ public class VotingServlet extends HttpServlet {
     }
     // Redirect back
     // TODO: Update value in place without redirecting
-    response.sendRedirect("/index.html");
+    //response.sendRedirect("/index.html");
   }
 }
