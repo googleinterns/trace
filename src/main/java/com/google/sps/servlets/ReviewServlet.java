@@ -34,7 +34,6 @@ public class ReviewServlet extends HttpServlet {
   public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
     String place_id = request.getParameter("place_id");
     System.out.println("AHHHHHHHHH");
-    System.out.println(place_id);
     DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
     Entity curLocation = queryLocation(place_id, datastore);
     List<Comment> curReviews = new ArrayList<Comment>();
