@@ -33,8 +33,16 @@ public class ReviewServlet extends HttpServlet {
   @Override
   public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
     String place_id = request.getParameter("place_id");
+    System.out.println("AHHHHHHHHH");
+    System.out.println(place_id);
     DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
-    PlaceReviews curLocation = queryLocation(place_id, datastore, false);
+    Entity curLocation = queryLocation(place_id, datastore);
+    List<Comment> curReviews = new ArrayList<Comment>();
+    if(curLocation != null) {
+      PlaceReviews curPlace = (PlaceReviews) curLocation.getProperty("placeData");
+      curReviews.addAll(curPlace.reviews);
+    }
+    System.out.println(curReviews);
 
     // Adds the review list to a GSON/JSON object so that can be used in Javascript code    
     response.setContentType("application/json");
@@ -54,6 +62,10 @@ public class ReviewServlet extends HttpServlet {
     String firstName = request.getParameter("firstname");
     String lastName = request.getParameter("lastname");
 
+    // Convert to double or keep as string?
+    String ratingStr = request.getParameter("rate");
+    Double rating = Double.parseDouble(ratingStr);
+
     // Create new Comment instance.
     String userEmail = userService.getCurrentUser().getEmail(); // Used to restrict user to one review/location
     String reviewText = request.getParameter("comment");
@@ -62,69 +74,65 @@ public class ReviewServlet extends HttpServlet {
     
     // Query for reviews from place_id.
     String place_id = request.getParameter("place_id");
-    PlaceReviews curLocation = queryLocation(place_id, datastore, false);
-    Entity entity;
-    if (!curLocation) { // There has not been a review before
-      String ratingStr = request.getParameter("rate"); // Convert to double or keep as string?
-      Double rating = Double.parseDouble(ratingStr);
-      curLocation = new PlaceReviews(place_id, newReview, rating);
-      entity = new Entity("PlaceReviews");
-    } else { // Add review
-      curLocation.addReview(newReview); // Handles duplicate
-      entity = queryLocation(curLocation.place_id, datastore, true); // Retrieve existing entity.
-    }
+    Entity curLocation = queryLocation(place_id, datastore);
 
-    entity.setProperty("placeData", location);
-    datastore.put(entity);
+    datastore.put(setCurLocation(curLocation, newReview, rating, place_id)); // Appends new review before posting to the datastore.
 
     // Redirect back so review appears on screen
     response.sendRedirect("/index.html");
   }
 
   /**
-   * This function interfaces with the ReviewServlet object
-   */
-  public void postComment(PlaceReviews location, Comment review) {
-    location.addReview(review);
+    * Takes an entity and either appends a review or creates a new PlaceReviews instance
+    * and appends it to the "placeData" property.
+    * @param curLocation is an entity to be set and then returned to the datastore.
+    * @param newReview is the Comment instance to be appended.
+    * @param rating is the current location's rating.
+    * @return curLocation is the final set entity to be added to the datastore.
+    */
+  public Entity setCurLocation(Entity curLocation, Comment newReview, Double rating, String place_id) {
+    PlaceReviews curReviews;
+    if (curLocation == null) { // There has not been a review before
+      curLocation = new Entity("PlaceReviews");
+      curReviews = new PlaceReviews(place_id, newReview, rating);
+    } else { // Add review
+      curReviews = (PlaceReviews) curLocation.getProperty("placeData");
+      curReviews.addReview(newReview); // Handles duplicate
+      curReviews.addRating(rating);
+    }
+    curLocation.setProperty("placeData", curReviews);
+    return curLocation;
   }
 
   /**
    * Retrieval of PlaceReviews by id
    * @param place_id The Maps API id for a location
    * @param datastore Current DatastoreService for saving PlaceReviews
-   * @param forEntity Boolean that indicates whether the user is requesting a PlaceReviews
-   * or Entity instance for the corresponding place_id.
-   * @return Returns a single instance of PlaceReviews which contains all reviews for a single place.
+   * @return Returns zero or one Entities corresponding to the place being queried.
    */
-  public PlaceReviews queryLocation(String place_id, DatastoreService datastore, boolean forEntity) {
+  public Entity queryLocation(String place_id, DatastoreService datastore) {
     Filter placeFilter = new FilterPredicate("place_id", FilterOperator.EQUAL, place_id);
     Query query = new Query("PlaceReviews").setFilter(placeFilter);
 
     PreparedQuery results = datastore.prepare(query);
 
-    List<PlaceReviews> places = new ArrayList<PlaceReviews>();
-    List<Entity> correspondingEntities = new ArrayList<Entity>();
+    List<Entity> places = new ArrayList<Entity>();
     for (Entity entity : results.asIterable()) {
-      PlaceReviews cur = (PlaceReviews) entity.getProperty("placeData");
-      correspondingEntities.add(entity);
-      places.add(cur);
+      places.add(entity);
     }
-    PlaceReviews location = trimQuery(places);
-    if(location == null) {
-      return location;
-    }
-    // Returns either the PlaceReviews or the corresponding Entity.
-    return forEntity ? correspondingEntities.get(0) : location;
+    return trimQuery(places);
   }
 
   /**
    * Assert function
    * Helper function from query to ensure only one or no locations have been returned.
-   * @return PlaceReviews single element
+   * @return Returns zero or one Entities corresponding to the place being queried.
    */
-  public PlaceReviews trimQuery(List<PlaceReviews> queryResults) throws IOException {
+  public Entity trimQuery(List<Entity> queryResults) /*throws IOException*/ {
     if (queryResults.size() > 1) {
-      throw new IOException("Database Error: Multiple locations with same ID.");
+      /***** TEMPORARY FIX TO DEBUG CODE. *****/
+      /*** throw new IOException("Database Error: Multiple locations with same ID."); ***/
+      return null;
     } else if(queryResults.size() == 0) {
       return null;
     }
