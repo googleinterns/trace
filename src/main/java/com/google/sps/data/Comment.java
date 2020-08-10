@@ -13,6 +13,11 @@ public class Comment {
   private final String author;
   private String messageContent;
   private Date timestamp;
+  private Long comment_id;
+  private Long total;
+  private Long positive;
+  private String username;
+  // Does not need place_id since it can inherit that from PlaceReviews
 
   /**
    * Order Comparator
