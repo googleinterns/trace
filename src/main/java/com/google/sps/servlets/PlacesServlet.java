@@ -34,11 +34,12 @@ public class PlacesServlet extends HttpServlet {
   public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
     String place_ID = request.getParameter("place_ID");
 
-    // Consider all data involved as preliminary
     Filter placeFilter = new FilterPredicate("place_ID", FilterOperator.EQUAL, place_ID);
     Query query = new Query("Review").setFilter(placeFilter);
 
     DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
+    
+    // Get all reviews with given place ID.
     PreparedQuery results = datastore.prepare(query);
 
     JSONArray reviews = new JSONArray();
@@ -49,7 +50,7 @@ public class PlacesServlet extends HttpServlet {
       review.put("fullName", (String) entity.getProperty("fullName"));
       review.put("timestamp", (Date) entity.getProperty("date"));
 
-      // Currently includes total, positive, and negative votes. Not all need be displayed.
+      // Currently includes rating, total, positive, and negative votes. Not all need be displayed.
       review.put("total", (int) entity.getProperty("total"));
       review.put("positive", (int) entity.getProperty("positive"));
       review.put("negative", (int) entity.getProperty("negative"));
@@ -70,11 +71,12 @@ public class PlacesServlet extends HttpServlet {
   @Override
   public void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
     UserService userService = UserServiceFactory.getUserService();
-
-    // Retrieve comment, comment quantity, and current user.
+    
+    // Get the request place / place_id
     String place_ID = request.getParameter("place_ID");
 
-    // Create entity for datastore.
+    // Create entity for datastore containing id, votes, rating. 
+    // Potentially add more later. 
     Entity placeEntity = new Entity("place");
     placeEntity.setProperty("id", place_ID);
     placeEntity.setProperty("totalVotes", 0);

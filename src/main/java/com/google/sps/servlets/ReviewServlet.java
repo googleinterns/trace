@@ -32,20 +32,24 @@ public class ReviewServlet extends HttpServlet {
   */
   @Override
   public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
+    // Get the requested place using it's ID. 
     String place_id = request.getParameter("place_id");
-    System.out.println("AHHHHHHHHH");
     DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
+
     Entity curLocation = queryLocation(place_id, datastore);
     List<Comment> curReviews = new ArrayList<Comment>();
+
+    // Make sure a place returns. 
     if(curLocation != null) {
       PlaceReviews curPlace = (PlaceReviews) curLocation.getProperty("placeData");
+      // Add all the reviews to the Json list. 
       curReviews.addAll(curPlace.reviews);
     }
     System.out.println(curReviews);
 
     // Adds the review list to a GSON/JSON object so that can be used in Javascript code    
     response.setContentType("application/json");
-    String json = new Gson().toJson(curLocation);
+    String json = new Gson().toJson(curReviews);
     response.getWriter().println(json);
   }
 
@@ -62,23 +66,29 @@ public class ReviewServlet extends HttpServlet {
     String lastName = request.getParameter("lastname");
 
     // Convert to double or keep as string?
-    String ratingStr = request.getParameter("rate");
-    Double rating = Double.parseDouble(ratingStr);
+    // String ratingStr = request.getParameter("rate");
+    Double rating = Double.parseDouble(request.getParameter("rate"));
 
     // Create new Comment instance.
     String userEmail = userService.getCurrentUser().getEmail(); // Used to restrict user to one review/location
     String reviewText = request.getParameter("comment");
     Date time = new Date();
-    Comment newReview = new Comment(userEmail, reviewText, time);
+    Comment newReview = new Comment(userEmail, reviewText, time, null);
+
+    addToDatastore(newReview, place_id);
     
-    // Query for reviews from place_id.
+    // Query for existing reviews from place_id.
     String place_id = request.getParameter("place_id");
+    // Add new review to datastore with the place_id. 
+    addToDatastore(newReview, place_id);
+
     Entity curLocation = queryLocation(place_id, datastore);
     curLocation = setCurLocation(curLocation, newReview, rating, place_id) // PlaceReviews, contains all reviews for one location. 
 
-    addToDatastore(curLocation);
+    
 
-    if (queryResults.size() == 0) { // There has not been a review before
+    // Checks to see if this is the first review. 
+    if (queryResults.size() == 0) { 
       curLocation = new PlaceReviews(place_id, newReview, rating);
     } else { // Add review
       curLocation = trimQuery(queryResults);
@@ -90,8 +100,30 @@ public class ReviewServlet extends HttpServlet {
     DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
     datastore.put(locationEntity);
 
-    // Redirect back so review appears on screen
+    /* Redirect back so review appears on screen
+     * We should modify this so that the screen doesn't completely refresh as then they would
+     * have to go back and search the place again to see their review. 
+     */
     response.sendRedirect("/index.html");
+  }
+   
+  // Adds each new review to the datastore. 
+  public void addToDatastore(Comment comment, String place_id){
+    String message = comment.getMessage();
+    long timestamp = comment.getTime();
+    String author = comment.getAuthor();
+
+    Entity reviewEntity = new Entity("Review");
+    reviewEntity.setProperty("message", message);
+    reviewEntity.setProperty("timestamp", timestamp);
+    reviewEntity.setProperty("author", author);
+    reviewEntity.setProperty("place_id", place_id);
+
+    // Comment object gets it's datastore id. 
+    comment.setId(reviewEntity.getKey().getId());
+
+    DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
+    datastore.put(reviewEntity);
   }
 
   
