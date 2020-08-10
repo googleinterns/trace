@@ -17,7 +17,7 @@ import java.util.List;
 public class PlaceReviews {
 
   private final String place_id;
-  private ArrayList<Comment> reviews;
+  private List<Comment> reviews;
   private double rating;
 
    /**
@@ -27,7 +27,6 @@ public class PlaceReviews {
   public PlaceReviews(String place_id) {
     this.place_id = place_id;
     this.reviews = new ArrayList<Comment>();
-    this.reviewers = new ArrayList<String>();
   }
 
   /** 
@@ -36,11 +35,9 @@ public class PlaceReviews {
    */
   public PlaceReviews(String place_id, Comment firstReview, double initialRating) {
     this.reviews = new ArrayList<Comment>();
-    this.reviewers = new ArrayList<String>();
     this.place_id = place_id;
     this.reviews.add(firstReview);
     this.rating = initialRating;
-    this.reviewers.add(firstReview.getAuthor());
   }
 
   /** 
@@ -52,7 +49,6 @@ public class PlaceReviews {
       replaceReview(review);
     } else {
       this.reviews.add(review);
-      this.reviewers.add(review.getAuthor());
     }
   }
 
@@ -93,7 +89,7 @@ public class PlaceReviews {
     } else if (rating < 0) {
       addRating(0);
     } else {
-      this.rating += (rating / reviewers.size());
+      this.rating += (rating);
     }
   }
 
@@ -102,14 +98,19 @@ public class PlaceReviews {
    * @return if the user has posted a review before for this location
    */
   public boolean reviewedBy(String person) {
-    return this.reviewers.contains(person);
+    // TODO: Use datastore querying to search for this
+    return true;
   }
 
   /**
    * Accessor method
    * Returns the id of the location
    */
-   public String getID() {
-     return this.place_id;
-   }
+  public String getID() {
+    return this.place_id;
+  }
+
+  public List<Comment> getReviews(){
+    return this.reviews;   
+  }
 }

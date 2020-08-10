@@ -73,9 +73,7 @@ public class ReviewServlet extends HttpServlet {
     String userEmail = userService.getCurrentUser().getEmail(); // Used to restrict user to one review/location
     String reviewText = request.getParameter("comment");
     Date time = new Date();
-    Comment newReview = new Comment(userEmail, reviewText, time, null);
-
-    addToDatastore(newReview, place_id);
+    Comment newReview = new Comment(userEmail, reviewText, time, 0);
     
     // Query for existing reviews from place_id.
     String place_id = request.getParameter("place_id");
@@ -83,12 +81,12 @@ public class ReviewServlet extends HttpServlet {
     addToDatastore(newReview, place_id);
 
     Entity curLocation = queryLocation(place_id, datastore);
-    curLocation = setCurLocation(curLocation, newReview, rating, place_id) // PlaceReviews, contains all reviews for one location. 
 
+    // PlaceReviews, contains all reviews for one location. 
+    curLocation = setCurLocation(curLocation, newReview, rating, place_id);
     
-
     // Checks to see if this is the first review. 
-    if (queryResults.size() == 0) { 
+    if (curLocation.size() == 0) { 
       curLocation = new PlaceReviews(place_id, newReview, rating);
     } else { // Add review
       curLocation = trimQuery(queryResults);
@@ -96,7 +94,7 @@ public class ReviewServlet extends HttpServlet {
     }
     
     // Put back in datastore
-    Entity locationEntity = new Entity("PlaceReviews", place_id); // Using place_id as the internal identifier
+    Entity locationEntity = new Entity("Places", place_id); // Using place_id as the internal identifier
     DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
     datastore.put(locationEntity);
 
@@ -110,7 +108,7 @@ public class ReviewServlet extends HttpServlet {
   // Adds each new review to the datastore. 
   public void addToDatastore(Comment comment, String place_id){
     String message = comment.getMessage();
-    long timestamp = comment.getTime();
+    Date timestamp = comment.getTime();
     String author = comment.getAuthor();
 
     Entity reviewEntity = new Entity("Review");
