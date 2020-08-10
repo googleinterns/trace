@@ -47,7 +47,7 @@ public class ReviewServlet extends HttpServlet {
       long id = review.getKey().getId();
       String message = (String) review.getProperty("message");
       Date timestamp = (Date) review.getProperty("timestamp");
-      String author = (String) review.getProperty("author")
+      String author = (String) review.getProperty("author");
 
       Comment com = new Comment(author, message, timestamp, id);
       currentPlace.addReview(com);
