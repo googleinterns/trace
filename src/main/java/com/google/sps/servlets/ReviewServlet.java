@@ -33,10 +33,9 @@ public class ReviewServlet extends HttpServlet {
   @Override
   public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
     // Get the requested place using it's ID. 
-    String place_ID = request.getParameter("place_ID");
-    Filter placeFilter = new FilterPredicate("place_ID", FilterOperator.EQUAL, place_ID);
+    String place_id = request.getParameter("place_id");
+    Filter placeFilter = new FilterPredicate("place_id", FilterOperator.EQUAL, place_id);
     Query query = new Query("Review").setFilter(placeFilter);
-
 
     DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
     PreparedQuery results = datastore.prepare(query);

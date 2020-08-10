@@ -377,8 +377,10 @@ function displayReviewModal() {
 function fetchReviews(placeID) {
   console.log("Fetching reviews for ID: #" + placeID);
   const request = '/review?place_id=' + placeID;
-  fetch(request).then(response => response.json()).then((reviewsArr) => {
-    populateReviews(reviewsArr, placeID);
+  fetch(request).then(response => response.json()).then((place) => {
+    console.log(place.reviews);
+    console.log(place);
+    populateReviews(place.reviews, placeID);
   });
 }
 
@@ -390,10 +392,10 @@ function populateReviews(reviewList, placeID) {
   const entireList = document.createElement('ul');
   entireList.id += 'reviews-list';
 
-  if (reviewList == null) {
+  if (reviewList[0] == null) {
     entireList.appendChild(noReviews());
   } else { 
-    reviewList.forEach(review => {
+    reviewList.forEach((review) => {
       entireList.appendChild(generateReview(review));
     });
   }
@@ -443,7 +445,7 @@ function generateReview(review) {
   reviewGrid.className += 'review-grid';
 
   const reviewText = document.createElement('p');
-  reviewText.innerHTML += review;
+  reviewText.innerHTML += review.messageContent;
   
   const upvoteButton = document.createElement('button');
   upvoteButton.innerHTML += '&#1F44D';
