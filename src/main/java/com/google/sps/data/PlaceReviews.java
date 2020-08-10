@@ -99,7 +99,7 @@ public class PlaceReviews {
    */
   public boolean reviewedBy(String person) {
     // TODO: Use datastore querying to search for this
-    return true;
+    return false;
   }
 
   /**

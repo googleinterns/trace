@@ -34,22 +34,27 @@ public class ReviewServlet extends HttpServlet {
   public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
     // Get the requested place using it's ID. 
     String place_id = request.getParameter("place_id");
+    Filter placeFilter = new FilterPredicate("place_id", FilterOperator.EQUAL, place_id);
+    Query query = new Query("Review").setFilter(placeFilter);
+
     DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
+    PreparedQuery results = datastore.prepare(query);
 
-    Entity curLocation = queryLocation(place_id, datastore);
-    List<Comment> curReviews = new ArrayList<Comment>();
+    PlaceReviews currentPlace = new PlaceReviews(place_id);
 
-    // Make sure a place returns. 
-    if(curLocation != null) {
-      PlaceReviews curPlace = (PlaceReviews) curLocation.getProperty("placeData");
-      // Add all the reviews to the Json list. 
-      curReviews.addAll(curPlace.getReviews());
+    for (Entity review : results.asIterable()) {
+      long id = review.getKey().getId();
+      String message = (String) review.getProperty("message");
+      Date timestamp = (Date) review.getProperty("timestamp");
+      String author = (String) review.getProperty("author");
+
+      Comment com = new Comment(author, message, timestamp, id);
+      currentPlace.addReview(com);
     }
-    System.out.println(curReviews);
 
     // Adds the review list to a GSON/JSON object so that can be used in Javascript code    
     response.setContentType("application/json");
-    String json = new Gson().toJson(curReviews);
+    String json = new Gson().toJson(currentPlace);
     response.getWriter().println(json);
   }
 
