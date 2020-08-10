@@ -5,6 +5,7 @@ import java.util.HashSet;
 import com.google.sps.data.Comment;
 import com.google.sps.data.RatingHistory;
 import java.util.Collections;
+import java.util.List;
 
 /** 
  * PlaceReviews object class
@@ -15,9 +16,9 @@ import java.util.Collections;
  */
 public class PlaceReviews {
 
-  private final String place_id;
-  private ArrayList<Comment> reviews;
-  private HashSet<String> reviewers;
+  public final String place_id;
+  public List<Comment> reviews;
+  private List<String> reviewers;
   private double rating;
   private RatingHistory history;
 
@@ -27,6 +28,8 @@ public class PlaceReviews {
     */
   public PlaceReviews(String place_id) {
     this.place_id = place_id;
+    this.reviews = new ArrayList<Comment>();
+    this.reviewers = new ArrayList<String>();
   }
 
   /** 
@@ -34,6 +37,8 @@ public class PlaceReviews {
    * This constructor provides an initial rating and review.
    */
   public PlaceReviews(String place_id, Comment firstReview, double initialRating) {
+    this.reviews = new ArrayList<Comment>();
+    this.reviewers = new ArrayList<String>();
     this.place_id = place_id;
     this.reviews.add(firstReview);
     this.rating = initialRating;

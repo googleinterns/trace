@@ -376,7 +376,8 @@ function displayReviewModal() {
  */
 function fetchReviews(placeID) {
   console.log("Fetching reviews for ID: #" + placeID);
-  fetch('/review').then(response => response.json()).then((reviewsArr) => {
+  const request = '/review?place_id=' + placeID;
+  fetch(request).then(response => response.json()).then((reviewsArr) => {
     populateReviews(reviewsArr, placeID);
   });
 }
@@ -389,7 +390,7 @@ function populateReviews(reviewList, placeID) {
   const entireList = document.createElement('ul');
   entireList.id += 'reviews-list';
 
-  if (reviewList.length == 0) {
+  if (reviewList == null) {
     entireList.appendChild(noReviews());
   } else { 
     reviewList.forEach(review => {
