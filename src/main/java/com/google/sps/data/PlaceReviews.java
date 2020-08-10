@@ -16,11 +16,9 @@ import java.util.List;
  */
 public class PlaceReviews {
 
-  public final String place_id;
-  public List<Comment> reviews;
-  private List<String> reviewers;
+  private final String place_id;
+  private ArrayList<Comment> reviews;
   private double rating;
-  private RatingHistory history;
 
    /**
     * Constructor

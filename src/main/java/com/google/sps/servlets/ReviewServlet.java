@@ -74,8 +74,9 @@ public class ReviewServlet extends HttpServlet {
     // Query for reviews from place_id.
     String place_id = request.getParameter("place_id");
     Entity curLocation = queryLocation(place_id, datastore);
+    curLocation = setCurLocation(curLocation, newReview, rating, place_id) // PlaceReviews, contains all reviews for one location. 
 
-    datastore.put(setCurLocation(curLocation, newReview, rating, place_id)); // Appends new review before posting to the datastore.
+    addToDatastore(curLocation);
 
     if (queryResults.size() == 0) { // There has not been a review before
       curLocation = new PlaceReviews(place_id, newReview, rating);
@@ -93,6 +94,7 @@ public class ReviewServlet extends HttpServlet {
     response.sendRedirect("/index.html");
   }
 
+  
   /**
     * Takes an entity and either appends a review or creates a new PlaceReviews instance
     * and appends it to the "placeData" property.
