@@ -81,22 +81,14 @@ public class ReviewServlet extends HttpServlet {
 
     Entity curLocation = queryLocation(place_id, datastore);
 
-    // PlaceReviews, contains all reviews for one location. 
-    //curLocation = setCurLocation(curLocation, newReview, rating, place_id);
-    
-    /* Checks to see if this is the first review. 
-    if (curLocation == null) { 
-      curLocation = new PlaceReviews(place_id, newReview, rating);
-    } else { // Add review
-      curLocation.getRe(newReview); // Handles duplicate
+    // Check if there is currently a location already in the datastore
+    if (curLocation == null){
+      curLocation = new Entity("Places", place_id); 
     }
-    */
-    
-    // Put back in datastore
-    Entity locationEntity = new Entity("Places", place_id); // Using place_id as the internal identifier
-    datastore.put(locationEntity);
+    // Update datastore
+    datastore.put(curLocation);
 
-    /* Redirect back so review appears on screen
+    /* Currently redirects back
      * We should modify this so that the screen doesn't completely refresh as then they would
      * have to go back and search the place again to see their review. 
      */
@@ -131,7 +123,7 @@ public class ReviewServlet extends HttpServlet {
     * @param rating is the current location's rating.
     * @return curLocation is the final set entity to be added to the datastore.
     */
-  /*public Entity setCurLocation(Entity curLocation, Comment newReview, Double rating, String place_id) {
+  public Entity setCurLocation(Entity curLocation, Comment newReview, Double rating, String place_id) {
     PlaceReviews curReviews;
     if (curLocation == null) { // There has not been a review before
       curLocation = new Entity("Places");
@@ -143,7 +135,6 @@ public class ReviewServlet extends HttpServlet {
     }
     return curLocation;
   }
-  */
 
   /**
    * Retrieval of PlaceReviews by id
