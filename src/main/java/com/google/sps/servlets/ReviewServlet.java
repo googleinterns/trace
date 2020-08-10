@@ -77,6 +77,18 @@ public class ReviewServlet extends HttpServlet {
 
     datastore.put(setCurLocation(curLocation, newReview, rating, place_id)); // Appends new review before posting to the datastore.
 
+    if (queryResults.size() == 0) { // There has not been a review before
+      curLocation = new PlaceReviews(place_id, newReview, rating);
+    } else { // Add review
+      curLocation = trimQuery(queryResults);
+      curLocation.addReview(newReview); // Handles duplicate
+    }
+    
+    // Put back in datastore
+    Entity locationEntity = new Entity("PlaceReviews", place_id); // Using place_id as the internal identifier
+    DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
+    datastore.put(locationEntity);
+
     // Redirect back so review appears on screen
     response.sendRedirect("/index.html");
   }
