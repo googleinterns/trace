@@ -448,14 +448,14 @@ function generateReview(review) {
   reviewText.innerHTML += review.messageContent;
   
   const upvoteButton = document.createElement('button');
-  upvoteButton.innerHTML += '&#1F44D';
+  upvoteButton.innerHTML += '&#128077;';
   upvoteButton.id += "upvote";
   upvoteButton.addEventListener("click", () => { 
     // TODO: Figure out what to do upon click.
   });
 
   const downvoteButton = document.createElement('button');
-  downvoteButton.innerHTML += '&#1F44E';
+  downvoteButton.innerHTML += '&#128078;';
   downvoteButton.id += "downvote";
   downvoteButton.addEventListener("click", () => {
     // TODO: Figure out what to do upon click.
