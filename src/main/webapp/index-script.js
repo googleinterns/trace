@@ -468,7 +468,7 @@ function generateReview(review) {
   reviewEntry.appendChild(upvoteButton);
   reviewEntry.appendChild(downvoteButton);
   return reviewEntry;
-}
+} 
 
 /** Sends post request to VotingServlet.java and updates modal. */
 function voteOnReview(review) {
