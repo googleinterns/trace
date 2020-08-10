@@ -1,0 +1,4 @@
+# These owners will be the default owners for everything in
+# the repo. Unless a later match takes precedence. The settings
+# for this repo should enforce this for PRs only for master branch.
+*       @fyordan @mwo-2020
