@@ -47,7 +47,6 @@ public class ReviewServlet extends HttpServlet {
       String message = (String) review.getProperty("message");
       Date timestamp = (Date) review.getProperty("timestamp");
       String author = (String) review.getProperty("author");
-
       Comment com = new Comment(author, message, timestamp, id);
       currentPlace.addReview(com);
     }
@@ -111,6 +110,8 @@ public class ReviewServlet extends HttpServlet {
     reviewEntity.setProperty("timestamp", timestamp);
     reviewEntity.setProperty("author", author);
     reviewEntity.setProperty("place_id", place_id);
+    reviewEntity.setProperty("positive", 0);
+    reviewEntity.setProperty("negative", 0);
 
     // Comment object gets it's datastore id. 
     comment.setId(reviewEntity.getKey().getId());

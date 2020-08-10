@@ -14,7 +14,7 @@ public class Comment {
   private String messageContent;
   private Date timestamp;
   private Long id;
-  private Long total;
+  private Long negative;
   private Long positive;
   private String username;
   // Does not need place_id since it can inherit that from PlaceReviews

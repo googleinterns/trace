@@ -448,17 +448,19 @@ function generateReview(review) {
   reviewText.innerHTML += review.messageContent;
   
   const upvoteButton = document.createElement('button');
-  upvoteButton.innerHTML += '&#128077;';
-  upvoteButton.id += "upvote";
-  upvoteButton.addEventListener("click", () => { 
-    // TODO: Figure out what to do upon click.
+  upvoteButton.innerHTML += '&#128077;' + review.positive;
+  upvoteButton.id += "up";
+  upvoteButton.addEventListener("click", () => {
+    review.positive += 1;
+    voteOnReview(review);
   });
 
   const downvoteButton = document.createElement('button');
-  downvoteButton.innerHTML += '&#128078;';
-  downvoteButton.id += "downvote";
+  downvoteButton.innerHTML += '&#128078;' + review.negative;
+  downvoteButton.id += "down"
   downvoteButton.addEventListener("click", () => {
-    // TODO: Figure out what to do upon click.
+    review.negative += 1;
+    voteOnReview(review);
   });
 
   reviewGrid.appendChild(reviewText);
@@ -466,4 +468,13 @@ function generateReview(review) {
   reviewEntry.appendChild(upvoteButton);
   reviewEntry.appendChild(downvoteButton);
   return reviewEntry;
+}
+
+function voteOnReview(review) {
+  const request = '/vote?comment_id=' + review.id + 
+    '&up=' + review.positive + '&down=' + review.negative;
+  fetch(request).then(() => {
+    document.getElementById("up").innerHTML = review.positive;
+    document.getElementById("down").innerHTML = review.negative;
+  });
 }
