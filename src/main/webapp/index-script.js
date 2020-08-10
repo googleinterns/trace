@@ -470,6 +470,7 @@ function generateReview(review) {
   return reviewEntry;
 }
 
+/** Sends post request to VotingServlet.java and updates modal. */
 function voteOnReview(review) {
   const request = '/vote?comment_id=' + review.id + 
     '&up=' + review.positive + '&down=' + review.negative;

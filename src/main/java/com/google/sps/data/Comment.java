@@ -17,7 +17,6 @@ public class Comment {
   private Long negative;
   private Long positive;
   private String username;
-  // Does not need place_id since it can inherit that from PlaceReviews
 
   /**
    * Order Comparator

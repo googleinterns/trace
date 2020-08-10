@@ -24,20 +24,20 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-/* Servlet that returns reviews.*/
+/* Servlet that updates votes on reviews.*/
 @WebServlet("/vote")
 public class VotingServlet extends HttpServlet {
   /** 
-   * Retrieves data from new-review submission form and creates relevant entity.
-   * Assumes user is logged in before posting review.
+   * Retrieves "Review" entity using comment_id and updates the datastore with the new voting values.
    */
   public void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
     DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
     UserService userService = UserServiceFactory.getUserService();
-    
+
     String comment_id = request.getParameter("comment_id");
     String upVotes = request.getParameter("up");
     String downVotes = request.getParameter("down");
+
     Entity review = retrieveReview(comment_id, datastore);
     if(review != null) {
       review.setProperty("positive", upVotes);
@@ -50,6 +50,9 @@ public class VotingServlet extends HttpServlet {
     response.getWriter().println("Your vote has been cast!");
   }
 
+  /** 
+    * Creates key to query datastore for a specific review.
+    */
   private Entity retrieveReview(String id, DatastoreService datastore) {
     Key commentKey = KeyFactory.createKey("Review", id);
     Entity review = null;

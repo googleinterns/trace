@@ -120,28 +120,6 @@ public class ReviewServlet extends HttpServlet {
     datastore.put(reviewEntity);
   }
 
-  
-  /**
-    * Takes an entity and either appends a review or creates a new PlaceReviews instance
-    * and appends it to the "placeData" property.
-    * @param curLocation is an entity to be set and then returned to the datastore.
-    * @param newReview is the Comment instance to be appended.
-    * @param rating is the current location's rating.
-    * @return curLocation is the final set entity to be added to the datastore.
-    */
-  public Entity setCurLocation(Entity curLocation, Comment newReview, Double rating, String place_id) {
-    PlaceReviews curReviews;
-    if (curLocation == null) { // There has not been a review before
-      curLocation = new Entity("Places");
-      curReviews = new PlaceReviews(place_id, newReview, rating);
-    } else { // Add review
-      curReviews = (PlaceReviews) curLocation.getProperty("placeData");
-      curReviews.addReview(newReview); // Handles duplicate
-      curReviews.addRating(rating);
-    }
-    return curLocation;
-  }
-
   /**
    * Retrieval of PlaceReviews by id
    * @param place_id The Maps API id for a location
