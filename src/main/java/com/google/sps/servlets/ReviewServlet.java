@@ -43,7 +43,7 @@ public class ReviewServlet extends HttpServlet {
     if(curLocation != null) {
       PlaceReviews curPlace = (PlaceReviews) curLocation.getProperty("placeData");
       // Add all the reviews to the Json list. 
-      curReviews.addAll(curPlace.reviews);
+      curReviews.addAll(curPlace.getReviews());
     }
     System.out.println(curReviews);
 
@@ -62,11 +62,9 @@ public class ReviewServlet extends HttpServlet {
     DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
 
     // Currently unused.
-    String firstName = request.getParameter("firstname");
-    String lastName = request.getParameter("lastname");
+    String firstName = request.getParameter("firstName");
+    String lastName = request.getParameter("lastName");
 
-    // Convert to double or keep as string?
-    // String ratingStr = request.getParameter("rate");
     Double rating = Double.parseDouble(request.getParameter("rate"));
 
     // Create new Comment instance.
@@ -77,25 +75,25 @@ public class ReviewServlet extends HttpServlet {
     
     // Query for existing reviews from place_id.
     String place_id = request.getParameter("place_id");
+
     // Add new review to datastore with the place_id. 
     addToDatastore(newReview, place_id);
 
     Entity curLocation = queryLocation(place_id, datastore);
 
     // PlaceReviews, contains all reviews for one location. 
-    curLocation = setCurLocation(curLocation, newReview, rating, place_id);
+    //curLocation = setCurLocation(curLocation, newReview, rating, place_id);
     
-    // Checks to see if this is the first review. 
-    if (curLocation.size() == 0) { 
+    /* Checks to see if this is the first review. 
+    if (curLocation == null) { 
       curLocation = new PlaceReviews(place_id, newReview, rating);
     } else { // Add review
-      curLocation = trimQuery(queryResults);
-      curLocation.addReview(newReview); // Handles duplicate
+      curLocation.getRe(newReview); // Handles duplicate
     }
+    */
     
     // Put back in datastore
     Entity locationEntity = new Entity("Places", place_id); // Using place_id as the internal identifier
-    DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
     datastore.put(locationEntity);
 
     /* Redirect back so review appears on screen
@@ -133,19 +131,19 @@ public class ReviewServlet extends HttpServlet {
     * @param rating is the current location's rating.
     * @return curLocation is the final set entity to be added to the datastore.
     */
-  public Entity setCurLocation(Entity curLocation, Comment newReview, Double rating, String place_id) {
+  /*public Entity setCurLocation(Entity curLocation, Comment newReview, Double rating, String place_id) {
     PlaceReviews curReviews;
     if (curLocation == null) { // There has not been a review before
-      curLocation = new Entity("PlaceReviews");
+      curLocation = new Entity("Places");
       curReviews = new PlaceReviews(place_id, newReview, rating);
     } else { // Add review
       curReviews = (PlaceReviews) curLocation.getProperty("placeData");
       curReviews.addReview(newReview); // Handles duplicate
       curReviews.addRating(rating);
     }
-    curLocation.setProperty("placeData", curReviews);
     return curLocation;
   }
+  */
 
   /**
    * Retrieval of PlaceReviews by id
