@@ -35,12 +35,7 @@ public class ReviewServlet extends HttpServlet {
     String place_id = request.getParameter("place_id");
     List<PlaceReviews> allLocations = queryLocation(place_id);
     
-    PlaceReviews location;
-    if (allLocations.size() == 0) {
-      location = null;
-    } else {
-      location = trimQuery(allLocations);
-    }
+    PlaceReviews location = (allLocations.size() == 0) ? null : trimQuery(allLocations);
 
     // Adds the review list to a GSON/JSON object so that can be used in Javascript code    
     response.setContentType("application/json");
@@ -74,7 +69,11 @@ public class ReviewServlet extends HttpServlet {
       curLocation = trimQuery(queryResults);
       curLocation.addReview(newReview); // Handles duplicate
     }
-    // TODO: Put back the new PlaceReviews
+    
+    // Put back in datastore
+    Entity locationEntity = new Entity("PlaceReviews", place_id); // Using place_id as the internal identifier
+    DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
+    datastore.put(locationEntity);
   
     // Redirect back so review appears on screen
     response.sendRedirect("/index.html");
@@ -111,6 +110,7 @@ public class ReviewServlet extends HttpServlet {
   /**
    * Assert function
    * Helper function from query to ensure only one location has been returned
+   * Checks that the query returns a Singleton array
    * @return PlaceReviews single element
    */
   public PlaceReviews trimQuery(List<PlaceReviews> queryResults) throws IOException {
