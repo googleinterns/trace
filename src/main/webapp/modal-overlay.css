@@ -171,6 +171,10 @@ a:hover {
   color: red;
 }
 
+.button-group button:hover {
+  background-color: gray;
+}
+
 .button-group:after {
   content: " ";
   clear: both;
