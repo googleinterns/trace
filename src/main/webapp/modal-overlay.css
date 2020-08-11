@@ -171,6 +171,12 @@ a:hover {
   color: red;
 }
 
+.button-group:after {
+  content: " ";
+  clear: both;
+  display: table;
+}
+
 #no-reviews {
   font-size: 300%;
 }
