@@ -167,6 +167,10 @@ a:hover {
   border-right: none;
 }
 
+.button-group button:active {
+  color: red;
+}
+
 #no-reviews {
   font-size: 300%;
 }
