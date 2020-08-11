@@ -160,6 +160,20 @@ function createMap() {
     {center: googleplex, zoom: 13,
     mapTypeControlOptions: {mapTypeIds: ['roadmap']}});
 
+  // Checks to see if browser has enabled location sharing.
+  if (navigator.geolocation) {
+    // If so, sets the center of the map at the user's current position. 
+    navigator.geolocation.getCurrentPosition(
+      position => {
+        const pos = {
+          lat: position.coords.latitude,
+          lng: position.coords.longitude
+        };
+        map.setCenter(pos);
+      }
+    );
+  }
+
   // Search by coordinates on map click.
   map.addListener('click', function(mapsMouseEvent) {
     infoWindow.close();
