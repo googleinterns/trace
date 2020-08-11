@@ -164,7 +164,7 @@ a:hover {
 }
 
 .button-group button:not(:last-child) {
-  border-right:none;
+  border-right: none;
 }
 
 #no-reviews {
