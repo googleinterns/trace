@@ -163,7 +163,7 @@ a:hover {
   border: 1px;
 }
 
-.button-group butto:not(:last-child) {
+.button-group button:not(:last-child) {
   border-right:none;
 }
 
