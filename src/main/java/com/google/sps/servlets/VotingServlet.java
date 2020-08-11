@@ -33,8 +33,7 @@ public class VotingServlet extends HttpServlet {
   public void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
     DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
     UserService userService = UserServiceFactory.getUserService();
-
-    String comment_id = request.getParameter("comment_id");
+    Long comment_id = Long.parseLong(request.getParameter("comment_id"));
     String upVotes = request.getParameter("up");
     String downVotes = request.getParameter("down");
 
@@ -53,7 +52,7 @@ public class VotingServlet extends HttpServlet {
   /** 
     * Creates key to query datastore for a specific review.
     */
-  private Entity retrieveReview(String id, DatastoreService datastore) {
+  private Entity retrieveReview(Long id, DatastoreService datastore) {
     Key commentKey = KeyFactory.createKey("Review", id);
     Entity review = null;
     try {

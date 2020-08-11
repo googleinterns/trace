@@ -193,7 +193,6 @@ function searchByText(textQuery, textLocation) {
       if (status == google.maps.GeocoderStatus.OK) {
         var latitude = results[0].geometry.location.lat();
         var longitude = results[0].geometry.location.lng();
-        console.log(new google.maps.LatLng(latitude, longitude));
         resolve(new google.maps.LatLng(latitude, longitude));
       } else {
         // If no location given, defaults to your cookie-d location.
@@ -372,14 +371,12 @@ function displayReviewModal() {
 }
 
 /** Fetch Reviews
- * Queries ReviewServlet with elementID to find internal datastore
+ * Queries ReviewServlet with elementID// Comment object gets it's datastore id. 
+    comment.setId(reviewEntity.getKey().getId()); to find internal datastore
  */
 function fetchReviews(placeID) {
-  console.log("Fetching reviews for ID: #" + placeID);
   const request = '/review?place_id=' + placeID;
   fetch(request).then(response => response.json()).then((place) => {
-    console.log(place.reviews);
-    console.log(place);
     populateReviews(place.reviews, placeID);
   });
 }
@@ -449,7 +446,7 @@ function generateReview(review) {
   
   const upvoteButton = document.createElement('button');
   upvoteButton.innerHTML += '&#128077;' + review.positive;
-  upvoteButton.id += "up";
+  upvoteButton.id += "up" + review.id;
   upvoteButton.addEventListener("click", () => {
     if(upvoteButton.innerHTML[0] != " ") {
       review.positive += 1;
@@ -459,7 +456,7 @@ function generateReview(review) {
 
   const downvoteButton = document.createElement('button');
   downvoteButton.innerHTML += '&#128078;' + review.negative;
-  downvoteButton.id += "down"
+  downvoteButton.id += "down" + review.id;
   downvoteButton.addEventListener("click", () => {
     if(upvoteButton.innerHTML[0] != " ") {
       review.negative += 1;
@@ -478,8 +475,8 @@ function generateReview(review) {
 function voteOnReview(review) {
   const request = '/vote?comment_id=' + review.id + 
     '&up=' + review.positive + '&down=' + review.negative;
-  fetch(request).then(() => {
-    document.getElementById("up").innerHTML = " " + review.positive + " ";
-    document.getElementById("down").innerHTML = " " + review.negative + " ";
+  fetch(request, {method:"POST"}).then(() => {
+    document.getElementById("up" + review.id).innerHTML = " " + review.positive + " ";
+    document.getElementById("down" + review.id).innerHTML = " " + review.negative + " ";
   });
 }
