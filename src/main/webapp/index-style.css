@@ -197,15 +197,10 @@
 
 /* Login Button Specs. */
 .loginButton {
-  height: 30px;
+  height: 30%;
   width: 30%;
   position: relative;
   left: 30%;
-}
-
-/* On hover, add a black background color with a little bit see-through */
-.prev:hover, .next:hover {
-  color: rgba(230, 230, 230); /* Grey. */
 }
 
 #login {
@@ -213,7 +208,7 @@
   position: fixed;
   top: 30%;
   left: 50%;
-  transform: translate(-50%, -50%);
+  transform: translate(-100%, -50%);
   font-size: 18px;
   height:50px;
   width:100px;
