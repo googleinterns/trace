@@ -152,11 +152,11 @@ a:hover {
 }
 
 .button-group button {
-  cursor: pointer;
-  padding: 10px 24px;
-  color: white;
-  float: left;
   border: 1px;
+  color: white;
+  cursor: pointer;
+  float: left;
+  padding: 10px 24px;
 }
 
 .button-group button:not(:last-child) {
