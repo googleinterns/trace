@@ -47,8 +47,16 @@ public class ReviewServlet extends HttpServlet {
       String message = (String) review.getProperty("message");
       Date timestamp = (Date) review.getProperty("timestamp");
       String author = (String) review.getProperty("author");
-
-      Comment com = new Comment(author, message, timestamp, id);
+      Long positive = (long) 0;
+      Long negative = (long) 0;
+      if ((String) review.getProperty("positive") != null){
+        positive = Long.parseLong((String) review.getProperty("positive"));
+      }
+      if ((String) review.getProperty("negative") != null){
+        negative = Long.parseLong((String) review.getProperty("negative"));
+      }
+      Comment com = new Comment(author, message, timestamp, positive, negative);
+      com.setId(id);
       currentPlace.addReview(com);
     }
 
@@ -76,7 +84,8 @@ public class ReviewServlet extends HttpServlet {
     String userEmail = userService.getCurrentUser().getEmail(); // Used to restrict user to one review/location
     String reviewText = request.getParameter("comment");
     Date time = new Date();
-    Comment newReview = new Comment(userEmail, reviewText, time, 0);
+    long zero = 0; // 0 gets incorrectly cast as int if used directly.
+    Comment newReview = new Comment(userEmail, reviewText, time, zero, zero);
     
     // Query for existing reviews from place_id.
     String place_id = request.getParameter("place_id");
@@ -111,34 +120,14 @@ public class ReviewServlet extends HttpServlet {
     reviewEntity.setProperty("timestamp", timestamp);
     reviewEntity.setProperty("author", author);
     reviewEntity.setProperty("place_id", place_id);
-
-    // Comment object gets it's datastore id. 
-    comment.setId(reviewEntity.getKey().getId());
+    reviewEntity.setProperty("positive", "0"); // Cast as string for easy typing.
+    reviewEntity.setProperty("negative", "0");
 
     DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
     datastore.put(reviewEntity);
-  }
 
-  
-  /**
-    * Takes an entity and either appends a review or creates a new PlaceReviews instance
-    * and appends it to the "placeData" property.
-    * @param curLocation is an entity to be set and then returned to the datastore.
-    * @param newReview is the Comment instance to be appended.
-    * @param rating is the current location's rating.
-    * @return curLocation is the final set entity to be added to the datastore.
-    */
-  public Entity setCurLocation(Entity curLocation, Comment newReview, Double rating, String place_id) {
-    PlaceReviews curReviews;
-    if (curLocation == null) { // There has not been a review before
-      curLocation = new Entity("Places");
-      curReviews = new PlaceReviews(place_id, newReview, rating);
-    } else { // Add review
-      curReviews = (PlaceReviews) curLocation.getProperty("placeData");
-      curReviews.addReview(newReview); // Handles duplicate
-      curReviews.addRating(rating);
-    }
-    return curLocation;
+    // Comment object gets it's datastore id, which only exists after it is put into the datastore. 
+    comment.setId(reviewEntity.getKey().getId());
   }
 
   /**

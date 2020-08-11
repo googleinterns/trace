@@ -193,7 +193,6 @@ function searchByText(textQuery, textLocation) {
       if (status == google.maps.GeocoderStatus.OK) {
         var latitude = results[0].geometry.location.lat();
         var longitude = results[0].geometry.location.lng();
-        console.log(new google.maps.LatLng(latitude, longitude));
         resolve(new google.maps.LatLng(latitude, longitude));
       } else {
         // If no location given, defaults to your cookie-d location.
@@ -372,14 +371,12 @@ function displayReviewModal() {
 }
 
 /** Fetch Reviews
- * Queries ReviewServlet with elementID to find internal datastore
+ * Queries ReviewServlet with elementID// Comment object gets it's datastore id. 
+    comment.setId(reviewEntity.getKey().getId()); to find internal datastore
  */
 function fetchReviews(placeID) {
-  console.log("Fetching reviews for ID: #" + placeID);
   const request = '/review?place_id=' + placeID;
   fetch(request).then(response => response.json()).then((place) => {
-    console.log(place.reviews);
-    console.log(place);
     populateReviews(place.reviews, placeID);
   });
 }
@@ -448,17 +445,23 @@ function generateReview(review) {
   reviewText.innerHTML += review.messageContent;
   
   const upvoteButton = document.createElement('button');
-  upvoteButton.innerHTML += '&#128077;';
-  upvoteButton.id += "upvote";
-  upvoteButton.addEventListener("click", () => { 
-    // TODO: Figure out what to do upon click.
+  upvoteButton.innerHTML += '&#128077;' + review.positive;
+  upvoteButton.id += "up" + review.id;
+  upvoteButton.addEventListener("click", () => {
+    if(upvoteButton.innerHTML[0] != " ") {
+      review.positive += 1;
+      voteOnReview(review);
+    }
   });
 
   const downvoteButton = document.createElement('button');
-  downvoteButton.innerHTML += '&#128078;';
-  downvoteButton.id += "downvote";
+  downvoteButton.innerHTML += '&#128078;' + review.negative;
+  downvoteButton.id += "down" + review.id;
   downvoteButton.addEventListener("click", () => {
-    // TODO: Figure out what to do upon click.
+    if(upvoteButton.innerHTML[0] != " ") {
+      review.negative += 1;
+      voteOnReview(review);
+    }
   });
 
   reviewGrid.appendChild(reviewText);
@@ -466,4 +469,14 @@ function generateReview(review) {
   reviewEntry.appendChild(upvoteButton);
   reviewEntry.appendChild(downvoteButton);
   return reviewEntry;
+} 
+
+/** Sends post request to VotingServlet.java and updates modal. */
+function voteOnReview(review) {
+  const request = '/vote?comment_id=' + review.id + 
+    '&up=' + review.positive + '&down=' + review.negative;
+  fetch(request, {method:"POST"}).then(() => {
+    document.getElementById("up" + review.id).innerHTML = " " + review.positive + " ";
+    document.getElementById("down" + review.id).innerHTML = " " + review.negative + " ";
+  });
 }
