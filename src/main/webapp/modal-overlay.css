@@ -153,7 +153,8 @@ a:hover {
 
 .button-group button {
   border: 1px;
-  color: white;
+  color: black;
+  background-color: aliceblue;
   cursor: pointer;
   float: left;
   padding: 10px 24px;
@@ -169,7 +170,6 @@ a:hover {
 
 .button-group button:hover {
   background-color: gray;
-  color: blue;
 }
 
 .button-group:after {
