@@ -156,7 +156,8 @@ a:hover {
 }
 
 .button-group button{
-
+  cursor: pointer;
+  padding: 10px 24px;
 }
 
 #no-reviews {
