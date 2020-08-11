@@ -160,6 +160,7 @@ a:hover {
   padding: 10px 24px;
   color: white;
   float: left;
+  border: 1px;
 }
 
 #no-reviews {
