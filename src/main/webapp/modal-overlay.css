@@ -159,7 +159,7 @@ a:hover {
   cursor: pointer;
   padding: 10px 24px;
   color: white;
-  float: center;
+  float: left;
 }
 
 #no-reviews {
