@@ -451,16 +451,20 @@ function generateReview(review) {
   upvoteButton.innerHTML += '&#128077;' + review.positive;
   upvoteButton.id += "up";
   upvoteButton.addEventListener("click", () => {
-    review.positive += 1;
-    voteOnReview(review);
+    if(upvoteButton.innerHTML[0] != " ") {
+      review.positive += 1;
+      voteOnReview(review);
+    }
   });
 
   const downvoteButton = document.createElement('button');
   downvoteButton.innerHTML += '&#128078;' + review.negative;
   downvoteButton.id += "down"
   downvoteButton.addEventListener("click", () => {
-    review.negative += 1;
-    voteOnReview(review);
+    if(upvoteButton.innerHTML[0] != " ") {
+      review.negative += 1;
+      voteOnReview(review);
+    }
   });
 
   reviewGrid.appendChild(reviewText);
@@ -475,7 +479,7 @@ function voteOnReview(review) {
   const request = '/vote?comment_id=' + review.id + 
     '&up=' + review.positive + '&down=' + review.negative;
   fetch(request).then(() => {
-    document.getElementById("up").innerHTML = review.positive;
-    document.getElementById("down").innerHTML = review.negative;
+    document.getElementById("up").innerHTML = " " + review.positive + " ";
+    document.getElementById("down").innerHTML = " " + review.negative + " ";
   });
 }

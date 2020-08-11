@@ -47,7 +47,10 @@ public class ReviewServlet extends HttpServlet {
       String message = (String) review.getProperty("message");
       Date timestamp = (Date) review.getProperty("timestamp");
       String author = (String) review.getProperty("author");
-      Comment com = new Comment(author, message, timestamp, id);
+      Long positive = (Long) review.getProperty("positive");
+      Long negative = (Long) review.getProperty("negative");
+      Comment com = new Comment(author, message, timestamp, positive, negative);
+      com.setId(id);
       currentPlace.addReview(com);
     }
 
@@ -75,7 +78,8 @@ public class ReviewServlet extends HttpServlet {
     String userEmail = userService.getCurrentUser().getEmail(); // Used to restrict user to one review/location
     String reviewText = request.getParameter("comment");
     Date time = new Date();
-    Comment newReview = new Comment(userEmail, reviewText, time, 0);
+    long zero = 0; // 0 gets incorrectly cast as int if used directly.
+    Comment newReview = new Comment(userEmail, reviewText, time, zero, zero);
     
     // Query for existing reviews from place_id.
     String place_id = request.getParameter("place_id");

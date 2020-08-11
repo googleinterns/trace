@@ -13,7 +13,7 @@ public class Comment {
   private final String author;
   private String messageContent;
   private Date timestamp;
-  private Long id;
+  private long id;
   private Long negative;
   private Long positive;
   private String username;
@@ -47,11 +47,12 @@ public class Comment {
    * @param message the content of the message
    * @param timestamp the time of writing
    */
-  public Comment(String author, String message, Date timestamp, long id) {
+  public Comment(String author, String message, Date timestamp, Long pos, Long neg) {
     this.author = author;
     this.messageContent = message;
     this.timestamp = timestamp;
-    this.id = id;
+    this.positive = pos;
+    this.negative = neg;
   }
 
   public long getId(){
