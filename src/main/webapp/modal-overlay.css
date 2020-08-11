@@ -169,6 +169,7 @@ a:hover {
 
 .button-group button:hover {
   background-color: gray;
+  color: blue;
 }
 
 .button-group:after {
