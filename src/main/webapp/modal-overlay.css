@@ -158,6 +158,8 @@ a:hover {
 .button-group button{
   cursor: pointer;
   padding: 10px 24px;
+  color: white;
+  float: center;
 }
 
 #no-reviews {
