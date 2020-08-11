@@ -38,6 +38,9 @@ function loadMainButtons() {
     document.getElementById('reviews-list-container').innerHTML = ''; // Clean reviews wrapper of all DOM elements;
     document.getElementById('rev-form-body').style.display = "none";
   });
+
+  const commentSortRelevant = document.getElementById("comment-sort-relevant");
+  const commentSortRecent = document.getElementById("comment-sort-recent");
 }
 
 /* Adds mouse listeners to searchBar-related html items. */
