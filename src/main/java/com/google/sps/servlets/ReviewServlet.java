@@ -47,8 +47,14 @@ public class ReviewServlet extends HttpServlet {
       String message = (String) review.getProperty("message");
       Date timestamp = (Date) review.getProperty("timestamp");
       String author = (String) review.getProperty("author");
-      Long positive = Long.parseLong((String) review.getProperty("positive"));
-      Long negative = Long.parseLong((String) review.getProperty("negative"));
+      Long positive = (long) 0;
+      Long negative = (long) 0;
+      if ((String) review.getProperty("positive") != null){
+        positive = Long.parseLong((String) review.getProperty("positive"));
+      }
+      if ((String) review.getProperty("negative") != null){
+        negative = Long.parseLong((String) review.getProperty("negative"));
+      }
       Comment com = new Comment(author, message, timestamp, positive, negative);
       com.setId(id);
       currentPlace.addReview(com);
