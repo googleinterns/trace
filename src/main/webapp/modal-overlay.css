@@ -151,10 +151,6 @@ a:hover {
   color: rgba(230, 230, 230); /* Grey. */ 
 }
 
-.button-group {
-
-}
-
 .button-group button {
   cursor: pointer;
   padding: 10px 24px;
