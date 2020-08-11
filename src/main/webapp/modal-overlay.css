@@ -164,7 +164,7 @@ a:hover {
 }
 
 .button-group button:active {
-  color: red;
+  background-color: red;
 }
 
 .button-group button:hover {
