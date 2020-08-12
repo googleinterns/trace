@@ -509,7 +509,7 @@ function voteOnReview(review) {
   const request = '/vote?comment_id=' + review.id + 
     '&up=' + review.positive + '&down=' + review.negative;
   fetch(request, {method:"POST"}).then(() => {
-    document.getElementById("up" + review.id).innerHTML = " " + review.positive + " ";
-    document.getElementById("down" + review.id).innerHTML = " " + review.negative + " ";
+    document.getElementById("up" + review.id).innerHTML = "&#128077;" + review.positive + " ";
+    document.getElementById("down" + review.id).innerHTML = "&#128078;" + review.negative + " ";
   });
 }

@@ -38,6 +38,8 @@ public class ReviewServlet extends HttpServlet {
     Query query = new Query("Review").setFilter(placeFilter);
 
     DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
+    UserService userService = UserServiceFactory.getUserService();
+
     PreparedQuery results = datastore.prepare(query);
 
     PlaceReviews currentPlace = new PlaceReviews(place_id);
