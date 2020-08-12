@@ -404,7 +404,7 @@ function displayReviewModal() {
     comment.setId(reviewEntity.getKey().getId()); to find internal datastore
  */
 function fetchReviews(placeID, sort) {
-  
+  const request = '/review?place_id=' + placeID + '&sort=recent';
   fetch(request).then(response => response.json()).then((place) => {
     populateReviews(place.reviews, placeID);
   });
