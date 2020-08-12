@@ -35,7 +35,7 @@ public class ReviewServlet extends HttpServlet {
     // Get the requested place using it's ID. 
     String place_id = request.getParameter("place_id");
     // Defer to sort by recent if poor format
-    String sort = (request.getParameter("sort") == "relevant") ? "relevant" : "recent"; 
+    String sortType = (request.getParameter("sort") == "relevant") ? "relevant" : "recent"; 
     Filter placeFilter = new FilterPredicate("place_id", FilterOperator.EQUAL, place_id);
     Query query = new Query("Review").setFilter(placeFilter);
 
@@ -61,6 +61,7 @@ public class ReviewServlet extends HttpServlet {
       com.setId(id);
       currentPlace.addReview(com);
     }
+    currentPlace.sortReviews(sortType);
 
     // Adds the review list to a GSON/JSON object so that can be used in Javascript code    
     response.setContentType("application/json");
