@@ -45,10 +45,14 @@ function loadMainButtons() {
   });
 
   commentSortRelevant.addEventListener("click", () => {
+    commentSortRelevant.classList.add("active");
+    commentSortRecent.classList.remove("active");
     // TODO: Make sort relevant function
   });
   
   commentSortRecent.addEventListener("click", () => {
+    commentSortRecent.classList.add("active");
+    commentSortRelevant.classList.remove("active");
     // TODO: Make sort recent function
   });
 }
