@@ -46,8 +46,7 @@ public class Comment {
   public static final Comparator<Comment> ORDER_BY_SCORE = new Comparator<Comment>() {
     @Override
     public int compare(Comment a, Comment b) {
-      return (int) ((a.positive.longValue() - a.negative.longValue()) 
-        - (b.positive.longValue() - b.negative.longValue()));
+      return Long.compare((a.positive - a.negative), (b.positive - b.negative));
     }
   };
   
