@@ -39,21 +39,25 @@ public class VotingServlet extends HttpServlet {
     String upVotes = request.getParameter("up");
     String downVotes = request.getParameter("down");
 
+    // Gets the review itself from Datastore
     Entity review = retrieveReview(comment_id, datastore);
-
+    
+    // Gets the review/voter pairs from Datastore. 
     Filter reviewFilter = new FilterPredicate("review_id", FilterOperator.EQUAL, comment_id);
     Filter voterFilter = new FilterPredicate("voter", FilterOperator.EQUAL, userService.getCurrentUser().getEmail());
     Filter combinedFilter = new CompositeFilter(CompositeFilterOperator.AND, Arrays.asList(reviewFilter, voterFilter));
     Query query = new Query("voter-review").setFilter(combinedFilter);
 
     PreparedQuery results = datastore.prepare(query);
-    System.out.println(results.countEntities());
 
+    // Checks if a review exists, and if the current user has already voted on it. 
     if(review != null && results.countEntities() < 1) {
+      // Updates the review's vote count
       review.setProperty("positive", upVotes);
       review.setProperty("negative", downVotes);
       datastore.put(review);
 
+      // Adds the new review voter-pair
       Entity voterReview = new Entity("voter-review");
       voterReview.setProperty("voter", userService.getCurrentUser().getEmail());
       voterReview.setProperty("review_id", comment_id);
