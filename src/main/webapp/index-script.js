@@ -40,7 +40,14 @@ function loadMainButtons() {
   });
 
   const commentSortRelevant = document.getElementById("comment-sort-relevant");
+  commentSortRelevant.addEventListener("click", () => {
+    // TODO: Make sort relevant function
+  });
+  
   const commentSortRecent = document.getElementById("comment-sort-recent");
+  commentSortRecent.addEventListener("click", () => {
+    // TODO: Make sort recent function
+  });
 }
 
 /* Adds mouse listeners to searchBar-related html items. */
