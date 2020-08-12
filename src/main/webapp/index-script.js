@@ -32,7 +32,7 @@ function loadMainButtons() {
   const modalBackArrow = document.getElementById("modal-backarrow");
   const commentSortRelevant = document.getElementById("comment-sort-relevant");
   const commentSortRecent = document.getElementById("comment-sort-recent");
-  
+
   // Hide reviews page and display results page.
   modalBackArrow.addEventListener("click", () => {
     hideBackArrow();
@@ -44,11 +44,9 @@ function loadMainButtons() {
     document.getElementById('rev-form-body').style.display = "none";
   });
 
-  
   commentSortRelevant.addEventListener("click", () => {
     // TODO: Make sort relevant function
   });
-
   
   commentSortRecent.addEventListener("click", () => {
     // TODO: Make sort recent function
