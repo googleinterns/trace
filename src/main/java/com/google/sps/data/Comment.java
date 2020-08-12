@@ -36,7 +36,19 @@ public class Comment {
   public static final Comparator<Comment> ORDER_BY_AUTHOR = new Comparator<Comment>() {
     @Override
     public int compare(Comment a, Comment b) {
-      return a.author.compareTo(b.author);
+      return (a.positive.longValue() - a.negative.longValue()) 
+          > (b.positive.longValue() - b.negative.longValue());
+    }
+  };
+
+  /**
+   * Order Comparator by MetaScore
+   * This comparator orders the comments by their score
+   */
+  public static final Comparator<Comment> ORDER_BY_SCORE = new Comparator<Comment>() {
+    @Override
+    public int compare(Comment a, Comment b) {
+      return 
     }
   };
   
