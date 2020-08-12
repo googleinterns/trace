@@ -174,9 +174,10 @@ function createMap() {
     );
   }
 
+  // initializeHeatMap(map);
+
   // Search by coordinates on map click.
   map.addListener('click', function(mapsMouseEvent) {
-    infoWindow.close();
     searchByCoordinates(mapsMouseEvent.latLng);
   });
 }
@@ -493,4 +494,62 @@ function voteOnReview(review) {
     document.getElementById("up" + review.id).innerHTML = " " + review.positive + " ";
     document.getElementById("down" + review.id).innerHTML = " " + review.negative + " ";
   });
+}
+
+/** Function reads heatWeights.txt and parses it as a JSON object
+  * in order to populate heatMap in helperfunction. */
+function initializeHeatMap(map) {
+  let heatWeights = null
+  fetch('heatWeights.txt').then(response => response.text())
+    .then(text => {
+      heatWeights = JSON.parse(text);
+      locToLatLng(heatWeights);
+    });
+}
+
+/** Function accepts a JSON object mapping U.S. counties to their relative covid weights
+  * and creates an array of JSON objects mapping that county's coordinates to thosse weights
+  * before making a call to populateHeatMap(). */
+function locToLatLng(heatWeights, map) {
+  var pointPromises = [];  // Promises to be resolved to {LatLng : Weight} objects.
+  for(let county in heatWeights) {
+    newPointPromise = countyToCoords(county, heatWeights[county], i);
+    pointPromises.push(newPointPromise);
+  }
+  // Waits on all promises to complete before passing the results into the next function.
+  Promise.all(pointPromises).then(points => {
+    //console.log(points);
+    populateHeatMap(points, map);
+  });
+}
+
+/** Function accepts a county and a corresponding weight and 
+  * returns a promise to find its geocoded coordinates. */
+function countyToCoords(county, countyWeight, i) {
+  // Get the coordinates of a requested location. 
+  const locationPromise = new Promise((resolve, reject) => {
+    var geocoder = new google.maps.Geocoder();
+    geocoder.geocode({ 'address': county}, function (results, status) {
+      if (status == google.maps.GeocoderStatus.OK) {
+        var latitude = results[0].geometry.location.lat();
+        var longitude = results[0].geometry.location.lng();
+        var newCoords = new google.maps.LatLng(latitude, longitude);
+        var newPoint = {
+          location: newCoords,
+          weight: countyWeight
+        };
+        resolve(newPoint);
+      }
+    });
+  });
+  return locationPromise; 
+}
+
+
+/** Uses heatMapData object to populate heatMap. */
+function populateHeatMap(heatMapData, map) {
+  var heatmap = new google.maps.visualization.HeatmapLayer({
+    data: heatMapData
+  });
+  heatmap.setMap(map);
 }
