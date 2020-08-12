@@ -1,7 +1,5 @@
 package com.google.sps.data;
-
-import java.util.Date;
-import java.util.Comparator;
+import java.util.*;
 
 /** 
  * Comment object class
@@ -17,6 +15,7 @@ public class Comment {
   private Long negative;
   private Long positive;
   private String username;
+  private Set<String> voters;
 
   /**
    * Order Comparator
@@ -65,6 +64,12 @@ public class Comment {
     this.timestamp = timestamp;
     this.positive = pos;
     this.negative = neg;
+    this.voters = new HashSet<>();
+  }
+
+  /* Add a voter to the voters set. */
+  public void addVoter(String voter){
+    voters.add(voter);
   }
 
   public long getId(){
