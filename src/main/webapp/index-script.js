@@ -195,7 +195,6 @@ function createMap() {
 
   // Search by coordinates on map click.
   map.addListener('click', function(mapsMouseEvent) {
-    infoWindow.close();
     searchByCoordinates(mapsMouseEvent.latLng);
   });
 }
@@ -481,9 +480,10 @@ function generateReview(review, currUser) {
   upvoteButton.innerHTML += '&#128077;' + review.positive;
   upvoteButton.id += "up" + review.id;
   upvoteButton.addEventListener("click", () => {
-    if(currUser != null) {
+    if(currUser != null && !review.voters.includes(currUser)) {
       review.positive += 1;
       voteOnReview(review);
+      review.voters.push(currUser);
     }
   });
 
@@ -491,9 +491,10 @@ function generateReview(review, currUser) {
   downvoteButton.innerHTML += '&#128078;' + review.negative;
   downvoteButton.id += "down" + review.id;
   downvoteButton.addEventListener("click", () => {
-    if(currUser != null) {
+    if(currUser != null && !review.voters.includes(currUser)) {
       review.negative += 1;
       voteOnReview(review);
+      review.voters.push(currUser);
     }
   });
 
