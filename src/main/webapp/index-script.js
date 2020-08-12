@@ -429,6 +429,14 @@ function populateReviews(reviewList, placeID) {
   listContainer.appendChild(entireList);
 }
 
+/** ReSorts the shown comments
+ * Cleans the review modal, requeries, and displays the comments
+ */
+function resortReviews(placeID, sort) {
+  document.getElementById("reviews-list-container").innerHTML = '';
+  Reviews(placeID, sort);
+}
+
 /** Creates a new-review button for users to post their own review. */
 function newReviewButton(place_id) {
   const button = document.createElement('button');
@@ -447,7 +455,6 @@ function triggerNewReviewForm(place_id) {
   document.getElementById("reviews-body").style.display = "none"; // Hide reviews page.
   document.getElementById("rev-form-body").style.display = "block";
 }
-
 
 /**
  * Review modal activation function
