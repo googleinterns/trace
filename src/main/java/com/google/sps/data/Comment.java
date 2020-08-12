@@ -55,6 +55,7 @@ public class Comment {
     this.voters = new HashSet<>();
   }
 
+  // Add a voter to the voters set. 
   public void addVoter(String voter){
     voters.add(voter);
   }

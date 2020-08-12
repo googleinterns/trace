@@ -461,6 +461,7 @@ function generateReview(review, currUser) {
   upvoteButton.innerHTML += '&#128077;' + review.positive;
   upvoteButton.id += "up" + review.id;
   upvoteButton.addEventListener("click", () => {
+    // Users must be logged in and can only vote once. 
     if(currUser != null && !review.voters.includes(currUser)) {
       review.positive += 1;
       voteOnReview(review);
@@ -472,6 +473,7 @@ function generateReview(review, currUser) {
   downvoteButton.innerHTML += '&#128078;' + review.negative;
   downvoteButton.id += "down" + review.id;
   downvoteButton.addEventListener("click", () => {
+    // Users must be logged in and can only vote once. 
     if(currUser != null && !review.voters.includes(currUser)) {
       review.negative += 1;
       voteOnReview(review);
