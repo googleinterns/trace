@@ -164,7 +164,7 @@ a:hover {
   border-right: none;
 }
 
-.button-group button:active {
+.button-group button.active {
   background-color: red;
 }
 
