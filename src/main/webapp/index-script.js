@@ -1,6 +1,7 @@
 /* Class Variables. */
 var map;
 var currentLocation = "newID";
+var prev_ID;
 
 /* Loads page and main buttons. */
 function loadPage() {
@@ -47,13 +48,13 @@ function loadMainButtons() {
   commentSortRelevant.addEventListener("click", () => {
     commentSortRelevant.classList.add("active");
     commentSortRecent.classList.remove("active");
-    // TODO: Make sort relevant function
+    resortReviews(prev_ID, 'relevant');
   });
   
   commentSortRecent.addEventListener("click", () => {
     commentSortRecent.classList.add("active");
     commentSortRelevant.classList.remove("active");
-    // TODO: Make sort recent function
+    resortReviews(prev_ID, 'recent');
   });
 }
 
@@ -416,8 +417,9 @@ function displayReviewModal() {
  * Queries ReviewServlet with elementID// Comment object gets it's datastore id. 
     comment.setId(reviewEntity.getKey().getId()); to find internal datastore
  */
-function fetchReviews(placeID) {
-  const request = '/review?place_id=' + placeID;
+function fetchReviews(placeID, sort='recent') {
+  prev_ID = placeID;
+  const request = '/review?place_id=' + placeID + '&sort=' + sort;
   fetch(request).then(response => response.json()).then((place) => {
     populateReviews(place.reviews, placeID, place.currUser);
   });
@@ -442,6 +444,14 @@ function populateReviews(reviewList, placeID, currUser) {
   listContainer.appendChild(entireList);
 }
 
+/** ReSorts the shown comments
+ * Cleans the review modal, requeries, and displays the comments
+ */
+function resortReviews(placeID, sort) {
+  document.getElementById("reviews-list-container").innerHTML = '';
+  fetchReviews(placeID, sort);
+}
+
 /** Creates a new-review button for users to post their own review. */
 function newReviewButton(place_id) {
   const button = document.createElement('button');
@@ -460,7 +470,6 @@ function triggerNewReviewForm(place_id) {
   document.getElementById("reviews-body").style.display = "none"; // Hide reviews page.
   document.getElementById("rev-form-body").style.display = "block";
 }
-
 
 /**
  * Review modal activation function
