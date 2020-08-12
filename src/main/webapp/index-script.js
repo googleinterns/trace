@@ -47,13 +47,13 @@ function loadMainButtons() {
   commentSortRelevant.addEventListener("click", () => {
     commentSortRelevant.classList.add("active");
     commentSortRecent.classList.remove("active");
-    resortReviews(placeID, 'relevant');
+    resortReviews(document.getElementById("place_id").value, 'relevant');
   });
   
   commentSortRecent.addEventListener("click", () => {
     commentSortRecent.classList.add("active");
     commentSortRelevant.classList.remove("active");
-    resortReviews(placeID, 'recent');
+    resortReviews(document.getElementById("place_id").value, 'recent');
   });
 }
 
