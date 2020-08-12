@@ -45,10 +45,14 @@ function loadMainButtons() {
   });
 
   commentSortRelevant.addEventListener("click", () => {
+    commentSortRelevant.classList.add("active");
+    commentSortRecent.classList.remove("active");
     // TODO: Make sort relevant function
   });
   
   commentSortRecent.addEventListener("click", () => {
+    commentSortRecent.classList.add("active");
+    commentSortRelevant.classList.remove("active");
     // TODO: Make sort recent function
   });
 }
@@ -394,9 +398,15 @@ function showReviews(placeID) {
  * Review modal activation function
  */
 function displayReviewModal() {
-  const button = document.getElementById('modal-backarrow');
-  button.classList.add("exit-button");
-  button.innerHTML += "&larr;";
+  const reviewBackArrow = document.getElementById('modal-backarrow');
+  reviewBackArrow.classList.add("exit-button");
+  reviewBackArrow.innerHTML += "&larr;";
+  const commentSortRelevant = document.getElementById("comment-sort-relevant");
+  commentSortRelevant.innerHTML += "Relevant";
+  commentSortRelevant.style.display = "block";
+  const commentSortRecent = document.getElementById("comment-sort-recent");
+  commentSortRecent.innerHTML += "Recent";
+  commentSortRecent.style.display = "block";
 
   document.getElementById("modal-backarrow").style.display = "block";
   document.getElementById('results-body').style.display = "none";
