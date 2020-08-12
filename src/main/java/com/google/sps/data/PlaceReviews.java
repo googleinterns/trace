@@ -78,6 +78,18 @@ public class PlaceReviews {
      return this.reviews.get(0);
    }
 
+  /**
+   * Public sorting method
+   * Sorts the internal Comment list to the type requested
+   */
+   public void sortReviews(String sortType) {
+     if (sortType == "relevant") {
+       Collections.sort(this.reviews, Comment.ORDER_BY_SCORE);
+     } else {
+       Collections.sort(this.reviews, Comment.ORDER_BY_DATE);
+     }
+   }
+
   /** 
    * Updater method
    * This adds a rating to a given PlaceReviews aggregate rating
