@@ -24,7 +24,7 @@ public class Comment {
   public static final Comparator<Comment> ORDER_BY_DATE = new Comparator<Comment>() {
     @Override
     public int compare(Comment a, Comment b) {
-      return a.getTime().compareTo(b.getTime());
+      return b.getTime().compareTo(a.getTime());
     }
   };
 
