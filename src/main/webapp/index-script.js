@@ -381,6 +381,10 @@ function showReviews(placeID) {
  */
 function displayReviewModal() {
   const button = document.getElementById('modal-backarrow');
+  const commentSortRelevant = document.getElementById("comment-sort-relevant");
+  commentSortRelevant.innerHTML += "Relevant";
+  const commentSortRecent = document.getElementById("comment-sort-recent");
+  commentSortRecent.innerHTML += "Recent";
   button.classList.add("exit-button");
   button.innerHTML += "&larr;";
 
