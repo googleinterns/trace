@@ -17,6 +17,7 @@ public class PlaceReviews {
   private List<Comment> reviews;
   private double rating;
   private Set<String> reviewers;
+  private String currUser;
 
    /**
     * Constructor
@@ -38,6 +39,10 @@ public class PlaceReviews {
     this.reviews.add(firstReview);
     this.rating = initialRating;
     this.reviewers = new HashSet<>();
+  }
+
+  public void setCurrentUser(String person){
+    this.currUser = person;
   }
 
   /** 

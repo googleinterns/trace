@@ -62,13 +62,14 @@ public class ReviewServlet extends HttpServlet {
       Comment com = new Comment(author, message, timestamp, positive, negative);
       com.setId(id);
       currentPlace.addReview(com);
-      currentPlace.addReviewer(author);
     }
+
+    // Set the current user (even if it's null) 
+    currentPlace.setCurrentUser(currUser);
 
     // Adds the review list to a GSON/JSON object so that can be used in Javascript code    
     response.setContentType("application/json");
     String json = new Gson().toJson(currentPlace);
-    response.getWriter.println(currUser);
     response.getWriter().println(json);
   }
 
