@@ -30,21 +30,26 @@ function loadMainButtons() {
   });
   
   const modalBackArrow = document.getElementById("modal-backarrow");
+  const commentSortRelevant = document.getElementById("comment-sort-relevant");
+  const commentSortRecent = document.getElementById("comment-sort-recent");
+  
   // Hide reviews page and display results page.
   modalBackArrow.addEventListener("click", () => {
     hideBackArrow();
+    hideButton(commentSortRelevant);
+    hideButton(commentSortRecent);
     document.getElementById('results-body').style.display = "block"; // Display results page.
     document.getElementById('reviews-body').style.display = "none"; // Hide reviews page.
     document.getElementById('reviews-list-container').innerHTML = ''; // Clean reviews wrapper of all DOM elements;
     document.getElementById('rev-form-body').style.display = "none";
   });
 
-  const commentSortRelevant = document.getElementById("comment-sort-relevant");
+  
   commentSortRelevant.addEventListener("click", () => {
     // TODO: Make sort relevant function
   });
+
   
-  const commentSortRecent = document.getElementById("comment-sort-recent");
   commentSortRecent.addEventListener("click", () => {
     // TODO: Make sort recent function
   });
