@@ -39,11 +39,10 @@ public class ReviewServlet extends HttpServlet {
 
     DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
     UserService userService = UserServiceFactory.getUserService();
-
-    String currUser = userService.getCurrentUser().getEmail();
-
     PreparedQuery results = datastore.prepare(query);
 
+    // If no user logged in, sets to null. 
+    String currUser = userService.getCurrentUser().getEmail();
     PlaceReviews currentPlace = new PlaceReviews(place_id);
 
     for (Entity review : results.asIterable()) {
