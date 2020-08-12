@@ -15,7 +15,6 @@ public class Comment {
   private Long negative;
   private Long positive;
   private String username;
-  private Set<String> voters;
 
   /**
    * Order Comparator
@@ -52,7 +51,6 @@ public class Comment {
     this.timestamp = timestamp;
     this.positive = pos;
     this.negative = neg;
-    this.voters = new HashSet<>();
   }
 
   public long getId(){
