@@ -138,6 +138,12 @@ function hideBackArrow() {
   button.style.display = "none";
 }
 
+/** Multi-purpose button hiding function */
+function hideButton(button) {
+  button.innerHTML = '';
+  button.style.display = "none";
+}
+
 // Chooses whether to display 'Login' or 'Logout' button.
 function toggleLoginLogout(){
   const logInButton = document.querySelector("#login");
