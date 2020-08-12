@@ -385,8 +385,10 @@ function displayReviewModal() {
   reviewBackArrow.innerHTML += "&larr;";
   const commentSortRelevant = document.getElementById("comment-sort-relevant");
   commentSortRelevant.innerHTML += "Relevant";
+  commentSortRelevant.style.display = "block";
   const commentSortRecent = document.getElementById("comment-sort-recent");
   commentSortRecent.innerHTML += "Recent";
+  commentSortRecent.style.display = "block";
 
   document.getElementById("modal-backarrow").style.display = "block";
   document.getElementById('results-body').style.display = "none";
