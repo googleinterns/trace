@@ -410,14 +410,14 @@ function displayReviewModal() {
 function fetchReviews(placeID) {
   const request = '/review?place_id=' + placeID;
   fetch(request).then(response => response.json()).then((place) => {
-    populateReviews(place.reviews, placeID);
+    populateReviews(place.reviews, placeID, place.currUser);
   });
 }
 
 /** Creates a structure to put reviews in modal
  * Takes in array of JS reviews
  */
-function populateReviews(reviewList, placeID) {
+function populateReviews(reviewList, placeID, currUser) {
   const listContainer = document.getElementById('reviews-list-container');
   const entireList = document.createElement('ul');
   entireList.id += 'reviews-list';
@@ -426,7 +426,7 @@ function populateReviews(reviewList, placeID) {
     entireList.appendChild(noReviews());
   } else { 
     reviewList.forEach((review) => {
-      entireList.appendChild(generateReview(review));
+      entireList.appendChild(generateReview(review, currUser));
     });
   }
   entireList.appendChild(newReviewButton(placeID));
@@ -468,7 +468,7 @@ function noReviews() {
 /** Creates a review element using grid styling
  * Puts the review text in a <p> element
  */
-function generateReview(review) {
+function generateReview(review, currUser) {
   const reviewEntry = document.createElement('li');
 
   const reviewGrid = document.createElement('div');
@@ -481,9 +481,12 @@ function generateReview(review) {
   upvoteButton.innerHTML += '&#128077;' + review.positive;
   upvoteButton.id += "up" + review.id;
   upvoteButton.addEventListener("click", () => {
-    if(upvoteButton.innerHTML[0] != " ") {
+    console.log(review.voters);
+    console.log(currUser);
+    if(!review.voters.includes(currUser)) {
       review.positive += 1;
       voteOnReview(review);
+      review.voters.add(currUser);
     }
   });
 
@@ -491,9 +494,12 @@ function generateReview(review) {
   downvoteButton.innerHTML += '&#128078;' + review.negative;
   downvoteButton.id += "down" + review.id;
   downvoteButton.addEventListener("click", () => {
-    if(upvoteButton.innerHTML[0] != " ") {
+      console.log(review.voters);
+      console.log(currUser);
+    if(!review.voters.includes(currUser)) {
       review.negative += 1;
       voteOnReview(review);
+      review.voters.add(currUser);
     }
   });
 
