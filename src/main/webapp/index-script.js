@@ -420,7 +420,6 @@ function displayReviewModal() {
 function fetchReviews(placeID, sort='recent') {
   prev_ID = placeID;
   const request = '/review?place_id=' + placeID + '&sort=' + sort;
-  console.log(request);
   fetch(request).then(response => response.json()).then((place) => {
     populateReviews(place.reviews, placeID, place.currUser);
   });
