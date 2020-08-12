@@ -462,12 +462,9 @@ function generateReview(review, currUser) {
   upvoteButton.innerHTML += '&#128077;' + review.positive;
   upvoteButton.id += "up" + review.id;
   upvoteButton.addEventListener("click", () => {
-    console.log(review.voters);
-    console.log(currUser);
-    if(!review.voters.includes(currUser)) {
+    if(currUser != null) {
       review.positive += 1;
       voteOnReview(review);
-      review.voters.push(currUser);
     }
   });
 
@@ -475,12 +472,9 @@ function generateReview(review, currUser) {
   downvoteButton.innerHTML += '&#128078;' + review.negative;
   downvoteButton.id += "down" + review.id;
   downvoteButton.addEventListener("click", () => {
-      console.log(review.voters);
-      console.log(currUser);
-    if(!review.voters.includes(currUser)) {
+    if(currUser != null) {
       review.negative += 1;
       voteOnReview(review);
-      review.voters.push(currUser);
     }
   });
 
@@ -495,8 +489,9 @@ function generateReview(review, currUser) {
 function voteOnReview(review) {
   const request = '/vote?comment_id=' + review.id + 
     '&up=' + review.positive + '&down=' + review.negative;
-  fetch(request, {method:"POST"}).then(() => {
-    document.getElementById("up" + review.id).innerHTML = "&#128077;" + review.positive + " ";
-    document.getElementById("down" + review.id).innerHTML = "&#128078;" + review.negative + " ";
+  fetch(request, {method:"POST"}).then((results) => {
+    console.log(results);
+      document.getElementById("up" + review.id).innerHTML = "&#128077;" + review.positive + " ";
+      document.getElementById("down" + review.id).innerHTML = "&#128078;" + review.negative + " ";
   });
 }
