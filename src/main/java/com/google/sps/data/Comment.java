@@ -55,7 +55,11 @@ public class Comment {
     this.voters = new HashSet<>();
   }
 
+<<<<<<< HEAD
   /* Add a voter to the voters set. */
+=======
+  // Add a voter to the voters set. 
+>>>>>>> 2b7ad824f376cc0d358dec74368982d1834b3585
   public void addVoter(String voter){
     voters.add(voter);
   }

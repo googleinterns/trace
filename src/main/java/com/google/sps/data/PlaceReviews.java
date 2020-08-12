@@ -41,8 +41,11 @@ public class PlaceReviews {
     this.reviewers = new HashSet<>();
   }
 
+<<<<<<< HEAD
 
   /* Keeps track of who is currently logged in */
+=======
+>>>>>>> 2b7ad824f376cc0d358dec74368982d1834b3585
   public void setCurrentUser(String person){
     this.currUser = person;
   }
@@ -99,7 +102,6 @@ public class PlaceReviews {
       this.rating += (rating);
     }
   }
-
 
   /* Adds the author of the review to the reviews set.*/
   public void addReviewer(String author){
