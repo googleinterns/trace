@@ -47,13 +47,13 @@ function loadMainButtons() {
   commentSortRelevant.addEventListener("click", () => {
     commentSortRelevant.classList.add("active");
     commentSortRecent.classList.remove("active");
-    resortReviews(document.getElementById("place_id").value, 'relevant');
+    resortReviews(document.getElementById("comment-sorting").getAttribute("prev"), 'relevant');
   });
   
   commentSortRecent.addEventListener("click", () => {
     commentSortRecent.classList.add("active");
     commentSortRelevant.classList.remove("active");
-    resortReviews(document.getElementById("place_id").value, 'recent');
+    resortReviews(document.getElementById("comment-sorting").getAttribute("prev"), 'recent');
   });
 }
 
@@ -404,7 +404,7 @@ function displayReviewModal() {
     comment.setId(reviewEntity.getKey().getId()); to find internal datastore
  */
 function fetchReviews(placeID, sort='recent') {
-  document.getElementById("place_id").value = place_id;
+  document.getElementById("comment-sorting").setAttribute("prev", place_id);
   const request = '/review?place_id=' + placeID + '&sort=' + sort;
   console.log(request);
   fetch(request).then(response => response.json()).then((place) => {
