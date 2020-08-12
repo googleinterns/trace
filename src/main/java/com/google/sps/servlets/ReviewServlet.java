@@ -40,6 +40,8 @@ public class ReviewServlet extends HttpServlet {
     DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
     UserService userService = UserServiceFactory.getUserService();
 
+    String currUser = userService.getCurrentUser().getEmail();
+
     PreparedQuery results = datastore.prepare(query);
 
     PlaceReviews currentPlace = new PlaceReviews(place_id);
@@ -60,11 +62,13 @@ public class ReviewServlet extends HttpServlet {
       Comment com = new Comment(author, message, timestamp, positive, negative);
       com.setId(id);
       currentPlace.addReview(com);
+      currentPlace.addReviewer(author);
     }
 
     // Adds the review list to a GSON/JSON object so that can be used in Javascript code    
     response.setContentType("application/json");
     String json = new Gson().toJson(currentPlace);
+    response.getWriter.println(currUser);
     response.getWriter().println(json);
   }
 
