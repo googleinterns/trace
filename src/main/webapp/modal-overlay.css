@@ -151,6 +151,33 @@ a:hover {
   color: rgba(230, 230, 230); /* Grey. */ 
 }
 
+.button-group button {
+  border: 1px;
+  color: black;
+  background-color: aliceblue;
+  cursor: pointer;
+  float: left;
+  padding: 10px 24px;
+}
+
+.button-group button:not(:last-child) {
+  border-right: none;
+}
+
+.button-group button:active {
+  background-color: red;
+}
+
+.button-group button:hover {
+  background-color: gray;
+}
+
+.button-group:after {
+  content: " ";
+  clear: both;
+  display: table;
+}
+
 #no-reviews {
   font-size: 300%;
 }
