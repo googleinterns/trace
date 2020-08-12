@@ -467,7 +467,7 @@ function generateReview(review, currUser) {
     if(!review.voters.includes(currUser)) {
       review.positive += 1;
       voteOnReview(review);
-      review.voters.add(currUser);
+      review.voters.push(currUser);
     }
   });
 
@@ -480,7 +480,7 @@ function generateReview(review, currUser) {
     if(!review.voters.includes(currUser)) {
       review.negative += 1;
       voteOnReview(review);
-      review.voters.add(currUser);
+      review.voters.push(currUser);
     }
   });
 
