@@ -1,6 +1,7 @@
 /* Class Variables. */
 var map;
 var currentLocation = "newID";
+var prev_ID;
 
 /* Loads page and main buttons. */
 function loadPage() {
@@ -47,13 +48,13 @@ function loadMainButtons() {
   commentSortRelevant.addEventListener("click", () => {
     commentSortRelevant.classList.add("active");
     commentSortRecent.classList.remove("active");
-    resortReviews(document.getElementById("comment-sorting").getAttribute("prev"), 'relevant');
+    resortReviews(prev_ID, 'relevant');
   });
   
   commentSortRecent.addEventListener("click", () => {
     commentSortRecent.classList.add("active");
     commentSortRelevant.classList.remove("active");
-    resortReviews(document.getElementById("comment-sorting").getAttribute("prev"), 'recent');
+    resortReviews(prev_ID, 'recent');
   });
 }
 
@@ -404,7 +405,7 @@ function displayReviewModal() {
     comment.setId(reviewEntity.getKey().getId()); to find internal datastore
  */
 function fetchReviews(placeID, sort='recent') {
-  document.getElementById("comment-sorting").setAttribute("prev", place_id);
+  prev_ID = placeID;
   const request = '/review?place_id=' + placeID + '&sort=' + sort;
   console.log(request);
   fetch(request).then(response => response.json()).then((place) => {
@@ -436,7 +437,7 @@ function populateReviews(reviewList, placeID) {
  */
 function resortReviews(placeID, sort) {
   document.getElementById("reviews-list-container").innerHTML = '';
-  Reviews(placeID, sort);
+  fetchReviews(placeID, sort);
 }
 
 /** Creates a new-review button for users to post their own review. */
