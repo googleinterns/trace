@@ -48,7 +48,7 @@ public class Comment {
     @Override
     public int compare(Comment a, Comment b) {
       return (a.positive.longValue() - a.negative.longValue()) 
-        > (b.positive.longValue() - b.negative.longValue());
+        - (b.positive.longValue() - b.negative.longValue());
     }
   };
   
