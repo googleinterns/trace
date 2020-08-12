@@ -36,8 +36,7 @@ public class Comment {
   public static final Comparator<Comment> ORDER_BY_AUTHOR = new Comparator<Comment>() {
     @Override
     public int compare(Comment a, Comment b) {
-      return (a.positive.longValue() - a.negative.longValue()) 
-          > (b.positive.longValue() - b.negative.longValue());
+      return a.author.compareTo(b.author);
     }
   };
 
@@ -48,7 +47,8 @@ public class Comment {
   public static final Comparator<Comment> ORDER_BY_SCORE = new Comparator<Comment>() {
     @Override
     public int compare(Comment a, Comment b) {
-      return 
+      return (a.positive.longValue() - a.negative.longValue()) 
+        > (b.positive.longValue() - b.negative.longValue());
     }
   };
   
