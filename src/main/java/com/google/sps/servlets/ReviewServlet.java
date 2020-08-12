@@ -34,7 +34,7 @@ public class ReviewServlet extends HttpServlet {
   public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
     // Get the requested place using it's ID. 
     String place_id = request.getParameter("place_id");
-    String sort = request.getParameter("sort");
+    String sort = (request.getParameter("sort") == "relevant") ? "relevant" : "recent";
     Filter placeFilter = new FilterPredicate("place_id", FilterOperator.EQUAL, place_id);
     Query query = new Query("Review").setFilter(placeFilter);
 
