@@ -11,6 +11,8 @@ import com.google.appengine.api.datastore.Query.SortDirection;
 import com.google.appengine.api.datastore.Query.Filter;
 import com.google.appengine.api.datastore.Query.FilterPredicate;
 import com.google.appengine.api.datastore.Query.FilterOperator;
+import com.google.appengine.api.datastore.Query.CompositeFilter;
+import com.google.appengine.api.datastore.Query.CompositeFilterOperator;
 import com.google.appengine.api.users.UserService;
 import com.google.appengine.api.users.UserServiceFactory;
 import com.google.sps.data.PlaceReviews;
@@ -37,16 +39,30 @@ public class VotingServlet extends HttpServlet {
     String upVotes = request.getParameter("up");
     String downVotes = request.getParameter("down");
 
+    // Gets the review itself from Datastore
     Entity review = retrieveReview(comment_id, datastore);
-    if(review != null) {
+    
+    // Gets the review/voter pairs from Datastore. 
+    Filter reviewFilter = new FilterPredicate("review_id", FilterOperator.EQUAL, comment_id);
+    Filter voterFilter = new FilterPredicate("voter", FilterOperator.EQUAL, userService.getCurrentUser().getEmail());
+    Filter combinedFilter = new CompositeFilter(CompositeFilterOperator.AND, Arrays.asList(reviewFilter, voterFilter));
+    Query query = new Query("voter-review").setFilter(combinedFilter);
+
+    PreparedQuery results = datastore.prepare(query);
+
+    // Checks if a review exists, and if the current user has already voted on it. 
+    if(review != null && results.countEntities() < 1) {
+      // Updates the review's vote count
       review.setProperty("positive", upVotes);
       review.setProperty("negative", downVotes);
       datastore.put(review);
-    }
 
-    // Set response and return JSON.
-    response.setContentType("text/json;");
-    response.getWriter().println("Your vote has been cast!");
+      // Adds the new review voter-pair
+      Entity voterReview = new Entity("voter-review");
+      voterReview.setProperty("voter", userService.getCurrentUser().getEmail());
+      voterReview.setProperty("review_id", comment_id);
+      datastore.put(voterReview);
+    }
   }
 
   /** 

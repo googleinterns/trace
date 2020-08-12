@@ -1,11 +1,8 @@
 package com.google.sps.data;
 
-import java.util.ArrayList;
-import java.util.HashSet;
 import com.google.sps.data.Comment;
 import com.google.sps.data.RatingHistory;
-import java.util.Collections;
-import java.util.List;
+import java.util.*;
 
 /** 
  * PlaceReviews object class
@@ -19,6 +16,8 @@ public class PlaceReviews {
   private final String place_id;
   private List<Comment> reviews;
   private double rating;
+  private Set<String> reviewers;
+  private String currUser;
 
    /**
     * Constructor
@@ -27,6 +26,7 @@ public class PlaceReviews {
   public PlaceReviews(String place_id) {
     this.place_id = place_id;
     this.reviews = new ArrayList<Comment>();
+    this.reviewers = new HashSet<>();
   }
 
   /** 
@@ -38,6 +38,12 @@ public class PlaceReviews {
     this.place_id = place_id;
     this.reviews.add(firstReview);
     this.rating = initialRating;
+    this.reviewers = new HashSet<>();
+  }
+
+  /* Keeps track of who is currently logged in */
+  public void setCurrentUser(String person){
+    this.currUser = person;
   }
 
   /** 
@@ -93,13 +99,17 @@ public class PlaceReviews {
     }
   }
 
+  /* Adds the author of the review to the reviews set.*/
+  public void addReviewer(String author){
+      reviewers.add(author);
+  }
+
   /**
    * Checks if author has posted at this location before
    * @return if the user has posted a review before for this location
    */
   public boolean reviewedBy(String person) {
-    // TODO: Use datastore querying to search for this
-    return false;
+    return reviewers.contains(person);
   }
 
   /**
