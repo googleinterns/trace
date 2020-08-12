@@ -481,7 +481,7 @@ function generateReview(review, currUser) {
   upvoteButton.id += "up" + review.id;
   upvoteButton.addEventListener("click", () => {
     // Users must be logged in and can only vote once. 
-    if(currUser != null && !review.voters.includes(currUser)) {
+    if (currUser != null && !review.voters.includes(currUser)) {
       review.positive += 1;
       voteOnReview(review);
       review.voters.push(currUser);
