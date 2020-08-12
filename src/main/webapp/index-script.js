@@ -403,7 +403,7 @@ function displayReviewModal() {
  * Queries ReviewServlet with elementID// Comment object gets it's datastore id. 
     comment.setId(reviewEntity.getKey().getId()); to find internal datastore
  */
-function fetchReviews(placeID, sort) {
+function fetchReviews(placeID, sort='recent') {
   const request = '/review?place_id=' + placeID + '&sort=' + sort;
   fetch(request).then(response => response.json()).then((place) => {
     populateReviews(place.reviews, placeID);
