@@ -62,6 +62,7 @@ public class ReviewServlet extends HttpServlet {
       Comment com = new Comment(author, message, timestamp, positive, negative);
       com.setId(id);
       currentPlace.addReview(com);
+      addVoters(id, com);
     }
 
     // Set the current user (even if it's null) 
@@ -170,6 +171,23 @@ public class ReviewServlet extends HttpServlet {
       return null;
     }
     return queryResults.get(0);
+  }
+
+  /* addVoters takes a comment id and a comment, and adds everyone who voted to the Comment's voter list. 
+   * @param id Long
+   * @param com Comment
+   */ 
+  public void addVoters(Long id, Comment com){
+    DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
+    // Looks in the database for each review / voter combo with this review id. 
+    Filter reviewFilter = new FilterPredicate("review_id", FilterOperator.EQUAL, id);
+    Query query = new Query("voter-review").setFilter(reviewFilter);
+    PreparedQuery results = datastore.prepare(query);
+    
+    // For each vote, adds the voter to the comment's voter list. 
+    for (Entity vote : results.asIterable()){
+        com.addVoter((String)vote.getProperty("voter"));
+    }
   }
 }
 
