@@ -181,7 +181,7 @@ function createMap() {
   const googleplex = {lat: 37.422, lng: -122.0841};
   map = new google.maps.Map(
     document.getElementById('map'),
-    {center: googleplex, zoom: 13,
+    {center: googleplex, zoom: 9,
     mapTypeControlOptions: {mapTypeIds: ['roadmap']}});
 
   // Checks to see if browser has enabled location sharing.
@@ -591,7 +591,14 @@ function populateHeatMap(heatMapData, map) {
     data: heatMapData
   });
   heatmap.set("gradient", gradient);
-  heatmap.set("radius", 100);
+  heatmap.set("radius", 150);
+  map.setZoom(9);
+
+  // Scale radius on zoom-in/out.
+  map.addListener("zoom_changed", () => {
+    zoom = map.getZoom();
+    heatmap.set("radius", Math.pow(1.75, zoom));
+  });
   heatmap.setMap(map);
 >>>>>>> Forgot to commit along the way, but basically 90% of code needed for initializeHeatMap().
 }
