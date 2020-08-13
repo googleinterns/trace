@@ -609,5 +609,4 @@ function populateHeatMap(heatMapData, map) {
     heatmap.set("radius", Math.pow(1.75, zoom));
   });
   heatmap.setMap(map);
->>>>>>> Forgot to commit along the way, but basically 90% of code needed for initializeHeatMap().
 }

@@ -2,6 +2,7 @@ import numpy as np
 import json
 popFile = 'datasets/county-population.txt'
 caseFile = 'datasets/by-county-and-date.txt'
+<<<<<<< HEAD
 coordFile = 'datasets/usa_county_wise.txt'
 ignoreLocations = [96, 193, 1863]  # Edge case locations where I know the population is 0 (ex: Princess Cruise Ship)
 us_state_abbrev = {
@@ -112,10 +113,26 @@ def formatCountyState(county, state):
 # Reads county-population.txt and returns python dict that matches
 # a county's name to its coordinates and relative population (population / 100)
 def loadPopMap(file, countyToCoords):
+=======
+
+
+def loadCovidData():
+    emptyLocations = [96, 193, 1863]  # Edge case locations where I know the population is 0 (ex: Princess Cruise Ship)
+    popMap = loadPopMap(popFile)  # county: population
+    weightedCases = loadWeightedCases(caseFile, emptyLocations)
+    i = 0
+    for county in popMap:
+        popMap[county] = int(weightedCases[i] / popMap[county]) # Normalizes weights by population density.
+    return popMap
+
+
+def loadPopMap(file):
+>>>>>>> e96ce87158e98b43946b4de4f76acd8635db2324
     popMap = {}
     line_count = 0
     f = open(file, "r")
     for line in f:
+<<<<<<< HEAD
         if line_count > 1 and (line_count not in ignoreLocations):  # Skip first two lines.
             row = line.split(',')
             # Ignores unallocated cases and locations where population = 0.
@@ -131,6 +148,13 @@ def loadPopMap(file, countyToCoords):
                     popMap[key] = locationObject
                 else:
                     ignoreLocations.append(line_count)  #Locations to be ignored when creating the weight matrix.
+=======
+        if line_count > 1:
+            row = line.split(',')
+            if row[1] != "Statewide Unallocated" and int(row[-1]) != 0:
+                key = row[1] + ", " + row[2]
+                popMap[key] = int(row[-1]) / 100  # Divide by 100 to avoid large denominator
+>>>>>>> e96ce87158e98b43946b4de4f76acd8635db2324
         line_count += 1
     return popMap
 
@@ -139,26 +163,45 @@ def loadPopMap(file, countyToCoords):
 # and returns a numpy array where each entry represents the weight of a given U.S.
 # county where weight = sum(newCasePerDay * index) so as to weight more recent cases heavier than
 # older ones.
+<<<<<<< HEAD
 def loadWeightedCases(file, popMap):
     caseMatrix = []  # Each row is a county, each column is the total for given day.
+=======
+def loadWeightedCases(file, emptyLocations):
+    caseMatrix = []  # Each row is a county, each column is the total cases for that day.
+>>>>>>> e96ce87158e98b43946b4de4f76acd8635db2324
     line_count = 0
     f = open(file, "r")
     for line in f:
         if line_count != 0:  # skip first line
             row = line.split(',')
+<<<<<<< HEAD
             county = ''.join(row[1].split()[:-1])  # Remove 'county' and 'borough' from county name
             key = county + ", " + row[2]
             if key in popMap and (line_count not in ignoreLocations):
                 caseMatrix.append([int(num) for num in row[3:]])  # List of daily total for this county
         line_count += 1
     newCaseMatrix = np.diff(np.array(caseMatrix))  #  New cases per day per county
+=======
+            if row[1] != "Statewide Unallocated" and (line_count not in emptyLocations):
+                caseMatrix.append([int(num) for num in row[3:]])
+        line_count += 1
+    newCaseMatrix = np.diff(np.array(caseMatrix)) #  New cases per day
+>>>>>>> e96ce87158e98b43946b4de4f76acd8635db2324
 
     # Multiplies each new case total by its index in its subarray to weight more recent cases heavier
     weightedCases = np.array([np.arange(len(sublist)).dot(sublist) for sublist in newCaseMatrix])  # len = num_counties
     return weightedCases
 
 
+<<<<<<< HEAD
 coordWeightMap = loadCovidData()
 dumpFilePath = 'heatWeights.txt'
 with open(dumpFilePath, 'w') as outfile:
     json.dump(coordWeightMap, outfile)
+=======
+popMap = loadCovidData()
+dumpFilePath = 'heatWeights.txt'
+with open(dumpFilePath, 'w') as outfile:
+    json.dump(popMap, outfile)
+>>>>>>> e96ce87158e98b43946b4de4f76acd8635db2324
