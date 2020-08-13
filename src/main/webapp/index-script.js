@@ -499,11 +499,11 @@ function generateReview(review, currUser) {
   upvoteButton.innerHTML += '&#128077;' + review.positive;
   upvoteButton.id += "up" + review.id;
   upvoteButton.addEventListener("click", () => {
-    // Users must be logged in and can only vote once. 
-    if (currUser != null && !review.voters.includes(currUser)) {
+    // Users must be logged in to vote! 
+    if (currUser != null && !review.positiveVoters.includes(currUser)) {
       review.positive += 1;
       voteOnReview(review);
-      review.voters.push(currUser);
+      review.positiveVoters.push(currUser);
     }
   });
 
@@ -512,10 +512,10 @@ function generateReview(review, currUser) {
   downvoteButton.id += "down" + review.id;
   downvoteButton.addEventListener("click", () => {
     // Users must be logged in and can only vote once. 
-    if(currUser != null && !review.voters.includes(currUser)) {
+    if(currUser != null && !review.negativeVoters.includes(currUser)) {
       review.negative += 1;
       voteOnReview(review);
-      review.voters.push(currUser);
+      review.negativeVoters.push(currUser);
     }
   });
 
