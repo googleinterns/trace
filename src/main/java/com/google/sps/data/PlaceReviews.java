@@ -73,9 +73,9 @@ public class PlaceReviews {
    * Assumes that there was a previous post by author
    * @return Comment the previous comment
    *                  TODO: Implement with Binary Search
+   *                        Collections.sort(this.reviews, Comment.ORDER_BY_AUTHOR);
    */
    private Comment getPrevReview(String author) {
-    Collections.sort(this.reviews, Comment.ORDER_BY_AUTHOR);
      for (Comment cur : this.reviews) {
        if (cur.getAuthor() == author) {
          return cur;
