@@ -198,7 +198,7 @@ function createMap() {
     );
   }
 
-  // initializeHeatMap(map);
+  initializeHeatMap(map);
 
   // Search by coordinates on map click.
   map.addListener('click', function(mapsMouseEvent) {
@@ -545,55 +545,53 @@ function initializeHeatMap(map) {
   let heatWeights = null
   fetch('heatWeights.txt').then(response => response.text())
     .then(text => {
-      heatWeights = JSON.parse(text);
-      locToLatLng(heatWeights);
+      const heatWeights = JSON.parse(text);
+      const heatMapData = createHeatMapData(heatWeights);
+      populateHeatMap(heatMapData, map)
     });
 }
 
-/** Function accepts a JSON object mapping U.S. counties to their relative covid weights
-  * and creates an array of JSON objects mapping that county's coordinates to thosse weights
-  * before making a call to populateHeatMap(). */
-function locToLatLng(heatWeights, map) {
-  var pointPromises = [];  // Promises to be resolved to {LatLng : Weight} objects.
-  for(let county in heatWeights) {
-    newPointPromise = countyToCoords(county, heatWeights[county], i);
-    pointPromises.push(newPointPromise);
+/** Returns an array of json objects that contain both a county's coordinates
+  * and its weight in a format that google heatmaps can read. */
+function createHeatMapData(heatWeights) {
+  var heatMapData = []
+  i = 0
+  for(const county in heatWeights) {
+    const location = heatWeights[county].location;
+    const newPoint = {
+      location: new google.maps.LatLng(location.lat, location.lng),
+      weight: heatWeights[county].weight
+    }
+    heatMapData.push(newPoint);
+    i += 1;
   }
-  // Waits on all promises to complete before passing the results into the next function.
-  Promise.all(pointPromises).then(points => {
-    //console.log(points);
-    populateHeatMap(points, map);
-  });
+  console.log("done");
+  return heatMapData;
 }
-
-/** Function accepts a county and a corresponding weight and 
-  * returns a promise to find its geocoded coordinates. */
-function countyToCoords(county, countyWeight, i) {
-  // Get the coordinates of a requested location. 
-  const locationPromise = new Promise((resolve, reject) => {
-    var geocoder = new google.maps.Geocoder();
-    geocoder.geocode({ 'address': county}, function (results, status) {
-      if (status == google.maps.GeocoderStatus.OK) {
-        var latitude = results[0].geometry.location.lat();
-        var longitude = results[0].geometry.location.lng();
-        var newCoords = new google.maps.LatLng(latitude, longitude);
-        var newPoint = {
-          location: newCoords,
-          weight: countyWeight
-        };
-        resolve(newPoint);
-      }
-    });
-  });
-  return locationPromise; 
-}
-
 
 /** Uses heatMapData object to populate heatMap. */
 function populateHeatMap(heatMapData, map) {
+  const gradient = [
+    "rgba(0, 255, 255, 0)",
+    "rgba(0, 255, 255, 1)",
+    "rgba(0, 191, 255, 1)",
+    "rgba(0, 127, 255, 1)",
+    "rgba(0, 63, 255, 1)",
+    "rgba(0, 0, 255, 1)",
+    "rgba(0, 0, 223, 1)",
+    "rgba(0, 0, 191, 1)",
+    "rgba(0, 0, 159, 1)",
+    "rgba(0, 0, 127, 1)",
+    "rgba(63, 0, 91, 1)",
+    "rgba(127, 0, 63, 1)",
+    "rgba(191, 0, 31, 1)",
+    "rgba(255, 0, 0, 1)"
+  ];
   var heatmap = new google.maps.visualization.HeatmapLayer({
     data: heatMapData
   });
+  heatmap.set("gradient", gradient);
+  heatmap.set("radius", 100);
   heatmap.setMap(map);
 >>>>>>> Forgot to commit along the way, but basically 90% of code needed for initializeHeatMap().
 }

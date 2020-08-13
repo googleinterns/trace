@@ -160,5 +160,5 @@ def loadWeightedCases(file, popMap):
 
 coordWeightMap = loadCovidData()
 dumpFilePath = 'heatWeights.txt'
-#with open(dumpFilePath, 'w') as outfile:
-#    json.dump(coordWeightMap, outfile)
+with open(dumpFilePath, 'w') as outfile:
+    json.dump(coordWeightMap, outfile)
