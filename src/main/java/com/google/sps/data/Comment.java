@@ -1,5 +1,8 @@
 package com.google.sps.data;
-import java.util.*;
+import java.util.Set;
+import java.util.HashSet;
+import java.util.Date;
+import java.util.Comparator;
 
 /** 
  * Comment object class
@@ -46,8 +49,7 @@ public class Comment {
   public static final Comparator<Comment> ORDER_BY_SCORE = new Comparator<Comment>() {
     @Override
     public int compare(Comment a, Comment b) {
-      return (int) ((a.positive.longValue() - a.negative.longValue()) 
-        - (b.positive.longValue() - b.negative.longValue()));
+      return Long.compare((b.positive - b.negative), (a.positive - a.negative));
     }
   };
   
