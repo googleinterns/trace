@@ -65,10 +65,10 @@ public class PlaceReviews {
    * Updater method
    * Replaces previous review with the new review for a given author
    */
-   private void replaceReview(Comment review) {
+  private void replaceReview(Comment review) {
     Comment prevReview = getPrevReview(review.getAuthor());
     prevReview.updateComment(review);
-   } 
+  } 
 
   /**
    * Accessor Method
@@ -78,26 +78,26 @@ public class PlaceReviews {
    *                  TODO: Implement with Binary Search
    *                        Collections.sort(this.reviews, Comment.ORDER_BY_AUTHOR);
    */
-   private Comment getPrevReview(String author) {
-     for (Comment cur : this.reviews) {
-       if (cur.getAuthor() == author) {
-         return cur;
-       }
-     }
-     return this.reviews.get(0);
-   }
+  private Comment getPrevReview(String author) {
+    for (Comment cur : this.reviews) {
+      if (cur.getAuthor() == author) {
+        return cur;
+      }
+    }
+    return this.reviews.get(0);
+  }
 
   /**
    * Public sorting method
    * Sorts the internal Comment list to the type requested
    */
-   public void sortReviews(String sortType) {
-     if (sortType == "relevant") {
-       Collections.sort(this.reviews, Comment.ORDER_BY_SCORE);
-     } else {
-       Collections.sort(this.reviews, Comment.ORDER_BY_DATE);
-     }
-   }
+  public void sortReviews(String sortType) {
+    if (sortType == "relevant") {
+      Collections.sort(this.reviews, Comment.ORDER_BY_SCORE);
+    } else {
+      Collections.sort(this.reviews, Comment.ORDER_BY_DATE);
+    }
+  }
 
   /** 
    * Updater method
@@ -116,7 +116,7 @@ public class PlaceReviews {
 
   /* Adds the author of the review to the reviews set.*/
   public void addReviewer(String author){
-      reviewers.add(author);
+    reviewers.add(author);
   }
 
   /**
