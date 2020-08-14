@@ -500,10 +500,17 @@ function generateReview(review, currUser) {
   upvoteButton.id += "up" + review.id;
   upvoteButton.addEventListener("click", () => {
     // Users must be logged in to vote! 
-    if (currUser != null && !review.positiveVoters.includes(currUser)) {
-      review.positive += 1;
-      voteOnReview(review);
-      review.positiveVoters.push(currUser);
+    if (currUser != null){
+      if (!review.positiveVoters.includes(currUser)) {
+        review.positive += 1;
+        voteOnReview(review);
+        review.positiveVoters.push(currUser);
+      } else {
+          review.positive -= 1;
+          voteOnReview(review);
+          const index = review.positiveVoters.indexOf(currUser);
+          review.positiveVoters.splice(index, 1);
+      }
     }
   });
 
@@ -511,11 +518,18 @@ function generateReview(review, currUser) {
   downvoteButton.innerHTML += '&#128078;' + review.negative;
   downvoteButton.id += "down" + review.id;
   downvoteButton.addEventListener("click", () => {
-    // Users must be logged in and can only vote once. 
-    if(currUser != null && !review.negativeVoters.includes(currUser)) {
-      review.negative += 1;
-      voteOnReview(review);
-      review.negativeVoters.push(currUser);
+    // Users must be logged in to vote! 
+    if (currUser != null){
+      if (!review.negativeVoters.includes(currUser)) {
+        review.negative += 1;
+        voteOnReview(review);
+        review.negativeVoters.push(currUser);
+      } else {
+          review.negative -= 1;
+          voteOnReview(review);
+          const index = review.negativeVoters.indexOf(currUser);
+          review.negativeVoters.splice(index, 1);
+      }
     }
   });
 
