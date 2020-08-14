@@ -80,8 +80,6 @@ def load_covid_data():
         population_map[county]["weight"] = int(weighted_cases[i]
           / population_map[county]["weight"]) # Normalizes weights by population density.
         i += 1
-    print(len(population_map))
-    print(len(weighted_cases))
     return population_map
 
 
@@ -121,23 +119,35 @@ def load_population_map(county_to_coordinates):
     line_count = 0
     f = open(_POPULATION, "r")
     for line in f:
-        if line_count > 1 and (line_count not in _IGNORE_LOCATIONS):  # Skip first two lines.
+        if line_count <= 1 or (line_count in _IGNORE_LOCATIONS): # Skip invalid lines
+            line_count += 1
+            continue
+        else: 
             row = line.split(',')
-            # Ignores unallocated cases and locations where population = 0.
-            if row[1] != "Statewide Unallocated" and int(row[-1]) != 0:
-                county = ''.join(row[1].split()[:-1])  # Removes 'county' and 'borough' from county names
-                key = county + ", " + row[2]
-                # If we know its coordinates and haven't seen it before
-                if key in county_to_coordinates and (key not in population_map):
-                    location_object = {
-                        "location": county_to_coordinates[key],  # County coordinates
-                        "weight": int(row[-1]) / 100  # County population / 100
-                        }
-                    population_map[key] = location_object
-                else:
-                    _IGNORE_LOCATIONS.append(line_count)  #Locations to be ignored when creating the weight matrix.
-        line_count += 1
+            update_population_map(population_map, county_to_coordinates, row, line_count)
+            line_count += 1
     return population_map
+
+
+# Checks whether the current location has a non-zero population and 
+# corresponding coordinates before adding this data into the map.
+def update_population_map(population_map, county_to_coordinates, row, line_count):
+    # Ignore locations where population = 0
+    if (row[1] == "Statewide Unallocated") or (int(row[-1]) == 0):
+        return
+    
+    county = ''.join(row[1].split()[:-1])  # Removes 'county' and 'borough' from county names
+    key = county + ", " + row[2]
+    # If we know its coordinates and haven't seen it before
+    if (key in county_to_coordinates) and (key not in population_map):
+        location_object = {
+            "location": county_to_coordinates[key],  # County coordinates
+            "weight": int(row[-1]) / 100  # County population / 100
+        }
+        population_map[key] = location_object
+    else:
+        _IGNORE_LOCATIONS.append(line_count)
+    return
 
 
 # This function accepts a file that lists the total cases of a county on each consecutive date
@@ -153,6 +163,8 @@ def load_weighted_cases(population_map):
             row = line.split(',')
             county = ''.join(row[1].split()[:-1])  # Remove 'county' and 'borough' from county name
             key = county + ", " + row[2]
+
+            # If this is a new key that we should not ignore, append the available data to our matrix.
             if key in population_map and (line_count not in _IGNORE_LOCATIONS):
                 case_matrix.append([int(num) for num in row[3:]])  # List of daily total for this county
         line_count += 1
@@ -164,6 +176,6 @@ def load_weighted_cases(population_map):
 
 
 coord_weight_map = load_covid_data()
-dump_file_path = 'heatWeights.txt'
-with open(dump_file_path, 'w') as outfile:
-    json.dump(coord_weight_map, outfile)
+#dump_file_path = 'heatWeights.txt'
+#with open(dump_file_path, 'w') as outfile:
+#    json.dump(coord_weight_map, outfile)
