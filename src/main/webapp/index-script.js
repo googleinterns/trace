@@ -499,58 +499,14 @@ function generateReview(review, currUser) {
   upvoteButton.innerHTML += '&#128077;' + review.positive;
   upvoteButton.id += "up" + review.id;
   upvoteButton.addEventListener("click", () => {
-    // Users must be logged in to vote! 
-    if (currUser != null){
-      // Check if they already voted positive
-      if (!review.positiveVoters.includes(currUser)) {
-        // If not, add their vote. 
-        // Check if they already voted negative
-        if (review.negativeVoters.includes(currUser)){
-          // If so, remove their negative vote.   
-          review.negative -=1;     
-          const index = review.negativeVoters.indexOf(currUser);
-          review.negativeVoters.splice(index, 1);
-        }
-        review.positive += 1;
-        voteOnReview(review);
-        review.positiveVoters.push(currUser);
-      } else {
-        // Otherwise, remove their vote
-        review.positive -= 1;
-        voteOnReview(review);
-        const index = review.positiveVoters.indexOf(currUser);
-        review.positiveVoters.splice(index, 1);
-      }
-    }
+    upvoteClick(review, currUser);
   });
 
   const downvoteButton = document.createElement('button');
   downvoteButton.innerHTML += '&#128078;' + review.negative;
   downvoteButton.id += "down" + review.id;
   downvoteButton.addEventListener("click", () => {
-    // Users must be logged in to vote! 
-    if (currUser != null){
-      // Check if they already voted negative
-      if (!review.negativeVoters.includes(currUser)) {
-        // If not, add their vote. 
-        // Check to see if they already voted positive
-        if (review.positiveVoters.includes(currUser)){
-          // If so, remove their vote. 
-          review.positive -=1;
-          const index = review.positiveVoters.indexOf(currUser);
-          review.positiveVoters.splice(index, 1);
-        }
-        review.negative += 1;
-        voteOnReview(review);
-        review.negativeVoters.push(currUser);
-      } else {
-        // Otherwise, remove their vote. 
-        review.negative -= 1;
-        voteOnReview(review);
-        const index = review.negativeVoters.indexOf(currUser);
-        review.negativeVoters.splice(index, 1);
-      }
-    }
+    downvoteClick(review, currUser);
   });
 
   reviewGrid.appendChild(reviewText);
@@ -568,4 +524,58 @@ function voteOnReview(review) {
     document.getElementById("up" + review.id).innerHTML = "&#128077;" + review.positive + " ";
     document.getElementById("down" + review.id).innerHTML = "&#128078;" + review.negative + " ";
   });
+}
+
+/* Completes a thumbs up vote by either adding a new upvote or switching the user's current vote */
+function upvoteClick(review, currUser){
+  // Users must be logged in to vote! 
+  if (currUser != null){
+    // Check if they already voted positive
+    if (!review.positiveVoters.includes(currUser)) {
+      // If not, add their vote. 
+      // Check if they already voted negative
+      if (review.negativeVoters.includes(currUser)){
+        // If so, remove their negative vote.   
+        review.negative -=1;     
+        const index = review.negativeVoters.indexOf(currUser);
+        review.negativeVoters.splice(index, 1);
+      }
+      review.positive += 1;
+      voteOnReview(review);
+      review.positiveVoters.push(currUser);
+    } else {
+      // Otherwise, remove their vote
+      review.positive -= 1;
+      voteOnReview(review);
+      const index = review.positiveVoters.indexOf(currUser);
+      review.positiveVoters.splice(index, 1);
+    }
+  }
+}
+
+/* Completes a thumbs down vote by either adding a new downvote or switching the user's current vote */
+function downvoteClick(review, currUser){
+  // Users must be logged in to vote! 
+  if (currUser != null){
+    // Check if they already voted negative
+    if (!review.negativeVoters.includes(currUser)) {
+      // If not, add their vote. 
+      // Check to see if they already voted positive
+      if (review.positiveVoters.includes(currUser)){
+        // If so, remove their vote. 
+        review.positive -=1;
+        const index = review.positiveVoters.indexOf(currUser);
+        review.positiveVoters.splice(index, 1);
+      }
+      review.negative += 1;
+      voteOnReview(review);
+      review.negativeVoters.push(currUser);
+    } else {
+      // Otherwise, remove their vote. 
+      review.negative -= 1;
+      voteOnReview(review);
+      const index = review.negativeVoters.indexOf(currUser);
+      review.negativeVoters.splice(index, 1);
+    }
+  }
 }
