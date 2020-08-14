@@ -1,6 +1,7 @@
 /* Class Variables. */
 var map;
 var currentLocation = "newID";
+var prev_ID;
 
 /* Loads page and main buttons. */
 function loadPage() {
@@ -30,14 +31,30 @@ function loadMainButtons() {
   });
   
   const modalBackArrow = document.getElementById("modal-backarrow");
+  const commentSortRelevant = document.getElementById("comment-sort-relevant");
+  const commentSortRecent = document.getElementById("comment-sort-recent");
+
   // Hide reviews page and display results page.
   modalBackArrow.addEventListener("click", () => {
-    const button = document.getElementById("modal-backarrow");
-    button.innerHTML = '';
-    button.style.display = "none";
+    hideBackArrow();
+    hideButton(commentSortRelevant);
+    hideButton(commentSortRecent);
     document.getElementById('results-body').style.display = "block"; // Display results page.
     document.getElementById('reviews-body').style.display = "none"; // Hide reviews page.
     document.getElementById('reviews-list-container').innerHTML = ''; // Clean reviews wrapper of all DOM elements;
+    document.getElementById('rev-form-body').style.display = "none";
+  });
+
+  commentSortRelevant.addEventListener("click", () => {
+    commentSortRelevant.classList.add("active");
+    commentSortRecent.classList.remove("active");
+    resortReviews(prev_ID, 'relevant');
+  });
+  
+  commentSortRecent.addEventListener("click", () => {
+    commentSortRecent.classList.add("active");
+    commentSortRelevant.classList.remove("active");
+    resortReviews(prev_ID, 'recent');
   });
 }
 
@@ -118,14 +135,28 @@ function closeModal(modal) {
   overlay.classList.remove('active'); // Removes overlay and click blocker
   modal.classList.remove('active'); // Hides modal
 
-  document.getElementById('results-list-container').innerHTML = ''; // Clean results wrapper of all DOM elements
-  document.getElementById('reviews-list-container').innerHTML = ''; // Clean reviews wrapper of all DOM elements;
-  document.getElementById('results-body').style.display = "block"; // Set up results page for later use.
-  document.getElementById('reviews-body').style.display = "none"; // Hide reviews page.
+  // Clean reviews and results.
+  document.querySelectorAll('.list').forEach((item) => {
+    item.innerHTML = "";
+  });
+  // Hide modal content.
+  document.querySelectorAll('.modal-body').forEach((item) => {
+    item.style.display = "none";
+  });
+  hideBackArrow();
+}
+
+/** Hide modal-backarrow. */
+function hideBackArrow() {
   const button = document.getElementById("modal-backarrow");
-  button.style.display = "none"; // Hide back arrow.
-  button.classList.remove("exit-button"); // Hide exit-button.
-  button.innerHTML = ''; // Clean exit button.
+  button.innerHTML = '';
+  button.style.display = "none";
+}
+
+/** Multi-purpose button hiding function */
+function hideButton(button) {
+  button.innerHTML = '';
+  button.style.display = "none";
 }
 
 // Chooses whether to display 'Login' or 'Logout' button.
@@ -153,9 +184,22 @@ function createMap() {
     {center: googleplex, zoom: 13,
     mapTypeControlOptions: {mapTypeIds: ['roadmap']}});
 
+  // Checks to see if browser has enabled location sharing.
+  if (navigator.geolocation) {
+    // If so, sets the center of the map at the user's current position. 
+    navigator.geolocation.getCurrentPosition(
+      position => {
+        const pos = {
+          lat: position.coords.latitude,
+          lng: position.coords.longitude
+        };
+        map.setCenter(pos);
+      }
+    );
+  }
+
   // Search by coordinates on map click.
   map.addListener('click', function(mapsMouseEvent) {
-    infoWindow.close();
     searchByCoordinates(mapsMouseEvent.latLng);
   });
 }
@@ -186,7 +230,6 @@ function searchByText(textQuery, textLocation) {
       if (status == google.maps.GeocoderStatus.OK) {
         var latitude = results[0].geometry.location.lat();
         var longitude = results[0].geometry.location.lng();
-        console.log(new google.maps.LatLng(latitude, longitude));
         resolve(new google.maps.LatLng(latitude, longitude));
       } else {
         // If no location given, defaults to your cookie-d location.
@@ -283,6 +326,7 @@ function triggerModal(modal) {
   if (modal == null) return;
   overlay.classList.add('active');
   modal.classList.add('active');
+  document.getElementById('results-body').style.display = "block";
   document.getElementById("modal-backarrow").style.display = "none";
 }
 
@@ -346,50 +390,85 @@ function generateResult(place) {
  * One central function that is called to trigger entire review interface
  */
 function showReviews(placeID) {
-  document.getElementById("modal-backarrow").style.display = "block";
   fetchReviews(placeID);
   displayReviewModal();
-}
-
-/** Fetch Reviews
- * Queries ReviewServlet with elementID to find internal datastore
- */
-function fetchReviews(elementID) {
-  console.log("Fetching reviews for ID: #" + elementID);
-  fetch('/review').then(response => response.json()).then((reviewsArr) => {
-    populateReviews(reviewsArr);
-  });
 }
 
 /**
  * Review modal activation function
  */
 function displayReviewModal() {
-  const button = document.getElementById('modal-backarrow');
-  button.classList.add("exit-button");
-  button.innerHTML += "&larr;";
+  const reviewBackArrow = document.getElementById('modal-backarrow');
+  reviewBackArrow.classList.add("exit-button");
+  reviewBackArrow.innerHTML += "&larr;";
+  const commentSortRelevant = document.getElementById("comment-sort-relevant");
+  commentSortRelevant.innerHTML += "Relevant";
+  commentSortRelevant.style.display = "block";
+  const commentSortRecent = document.getElementById("comment-sort-recent");
+  commentSortRecent.innerHTML += "Recent";
+  commentSortRecent.style.display = "block";
 
+  document.getElementById("modal-backarrow").style.display = "block";
   document.getElementById('results-body').style.display = "none";
   document.getElementById('reviews-body').style.display = "block";
+}
+
+/** Fetch Reviews
+ * Queries ReviewServlet with elementID// Comment object gets it's datastore id. 
+    comment.setId(reviewEntity.getKey().getId()); to find internal datastore
+ */
+function fetchReviews(placeID, sort='recent') {
+  prev_ID = placeID;
+  const request = '/review?place_id=' + placeID + '&sort=' + sort;
+  fetch(request).then(response => response.json()).then((place) => {
+    populateReviews(place.reviews, placeID, place.currUser);
+  });
 }
 
 /** Creates a structure to put reviews in modal
  * Takes in array of JS reviews
  */
-function populateReviews(reviewList) {
+function populateReviews(reviewList, placeID, currUser) {
   const listContainer = document.getElementById('reviews-list-container');
   const entireList = document.createElement('ul');
   entireList.id += 'reviews-list';
 
-  if (reviewList.length == 0) {
+  if (reviewList[0] == null) {
     entireList.appendChild(noReviews());
   } else { 
-    reviewList.forEach(review => {
-      entireList.appendChild(generateReview(review));
+    reviewList.forEach((review) => {
+      entireList.appendChild(generateReview(review, currUser));
     });
   }
-
+  entireList.appendChild(newReviewButton(placeID));
   listContainer.appendChild(entireList);
+}
+
+/** ReSorts the shown comments
+ * Cleans the review modal, requeries, and displays the comments
+ */
+function resortReviews(placeID, sort) {
+  document.getElementById("reviews-list-container").innerHTML = '';
+  fetchReviews(placeID, sort);
+}
+
+/** Creates a new-review button for users to post their own review. */
+function newReviewButton(place_id) {
+  const button = document.createElement('button');
+  button.type = "button";
+  button.id = "new-review-button";
+  button.innerHTML = "Add New Review " + "&oplus;";
+  button.addEventListener("click", function() {
+    triggerNewReviewForm(place_id);
+  });
+  return button;
+}
+
+/** Hides reviews page and displays new-review form. */
+function triggerNewReviewForm(place_id) {
+  document.getElementById("place_id").value = place_id;
+  document.getElementById("reviews-body").style.display = "none"; // Hide reviews page.
+  document.getElementById("rev-form-body").style.display = "block";
 }
 
 /**
@@ -407,26 +486,53 @@ function noReviews() {
 /** Creates a review element using grid styling
  * Puts the review text in a <p> element
  */
-function generateReview(review) {
+function generateReview(review, currUser) {
   const reviewEntry = document.createElement('li');
 
   const reviewGrid = document.createElement('div');
   reviewGrid.className += 'review-grid';
 
   const reviewText = document.createElement('p');
-  reviewText.innerHTML += review;
+  reviewText.innerHTML += review.messageContent;
+  
+  const upvoteButton = document.createElement('button');
+  upvoteButton.innerHTML += '&#128077;' + review.positive;
+  upvoteButton.id += "up" + review.id;
+  upvoteButton.addEventListener("click", () => {
+    // Users must be logged in and can only vote once. 
+    if (currUser != null && !review.voters.includes(currUser)) {
+      review.positive += 1;
+      voteOnReview(review);
+      review.voters.push(currUser);
+    }
+  });
+
+  const downvoteButton = document.createElement('button');
+  downvoteButton.innerHTML += '&#128078;' + review.negative;
+  downvoteButton.id += "down" + review.id;
+  downvoteButton.addEventListener("click", () => {
+    // Users must be logged in and can only vote once. 
+    if(currUser != null && !review.voters.includes(currUser)) {
+      review.negative += 1;
+      voteOnReview(review);
+      review.voters.push(currUser);
+    }
+  });
 
   reviewGrid.appendChild(reviewText);
   reviewEntry.appendChild(reviewGrid);
+  reviewEntry.appendChild(upvoteButton);
+  reviewEntry.appendChild(downvoteButton);
   return reviewEntry;
-}
+} 
 
-/* Redirect user to newReviews.html. */
-function newReviewsPage() {
-  window.location.href = "newReview.html";
-}
-
-/* Loads currentLocation into newReview form. */
-function loadPlaceID() {
-  document.getElementById("place_id").value = currentLocation;
+/** Sends post request to VotingServlet.java and updates modal. */
+function voteOnReview(review) {
+  const request = '/vote?comment_id=' + review.id + 
+    '&up=' + review.positive + '&down=' + review.negative;
+  fetch(request, {method:"POST"}).then((results) => {
+    console.log(results);
+      document.getElementById("up" + review.id).innerHTML = "&#128077;" + review.positive + " ";
+      document.getElementById("down" + review.id).innerHTML = "&#128078;" + review.negative + " ";
+  });
 }

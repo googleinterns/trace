@@ -10,6 +10,9 @@
   </head>
   <body onload="loadPage();">
     <div id="map"></div>
+    <div class="loginButton">
+        <button id="login" data-text-swap="Logout">Login</button>
+    </div>
     <div class="mainButtonsWrapper">
       <div class="searchWrapper">
         <i id="search-icon" class="material-icons">search</i>
@@ -18,9 +21,6 @@
           <input id="zipcode" placeholder="Located by..." type="text">
         </form>
         <div class="clear-icon">x</div>
-      </div>
-      <div class="loginButton">
-        <button id="login" data-text-swap="Logout">Login</button>
       </div>
     </div> 
     <div id="popUp">
@@ -45,13 +45,65 @@
         <div class="modal-header"> 
           <div class="modal-title">Results</div>
           <button id="modal-backarrow"></button>
+          <div class="button-group" id="comment-sorting" value="">
+            <button id="comment-sort-recent"></button>
+            <button id="comment-sort-relevant"></button>
+          </div>
           <button data-modal-close-button class="exit-button">&times;</button>
         </div>
         <div class="modal-body" id="results-body">
-          <div id="results-list-container"></div>
+          <div class="list" id="results-list-container"></div>
         </div>
         <div class="modal-body" id="reviews-body">
-          <div id="reviews-list-container"></div>
+          <div class="list" id="reviews-list-container"></div>
+        </div>
+        <div class="modal-body" id='rev-form-body'>
+          <div id="review-form-container">
+            <form action="/review" method="POST">
+              <div class="review-row">
+                <input type="hidden" id="place_id" name="place_id" display="none">
+              </div>
+              <div class="review-row">
+                <div class="col">
+                  <label for="fname">First Name</label>
+                  <input class="text" id="fname" name="firstname" placeholder="Your name..">
+                </div>
+              </div>
+              <div class="review-row">
+                <div class="col">
+                  <label for="lname">Last Name</label>
+                  <input class="text" id="lname" name="lastname" placeholder="Your last name..">
+                </div>
+              </div>
+              <div class="review-row">
+                <div class="col">
+                  <label for="rating">How safe were this store's COVID practices?</label>
+                  <br>
+                    <div class="rate">
+                      <input type="radio" id="star5" name="rate" value="5" />
+                      <label for="star5" title="text">5</label>
+                      <input type="radio" id="star4" name="rate" value="4" />
+                      <label for="star4" title="text">4</label>
+                      <input type="radio" id="star3" name="rate" value="3" />
+                      <label for="star3" title="text">3</label>
+                      <input type="radio" id="star2" name="rate" value="2" />
+                      <label for="star2" title="text">2</label>
+                      <input type="radio" id="star1" name="rate" value="1" />
+                      <label for="star1" title="text">1</label>
+                    </div>
+                </div>
+              </div>
+              <div class="review-row">
+                <div class="col">
+                  <label for="subject">Why did you feel this way?</label>
+                  <textarea id="comment" name="comment" placeholder="Please be as specific as possible..." style="height:200px"></textarea>
+                </div>
+              </div>
+              <div class="review-row">
+                <input type="submit" value="Submit">
+              </div>
+            </form>
+          </div>
         </div>
       </div>
       <div id="overlay"></div>
