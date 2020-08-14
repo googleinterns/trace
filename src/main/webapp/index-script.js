@@ -541,12 +541,14 @@ function upvoteClick(review, currUser){
         review.negativeVoters.splice(index, 1);
       }
       review.positive += 1;
-      review.positiveVoters.push(currUser);
+      review.positiveVoters.push(currUser);c
+      toggleColor("up" + review.id);
     } else {
       // Otherwise, remove their vote
       review.positive -= 1;
       const index = review.positiveVoters.indexOf(currUser);
       review.positiveVoters.splice(index, 1);
+      unToggleColor("up" + review.id);
     }
     voteOnReview(review);
   }
@@ -568,22 +570,22 @@ function downvoteClick(review, currUser){
       }
       review.negative += 1;
       review.negativeVoters.push(currUser);
-      toggleColor(review);
+      toggleColor("down" + review.id);
     } else {
       // Otherwise, remove their vote. 
       review.negative -= 1;
       const index = review.negativeVoters.indexOf(currUser);
       review.negativeVoters.splice(index, 1);
-      unToggleColor(review);
+      unToggleColor("down" + review.id);
     }
     voteOnReview(review);
   }
 }
 
 function toggleColor(review){
-  document.getElementById("down" + review.id).style.color = "red";
+  document.getElementById(review).style.color = "red";
 }
 
 function unToggleColor(review){
-  document.getElementById("down" + review.id).style.color = "black";
+  document.getElementById().style.color = "black";
 }
