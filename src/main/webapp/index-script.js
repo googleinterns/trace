@@ -568,12 +568,22 @@ function downvoteClick(review, currUser){
       }
       review.negative += 1;
       review.negativeVoters.push(currUser);
+      toggleColor(review);
     } else {
       // Otherwise, remove their vote. 
       review.negative -= 1;
       const index = review.negativeVoters.indexOf(currUser);
       review.negativeVoters.splice(index, 1);
+      unToggleColor(review);
     }
     voteOnReview(review);
   }
+}
+
+function toggleColor(review){
+  document.getElementById("down" + review.id).style.color = "red";
+}
+
+function unToggleColor(review){
+  document.getElementById("down" + review.id).style.color = "black";
 }
