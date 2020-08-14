@@ -542,10 +542,10 @@ function voteOnReview(review) {
 /** Function reads heatWeights.txt and parses it as a JSON object
   * in order to populate heatMap in helperfunction. */
 function initializeHeatMap(map) {
-  let heatWeights = null
+  var heatWeights = null
   fetch('heatWeights.txt').then(response => response.text())
     .then(text => {
-      const heatWeights = JSON.parse(text);
+      heatWeights = JSON.parse(text);
       const heatMapData = createHeatMapData(heatWeights);
       populateHeatMap(heatMapData, map)
     });

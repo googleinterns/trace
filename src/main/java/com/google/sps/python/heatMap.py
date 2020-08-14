@@ -7,7 +7,7 @@ _WADE_HAMPTON_CENSUS_AK = 96
 _GRAND_PRINCESS_CRUISE_CA = 193
 _NEW_YORK_CITY_UNALLOCATED = 1864
 _IGNORE_LOCATIONS = [_WADE_HAMPTON_CENSUS_AK, _GRAND_PRINCESS_CRUISE_CA, _NEW_YORK_CITY_UNALLOCATED]
-us_state_abbrev = {
+_US_STATE_ABBREV = {
     'Alabama': 'AL',
     'Alaska': 'AK',
     'American Samoa': 'AS',
@@ -107,8 +107,8 @@ def read_county_wise():
 # as Sonoma, WA
 def format_county_state(county, state):
     key = ""
-    if state in us_state_abbrev:
-        key = county + ", " + us_state_abbrev[state]
+    if state in _US_STATE_ABBREV:
+        key = county + ", " + _US_STATE_ABBREV[state]
     return key
 
 
@@ -163,7 +163,7 @@ def load_weighted_cases(population_map):
             row = line.split(',')
             county = ''.join(row[1].split()[:-1])  # Remove 'county' and 'borough' from county name
             key = county + ", " + row[2]
-
+            
             # If this is a new key that we should not ignore, append the available data to our matrix.
             if key in population_map and (line_count not in _IGNORE_LOCATIONS):
                 case_matrix.append([int(num) for num in row[3:]])  # List of daily total for this county
