@@ -1,5 +1,8 @@
 package com.google.sps.data;
-import java.util.*;
+import java.util.Set;
+import java.util.HashSet;
+import java.util.Date;
+import java.util.Comparator;
 
 /** 
  * Comment object class
