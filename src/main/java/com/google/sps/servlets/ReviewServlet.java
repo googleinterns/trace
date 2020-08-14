@@ -189,7 +189,6 @@ public class ReviewServlet extends HttpServlet {
     // For each vote, adds the voter to the comment's voter list. 
     for (Entity entity : results.asIterable()){
         String vote = (String) entity.getProperty("vote");
-        System.out.println(vote);
         if (vote.equals("positive")){
             com.addPositiveVoter((String) entity.getProperty("voter"));
         } else {
