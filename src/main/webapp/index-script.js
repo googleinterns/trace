@@ -539,9 +539,10 @@ function upvoteClick(review, currUser){
         review.negative -=1;     
         const index = review.negativeVoters.indexOf(currUser);
         review.negativeVoters.splice(index, 1);
+        unToggleColor("down" + review.id);
       }
       review.positive += 1;
-      review.positiveVoters.push(currUser);c
+      review.positiveVoters.push(currUser);
       toggleColor("up" + review.id);
     } else {
       // Otherwise, remove their vote
@@ -567,6 +568,7 @@ function downvoteClick(review, currUser){
         review.positive -=1;
         const index = review.positiveVoters.indexOf(currUser);
         review.positiveVoters.splice(index, 1);
+        unToggleColor("up" + review.id);
       }
       review.negative += 1;
       review.negativeVoters.push(currUser);
@@ -587,5 +589,5 @@ function toggleColor(review){
 }
 
 function unToggleColor(review){
-  document.getElementById().style.color = "black";
+  document.getElementById(review).style.color = "black";
 }
