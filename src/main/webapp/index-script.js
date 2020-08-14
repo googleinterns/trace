@@ -541,15 +541,14 @@ function upvoteClick(review, currUser){
         review.negativeVoters.splice(index, 1);
       }
       review.positive += 1;
-      voteOnReview(review);
       review.positiveVoters.push(currUser);
     } else {
       // Otherwise, remove their vote
       review.positive -= 1;
-      voteOnReview(review);
       const index = review.positiveVoters.indexOf(currUser);
       review.positiveVoters.splice(index, 1);
     }
+    voteOnReview(review);
   }
 }
 
@@ -568,14 +567,13 @@ function downvoteClick(review, currUser){
         review.positiveVoters.splice(index, 1);
       }
       review.negative += 1;
-      voteOnReview(review);
       review.negativeVoters.push(currUser);
     } else {
       // Otherwise, remove their vote. 
       review.negative -= 1;
-      voteOnReview(review);
       const index = review.negativeVoters.indexOf(currUser);
       review.negativeVoters.splice(index, 1);
     }
+    voteOnReview(review);
   }
 }
