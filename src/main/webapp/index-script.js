@@ -501,15 +501,25 @@ function generateReview(review, currUser) {
   upvoteButton.addEventListener("click", () => {
     // Users must be logged in to vote! 
     if (currUser != null){
+      // Check if they already voted positive
       if (!review.positiveVoters.includes(currUser)) {
+        // If not, add their vote. 
+        // Check if they already voted negative
+        if (review.negativeVoters.includes(currUser)){
+          // If so, remove their negative vote.   
+          review.negative -=1;     
+          const index = review.negativeVoters.indexOf(currUser);
+          review.negativeVoters.splice(index, 1);
+        }
         review.positive += 1;
         voteOnReview(review);
         review.positiveVoters.push(currUser);
       } else {
-          review.positive -= 1;
-          voteOnReview(review);
-          const index = review.positiveVoters.indexOf(currUser);
-          review.positiveVoters.splice(index, 1);
+        // Otherwise, remove their vote
+        review.positive -= 1;
+        voteOnReview(review);
+        const index = review.positiveVoters.indexOf(currUser);
+        review.positiveVoters.splice(index, 1);
       }
     }
   });
@@ -520,15 +530,25 @@ function generateReview(review, currUser) {
   downvoteButton.addEventListener("click", () => {
     // Users must be logged in to vote! 
     if (currUser != null){
+      // Check if they already voted negative
       if (!review.negativeVoters.includes(currUser)) {
+        // If not, add their vote. 
+        // Check to see if they already voted positive
+        if (review.positiveVoters.includes(currUser)){
+          // If so, remove their vote. 
+          review.positive -=1;
+          const index = review.positiveVoters.indexOf(currUser);
+          review.positiveVoters.splice(index, 1);
+        }
         review.negative += 1;
         voteOnReview(review);
         review.negativeVoters.push(currUser);
       } else {
-          review.negative -= 1;
-          voteOnReview(review);
-          const index = review.negativeVoters.indexOf(currUser);
-          review.negativeVoters.splice(index, 1);
+        // Otherwise, remove their vote. 
+        review.negative -= 1;
+        voteOnReview(review);
+        const index = review.negativeVoters.indexOf(currUser);
+        review.negativeVoters.splice(index, 1);
       }
     }
   });
@@ -545,8 +565,7 @@ function voteOnReview(review) {
   const request = '/vote?comment_id=' + review.id + 
     '&up=' + review.positive + '&down=' + review.negative;
   fetch(request, {method:"POST"}).then((results) => {
-    console.log(results);
-      document.getElementById("up" + review.id).innerHTML = "&#128077;" + review.positive + " ";
-      document.getElementById("down" + review.id).innerHTML = "&#128078;" + review.negative + " ";
+    document.getElementById("up" + review.id).innerHTML = "&#128077;" + review.positive + " ";
+    document.getElementById("down" + review.id).innerHTML = "&#128078;" + review.negative + " ";
   });
 }
