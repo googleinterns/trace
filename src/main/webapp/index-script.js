@@ -545,7 +545,7 @@ function upvoteClick(review, currUser){
         review.negative -=1;     
         const index = review.negativeVoters.indexOf(currUser);
         review.negativeVoters.splice(index, 1);
-        unToggleColor("down" + review.id);
+        toggleColor("down" + review.id);
       }
       review.positive += 1;
       review.positiveVoters.push(currUser);
@@ -555,7 +555,7 @@ function upvoteClick(review, currUser){
       review.positive -= 1;
       const index = review.positiveVoters.indexOf(currUser);
       review.positiveVoters.splice(index, 1);
-      unToggleColor("up" + review.id);
+      toggleColor("up" + review.id);
     }
     voteOnReview(review);
   }
@@ -574,7 +574,7 @@ function downvoteClick(review, currUser){
         review.positive -=1;
         const index = review.positiveVoters.indexOf(currUser);
         review.positiveVoters.splice(index, 1);
-        unToggleColor("up" + review.id);
+        toggleColor("up" + review.id);
       }
       review.negative += 1;
       review.negativeVoters.push(currUser);
@@ -584,18 +584,17 @@ function downvoteClick(review, currUser){
       review.negative -= 1;
       const index = review.negativeVoters.indexOf(currUser);
       review.negativeVoters.splice(index, 1);
-      unToggleColor("down" + review.id);
+      toggleColor("down" + review.id);
     }
     voteOnReview(review);
   }
 }
 
-// Change the color of the vote to red
+/** Change the color of the vote to red */
 function toggleColor(review){
-  document.getElementById(review).style.color = "red";
-}
-
-// Change the color of the vote to black
-function unToggleColor(review){
-  document.getElementById(review).style.color = "black";
+  if (document.getElementById(review).style.color == "red"){
+    document.getElementById(review).style.color = "black";
+  } else {
+    document.getElementById(review).style.color = "red";
+  }
 }
