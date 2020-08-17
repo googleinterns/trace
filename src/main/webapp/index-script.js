@@ -519,7 +519,6 @@ function generateReview(review, currUser) {
   reviewEntry.appendChild(reviewGrid);
   reviewEntry.appendChild(upvoteButton);
   reviewEntry.appendChild(downvoteButton);
-  //loadColor(review, currUser);
   return reviewEntry;
 } 
 
@@ -591,10 +590,12 @@ function downvoteClick(review, currUser){
   }
 }
 
+// Change the color of the vote to red
 function toggleColor(review){
   document.getElementById(review).style.color = "red";
 }
 
+// Change the color of the vote to black
 function unToggleColor(review){
   document.getElementById(review).style.color = "black";
 }
