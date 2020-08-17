@@ -53,21 +53,32 @@ public class Comment {
       return Long.compare((b.positive - b.negative), (a.positive - a.negative));
     }
   };
-  
+
   /** 
    * Constructor
-   * Creates a full Comment object, used when an author leaves a review for the first time
-   * @param author the message author
-   * @param message the content of the message
-   * @param timestamp the time of writing
+   * Overloaded constructor to include (new) rating field
+   * Old constructor to be deprecated code is updated
+   * Since this initializes a comment, the positive and negative longs can be set to 0
    */
-  public Comment(String author, String message, Date timestamp, Long pos, Long neg) {
+  public Comment(String author, String message, Date timestamp, double rating) {
     this.author = author;
     this.messageContent = message;
     this.timestamp = timestamp;
-    this.positive = pos;
-    this.negative = neg;
+    this.positive = 0L;
+    this.negative = 0L;
     this.currUserVote = null;
+    this.positiveVoters = new HashSet<>();
+    this.negativeVoters = new HashSet<>();
+  }
+
+  /* Add a voter to the positive voters set. */
+  public void addPositiveVoter(String voter){
+    positiveVoters.add(voter);
+  }  
+  
+  /* Add a voter to the negative voters set. */
+  public void addNegativeVoter(String voter){
+    negativeVoters.add(voter);
   }
 
   /** 
