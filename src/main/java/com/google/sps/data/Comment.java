@@ -165,5 +165,6 @@ public class Comment {
   public void updateComment(Comment newReview) {
     this.messageContent = newReview.messageContent;
     this.timestamp = newReview.timestamp;
+    this.stars = newReview.stars;
   }
 }
