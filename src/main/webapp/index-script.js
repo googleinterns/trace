@@ -591,15 +591,21 @@ function populateHeatMap(heatMapData, map) {
   heatmap.set("gradient", gradient);
   heatmap.set("radius", 150);
   map.setZoom(9);
+  addHeatMapListeners(map, heatmap); 
+}
 
+function addHeatMapListeners(map, heatmap) {
   // Scale radius on zoom-in/out.
   map.addListener("zoom_changed", () => {
     zoom = map.getZoom();
     heatmap.set("radius", Math.pow(1.75, zoom));
   });
-  heatmap.setMap(map); 
-}
 
+  document.getElementById("heatMap")
+    .addEventListener("click", () => {
+      heatmap.setMap(heatmap.getMap() ? null : map);
+  });
+}
 /* Completes a thumbs up vote by either adding a new upvote or switching the user's current vote */
 function upvoteClick(review, currUser){
   // Users must be logged in to vote! 
