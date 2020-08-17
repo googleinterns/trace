@@ -179,7 +179,7 @@ def main():
     coord_weight_map = load_covid_data()
     dump_file_path = 'heatWeights.txt'
     with open(dump_file_path, 'w') as outfile:
-        josn.dump(coord_weight_map, outfile)
+        json.dump(coord_weight_map, outfile)
 
 
 if __name__ == '__main__':
