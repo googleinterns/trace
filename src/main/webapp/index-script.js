@@ -650,3 +650,4 @@ function downvoteClick(review, currUser){
     }
     voteOnReview(review);
   }
+}
