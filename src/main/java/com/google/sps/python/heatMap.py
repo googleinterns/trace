@@ -175,7 +175,12 @@ def load_weighted_cases(population_map):
     return weighted_cases
 
 
-coord_weight_map = load_covid_data()
-dump_file_path = 'heatWeights.txt'
-with open(dump_file_path, 'w') as outfile:
-    json.dump(coord_weight_map, outfile)
+def main():
+    coord_weight_map = load_covid_data()
+    dump_file_path = 'heatWeights.txt'
+    with open(dump_file_path, 'w') as outfile:
+        josn.dump(coord_weight_map, outfile)
+
+
+if __name__ == '__main__':
+    main()
