@@ -126,6 +126,14 @@ public class Comment {
     return this.stars;
   }
 
+  /**
+   * Rating updater method
+   * Updates private rating variable
+   */
+  private void updateRating(double newRating) {
+    this.rating = newRating;
+  }
+
   /** 
    * Time Accessor method
    * Accesses private variable
