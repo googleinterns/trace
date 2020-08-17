@@ -63,7 +63,7 @@ public class ReviewServlet extends HttpServlet {
       Comment com = new Comment(author, message, timestamp, positive, negative);
       com.setId(id);
       currentPlace.addReview(com);
-      addVoters(id, com);
+      addVotes(id, com, currUser);
     }
     currentPlace.sortReviews(sortType);
 
@@ -175,25 +175,24 @@ public class ReviewServlet extends HttpServlet {
     return queryResults.get(0);
   }
 
-  /* addVoters takes a comment id and a comment, and adds everyone who voted to the Comment's voter list. 
+  /* addVotes takes a comment id and a comment, and adds everyone who voted to the Comment's voter list. 
    * @param id Long
    * @param com Comment
    */ 
-  public void addVoters(Long id, Comment com){
+  public void addVotes(Long id, Comment com, String currentUser){
     DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
-    // Looks in the database for each review / voter combo with this review id. 
+    // Looks in the database for each review / voter combo with this review id & current user.
     Filter reviewFilter = new FilterPredicate("review_id", FilterOperator.EQUAL, id);
-    Query query = new Query("voter-review").setFilter(reviewFilter);
+    Filter voterFilter = new FilterPredicate("voter", FilterOperator.EQUAL, currentUser);
+    Filter combinedFilter = new CompositeFilter(CompositeFilterOperator.AND, Arrays.asList(reviewFilter, voterFilter));
+    Query query = new Query("voter-review").setFilter(combinedFilter);
+
     PreparedQuery results = datastore.prepare(query);
     
-    // For each vote, adds the voter to the comment's voter list. 
+    // For each vote, keeps track of the current user's status on it.  
     for (Entity entity : results.asIterable()){
         String vote = (String) entity.getProperty("vote");
-        if (vote.equals("positive")){
-            com.addPositiveVoter((String) entity.getProperty("voter"));
-        } else {
-            com.addNegativeVoter((String) entity.getProperty("voter"));
-        }
+        com.setVote(vote);
     }
   }
 }
