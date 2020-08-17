@@ -123,6 +123,14 @@ public class Comment {
     return this.messageContent;
   }
 
+  /**
+   * Rating Accessor Method
+   * Accesses private rating variable
+   */
+  public double getRating() {
+    return this.stars;
+  }
+
   /** 
    * Time Accessor method
    * Accesses private variable
