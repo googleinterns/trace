@@ -35,7 +35,7 @@ public class ReviewServlet extends HttpServlet {
     // Get the requested place using it's ID. 
     String place_id = request.getParameter("place_id");
     // Defer to sort by recent if poor format
-    String sortType = (request.getParameter("sort") == "relevant") ? "relevant" : "recent"; 
+    String sortType = (request.getParameter("sort").equals("relevant")) ? "relevant" : "recent"; 
     Filter placeFilter = new FilterPredicate("place_id", FilterOperator.EQUAL, place_id);
     Query query = new Query("Review").setFilter(placeFilter);
 
@@ -187,8 +187,13 @@ public class ReviewServlet extends HttpServlet {
     PreparedQuery results = datastore.prepare(query);
     
     // For each vote, adds the voter to the comment's voter list. 
-    for (Entity vote : results.asIterable()){
-        com.addVoter((String)vote.getProperty("voter"));
+    for (Entity entity : results.asIterable()){
+        String vote = (String) entity.getProperty("vote");
+        if (vote.equals("positive")){
+            com.addPositiveVoter((String) entity.getProperty("voter"));
+        } else {
+            com.addNegativeVoter((String) entity.getProperty("voter"));
+        }
     }
   }
 }
