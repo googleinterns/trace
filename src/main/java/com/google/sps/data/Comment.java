@@ -64,6 +64,7 @@ public class Comment {
     this.author = author;
     this.messageContent = message;
     this.timestamp = timestamp;
+    this.stars = rating;
     this.positive = 0L;
     this.negative = 0L;
     this.currUserVote = null;
