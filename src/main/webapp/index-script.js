@@ -500,6 +500,9 @@ function generateReview(review, currUser) {
   const upvoteButton = document.createElement('button');
   upvoteButton.innerHTML += '&#128077;' + review.positive;
   upvoteButton.id += "up" + review.id;
+  if (review.positiveVoters.includes(currUser)){
+    upvoteButton.style.color = "red";
+  }
   upvoteButton.addEventListener("click", () => {
     upvoteClick(review, currUser);
   });
@@ -507,6 +510,9 @@ function generateReview(review, currUser) {
   const downvoteButton = document.createElement('button');
   downvoteButton.innerHTML += '&#128078;' + review.negative;
   downvoteButton.id += "down" + review.id;
+  if (review.negativeVoters.includes(currUser)){
+    downvoteButton.style.color = "red";
+  }
   downvoteButton.addEventListener("click", () => {
     downvoteClick(review, currUser);
   });
@@ -613,14 +619,17 @@ function upvoteClick(review, currUser){
         review.negative -=1;     
         const index = review.negativeVoters.indexOf(currUser);
         review.negativeVoters.splice(index, 1);
+        toggleColor("down" + review.id);
       }
       review.positive += 1;
       review.positiveVoters.push(currUser);
+      toggleColor("up" + review.id);
     } else {
       // Otherwise, remove their vote
       review.positive -= 1;
       const index = review.positiveVoters.indexOf(currUser);
       review.positiveVoters.splice(index, 1);
+      toggleColor("up" + review.id);
     }
     voteOnReview(review);
   }
@@ -639,15 +648,27 @@ function downvoteClick(review, currUser){
         review.positive -=1;
         const index = review.positiveVoters.indexOf(currUser);
         review.positiveVoters.splice(index, 1);
+        toggleColor("up" + review.id);
       }
       review.negative += 1;
       review.negativeVoters.push(currUser);
+      toggleColor("down" + review.id);
     } else {
       // Otherwise, remove their vote. 
       review.negative -= 1;
       const index = review.negativeVoters.indexOf(currUser);
       review.negativeVoters.splice(index, 1);
+      toggleColor("down" + review.id);
     }
     voteOnReview(review);
+  }
+}
+
+/** Switch the color of the button based on vote */
+function toggleColor(review){
+  if (document.getElementById(review).style.color == "red"){
+    document.getElementById(review).style.color = "black";
+  } else {
+    document.getElementById(review).style.color = "red";
   }
 }
