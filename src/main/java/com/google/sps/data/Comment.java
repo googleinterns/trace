@@ -14,6 +14,7 @@ public class Comment {
   private final String author;
   private String messageContent;
   private Date timestamp;
+  private double stars;
   private long id;
   private Long negative;
   private Long positive;
