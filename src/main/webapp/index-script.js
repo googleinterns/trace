@@ -181,7 +181,7 @@ function createMap() {
   const googleplex = {lat: 37.422, lng: -122.0841};
   map = new google.maps.Map(
     document.getElementById('map'),
-    {center: googleplex, zoom: 13,
+    {center: googleplex, zoom: 9,
     mapTypeControlOptions: {mapTypeIds: ['roadmap']}});
 
   // Checks to see if browser has enabled location sharing.
@@ -197,6 +197,8 @@ function createMap() {
       }
     );
   }
+
+  initializeHeatMap(map);
 
   // Search by coordinates on map click.
   map.addListener('click', function(mapsMouseEvent) {
@@ -524,6 +526,78 @@ function voteOnReview(review) {
     document.getElementById("up" + review.id).innerHTML = "&#128077;" + review.positive + " ";
     document.getElementById("down" + review.id).innerHTML = "&#128078;" + review.negative + " ";
   });
+}
+
+/** Function reads heatWeights.txt and parses it as a JSON object
+  * in order to populate heatMap in helperfunction. */
+function initializeHeatMap(map) {
+  var heatWeights = null
+  fetch('heatWeights.txt').then(response => response.text())
+    .then(text => {
+      heatWeights = JSON.parse(text);
+      const heatMapData = createHeatMapData(heatWeights);
+      populateHeatMap(heatMapData, map)
+    });
+}
+
+/** Returns an array of json objects that contain both a county's coordinates
+  * and its weight in a format that google heatmaps can read. */
+function createHeatMapData(heatWeights) {
+  var heatMapData = []
+  i = 0
+  for(const county in heatWeights) {
+    const location = heatWeights[county].location;
+    const newPoint = {
+      location: new google.maps.LatLng(location.lat, location.lng),
+      weight: heatWeights[county].weight
+    }
+    heatMapData.push(newPoint);
+    i += 1;
+  }
+  console.log("done");
+  return heatMapData;
+}
+
+/** Uses heatMapData object to populate heatMap. */
+function populateHeatMap(heatMapData, map) {
+  const gradient = [
+    "rgba(0, 255, 255, 0)",
+    "rgba(0, 255, 255, 1)",
+    "rgba(0, 225, 255, 1)",
+    "rgba(0, 200, 255, 1)",
+    "rgba(0, 191, 255, 1)",
+    "rgba(0, 160, 255, 1)",
+    "rgba(0, 127, 255, 1)",
+    "rgba(0, 95, 255, 1)",
+    "rgba(0, 63, 255, 1)",
+    "rgba(0, 31, 255, 1)",
+    "rgba(0, 0, 255, 1)",
+    "rgba(0, 0, 223, 1)",
+    "rgba(0, 0, 191, 1)",
+    "rgba(0, 0, 170, 1)",
+    "rgba(0, 0, 159, 1)",
+    "rgba(0, 0, 127, 1)",
+    "rgba(0, 0, 108, 1)",
+    "rgba(63, 0, 91, 1)",
+    "rgba(0, 0, 77, 1)",
+    "rgba(127, 0, 63, 1)",
+    "rgba(0, 0, 47, 1)",
+    "rgba(191, 0, 31, 1)",
+    "rgba(255, 0, 0, 1)"
+  ];
+  var heatmap = new google.maps.visualization.HeatmapLayer({
+    data: heatMapData
+  });
+  heatmap.set("gradient", gradient);
+  heatmap.set("radius", 150);
+  map.setZoom(9);
+
+  // Scale radius on zoom-in/out.
+  map.addListener("zoom_changed", () => {
+    zoom = map.getZoom();
+    heatmap.set("radius", Math.pow(1.75, zoom));
+  });
+  heatmap.setMap(map); 
 }
 
 /* Completes a thumbs up vote by either adding a new upvote or switching the user's current vote */
