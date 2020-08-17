@@ -500,7 +500,7 @@ function generateReview(review, currUser) {
   const upvoteButton = document.createElement('button');
   upvoteButton.innerHTML += '&#128077;' + review.positive;
   upvoteButton.id += "up" + review.id;
-  if (review.positiveVoters.includes(currUser)){
+  if (review.currUserVote.equals("positive")){
     upvoteButton.style.color = "red";
   }
   upvoteButton.addEventListener("click", () => {
@@ -510,7 +510,7 @@ function generateReview(review, currUser) {
   const downvoteButton = document.createElement('button');
   downvoteButton.innerHTML += '&#128078;' + review.negative;
   downvoteButton.id += "down" + review.id;
-  if (review.negativeVoters.includes(currUser)){
+  if (review.currUserVote.equals("negative")){
     downvoteButton.style.color = "red";
   }
   downvoteButton.addEventListener("click", () => {
