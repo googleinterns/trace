@@ -1,5 +1,8 @@
 package com.google.sps.data;
-import java.util.*;
+import java.util.Set;
+import java.util.HashSet;
+import java.util.Date;
+import java.util.Comparator;
 
 /** 
  * Comment object class
@@ -15,7 +18,8 @@ public class Comment {
   private Long negative;
   private Long positive;
   private String username;
-  private Set<String> voters;
+  private Set<String> positiveVoters;
+  private Set<String> negativeVoters;
 
   /**
    * Order Comparator
@@ -46,8 +50,7 @@ public class Comment {
   public static final Comparator<Comment> ORDER_BY_SCORE = new Comparator<Comment>() {
     @Override
     public int compare(Comment a, Comment b) {
-      return (int) ((a.positive.longValue() - a.negative.longValue()) 
-        - (b.positive.longValue() - b.negative.longValue()));
+      return Long.compare((b.positive - b.negative), (a.positive - a.negative));
     }
   };
   
@@ -64,12 +67,18 @@ public class Comment {
     this.timestamp = timestamp;
     this.positive = pos;
     this.negative = neg;
-    this.voters = new HashSet<>();
+    this.positiveVoters = new HashSet<>();
+    this.negativeVoters = new HashSet<>();
   }
 
-  /* Add a voter to the voters set. */
-  public void addVoter(String voter){
-    voters.add(voter);
+  /* Add a voter to the positive voters set. */
+  public void addPositiveVoter(String voter){
+    positiveVoters.add(voter);
+  }  
+  
+  /* Add a voter to the negative voters set. */
+  public void addNegativeVoter(String voter){
+    negativeVoters.add(voter);
   }
 
   public long getId(){
