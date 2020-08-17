@@ -590,7 +590,7 @@ function downvoteClick(review, currUser){
   }
 }
 
-/** Change the color of the vote to red */
+/** Switch the color of the button based on vote */
 function toggleColor(review){
   if (document.getElementById(review).style.color == "red"){
     document.getElementById(review).style.color = "black";
