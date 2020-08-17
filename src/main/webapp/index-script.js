@@ -499,8 +499,6 @@ function generateReview(review, currUser) {
   upvoteButton.innerHTML += '&#128077;' + review.positive;
   upvoteButton.id += "up" + review.id;
   if (review.positiveVoters.includes(currUser)){
-    console.log(upvoteButton.id);
-    console.log(upvoteButton);
     upvoteButton.style.color = "red";
   }
   upvoteButton.addEventListener("click", () => {
@@ -511,9 +509,6 @@ function generateReview(review, currUser) {
   downvoteButton.innerHTML += '&#128078;' + review.negative;
   downvoteButton.id += "down" + review.id;
   if (review.negativeVoters.includes(currUser)){
-    console.log(downvoteButton.id);
-    console.log(downvoteButton);
-    //toggleColor(downvoteButton.id);
     downvoteButton.style.color = "red";
   }
   downvoteButton.addEventListener("click", () => {
