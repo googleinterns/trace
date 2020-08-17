@@ -18,7 +18,8 @@ public class Comment {
   private Long negative;
   private Long positive;
   private String username;
-  private Set<String> voters;
+  private Set<String> positiveVoters;
+  private Set<String> negativeVoters;
 
   /**
    * Order Comparator
@@ -66,12 +67,18 @@ public class Comment {
     this.timestamp = timestamp;
     this.positive = pos;
     this.negative = neg;
-    this.voters = new HashSet<>();
+    this.positiveVoters = new HashSet<>();
+    this.negativeVoters = new HashSet<>();
   }
 
-  /* Add a voter to the voters set. */
-  public void addVoter(String voter){
-    voters.add(voter);
+  /* Add a voter to the positive voters set. */
+  public void addPositiveVoter(String voter){
+    positiveVoters.add(voter);
+  }  
+  
+  /* Add a voter to the negative voters set. */
+  public void addNegativeVoter(String voter){
+    negativeVoters.add(voter);
   }
 
   public long getId(){

@@ -187,8 +187,13 @@ public class ReviewServlet extends HttpServlet {
     PreparedQuery results = datastore.prepare(query);
     
     // For each vote, adds the voter to the comment's voter list. 
-    for (Entity vote : results.asIterable()){
-        com.addVoter((String)vote.getProperty("voter"));
+    for (Entity entity : results.asIterable()){
+        String vote = (String) entity.getProperty("vote");
+        if (vote.equals("positive")){
+            com.addPositiveVoter((String) entity.getProperty("voter"));
+        } else {
+            com.addNegativeVoter((String) entity.getProperty("voter"));
+        }
     }
   }
 }
