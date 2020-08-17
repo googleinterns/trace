@@ -92,7 +92,7 @@ public class ReviewServlet extends HttpServlet {
 
     // Create new Comment instance.
     String userEmail = userService.getCurrentUser().getEmail(); // Used to restrict user to one review/location
-    String reviewText = request.getParameter("comment");
+    String reviewText = request.getParameter("message-text");
     Date time = new Date();
     Comment newReview = new Comment(userEmail, reviewText, time, rating);
     
