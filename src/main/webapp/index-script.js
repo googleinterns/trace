@@ -592,7 +592,7 @@ function downvoteClick(review, currUser){
 
 // Change the color of the vote to red
 function toggleColor(review){
-  document.getElementById(review).style.color = "red";
+  document.getElementById(review).style.border = "red";
 }
 
 // Change the color of the vote to black
