@@ -498,6 +498,11 @@ function generateReview(review, currUser) {
   const upvoteButton = document.createElement('button');
   upvoteButton.innerHTML += '&#128077;' + review.positive;
   upvoteButton.id += "up" + review.id;
+  if (review.positiveVoters.includes(currUser)){
+    console.log(upvoteButton.id);
+    console.log(upvoteButton);
+    upvoteButton.style.color = "red";
+  }
   upvoteButton.addEventListener("click", () => {
     upvoteClick(review, currUser);
   });
@@ -505,6 +510,12 @@ function generateReview(review, currUser) {
   const downvoteButton = document.createElement('button');
   downvoteButton.innerHTML += '&#128078;' + review.negative;
   downvoteButton.id += "down" + review.id;
+  if (review.negativeVoters.includes(currUser)){
+    console.log(downvoteButton.id);
+    console.log(downvoteButton);
+    //toggleColor(downvoteButton.id);
+    downvoteButton.style.color = "red";
+  }
   downvoteButton.addEventListener("click", () => {
     downvoteClick(review, currUser);
   });
@@ -513,6 +524,7 @@ function generateReview(review, currUser) {
   reviewEntry.appendChild(reviewGrid);
   reviewEntry.appendChild(upvoteButton);
   reviewEntry.appendChild(downvoteButton);
+  //loadColor(review, currUser);
   return reviewEntry;
 } 
 
