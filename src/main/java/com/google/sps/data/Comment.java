@@ -131,7 +131,7 @@ public class Comment {
    * Updates private rating variable
    */
   private void updateRating(double newRating) {
-    this.rating = newRating;
+    this.stars = newRating;
   }
 
   /** 
