@@ -102,8 +102,7 @@ public class ReviewServlet extends HttpServlet {
     String userEmail = userService.getCurrentUser().getEmail(); // Used to restrict user to one review/location
     String reviewText = request.getParameter("comment");
     Date time = new Date();
-    long zero = 0; // 0 gets incorrectly cast as int if used directly.
-    Comment newReview = new Comment(userEmail, reviewText, time, zero, zero);
+    Comment newReview = new Comment(userEmail, reviewText, time, rating);
     
     // Query for existing reviews from place_id.
     String place_id = request.getParameter("place_id");
