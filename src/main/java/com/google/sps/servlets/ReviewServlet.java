@@ -9,6 +9,8 @@ import com.google.appengine.api.datastore.Query.SortDirection;
 import com.google.appengine.api.datastore.Query.Filter;
 import com.google.appengine.api.datastore.Query.FilterPredicate;
 import com.google.appengine.api.datastore.Query.FilterOperator;
+import com.google.appengine.api.datastore.Query.CompositeFilter;
+import com.google.appengine.api.datastore.Query.CompositeFilterOperator;
 import com.google.appengine.api.users.UserService;
 import com.google.appengine.api.users.UserServiceFactory;
 import com.google.sps.data.PlaceReviews;
@@ -63,7 +65,7 @@ public class ReviewServlet extends HttpServlet {
       Comment com = new Comment(author, message, timestamp, positive, negative);
       com.setId(id);
       currentPlace.addReview(com);
-      addVotes(id, com, currUser);
+      addVotes(id, com, currentPlace, currUser);
     }
     currentPlace.sortReviews(sortType);
 
@@ -179,7 +181,7 @@ public class ReviewServlet extends HttpServlet {
    * @param id Long
    * @param com Comment
    */ 
-  public void addVotes(Long id, Comment com, String currentUser){
+  public void addVotes(Long id, Comment com, PlaceReviews pr, String currentUser){
     DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
     // Looks in the database for each review / voter combo with this review id & current user.
     Filter reviewFilter = new FilterPredicate("review_id", FilterOperator.EQUAL, id);
@@ -192,7 +194,7 @@ public class ReviewServlet extends HttpServlet {
     // For each vote, keeps track of the current user's status on it.  
     for (Entity entity : results.asIterable()){
         String vote = (String) entity.getProperty("vote");
-        com.setVote(vote);
+        pr.setVote(vote);
     }
   }
 }
