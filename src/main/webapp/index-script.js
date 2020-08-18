@@ -198,7 +198,7 @@ function createMap() {
     );
   }
 
-  initializeHeatMap(map);
+  initializeHeatMap();
 
   // Search by coordinates on map click.
   map.addListener('click', function(mapsMouseEvent) {
@@ -599,13 +599,13 @@ function toggleColor(review){
 
 /** Function reads heatWeights.txt and parses it as a JSON object
   * in order to populate heatMap in helperfunction. */
-function initializeHeatMap(map) {
+function initializeHeatMap() {
   var heatWeights = null
   fetch('heatWeights.txt').then(response => response.text())
     .then(text => {
       heatWeights = JSON.parse(text);
       const heatMapData = createHeatMapData(heatWeights);
-      populateHeatMap(heatMapData, map)
+      populateHeatMap(heatMapData)
     });
 }
 
@@ -627,17 +627,17 @@ function createHeatMapData(heatWeights) {
 }
 
 /** Uses heatMapData object to populate heatMap. */
-function populateHeatMap(heatMapData, map) {
+function populateHeatMap(heatMapData) {
   var heatmap = new google.maps.visualization.HeatmapLayer({
     data: heatMapData
   });
   heatmap.set("radius", 150);
   map.setZoom(9);
-  addHeatMapListeners(map, heatmap); 
+  addHeatMapListeners(heatmap); 
 }
 
 /** Adds functionality for heatmap related buttons/toggles. */
-function addHeatMapListeners(map, heatmap) {
+function addHeatMapListeners(heatmap) {
   const heatToggle = document.getElementById("heat-toggle");
   const gradToggle = document.getElementById("gradient-toggle");
   const radiusSlider = document.getElementById("heat-radius");
@@ -645,7 +645,7 @@ function addHeatMapListeners(map, heatmap) {
 
   // Scale radius on zoom-in/out.
   map.addListener("zoom_changed", () => {
-    changeRadius(map, heatmap, radiusSlider);
+    changeRadius(heatmap, radiusSlider);
   });
 
   // Activate heatmap and display heatmap buttons.
@@ -682,7 +682,7 @@ function addHeatMapListeners(map, heatmap) {
   });
   // Grow/shrink heatmap data radius.
   radiusSlider.oninput = function() {
-    changeRadius(map, heatmap, radiusSlider);
+    changeRadius(heatmap, radiusSlider);
   }
 
   // Changes heatmap data opacity.
@@ -695,7 +695,7 @@ function addHeatMapListeners(map, heatmap) {
   * or manually changes the radius of the heatmap data.
   * Sets the heatmap radius based on radius slider and current
   * zoom level. */
-function changeRadius(map, heatmap, slider) {
+function changeRadius(heatmap, slider) {
   const zoom = map.getZoom();
   const factor = parseInt(slider.value)/5; // Ranges from 0 to 2.
   heatmap.set("radius", Math.pow(1.75, zoom + factor));
