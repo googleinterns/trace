@@ -1,8 +1,17 @@
 import numpy as np
 import json
 _POPULATION = 'datasets/county-population.txt'
+# A sample line from _CASES will have the following structure:
+# FIPS, county_name, state_abbreviation, population
+
 _CASES = 'datasets/by-county-and-date.txt'
+# A sample line from _CASES will have the following structure:
+# FIPS Code(county ID), county_name, state_abbreviation, total cases on 1/22/20, ...total cases on 8/11/20
+
 _COORDINATES = 'datasets/usa_county_wise.txt'
+# A sample line from _COORDINATES will have the following structure:
+# UID, iso2, iso3, code3, FIPS, county_name, full_state_name, Country_Region,
+# Lat, Long, Combined_Key, Date, Confirmed, Deaths
 _WADE_HAMPTON_CENSUS_AK = 96
 _GRAND_PRINCESS_CRUISE_CA = 193
 _NEW_YORK_CITY_UNALLOCATED = 1864
@@ -114,6 +123,7 @@ def format_county_state(county, state):
 
 # Reads county-population.txt and returns python dict that matches
 # a county's name to its coordinates and relative population (population / 100)
+# A sample line from the file will have the following structure:
 def load_population_map(county_to_coordinates):
     population_map = {}
     line_count = 0
