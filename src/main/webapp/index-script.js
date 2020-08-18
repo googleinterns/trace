@@ -181,7 +181,7 @@ function createMap() {
   const googleplex = {lat: 37.422, lng: -122.0841};
   map = new google.maps.Map(
     document.getElementById('map'),
-    {center: googleplex, zoom: 9,
+    {center: googleplex, zoom: 14,
     mapTypeControlOptions: {mapTypeIds: ['roadmap']}});
 
   // Checks to see if browser has enabled location sharing.
@@ -197,7 +197,7 @@ function createMap() {
       }
     );
   }
-
+  markers = [];
   initializeHeatMap();
 
   // Search by coordinates on map click.
@@ -263,6 +263,7 @@ function handleSearchResults(results, service) {
   if (results.length > 0) { 
     map.setCenter(results[0].geometry.location);
   }
+  deleteMarkers();
   
   var promises = [];
 
@@ -302,6 +303,24 @@ function handleSearchResults(results, service) {
   Promise.all(promises).then(places => {
     populateSearch(places); // Placeholder
   });
+}
+
+/** Deletes all markers in the array by removing references to them. */
+function deleteMarkers() {
+  clearMarkers();
+  markers = [];
+}
+
+/** Removes the markers from the map, but keeps them in the array. */
+function clearMarkers() {
+  setMapOnAllNull();
+}
+
+/** Sets the map on all markers in the array. */
+function setMapOnAllNull() {
+  for (let i = 0; i < markers.length; i++) {
+    markers[i].setMap(null);
+  }
 }
 
 /* Fills out search results page. */
@@ -638,7 +657,6 @@ function populateHeatMap(heatMapData) {
     data: heatMapData
   });
   heatmap.set("radius", 150);
-  map.setZoom(9);
   addHeatMapListeners(heatmap); 
 }
 
