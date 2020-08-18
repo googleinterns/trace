@@ -54,6 +54,7 @@ public class VotingServlet extends HttpServlet {
     if(review != null) {
 
       String vote = "negative";
+      // Check if the number of upvotes as changed, if so, the vote was positive.
       if (!upvotes.equals(review.getProperty("positive"))){
         vote = "positive";
       }

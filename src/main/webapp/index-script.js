@@ -537,24 +537,22 @@ function upvoteClick(review, currUser){
   // Users must be logged in to vote! 
   if (currUser != null){
     // Check if they already voted positive
-    if (!review.positiveVoters.includes(currUser)) {
+    if (review.currUserVote != "positive") {
       // If not, add their vote. 
       // Check if they already voted negative
-      if (review.negativeVoters.includes(currUser)){
+      if (review.currUserVote == "negative"){
         // If so, remove their negative vote.   
         review.negative -=1;     
-        const index = review.negativeVoters.indexOf(currUser);
-        review.negativeVoters.splice(index, 1);
+        review.currUserVote = null;
         unToggleColor("down" + review.id);
       }
       review.positive += 1;
-      review.positiveVoters.push(currUser);
+      review.currUserVote = "positive";
       toggleColor("up" + review.id);
     } else {
       // Otherwise, remove their vote
       review.positive -= 1;
-      const index = review.positiveVoters.indexOf(currUser);
-      review.positiveVoters.splice(index, 1);
+      review.currUserVote = null;
       unToggleColor("up" + review.id);
     }
     voteOnReview(review);
@@ -566,24 +564,22 @@ function downvoteClick(review, currUser){
   // Users must be logged in to vote! 
   if (currUser != null){
     // Check if they already voted negative
-    if (!review.negativeVoters.includes(currUser)) {
+    if (review.currUserVote != "negative") {
       // If not, add their vote. 
       // Check to see if they already voted positive
-      if (review.positiveVoters.includes(currUser)){
+      if (review.currUserVote == "positive"){
         // If so, remove their vote. 
         review.positive -=1;
-        const index = review.positiveVoters.indexOf(currUser);
-        review.positiveVoters.splice(index, 1);
+        review.currUserVote = null;
         unToggleColor("up" + review.id);
       }
       review.negative += 1;
-      review.negativeVoters.push(currUser);
+      review.currUserVote = "negative";
       toggleColor("down" + review.id);
     } else {
       // Otherwise, remove their vote. 
       review.negative -= 1;
-      const index = review.negativeVoters.indexOf(currUser);
-      review.negativeVoters.splice(index, 1);
+      review.currUserVote = null;
       unToggleColor("down" + review.id);
     }
     voteOnReview(review);

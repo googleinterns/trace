@@ -18,7 +18,6 @@ public class PlaceReviews {
   private double rating;
   private Set<String> reviewers;
   private String currUser;
-  private String currUserVote;
 
    /**
     * Constructor
@@ -41,22 +40,11 @@ public class PlaceReviews {
     this.rating = initialRating;
     this.reviewers = new HashSet<>();
     this.currUser = null;
-    this.currUserVote = null;
   }
 
   /* Keeps track of who is currently logged in */
   public void setCurrentUser(String person){
     this.currUser = person;
-  }
-
-  /* Sets the current user's vote */
-  public boolean setVote(String vote){
-    // Limits what we can set the vote to in order to reduce malicious behavior
-    if (vote.equals("negative") || vote.equals("positive") || vote == null){
-      currUserVote = vote;
-      return true;
-    } 
-    return false;
   }
 
   /** 

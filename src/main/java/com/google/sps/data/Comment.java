@@ -15,6 +15,7 @@ public class Comment {
   private Long negative;
   private Long positive;
   private String username;
+  private String currUserVote;
 
   /**
    * Order Comparator
@@ -63,6 +64,7 @@ public class Comment {
     this.timestamp = timestamp;
     this.positive = pos;
     this.negative = neg;
+    this.currUserVote = null;
   }
 
   /* Return the id of the comment */
@@ -73,6 +75,16 @@ public class Comment {
   /* Set the id of the comment */
   public void setId(long id){
     this.id = id;
+  }
+
+  /* Sets the current user's vote */
+  public boolean setVote(String vote){
+    // Limits what we can set the vote to in order to reduce malicious behavior
+    if (vote.equals("negative") || vote.equals("positive") || vote == null){
+      currUserVote = vote;
+      return true;
+    } 
+    return false;
   }
 
   /** 
