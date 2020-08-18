@@ -534,6 +534,69 @@ function voteOnReview(review) {
   });
 }
 
+/* Completes a thumbs up vote by either adding a new upvote or switching the user's current vote */
+function upvoteClick(review, currUser){
+  // Users must be logged in to vote! 
+  if (currUser != null){
+    // Check if they already voted positive
+    if (review.currUserVote != "positive") {
+      // If not, add their vote. 
+      // Check if they already voted negative
+      if (review.currUserVote == "negative"){
+        // If so, remove their negative vote.   
+        review.negative -=1;   
+        review.currUserVote = null;  
+        toggleColor("down" + review.id);
+      }
+      review.positive += 1;
+      review.currUserVote = "positive";
+      toggleColor("up" + review.id);
+    } else {
+      // Otherwise, remove their vote
+      review.positive -= 1;
+      review.currUserVote = null;
+      toggleColor("up" + review.id);
+    }
+    voteOnReview(review);
+  }
+}
+
+/* Completes a thumbs down vote by either adding a new downvote or switching the user's current vote */
+function downvoteClick(review, currUser){
+  // Users must be logged in to vote! 
+  if (currUser != null){
+    // Check if they already voted negative
+    if (review.currUserVote != "negative") {
+      // If not, add their vote. 
+      // Check to see if they already voted positive
+      if (review.currUserVote == "positive"){
+        // If so, remove their vote. 
+        review.positive -=1;
+        review.currUserVote = null;
+        toggleColor("up" + review.id);
+      }
+      review.negative += 1;
+      review.currUserVote = "negative";
+      toggleColor("down" + review.id);
+    } else {
+      // Otherwise, remove their vote. 
+      review.negative -= 1;
+      review.currUserVote = null;
+      toggleColor("down" + review.id);
+    }
+    voteOnReview(review);
+  }
+}
+
+/** Switch the color of the button based on vote */
+function toggleColor(review){
+  if (document.getElementById(review).style.color == "red"){
+    document.getElementById(review).style.color = "black";
+  } else {
+    document.getElementById(review).style.color = "red";
+  }
+}
+
 /** Function reads heatWeights.txt and parses it as a JSON object
   * in order to populate heatMap in helperfunction. */
 function initializeHeatMap(map) {
@@ -604,67 +667,4 @@ function populateHeatMap(heatMapData, map) {
     heatmap.set("radius", Math.pow(1.75, zoom));
   });
   heatmap.setMap(map); 
-}
-
-/* Completes a thumbs up vote by either adding a new upvote or switching the user's current vote */
-function upvoteClick(review, currUser){
-  // Users must be logged in to vote! 
-  if (currUser != null){
-    // Check if they already voted positive
-    if (review.currUserVote != "positive") {
-      // If not, add their vote. 
-      // Check if they already voted negative
-      if (review.currUserVote == "negative"){
-        // If so, remove their negative vote.   
-        review.negative -=1;   
-        review.currUserVote = null;  
-        toggleColor("down" + review.id);
-      }
-      review.positive += 1;
-      review.currUserVote = "positive";
-      toggleColor("up" + review.id);
-    } else {
-      // Otherwise, remove their vote
-      review.positive -= 1;
-      review.currUserVote = null;
-      toggleColor("up" + review.id);
-    }
-    voteOnReview(review);
-  }
-}
-
-/* Completes a thumbs down vote by either adding a new downvote or switching the user's current vote */
-function downvoteClick(review, currUser){
-  // Users must be logged in to vote! 
-  if (currUser != null){
-    // Check if they already voted negative
-    if (review.currUserVote != "negative") {
-      // If not, add their vote. 
-      // Check to see if they already voted positive
-      if (review.currUserVote == "positive"){
-        // If so, remove their vote. 
-        review.positive -=1;
-        review.currUserVote = null;
-        toggleColor("up" + review.id);
-      }
-      review.negative += 1;
-      review.currUserVote = "negative";
-      toggleColor("down" + review.id);
-    } else {
-      // Otherwise, remove their vote. 
-      review.negative -= 1;
-      review.currUserVote = null;
-      toggleColor("down" + review.id);
-    }
-    voteOnReview(review);
-  }
-}
-
-/** Switch the color of the button based on vote */
-function toggleColor(review){
-  if (document.getElementById(review).style.color == "red"){
-    document.getElementById(review).style.color = "black";
-  } else {
-    document.getElementById(review).style.color = "red";
-  }
 }
