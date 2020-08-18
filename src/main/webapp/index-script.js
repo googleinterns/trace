@@ -623,48 +623,81 @@ function createHeatMapData(heatWeights) {
     heatMapData.push(newPoint);
     i += 1;
   }
-  console.log("done");
   return heatMapData;
 }
 
 /** Uses heatMapData object to populate heatMap. */
 function populateHeatMap(heatMapData, map) {
-  const gradient = [
-    "rgba(0, 255, 255, 0)",
-    "rgba(0, 255, 255, 1)",
-    "rgba(0, 225, 255, 1)",
-    "rgba(0, 200, 255, 1)",
-    "rgba(0, 191, 255, 1)",
-    "rgba(0, 160, 255, 1)",
-    "rgba(0, 127, 255, 1)",
-    "rgba(0, 95, 255, 1)",
-    "rgba(0, 63, 255, 1)",
-    "rgba(0, 31, 255, 1)",
-    "rgba(0, 0, 255, 1)",
-    "rgba(0, 0, 223, 1)",
-    "rgba(0, 0, 191, 1)",
-    "rgba(0, 0, 170, 1)",
-    "rgba(0, 0, 159, 1)",
-    "rgba(0, 0, 127, 1)",
-    "rgba(0, 0, 108, 1)",
-    "rgba(63, 0, 91, 1)",
-    "rgba(0, 0, 77, 1)",
-    "rgba(127, 0, 63, 1)",
-    "rgba(0, 0, 47, 1)",
-    "rgba(191, 0, 31, 1)",
-    "rgba(255, 0, 0, 1)"
-  ];
   var heatmap = new google.maps.visualization.HeatmapLayer({
     data: heatMapData
   });
-  heatmap.set("gradient", gradient);
   heatmap.set("radius", 150);
   map.setZoom(9);
+  addHeatMapListeners(map, heatmap); 
+}
+
+/** Adds functionality for heatmap related buttons/toggles. */
+function addHeatMapListeners(map, heatmap) {
+  const heatToggle = document.getElementById("heat-toggle");
+  const gradToggle = document.getElementById("gradient-toggle");
+  const radiusSlider = document.getElementById("heat-radius");
+  const opacitySlider = document.getElementById("heat-opacity");
 
   // Scale radius on zoom-in/out.
   map.addListener("zoom_changed", () => {
-    zoom = map.getZoom();
-    heatmap.set("radius", Math.pow(1.75, zoom));
+    changeRadius(map, heatmap, radiusSlider);
+  });
+
+  // Activate heatmap and display heatmap buttons.
+  heatToggle.addEventListener("click", () => {
+      const mapActive = heatmap.getMap();
+      heatmap.setMap(mapActive ? null : map);
+
+      // Activate buttons.
+      const disp = mapActive ? 'none' : 'block';
+      gradToggle.style.display = disp;
+      radiusSlider.style.display = disp;
+      opacitySlider.style.display = disp;
+  });
+
+  // Change heatmap gradient.
+  gradToggle.addEventListener("click", () => {
+    const gradient = [
+      "rgba(0, 255, 255, 0)",
+      "rgba(0, 255, 255, 1)",
+      "rgba(0, 191, 255, 1)",
+      "rgba(0, 127, 255, 1)",
+      "rgba(0, 63, 255, 1)",
+      "rgba(0, 0, 255, 1)",
+      "rgba(0, 0, 223, 1)",
+      "rgba(0, 0, 191, 1)",
+      "rgba(0, 0, 159, 1)",
+      "rgba(0, 0, 127, 1)",
+      "rgba(63, 0, 91, 1)",
+      "rgba(127, 0, 63, 1)",
+      "rgba(191, 0, 31, 1)",
+      "rgba(255, 0, 0, 1)"
+    ];
+    heatmap.set("gradient", heatmap.get("gradient") ? null : gradient);
   });
   heatmap.setMap(map); 
+  // Grow/shrink heatmap data radius.
+  radiusSlider.oninput = function() {
+    changeRadius(map, heatmap, radiusSlider);
+  }
+
+  // Changes heatmap data opacity.
+  opacitySlider.oninput = function() {
+    heatmap.set("opacity", parseInt(this.value)/5); // Opacity ranges from 0 to 2.
+  }
+}
+
+/** Function is called whenever user zooms in/out of map
+  * or manually changes the radius of the heatmap data.
+  * Sets the heatmap radius based on radius slider and current
+  * zoom level. */
+function changeRadius(map, heatmap, slider) {
+  const zoom = map.getZoom();
+  const factor = parseInt(slider.value)/5; // Ranges from 0 to 2.
+  heatmap.set("radius", Math.pow(1.75, zoom + factor));
 }
