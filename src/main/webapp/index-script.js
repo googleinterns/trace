@@ -98,6 +98,8 @@ function activateSearchBar() {
     if (event.keyCode === 13) {
       var query = document.getElementById('searchForm').elements[0].value;
       var location = document.getElementById('searchForm').elements[1].value;
+      var radius = document.getElementById('searchForm').elements[2].value;
+      console.log(radius);
       searchByText(query, location);
     }
   });
