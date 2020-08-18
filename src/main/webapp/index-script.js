@@ -1,6 +1,6 @@
 /* Class Variables. */
 var map;
-var currentLocation = "newID";
+var markers;
 var prev_ID;
 
 /* Loads page and main buttons. */
@@ -340,6 +340,12 @@ function populateResults(places) {
   entireList.id += "results-list";
   places.forEach(place => {
     entireList.appendChild(generateResult(place));
+    var marker = new google.maps.Marker({
+      position: place.geometry.location,
+      map: map,
+      title: 'Hello World!'
+    });
+    markers.push(marker)
   });
   listContainer.appendChild(entireList);
 }
