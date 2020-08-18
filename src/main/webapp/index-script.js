@@ -99,7 +99,8 @@ function activateSearchBar() {
       var query = document.getElementById('searchForm').elements[0].value;
       var location = document.getElementById('searchForm').elements[1].value;
       var radius = document.getElementById('searchForm').elements[2].value;
-      searchByText(query, location, radius);
+
+      searchByText(query, location);
     }
   });
 }
