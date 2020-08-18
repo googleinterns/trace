@@ -216,3 +216,7 @@
   position: relative;
   right: 30%;
 }
+
+.heat-button {
+  display: none;
+}

@@ -11,7 +11,15 @@
   <body onload="loadPage();">
     <div id="map"></div>
     <div class="loginButton">
-        <button id="login" data-text-swap="Logout">Login</button>
+      <button id="login" data-text-swap="Logout">Login</button>
+      <br><button id="heat-toggle" data-text-swap="Close Heatmap">Open Heatmap</button>
+      <br><button id="gradient-toggle" class="heat-button">Change Gradient</button>
+      <br><label for="heat-radius" class="heat-button">Radius</label>
+      <input type="range" id="heat-radius" name="heat-radius"
+        min="0" max="10" value="0" class="heat-button">
+      <br><label for="heat-opacity" class="heat-button">Opacity</label>
+      <input type="range" id="heat-opacity" name="heat-opacity"
+        min="0" max="10" value="5" class="heat-button">
     </div>
     <div class="mainButtonsWrapper">
       <div class="searchWrapper">
