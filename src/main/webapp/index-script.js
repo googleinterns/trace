@@ -199,7 +199,6 @@ function createMap() {
   }
 
   initializeHeatMap(map);
-
   // Search by coordinates on map click.
   map.addListener('click', function(mapsMouseEvent) {
     searchByCoordinates(mapsMouseEvent.latLng);
@@ -642,27 +641,8 @@ function addHeatMapListeners(map, heatmap) {
   const gradToggle = document.getElementById("gradient-toggle");
   const radiusSlider = document.getElementById("heat-radius");
   const opacitySlider = document.getElementById("heat-opacity");
-
-  // Scale radius on zoom-in/out.
-  map.addListener("zoom_changed", () => {
-    changeRadius(map, heatmap, radiusSlider);
-  });
-
-  // Activate heatmap and display heatmap buttons.
-  heatToggle.addEventListener("click", () => {
-      const mapActive = heatmap.getMap();
-      heatmap.setMap(mapActive ? null : map);
-
-      // Activate buttons.
-      const disp = mapActive ? 'none' : 'block';
-      gradToggle.style.display = disp;
-      radiusSlider.style.display = disp;
-      opacitySlider.style.display = disp;
-  });
-
-  // Change heatmap gradient.
-  gradToggle.addEventListener("click", () => {
-    const gradient = [
+  const darkMode = document.getElementById("dark-toggle");
+  const darkGradient = [
       "rgba(0, 255, 255, 0)",
       "rgba(0, 255, 255, 1)",
       "rgba(0, 191, 255, 1)",
@@ -678,7 +658,27 @@ function addHeatMapListeners(map, heatmap) {
       "rgba(191, 0, 31, 1)",
       "rgba(255, 0, 0, 1)"
     ];
-    heatmap.set("gradient", heatmap.get("gradient") ? null : gradient);
+  // Scale radius on zoom-in/out.
+  map.addListener("zoom_changed", () => {
+    changeRadius(map, heatmap, radiusSlider);
+  });
+
+  // Activate heatmap and display heatmap buttons.
+  heatToggle.addEventListener("click", () => {
+    const mapActive = heatmap.getMap();
+    heatmap.setMap(mapActive ? null : map);
+
+    // Activate buttons.
+    const disp = mapActive ? 'none' : 'block';
+    heatToggle.innerHTML = mapActive ? 'Open Heatmap' : 'Close Heatmap';
+    gradToggle.style.display = disp;
+    radiusSlider.style.display = disp;
+    opacitySlider.style.display = disp;
+  });
+
+  // Change heatmap gradient.
+  gradToggle.addEventListener("click", () => {
+    heatmap.set("gradient", heatmap.get("gradient") ? null : darkGradient);
   });
   // Grow/shrink heatmap data radius.
   radiusSlider.oninput = function() {
@@ -689,6 +689,10 @@ function addHeatMapListeners(map, heatmap) {
   opacitySlider.oninput = function() {
     heatmap.set("opacity", parseInt(this.value)/5); // Opacity ranges from 0 to 2.
   }
+
+  darkMode.addEventListener("click", () => {
+    darkMode.innerHTML = toggleDarkMode(map, heatmap, darkGradient, darkMode.innerHTML);
+  });
 }
 
 /** Function is called whenever user zooms in/out of map
@@ -699,4 +703,149 @@ function changeRadius(map, heatmap, slider) {
   const zoom = map.getZoom();
   const factor = parseInt(slider.value)/5; // Ranges from 0 to 2.
   heatmap.set("radius", Math.pow(1.75, zoom + factor));
+}
+
+/** Toggles "Dark Mode" on/off. */
+function toggleDarkMode(map, heatmap, gradient, mode) {
+  const darkStyle = [
+    {elementType: 'geometry', stylers: [{color: '#242f3e'}]},
+    {elementType: 'labels.text.stroke', stylers: [{color: '#242f3e'}]},
+    {elementType: 'labels.text.fill', stylers: [{color: '#746855'}]},
+    {
+      featureType: 'administrative.locality',
+      elementType: 'labels.text.fill',
+      stylers: [{color: '#d59563'}]
+    },
+    {
+      featureType: 'poi',
+      elementType: 'labels.text.fill',
+      stylers: [{color: '#d59563'}]
+    },
+    {
+      featureType: 'poi.park',
+      elementType: 'geometry',
+      stylers: [{color: '#263c3f'}]
+    },
+    {
+      featureType: 'poi.park',
+      elementType: 'labels.text.fill',
+      stylers: [{color: '#6b9a76'}]
+    },
+    {
+      featureType: 'road',
+      elementType: 'geometry',
+      stylers: [{color: '#38414e'}]
+    },
+    {
+      featureType: 'road',
+      elementType: 'geometry.stroke',
+      stylers: [{color: '#212a37'}]
+    },
+    {
+      featureType: 'road',
+      elementType: 'labels.text.fill',
+      stylers: [{color: '#9ca5b3'}]
+    },
+    {
+      featureType: 'road.highway',
+      elementType: 'geometry',
+      stylers: [{color: '#746855'}]
+    },
+    {
+      featureType: 'road.highway',
+      elementType: 'geometry.stroke',
+      stylers: [{color: '#1f2835'}]
+    },
+    {
+      featureType: 'road.highway',
+      elementType: 'labels.text.fill',
+      stylers: [{color: '#f3d19c'}]
+    },
+    {
+      featureType: 'transit',
+      elementType: 'geometry',
+      stylers: [{color: '#2f3948'}]
+    },
+    {
+      featureType: 'transit.station',
+      elementType: 'labels.text.fill',
+      stylers: [{color: '#d59563'}]
+    },
+    {
+      featureType: 'water',
+      elementType: 'geometry',
+      stylers: [{color: '#17263c'}]
+    },
+    {
+      featureType: 'water',
+      elementType: 'labels.text.fill',
+      stylers: [{color: '#515c6d'}]
+    },
+    {
+      featureType: 'water',
+      elementType: 'labels.text.stroke',
+      stylers: [{color: '#17263c'}]
+    }
+  ];
+  if(mode === "Light Mode") {
+    map.set("styles", null);
+    heatmap.set("gradient", null);
+    return "Dark Mode";
+  } else {
+    map.set("styles", darkStyle);
+    heatmap.set("gradient", gradient);
+    return "Light Mode";
+  }
+}
+
+/* Completes a thumbs up vote by either adding a new upvote or switching the user's current vote */
+function upvoteClick(review, currUser){
+  // Users must be logged in to vote! 
+  if (currUser != null){
+    // Check if they already voted positive
+    if (!review.positiveVoters.includes(currUser)) {
+      // If not, add their vote. 
+      // Check if they already voted negative
+      if (review.negativeVoters.includes(currUser)){
+        // If so, remove their negative vote.   
+        review.negative -=1;     
+        const index = review.negativeVoters.indexOf(currUser);
+        review.negativeVoters.splice(index, 1);
+      }
+      review.positive += 1;
+      review.positiveVoters.push(currUser);
+    } else {
+      // Otherwise, remove their vote
+      review.positive -= 1;
+      const index = review.positiveVoters.indexOf(currUser);
+      review.positiveVoters.splice(index, 1);
+    }
+    voteOnReview(review);
+  }
+}
+
+/* Completes a thumbs down vote by either adding a new downvote or switching the user's current vote */
+function downvoteClick(review, currUser){
+  // Users must be logged in to vote! 
+  if (currUser != null){
+    // Check if they already voted negative
+    if (!review.negativeVoters.includes(currUser)) {
+      // If not, add their vote. 
+      // Check to see if they already voted positive
+      if (review.positiveVoters.includes(currUser)){
+        // If so, remove their vote. 
+        review.positive -=1;
+        const index = review.positiveVoters.indexOf(currUser);
+        review.positiveVoters.splice(index, 1);
+      }
+      review.negative += 1;
+      review.negativeVoters.push(currUser);
+    } else {
+      // Otherwise, remove their vote. 
+      review.negative -= 1;
+      const index = review.negativeVoters.indexOf(currUser);
+      review.negativeVoters.splice(index, 1);
+    }
+    voteOnReview(review);
+  }
 }
