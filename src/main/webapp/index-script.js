@@ -181,7 +181,7 @@ function createMap() {
   const googleplex = {lat: 37.422, lng: -122.0841};
   map = new google.maps.Map(
     document.getElementById('map'),
-    {center: googleplex, zoom: 14,
+    {center: googleplex, zoom: 14, // Set default zoom to allow proper spacing of markers on-search
     mapTypeControlOptions: {mapTypeIds: ['roadmap']}});
 
   // Checks to see if browser has enabled location sharing.
@@ -667,21 +667,22 @@ function addHeatMapListeners(heatmap) {
   const radiusSlider = document.getElementById("heat-radius");
   const opacitySlider = document.getElementById("heat-opacity");
 
-  // Scale radius on zoom-in/out.
-  map.addListener("zoom_changed", () => {
-    changeRadius(heatmap, radiusSlider);
-  });
-
   // Activate heatmap and display heatmap buttons.
   heatToggle.addEventListener("click", () => {
       const mapActive = heatmap.getMap();
       heatmap.setMap(mapActive ? null : map);
+      map.setZoom(8); // Zoom out when heatmap is activated.
 
       // Activate buttons.
       const disp = mapActive ? 'none' : 'block';
       gradToggle.style.display = disp;
       radiusSlider.style.display = disp;
       opacitySlider.style.display = disp;
+  });
+
+  // Scale radius on zoom-in/out.
+  map.addListener("zoom_changed", () => {
+    changeRadius(heatmap, radiusSlider);
   });
 
   // Change heatmap gradient.
