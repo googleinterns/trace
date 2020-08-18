@@ -181,7 +181,7 @@ function createMap() {
   const googleplex = {lat: 37.422, lng: -122.0841};
   map = new google.maps.Map(
     document.getElementById('map'),
-    {center: googleplex, zoom: 14, // Set default zoom to allow proper spacing of markers on-search
+    {center: googleplex, zoom: 14, // Set default zoom to allow proper spacing of markers on-search.
     mapTypeControlOptions: {mapTypeIds: ['roadmap']}});
 
   // Checks to see if browser has enabled location sharing.
@@ -262,9 +262,9 @@ function handleSearchResults(results, service) {
   // Center on the queried location
   if (results.length > 0) { 
     map.setCenter(results[0].geometry.location);
+    map.setZoom(14); // Ensure map is sufficiently zoomed in to appropriately space results.
   }
   deleteMarkers();
-  
   var promises = [];
 
   // Modal can handle up to 9 results only
@@ -362,9 +362,11 @@ function populateResults(places) {
     var marker = new google.maps.Marker({
       position: place.geometry.location,
       map: map,
+      animation: google.maps.Animation.DROP,
       title: 'Hello World!'
     });
-    markers.push(marker)
+    addMarkerListeners(marker, place.place_id);
+    markers.push(marker);
   });
   listContainer.appendChild(entireList);
 }
@@ -411,6 +413,22 @@ function generateResult(place) {
   resultGrid.appendChild(infoText);
   resultEntry.appendChild(resultGrid);
   return resultEntry;
+}
+
+/** Add event listeners to markers. */
+function addMarkerListeners(marker, placeID) {
+  marker.addListener('mouseover', () => toggleBounce(marker));
+  marker.addListener('mouseout', () => toggleBounce(marker));
+  marker.addListener('click', () => showReviews(placeID));
+}
+
+/** Enable markers to bounce when hovered over. */
+function toggleBounce(marker) {
+  if (marker.getAnimation() !== null) {
+    marker.setAnimation(null);
+  } else {
+    marker.setAnimation(google.maps.Animation.BOUNCE);
+  }
 }
 
 /** Pseudomaster Review Function
