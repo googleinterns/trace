@@ -186,7 +186,7 @@ public class ReviewServlet extends HttpServlet {
    */ 
   public void addVote(Long id, Comment com, String currentUser){
     DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
-    // Looks in the database for each review / voter combo with this review id & current user.
+    // Looks in the database for the review / voter combo with this review id & current user.
     Filter reviewFilter = new FilterPredicate("review_id", FilterOperator.EQUAL, id);
     Filter voterFilter = new FilterPredicate("voter", FilterOperator.EQUAL, currentUser);
     Filter combinedFilter = new CompositeFilter(CompositeFilterOperator.AND, Arrays.asList(reviewFilter, voterFilter));
@@ -194,8 +194,10 @@ public class ReviewServlet extends HttpServlet {
 
     PreparedQuery results = datastore.prepare(query);
     
-    // For each vote, keeps track of the current user's status on it.  
-    for (Entity entity : results.asIterable()){
+    // For the vote, keeps track of the current user's status on it.  
+    //for (Entity entity : results.asIterable()){
+    if (results.countEntities() == 1){
+        Entity entity = results.asSingleEntity();
         String vote = (String) entity.getProperty("vote");
         com.setVote(vote);
     }
