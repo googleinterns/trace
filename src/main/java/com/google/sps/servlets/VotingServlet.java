@@ -67,6 +67,7 @@ public class VotingServlet extends HttpServlet {
 
       // Adds the new review voter-pair
       Entity voterReview = new Entity("voter-review");
+      // Checks to see if we can adjust an old voter-review pair
       if (results.countEntities() > 0){
         voterReview = results.asSingleEntity();
       } 

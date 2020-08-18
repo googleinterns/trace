@@ -543,8 +543,8 @@ function upvoteClick(review, currUser){
       // If not, add their vote. 
       // Check if they already voted negative
       if (review.currUserVote == "negative"){
-        // If so, remove their negative vote.   
-        review.negative -=1;   
+        // If so, remove their negative vote.
+        review.negative -= 1;   
         review.currUserVote = null;  
         toggleColor("down" + review.id);
       }
@@ -571,7 +571,7 @@ function downvoteClick(review, currUser){
       // Check to see if they already voted positive
       if (review.currUserVote == "positive"){
         // If so, remove their vote. 
-        review.positive -=1;
+        review.positive -= 1;
         review.currUserVote = null;
         toggleColor("up" + review.id);
       }
