@@ -180,9 +180,10 @@ public class ReviewServlet extends HttpServlet {
     return queryResults.get(0);
   }
 
-  /* addVotes takes a comment id and a comment, and adds everyone who voted to the Comment's voter list. 
+  /* addVote adds the current user's vote to the comment. 
    * @param id Long
    * @param com Comment
+   * @param currentUser String
    */ 
   public void addVote(Long id, Comment com, String currentUser){
     DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
@@ -194,8 +195,7 @@ public class ReviewServlet extends HttpServlet {
 
     PreparedQuery results = datastore.prepare(query);
     
-    // For the vote, keeps track of the current user's status on it.  
-    //for (Entity entity : results.asIterable()){
+    // Adds the user's current voting status to the comment
     if (results.countEntities() == 1){
         Entity entity = results.asSingleEntity();
         String vote = (String) entity.getProperty("vote");
