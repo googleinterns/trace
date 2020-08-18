@@ -680,7 +680,6 @@ function addHeatMapListeners(map, heatmap) {
     ];
     heatmap.set("gradient", heatmap.get("gradient") ? null : gradient);
   });
-    
   // Grow/shrink heatmap data radius.
   radiusSlider.oninput = function() {
     changeRadius(map, heatmap, radiusSlider);
