@@ -571,19 +571,24 @@ function populateHeatMap(heatMapData, map) {
 function addHeatMapListeners(map, heatmap) {
   const heatToggle = document.getElementById("heat-toggle");
   const gradToggle = document.getElementById("gradient-toggle");
-  const slider = document.getElementById("heat-radius");
+  const radiusSlider = document.getElementById("heat-radius");
+  const opacitySlider = document.getElementById("heat-opacity");
 
   // Scale radius on zoom-in/out.
   map.addListener("zoom_changed", () => {
-    changeRadius(map, heatmap, slider);
+    changeRadius(map, heatmap, radiusSlider);
   });
 
   // Activate heatmap and display heatmap buttons.
   heatToggle.addEventListener("click", () => {
       const mapActive = heatmap.getMap();
       heatmap.setMap(mapActive ? null : map);
-      gradToggle.style.display = mapActive ? 'block' : 'none';
-      slider.style.display = mapActive ? 'block' : 'none';
+
+      // Activate buttons.
+      const disp = mapActive ? 'none' : 'block';
+      gradToggle.style.display = disp;
+      radiusSlider.style.display = disp;
+      opacitySlider.style.display = disp;
   });
 
   // Change heatmap gradient.
@@ -608,8 +613,13 @@ function addHeatMapListeners(map, heatmap) {
   });
 
   // Grow/shrink heatmap data radius.
-  slider.oninput = function() {
-    changeRadius(map, heatmap, slider);
+  radiusSlider.oninput = function() {
+    changeRadius(map, heatmap, radiusSlider);
+  }
+
+  // Changes heatmap data opacity.
+  opacitySlider.oninput = function() {
+    heatmap.set("opacity", parseInt(this.value)/5); // Opacity ranges from 0 to 2.
   }
 }
 

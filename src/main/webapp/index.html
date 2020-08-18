@@ -13,10 +13,13 @@
     <div class="loginButton">
       <button id="login" data-text-swap="Logout">Login</button>
       <br><button id="heat-toggle" data-text-swap="Close Heatmap">Open Heatmap</button>
-      <br><button id="gradient-toggle" style="display:none;">Change Gradient</button>
-      <br><input type="range" id="heat-radius" name="heat-radius"
-        min="0" max="10" value = "0" style="display:none;">
-      <label for="heat-radius">Radius</label>
+      <br><button id="gradient-toggle" class="heat-button">Change Gradient</button>
+      <br><label for="heat-radius" class="heat-button">Radius</label>
+      <input type="range" id="heat-radius" name="heat-radius"
+        min="0" max="10" value="0" class="heat-button">
+      <br><label for="heat-opacity" class="heat-button">Opacity</label>
+      <input type="range" id="heat-opacity" name="heat-opacity"
+        min="0" max="10" value="5" class="heat-button">
     </div>
     <div class="mainButtonsWrapper">
       <div class="searchWrapper">
