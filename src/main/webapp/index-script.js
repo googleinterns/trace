@@ -99,8 +99,7 @@ function activateSearchBar() {
       var query = document.getElementById('searchForm').elements[0].value;
       var location = document.getElementById('searchForm').elements[1].value;
       var radius = document.getElementById('searchForm').elements[2].value;
-      console.log(radius);
-      searchByText(query, location);
+      searchByText(query, location, radius);
     }
   });
 }
@@ -223,7 +222,7 @@ function searchByCoordinates(coordinate) {
 }
 
 /* Search Places API for relevant locations using text query. */
-function searchByText(textQuery, textLocation) {
+function searchByText(textQuery, textLocation, textRadius) {
   // Get the coordinates of a requested location. 
   const locationPromise = new Promise((resolve, reject) => {
     var geocoder = new google.maps.Geocoder();
@@ -238,12 +237,15 @@ function searchByText(textQuery, textLocation) {
       }
     });
   }); 
- 
+
+  // Convert from standard meters to approximate miles
+  var miles = textRadius / 1609;
   // Waits for location to be chosen, then runs search
   locationPromise.then((locationRequest) => {
     var request = {
       query: textQuery,
       location: locationRequest,
+      radius: miles,
       fields: ['place_id', 'geometry']
     };
  
