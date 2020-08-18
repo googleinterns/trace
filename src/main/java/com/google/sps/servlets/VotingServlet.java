@@ -54,10 +54,12 @@ public class VotingServlet extends HttpServlet {
     // Also makes sure that input is not malicious.
     if(review != null && isNumeric(upvotes) && isNumeric(downvotes)) {
 
-      String vote = "negative";
+      String vote = "null";
       // Check if the number of upvotes as changed, if so, the vote was positive.
-      if (!upvotes.equals(review.getProperty("positive"))){
+      if (Integer.parseInt(upvotes) > Integer.parseInt((String) review.getProperty("positive"))){
         vote = "positive";
+      } else if (Integer.parseInt(downvotes) > Integer.parseInt((String) review.getProperty("negative"))){
+        vote = "negative";
       }
       
       // Updates the review's vote count
