@@ -18,8 +18,7 @@ public class Comment {
   private Long negative;
   private Long positive;
   private String username;
-  private Set<String> positiveVoters;
-  private Set<String> negativeVoters;
+  private String currUserVote;
 
   /**
    * Order Comparator
@@ -67,26 +66,27 @@ public class Comment {
     this.timestamp = timestamp;
     this.positive = pos;
     this.negative = neg;
-    this.positiveVoters = new HashSet<>();
-    this.negativeVoters = new HashSet<>();
+    this.currUserVote = null;
   }
 
-  /* Add a voter to the positive voters set. */
-  public void addPositiveVoter(String voter){
-    positiveVoters.add(voter);
-  }  
-  
-  /* Add a voter to the negative voters set. */
-  public void addNegativeVoter(String voter){
-    negativeVoters.add(voter);
-  }
-
+  /** Return the id of the comment */
   public long getId(){
     return this.id;
   }
 
+  /** Set the id of the comment */
   public void setId(long id){
     this.id = id;
+  }
+
+  /** Sets the current user's vote */
+  public boolean setVote(String vote){
+    // Limits what we can set the vote to in order to reduce malicious behavior
+    if (vote.equals("negative") || vote.equals("positive") || vote == null){
+      currUserVote = vote;
+      return true;
+    } 
+    return false;
   }
 
   /** 

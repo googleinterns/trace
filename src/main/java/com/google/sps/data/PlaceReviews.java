@@ -42,6 +42,7 @@ public class PlaceReviews {
     this.reviews.add(firstReview);
     this.rating = initialRating;
     this.reviewers = new HashSet<>();
+    this.currUser = null;
   }
 
   /* Keeps track of who is currently logged in */

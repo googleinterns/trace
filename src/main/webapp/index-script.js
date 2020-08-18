@@ -499,6 +499,9 @@ function generateReview(review, currUser) {
   const upvoteButton = document.createElement('button');
   upvoteButton.innerHTML += '&#128077;' + review.positive;
   upvoteButton.id += "up" + review.id;
+  if (review.currUserVote == "positive"){
+    upvoteButton.style.color = "red";
+  }
   upvoteButton.addEventListener("click", () => {
     upvoteClick(review, currUser);
   });
@@ -506,6 +509,9 @@ function generateReview(review, currUser) {
   const downvoteButton = document.createElement('button');
   downvoteButton.innerHTML += '&#128078;' + review.negative;
   downvoteButton.id += "down" + review.id;
+  if (review.currUserVote == "negative"){
+    downvoteButton.style.color = "red";
+  }
   downvoteButton.addEventListener("click", () => {
     downvoteClick(review, currUser);
   });
@@ -525,6 +531,69 @@ function voteOnReview(review) {
     document.getElementById("up" + review.id).innerHTML = "&#128077;" + review.positive + " ";
     document.getElementById("down" + review.id).innerHTML = "&#128078;" + review.negative + " ";
   });
+}
+
+/* Completes a thumbs up vote by either adding a new upvote or switching the user's current vote */
+function upvoteClick(review, currUser){
+  // Users must be logged in to vote! 
+  if (currUser != null){
+    // Check if they already voted positive
+    if (review.currUserVote != "positive") {
+      // If not, add their vote. 
+      // Check if they already voted negative
+      if (review.currUserVote == "negative"){
+        // If so, remove their negative vote.
+        review.negative -= 1;   
+        review.currUserVote = null;  
+        toggleColor("down" + review.id);
+      }
+      review.positive += 1;
+      review.currUserVote = "positive";
+      toggleColor("up" + review.id);
+    } else {
+      // Otherwise, remove their vote
+      review.positive -= 1;
+      review.currUserVote = null;
+      toggleColor("up" + review.id);
+    }
+    voteOnReview(review);
+  }
+}
+
+/* Completes a thumbs down vote by either adding a new downvote or switching the user's current vote */
+function downvoteClick(review, currUser){
+  // Users must be logged in to vote! 
+  if (currUser != null){
+    // Check if they already voted negative
+    if (review.currUserVote != "negative") {
+      // If not, add their vote. 
+      // Check to see if they already voted positive
+      if (review.currUserVote == "positive"){
+        // If so, remove their vote. 
+        review.positive -= 1;
+        review.currUserVote = null;
+        toggleColor("up" + review.id);
+      }
+      review.negative += 1;
+      review.currUserVote = "negative";
+      toggleColor("down" + review.id);
+    } else {
+      // Otherwise, remove their vote. 
+      review.negative -= 1;
+      review.currUserVote = null;
+      toggleColor("down" + review.id);
+    }
+    voteOnReview(review);
+  }
+}
+
+/** Switch the color of the button based on vote */
+function toggleColor(review){
+  if (document.getElementById(review).style.color == "red"){
+    document.getElementById(review).style.color = "black";
+  } else {
+    document.getElementById(review).style.color = "red";
+  }
 }
 
 /** Function reads heatWeights.txt and parses it as a JSON object
@@ -611,7 +680,6 @@ function addHeatMapListeners(map, heatmap) {
   gradToggle.addEventListener("click", () => {
     heatmap.set("gradient", heatmap.get("gradient") ? null : darkGradient);
   });
-
   // Grow/shrink heatmap data radius.
   radiusSlider.oninput = function() {
     changeRadius(map, heatmap, radiusSlider);
