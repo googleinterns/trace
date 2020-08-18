@@ -181,7 +181,7 @@ function createMap() {
   const googleplex = {lat: 37.422, lng: -122.0841};
   map = new google.maps.Map(
     document.getElementById('map'),
-    {center: googleplex, zoom: 13,
+    {center: googleplex, zoom: 9,
     mapTypeControlOptions: {mapTypeIds: ['roadmap']}});
 
   // Checks to see if browser has enabled location sharing.
@@ -197,6 +197,8 @@ function createMap() {
       }
     );
   }
+
+  initializeHeatMap(map);
 
   // Search by coordinates on map click.
   map.addListener('click', function(mapsMouseEvent) {
@@ -498,6 +500,9 @@ function generateReview(review, currUser) {
   const upvoteButton = document.createElement('button');
   upvoteButton.innerHTML += '&#128077;' + review.positive;
   upvoteButton.id += "up" + review.id;
+  if (review.positiveVoters.includes(currUser)){
+    upvoteButton.style.color = "red";
+  }
   upvoteButton.addEventListener("click", () => {
     upvoteClick(review, currUser);
   });
@@ -505,6 +510,9 @@ function generateReview(review, currUser) {
   const downvoteButton = document.createElement('button');
   downvoteButton.innerHTML += '&#128078;' + review.negative;
   downvoteButton.id += "down" + review.id;
+  if (review.negativeVoters.includes(currUser)){
+    downvoteButton.style.color = "red";
+  }
   downvoteButton.addEventListener("click", () => {
     downvoteClick(review, currUser);
   });
@@ -526,6 +534,111 @@ function voteOnReview(review) {
   });
 }
 
+/** Function reads heatWeights.txt and parses it as a JSON object
+  * in order to populate heatMap in helperfunction. */
+function initializeHeatMap(map) {
+  var heatWeights = null
+  fetch('heatWeights.txt').then(response => response.text())
+    .then(text => {
+      heatWeights = JSON.parse(text);
+      const heatMapData = createHeatMapData(heatWeights);
+      populateHeatMap(heatMapData, map)
+    });
+}
+
+/** Returns an array of json objects that contain both a county's coordinates
+  * and its weight in a format that google heatmaps can read. */
+function createHeatMapData(heatWeights) {
+  var heatMapData = []
+  i = 0
+  for(const county in heatWeights) {
+    const location = heatWeights[county].location;
+    const newPoint = {
+      location: new google.maps.LatLng(location.lat, location.lng),
+      weight: heatWeights[county].weight
+    }
+    heatMapData.push(newPoint);
+    i += 1;
+  }
+  return heatMapData;
+}
+
+/** Uses heatMapData object to populate heatMap. */
+function populateHeatMap(heatMapData, map) {
+  var heatmap = new google.maps.visualization.HeatmapLayer({
+    data: heatMapData
+  });
+  heatmap.set("radius", 150);
+  map.setZoom(9);
+  addHeatMapListeners(map, heatmap); 
+}
+
+/** Adds functionality for heatmap related buttons/toggles. */
+function addHeatMapListeners(map, heatmap) {
+  const heatToggle = document.getElementById("heat-toggle");
+  const gradToggle = document.getElementById("gradient-toggle");
+  const radiusSlider = document.getElementById("heat-radius");
+  const opacitySlider = document.getElementById("heat-opacity");
+
+  // Scale radius on zoom-in/out.
+  map.addListener("zoom_changed", () => {
+    changeRadius(map, heatmap, radiusSlider);
+  });
+
+  // Activate heatmap and display heatmap buttons.
+  heatToggle.addEventListener("click", () => {
+      const mapActive = heatmap.getMap();
+      heatmap.setMap(mapActive ? null : map);
+
+      // Activate buttons.
+      const disp = mapActive ? 'none' : 'block';
+      gradToggle.style.display = disp;
+      radiusSlider.style.display = disp;
+      opacitySlider.style.display = disp;
+  });
+
+  // Change heatmap gradient.
+  gradToggle.addEventListener("click", () => {
+    const gradient = [
+      "rgba(0, 255, 255, 0)",
+      "rgba(0, 255, 255, 1)",
+      "rgba(0, 191, 255, 1)",
+      "rgba(0, 127, 255, 1)",
+      "rgba(0, 63, 255, 1)",
+      "rgba(0, 0, 255, 1)",
+      "rgba(0, 0, 223, 1)",
+      "rgba(0, 0, 191, 1)",
+      "rgba(0, 0, 159, 1)",
+      "rgba(0, 0, 127, 1)",
+      "rgba(63, 0, 91, 1)",
+      "rgba(127, 0, 63, 1)",
+      "rgba(191, 0, 31, 1)",
+      "rgba(255, 0, 0, 1)"
+    ];
+    heatmap.set("gradient", heatmap.get("gradient") ? null : gradient);
+  });
+
+  // Grow/shrink heatmap data radius.
+  radiusSlider.oninput = function() {
+    changeRadius(map, heatmap, radiusSlider);
+  }
+
+  // Changes heatmap data opacity.
+  opacitySlider.oninput = function() {
+    heatmap.set("opacity", parseInt(this.value)/5); // Opacity ranges from 0 to 2.
+  }
+}
+
+/** Function is called whenever user zooms in/out of map
+  * or manually changes the radius of the heatmap data.
+  * Sets the heatmap radius based on radius slider and current
+  * zoom level. */
+function changeRadius(map, heatmap, slider) {
+  const zoom = map.getZoom();
+  const factor = parseInt(slider.value)/5; // Ranges from 0 to 2.
+  heatmap.set("radius", Math.pow(1.75, zoom + factor));
+}
+
 /* Completes a thumbs up vote by either adding a new upvote or switching the user's current vote */
 function upvoteClick(review, currUser){
   // Users must be logged in to vote! 
@@ -539,14 +652,17 @@ function upvoteClick(review, currUser){
         review.negative -=1;     
         const index = review.negativeVoters.indexOf(currUser);
         review.negativeVoters.splice(index, 1);
+        toggleColor("down" + review.id);
       }
       review.positive += 1;
       review.positiveVoters.push(currUser);
+      toggleColor("up" + review.id);
     } else {
       // Otherwise, remove their vote
       review.positive -= 1;
       const index = review.positiveVoters.indexOf(currUser);
       review.positiveVoters.splice(index, 1);
+      toggleColor("up" + review.id);
     }
     voteOnReview(review);
   }
@@ -565,15 +681,27 @@ function downvoteClick(review, currUser){
         review.positive -=1;
         const index = review.positiveVoters.indexOf(currUser);
         review.positiveVoters.splice(index, 1);
+        toggleColor("up" + review.id);
       }
       review.negative += 1;
       review.negativeVoters.push(currUser);
+      toggleColor("down" + review.id);
     } else {
       // Otherwise, remove their vote. 
       review.negative -= 1;
       const index = review.negativeVoters.indexOf(currUser);
       review.negativeVoters.splice(index, 1);
+      toggleColor("down" + review.id);
     }
     voteOnReview(review);
+  }
+}
+
+/** Switch the color of the button based on vote */
+function toggleColor(review){
+  if (document.getElementById(review).style.color == "red"){
+    document.getElementById(review).style.color = "black";
+  } else {
+    document.getElementById(review).style.color = "red";
   }
 }
