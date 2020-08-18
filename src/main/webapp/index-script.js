@@ -571,16 +571,19 @@ function populateHeatMap(heatMapData, map) {
 function addHeatMapListeners(map, heatmap) {
   const heatToggle = document.getElementById("heat-toggle");
   const gradToggle = document.getElementById("gradient-toggle");
+  const slider = document.getElementById("heat-radius");
+
   // Scale radius on zoom-in/out.
   map.addListener("zoom_changed", () => {
-    zoom = map.getZoom();
-    heatmap.set("radius", Math.pow(1.75, zoom));
+    changeRadius(map, heatmap, slider);
   });
 
   // Activate heatmap and display heatmap buttons.
   heatToggle.addEventListener("click", () => {
-      heatmap.setMap(heatmap.getMap() ? null : map);
-      gradToggle.style.display = heatmap.getMap() ? 'block' : 'none';
+      const mapActive = heatmap.getMap();
+      heatmap.setMap(mapActive ? null : map);
+      gradToggle.style.display = mapActive ? 'block' : 'none';
+      slider.style.display = mapActive ? 'block' : 'none';
   });
 
   // Change heatmap gradient.
@@ -603,6 +606,21 @@ function addHeatMapListeners(map, heatmap) {
     ];
     heatmap.set("gradient", heatmap.get("gradient") ? null : gradient);
   });
+
+  // Grow/shrink heatmap data radius.
+  slider.oninput = function() {
+    changeRadius(map, heatmap, slider);
+  }
+}
+
+/** Function is called whenever user zooms in/out of map
+  * or manually changes the radius of the heatmap data.
+  * Sets the heatmap radius based on radius slider and current
+  * zoom level. */
+function changeRadius(map, heatmap, slider) {
+  const zoom = map.getZoom();
+  const factor = parseInt(slider.value)/5; // Ranges from 0 to 2.
+  heatmap.set("radius", Math.pow(1.75, zoom + factor));
 }
 
 /* Completes a thumbs up vote by either adding a new upvote or switching the user's current vote */
