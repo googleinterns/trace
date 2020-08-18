@@ -117,7 +117,7 @@ def format_county_state(county, state):
 
 # Reads county-population.txt and returns python dict that matches
 # a county's name to its coordinates and relative population (population / 100)
-# A sample line from _CASES will have the following structure:
+# A sample line from _POPULATION will have the following structure:
 # FIPS, county_name, state_abbreviation, population
 def load_population_map(county_to_coordinates):
     population_map = {}
