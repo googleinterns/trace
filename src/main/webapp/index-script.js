@@ -435,9 +435,25 @@ function toggleBounce(marker) {
  * One central function that is called to trigger entire review interface
  */
 function showReviews(placeID, clickedFromMap) {
-  // If paremeter == 'testing'{ placeID = 'testReviews'}
+  if(getURLParameter('testing') === 'true') {
+    placeID = 'testReviews';
+    console.log(placeID);
+  }
   fetchReviews(placeID);
   displayReviewModal(clickedFromMap);
+}
+
+/** Retrieve url parameters from the site's url. */
+function getURLParameter(sParam) {
+  var sPageURL = window.location.search.substring(1);
+  var sURLVariables = sPageURL.split('&');
+  for (var i = 0; i < sURLVariables.length; i++) {
+    var sParameterName = sURLVariables[i].split('=');
+    if (sParameterName[0] == sParam) {
+      return sParameterName[1];
+    }
+  }
+  return null;
 }
 
 /**
@@ -837,6 +853,7 @@ function toggleDarkMode(map, heatmap, gradient, mode) {
       stylers: [{color: '#17263c'}]
     }
   ];
+
   if(mode === "Light Mode") {
     map.set("styles", null);
     heatmap.set("gradient", null);

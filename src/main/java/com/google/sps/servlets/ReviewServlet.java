@@ -119,12 +119,7 @@ public class ReviewServlet extends HttpServlet {
     }
     // Update datastore
     datastore.put(curLocation);
-
-    /* Currently redirects back
-     * We should modify this so that the screen doesn't completely refresh as then they would
-     * have to go back and search the place again to see their review. 
-     */
-    response.sendRedirect("/index.html");
+    response.sendRedirect('/index.html');
   }
    
   // Adds each new review to the datastore. 
