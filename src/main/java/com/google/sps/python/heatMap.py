@@ -85,6 +85,9 @@ def load_covid_data():
 
 # Reads file to create a python dict that
 # maps county names to their coordinates.
+# A sample line from _COORDINATES will have the following structure:
+# UID, iso2, iso3, code3, FIPS, county_name, full_state_name, Country_Region,
+# Lat, Long, Combined_Key, Date, Confirmed, Deaths
 def read_county_wise():
     county_coordinates = {}
     line_count = 0
@@ -114,6 +117,8 @@ def format_county_state(county, state):
 
 # Reads county-population.txt and returns python dict that matches
 # a county's name to its coordinates and relative population (population / 100)
+# A sample line from _POPULATION will have the following structure:
+# FIPS, county_name, state_abbreviation, population
 def load_population_map(county_to_coordinates):
     population_map = {}
     line_count = 0
@@ -154,6 +159,8 @@ def update_population_map(population_map, county_to_coordinates, row, line_count
 # and returns a numpy array where each entry represents the weight of a given U.S.
 # county where weight = sum(newCasePerDay * index) so as to weight more recent cases heavier than
 # older ones.
+# A sample line from _CASES will have the following structure:
+# FIPS Code(county ID), county_name, state_abbreviation, total cases on 1/22/20, ...total cases on 8/11/20
 def load_weighted_cases(population_map):
     case_matrix = []  # Each row is a county, each column is the total for given day.
     line_count = 0
