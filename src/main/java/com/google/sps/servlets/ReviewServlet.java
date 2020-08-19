@@ -181,6 +181,8 @@ public class ReviewServlet extends HttpServlet {
     for (Comment cur : reviews) {
       total += cur.getRating();
     }
+    total = total / reviews.size();
+
   }
 
   /* addVote adds the current user's vote to the comment. 
