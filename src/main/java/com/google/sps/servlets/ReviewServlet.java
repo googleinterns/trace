@@ -119,7 +119,7 @@ public class ReviewServlet extends HttpServlet {
     }
     // Update datastore
     datastore.put(curLocation);
-    response.sendRedirect('/index.html');
+    response.sendRedirect("/index.html");
   }
    
   // Adds each new review to the datastore. 
