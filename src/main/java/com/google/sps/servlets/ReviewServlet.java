@@ -178,7 +178,7 @@ public class ReviewServlet extends HttpServlet {
     double total = 0;
     
     for (Comment cur : reviews) {
-      total += cur.getScore();
+      total += cur.getRating();
     }
   }
 
