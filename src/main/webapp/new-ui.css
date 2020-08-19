@@ -1,2 +1,12 @@
 
 /* New UI for overhaul */
+
+/* Navbar */
+.navbar {
+  overflow: hidden;
+  background-color: #3a3838;
+  max-width: 800px;
+  position: fixed;
+  top: 0;
+  width: 100%;
+}
