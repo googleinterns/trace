@@ -175,6 +175,9 @@ public class ReviewServlet extends HttpServlet {
     return queryResults.get(0);
   }
 
+  /** Aggregate Scores of all Comments in location
+   *  Currently listed in this servlet, but option to move to class.
+   */
   public double aggregateScore(List<Comment> reviews) {
     double total = 0;
     for (Comment cur : reviews) {
