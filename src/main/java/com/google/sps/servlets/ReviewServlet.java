@@ -177,12 +177,11 @@ public class ReviewServlet extends HttpServlet {
 
   public double aggregateScore(List<Comment> reviews) {
     double total = 0;
-    
     for (Comment cur : reviews) {
       total += cur.getRating();
     }
-    total = total / reviews.size();
-
+    total = total / (double) reviews.size();
+    return total;
   }
 
   /* addVote adds the current user's vote to the comment. 
