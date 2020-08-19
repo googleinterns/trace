@@ -61,3 +61,10 @@
   top: 0;
   width: 100%;
 }
+
+.navbar #bar-box {
+  float: left;
+  display: block;
+  color: aliceblue;
+  text-align: center;
+}
