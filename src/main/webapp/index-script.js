@@ -5,9 +5,9 @@ var prev_ID;
 
 /* Loads page and main buttons. */
 function loadPage() {
-    loadMainButtons();
-    createMap();
-    toggleLoginLogout();
+  loadMainButtons();
+  createMap();
+  toggleLoginLogout();
 }
 
 /* Activates functionality for search bar and log-in button. */
@@ -435,6 +435,7 @@ function toggleBounce(marker) {
  * One central function that is called to trigger entire review interface
  */
 function showReviews(placeID, clickedFromMap) {
+  // If paremeter == 'testing'{ placeID = 'testReviews'}
   fetchReviews(placeID);
   displayReviewModal(clickedFromMap);
 }
