@@ -11,6 +11,16 @@
   width: 100%;
 }
 
+.navbar #icon-box {
+  float: left;
+  display: block;
+  color: aliceblue;
+  text-align: center;
+  transition: all 0.3s ease;
+  padding: 14px 32px;
+  text-decoration: none;
+}
+
 .navbar #bar-box {
   float: left;
   display: block;
