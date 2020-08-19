@@ -180,6 +180,8 @@ public class ReviewServlet extends HttpServlet {
     for (Comment cur : reviews) {
       total += cur.getRating();
     }
+    total = total / reviews.size();
+
   }
 
   /* addVoters takes a comment id and a comment, and adds everyone who voted to the Comment's voter list. 
