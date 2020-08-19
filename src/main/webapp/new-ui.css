@@ -16,4 +16,7 @@
   display: block;
   color: aliceblue;
   text-align: center;
+  transition: all 0.3s ease;
+  padding: 14px 16px;
+  text-decoration: none;
 }
