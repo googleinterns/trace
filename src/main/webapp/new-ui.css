@@ -58,7 +58,7 @@
   max-width: 100%;
   max-height: 100%;
   position: fixed;
-  top: 0;
+  top: 10%;
   width: 100%;
 }
 
@@ -70,6 +70,8 @@
   transition: all 0.3s ease;
   padding: 14px 32px;
   text-decoration: none;
+  max-height: 80px;
+  max-width: 80px;
 }
 
 .navbar #bar-box {
@@ -80,4 +82,9 @@
   transition: all 0.3s ease;
   padding: 14px 16px;
   text-decoration: none;
+}
+
+.navbar .logo {
+  max-width: 100%;
+  max-height: 100%;
 }
