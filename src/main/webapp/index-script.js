@@ -54,12 +54,9 @@ function loadMainButtons() {
 
 /** Clears top layers of modal and displays results page. */
 function returnToResultsScreen() {
-  const commentSortRelevant = document.getElementById("comment-sort-relevant");
-  const commentSortRecent = document.getElementById("comment-sort-recent");
-  const backArrow = document.getElementById("modal-backarrow");
-  hideButton(backArrow);
-  hideButton(commentSortRelevant);
-  hideButton(commentSortRecent);
+  hideButton(document.getElementById("modal-backarrow"));
+  hideButton(document.getElementById("comment-sort-relevant"));
+  hideButton(document.getElementById("comment-sort-recent"));
   document.getElementById('results-body').style.display = "block"; // Display results page.
   document.getElementById('reviews-body').style.display = "none"; // Hide reviews page.
   document.getElementById('reviews-list-container').innerHTML = ''; // Clean reviews wrapper of all DOM elements;
