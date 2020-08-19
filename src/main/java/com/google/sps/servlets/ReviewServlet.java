@@ -175,7 +175,11 @@ public class ReviewServlet extends HttpServlet {
     return queryResults.get(0);
   }
 
-  /* addVote adds the current user's vote to the comment. 
+  public double aggregateScore(List<Comment> reviews) {
+    
+  }
+
+  /* addVoters takes a comment id and a comment, and adds everyone who voted to the Comment's voter list. 
    * @param id Long
    * @param com Comment
    * @param currentUser String
