@@ -452,10 +452,8 @@ function displayReviewModal(clickedFromMap) {
 
   // Enable sort options.
   const commentSortRelevant = document.getElementById("comment-sort-relevant");
-  commentSortRelevant.innerHTML = "Relevant";
   commentSortRelevant.style.display = "block";
   const commentSortRecent = document.getElementById("comment-sort-recent");
-  commentSortRecent.innerHTML = "Recent";
   commentSortRecent.style.display = "block";
 
   document.getElementById('results-body').style.display = "none";
@@ -717,6 +715,8 @@ function addHeatMapListeners(heatmap) {
       gradToggle.style.display = disp;
       radiusSlider.style.display = disp;
       opacitySlider.style.display = disp;
+      heatToggle.innerHTML = mapActive ? 
+        'View recent covid outbreaks by population' : 'Close dashboard';
   });
 
   // Scale radius on zoom-in/out.
