@@ -175,7 +175,11 @@ public class ReviewServlet extends HttpServlet {
   }
 
   public double aggregateScore(List<Comment> reviews) {
+    double total = 0;
     
+    for (Comment cur : reviews) {
+      total += cur.getScore();
+    }
   }
 
   /* addVoters takes a comment id and a comment, and adds everyone who voted to the Comment's voter list. 
