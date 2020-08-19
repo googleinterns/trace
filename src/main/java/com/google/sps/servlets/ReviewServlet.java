@@ -175,6 +175,14 @@ public class ReviewServlet extends HttpServlet {
     return queryResults.get(0);
   }
 
+  public double aggregateScore(List<Comment> reviews) {
+    double total = 0;
+    
+    for (Comment cur : reviews) {
+      total += cur.getScore();
+    }
+  }
+
   /* addVote adds the current user's vote to the comment. 
    * @param id Long
    * @param com Comment
