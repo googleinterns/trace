@@ -1,6 +1,6 @@
 /* Class Variables. */
 var map;
-var currentLocation = "newID";
+var markers;
 var prev_ID;
 
 /* Loads page and main buttons. */
@@ -169,9 +169,6 @@ function toggleLoginLogout(){
     // then a user is logged in and we can display the 'Logout' button
       if (split.length > 0){
         logInButton.innerHTML = logInButton.getAttribute("data-text-swap");
-      } else {     
-        // If a user is not logged in, also display the tutorial
-        document.getElementById("popUp").style.display = "block";
       }
   });
 }
@@ -181,7 +178,7 @@ function createMap() {
   const googleplex = {lat: 37.422, lng: -122.0841};
   map = new google.maps.Map(
     document.getElementById('map'),
-    {center: googleplex, zoom: 9,
+    {center: googleplex, zoom: 14, // Set default zoom to allow proper spacing of markers on-search.
     mapTypeControlOptions: {mapTypeIds: ['roadmap']}});
 
   // Checks to see if browser has enabled location sharing.
@@ -197,8 +194,9 @@ function createMap() {
       }
     );
   }
+  markers = [];
+  initializeHeatMap();
 
-  initializeHeatMap(map);
   // Search by coordinates on map click.
   map.addListener('click', function(mapsMouseEvent) {
     searchByCoordinates(mapsMouseEvent.latLng);
@@ -261,8 +259,9 @@ function handleSearchResults(results, service) {
   // Center on the queried location
   if (results.length > 0) { 
     map.setCenter(results[0].geometry.location);
+    map.setZoom(14); // Ensure map is sufficiently zoomed in to appropriately space results.
   }
-  
+  deleteMarkers();
   var promises = [];
 
   // Modal can handle up to 9 results only
@@ -303,6 +302,24 @@ function handleSearchResults(results, service) {
   });
 }
 
+/** Deletes all markers in the array by removing references to them. */
+function deleteMarkers() {
+  clearMarkers();
+  markers = [];
+}
+
+/** Removes the markers from the map, but keeps them in the array. */
+function clearMarkers() {
+  setMapOnAllNull();
+}
+
+/** Sets the map on all markers in the array. */
+function setMapOnAllNull() {
+  for (let i = 0; i < markers.length; i++) {
+    markers[i].setMap(null);
+  }
+}
+
 /* Fills out search results page. */
 function populateSearch(places) {
   places = sortPlacesByRating(places);
@@ -339,6 +356,14 @@ function populateResults(places) {
   entireList.id += "results-list";
   places.forEach(place => {
     entireList.appendChild(generateResult(place));
+    var marker = new google.maps.Marker({
+      position: place.geometry.location,
+      map: map,
+      animation: google.maps.Animation.DROP,
+      title: 'Hello World!'
+    });
+    addMarkerListeners(marker, place.place_id);
+    markers.push(marker);
   });
   listContainer.appendChild(entireList);
 }
@@ -366,7 +391,7 @@ function generateResult(place) {
   
   // Relevant information to be displayed
   var tidbits = [
-    "<a onclick=\"showReviews(\'" + place.place_id + "\');\">" + place.name + "</a>",
+    "<a onclick=\"showReviews(\'" + place.place_id + "\', false);\">" + place.name + "</a>",
     place.international_phone_number,
     "<a href=\"" + place.website + "\">Site</a>",
     place.vicinity
@@ -387,29 +412,52 @@ function generateResult(place) {
   return resultEntry;
 }
 
+/** Add event listeners to markers. */
+function addMarkerListeners(marker, placeID) {
+  marker.addListener('mouseover', () => toggleBounce(marker));
+  marker.addListener('mouseout', () => toggleBounce(marker));
+  marker.addListener('click', () => {
+    triggerModal(document.getElementById("results-popup"));
+    showReviews(placeID, true);
+  });
+}
+
+/** Enable markers to bounce when hovered over. */
+function toggleBounce(marker) {
+  if (marker.getAnimation() !== null) {
+    marker.setAnimation(null);
+  } else {
+    marker.setAnimation(google.maps.Animation.BOUNCE);
+  }
+}
+
 /** Pseudomaster Review Function
  * One central function that is called to trigger entire review interface
  */
-function showReviews(placeID) {
+function showReviews(placeID, clickedFromMap) {
   fetchReviews(placeID);
-  displayReviewModal();
+  displayReviewModal(clickedFromMap);
 }
 
 /**
  * Review modal activation function
  */
-function displayReviewModal() {
-  const reviewBackArrow = document.getElementById('modal-backarrow');
-  reviewBackArrow.classList.add("exit-button");
-  reviewBackArrow.innerHTML += "&larr;";
+function displayReviewModal(clickedFromMap) {
+  if(!clickedFromMap) {
+    // Enable modal back-arrow.
+    const reviewBackArrow = document.getElementById('modal-backarrow');
+    reviewBackArrow.innerHTML += "&larr;";
+    reviewBackArrow.style.display = "block"
+  }
+
+  // Enable sort options.
   const commentSortRelevant = document.getElementById("comment-sort-relevant");
-  commentSortRelevant.innerHTML += "Relevant";
+  commentSortRelevant.innerHTML = "Relevant";
   commentSortRelevant.style.display = "block";
   const commentSortRecent = document.getElementById("comment-sort-recent");
-  commentSortRecent.innerHTML += "Recent";
+  commentSortRecent.innerHTML = "Recent";
   commentSortRecent.style.display = "block";
 
-  document.getElementById("modal-backarrow").style.display = "block";
   document.getElementById('results-body').style.display = "none";
   document.getElementById('reviews-body').style.display = "block";
 }
@@ -598,13 +646,13 @@ function toggleColor(review){
 
 /** Function reads heatWeights.txt and parses it as a JSON object
   * in order to populate heatMap in helperfunction. */
-function initializeHeatMap(map) {
+function initializeHeatMap() {
   var heatWeights = null
   fetch('heatWeights.txt').then(response => response.text())
     .then(text => {
       heatWeights = JSON.parse(text);
       const heatMapData = createHeatMapData(heatWeights);
-      populateHeatMap(heatMapData, map)
+      populateHeatMap(heatMapData)
     });
 }
 
@@ -626,63 +674,64 @@ function createHeatMapData(heatWeights) {
 }
 
 /** Uses heatMapData object to populate heatMap. */
-function populateHeatMap(heatMapData, map) {
+function populateHeatMap(heatMapData) {
   var heatmap = new google.maps.visualization.HeatmapLayer({
     data: heatMapData
   });
   heatmap.set("radius", 150);
-  map.setZoom(9);
-  addHeatMapListeners(map, heatmap); 
+  addHeatMapListeners(heatmap); 
 }
 
 /** Adds functionality for heatmap related buttons/toggles. */
-function addHeatMapListeners(map, heatmap) {
+function addHeatMapListeners(heatmap) {
   const heatToggle = document.getElementById("heat-toggle");
   const gradToggle = document.getElementById("gradient-toggle");
   const radiusSlider = document.getElementById("heat-radius");
   const opacitySlider = document.getElementById("heat-opacity");
   const darkMode = document.getElementById("dark-toggle");
   const darkGradient = [
-      "rgba(0, 255, 255, 0)",
-      "rgba(0, 255, 255, 1)",
-      "rgba(0, 191, 255, 1)",
-      "rgba(0, 127, 255, 1)",
-      "rgba(0, 63, 255, 1)",
-      "rgba(0, 0, 255, 1)",
-      "rgba(0, 0, 223, 1)",
-      "rgba(0, 0, 191, 1)",
-      "rgba(0, 0, 159, 1)",
-      "rgba(0, 0, 127, 1)",
-      "rgba(63, 0, 91, 1)",
-      "rgba(127, 0, 63, 1)",
-      "rgba(191, 0, 31, 1)",
-      "rgba(255, 0, 0, 1)"
-    ];
-  // Scale radius on zoom-in/out.
-  map.addListener("zoom_changed", () => {
-    changeRadius(map, heatmap, radiusSlider);
-  });
+    "rgba(0, 255, 255, 0)",
+    "rgba(0, 255, 255, 1)",
+    "rgba(0, 191, 255, 1)",
+    "rgba(0, 127, 255, 1)",
+    "rgba(0, 63, 255, 1)",
+    "rgba(0, 0, 255, 1)",
+    "rgba(0, 0, 223, 1)",
+    "rgba(0, 0, 191, 1)",
+    "rgba(0, 0, 159, 1)",
+    "rgba(0, 0, 127, 1)",
+    "rgba(63, 0, 91, 1)",
+    "rgba(127, 0, 63, 1)",
+    "rgba(191, 0, 31, 1)",
+    "rgba(255, 0, 0, 1)"
+  ];
 
   // Activate heatmap and display heatmap buttons.
   heatToggle.addEventListener("click", () => {
-    const mapActive = heatmap.getMap();
-    heatmap.setMap(mapActive ? null : map);
+      const mapActive = heatmap.getMap();
+      heatmap.setMap(mapActive ? null : map);
+      map.setZoom(8); // Zoom out when heatmap is activated.
 
-    // Activate buttons.
-    const disp = mapActive ? 'none' : 'block';
-    heatToggle.innerHTML = mapActive ? 'Open Heatmap' : 'Close Heatmap';
-    gradToggle.style.display = disp;
-    radiusSlider.style.display = disp;
-    opacitySlider.style.display = disp;
+      // Activate buttons.
+      const disp = mapActive ? 'none' : 'block';
+      gradToggle.style.display = disp;
+      radiusSlider.style.display = disp;
+      opacitySlider.style.display = disp;
+  });
+
+  // Scale radius on zoom-in/out.
+  map.addListener("zoom_changed", () => {
+    changeRadius(heatmap, radiusSlider);
   });
 
   // Change heatmap gradient.
   gradToggle.addEventListener("click", () => {
     heatmap.set("gradient", heatmap.get("gradient") ? null : darkGradient);
   });
+  
   // Grow/shrink heatmap data radius.
   radiusSlider.oninput = function() {
-    changeRadius(map, heatmap, radiusSlider);
+    changeRadius(heatmap, radiusSlider);
   }
 
   // Changes heatmap data opacity.
@@ -699,7 +748,7 @@ function addHeatMapListeners(map, heatmap) {
   * or manually changes the radius of the heatmap data.
   * Sets the heatmap radius based on radius slider and current
   * zoom level. */
-function changeRadius(map, heatmap, slider) {
+function changeRadius(heatmap, slider) {
   const zoom = map.getZoom();
   const factor = parseInt(slider.value)/5; // Ranges from 0 to 2.
   heatmap.set("radius", Math.pow(1.75, zoom + factor));
