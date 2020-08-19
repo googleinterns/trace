@@ -9,6 +9,8 @@ import com.google.appengine.api.datastore.Query.SortDirection;
 import com.google.appengine.api.datastore.Query.Filter;
 import com.google.appengine.api.datastore.Query.FilterPredicate;
 import com.google.appengine.api.datastore.Query.FilterOperator;
+import com.google.appengine.api.datastore.Query.CompositeFilter;
+import com.google.appengine.api.datastore.Query.CompositeFilterOperator;
 import com.google.appengine.api.users.UserService;
 import com.google.appengine.api.users.UserServiceFactory;
 import com.google.sps.data.PlaceReviews;
@@ -44,7 +46,10 @@ public class ReviewServlet extends HttpServlet {
     PreparedQuery results = datastore.prepare(query);
 
     // If no user logged in, sets to null. 
-    String currUser = userService.getCurrentUser().getEmail();
+    String currUser = null;
+    if (userService.getCurrentUser() != null){
+      currUser = userService.getCurrentUser().getEmail();
+    }
     PlaceReviews currentPlace = new PlaceReviews(place_id);
 
     for (Entity review : results.asIterable()) {
@@ -63,7 +68,7 @@ public class ReviewServlet extends HttpServlet {
       Comment com = new Comment(author, message, timestamp, positive, negative);
       com.setId(id);
       currentPlace.addReview(com);
-      addVoters(id, com);
+      addVote(id, com, currUser);
     }
     currentPlace.sortReviews(sortType);
 
@@ -175,25 +180,26 @@ public class ReviewServlet extends HttpServlet {
     return queryResults.get(0);
   }
 
-  /* addVoters takes a comment id and a comment, and adds everyone who voted to the Comment's voter list. 
+  /* addVote adds the current user's vote to the comment. 
    * @param id Long
    * @param com Comment
+   * @param currentUser String
    */ 
-  public void addVoters(Long id, Comment com){
+  public void addVote(Long id, Comment com, String currentUser){
     DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
-    // Looks in the database for each review / voter combo with this review id. 
+    // Looks in the database for the review / voter combo with this review id & current user.
     Filter reviewFilter = new FilterPredicate("review_id", FilterOperator.EQUAL, id);
-    Query query = new Query("voter-review").setFilter(reviewFilter);
+    Filter voterFilter = new FilterPredicate("voter", FilterOperator.EQUAL, currentUser);
+    Filter combinedFilter = new CompositeFilter(CompositeFilterOperator.AND, Arrays.asList(reviewFilter, voterFilter));
+    Query query = new Query("voter-review").setFilter(combinedFilter);
+
     PreparedQuery results = datastore.prepare(query);
     
-    // For each vote, adds the voter to the comment's voter list. 
-    for (Entity entity : results.asIterable()){
+    // Adds the user's current voting status to the comment
+    if (results.countEntities() == 1){
+        Entity entity = results.asSingleEntity();
         String vote = (String) entity.getProperty("vote");
-        if (vote.equals("positive")){
-            com.addPositiveVoter((String) entity.getProperty("voter"));
-        } else {
-            com.addNegativeVoter((String) entity.getProperty("voter"));
-        }
+        com.setVote(vote);
     }
   }
 }
