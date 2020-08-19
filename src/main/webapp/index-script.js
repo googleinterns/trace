@@ -394,7 +394,7 @@ function generateResult(place) {
   
   // Relevant information to be displayed
   var tidbits = [
-    "<a onclick=\"showReviews(\'" + place.place_id + "\');\">" + place.name + "</a>",
+    "<a onclick=\"showReviews(\'" + place.place_id + "\', false);\">" + place.name + "</a>",
     place.international_phone_number,
     "<a href=\"" + place.website + "\">Site</a>",
     place.vicinity
@@ -419,7 +419,10 @@ function generateResult(place) {
 function addMarkerListeners(marker, placeID) {
   marker.addListener('mouseover', () => toggleBounce(marker));
   marker.addListener('mouseout', () => toggleBounce(marker));
-  marker.addListener('click', () => showReviews(placeID));
+  marker.addListener('click', () => {
+    triggerModal(document.getElementById("results-popup"));
+    showReviews(placeID, true);
+  });
 }
 
 /** Enable markers to bounce when hovered over. */
@@ -434,26 +437,30 @@ function toggleBounce(marker) {
 /** Pseudomaster Review Function
  * One central function that is called to trigger entire review interface
  */
-function showReviews(placeID) {
+function showReviews(placeID, clickedFromMap) {
   fetchReviews(placeID);
-  displayReviewModal();
+  displayReviewModal(clickedFromMap);
 }
 
 /**
  * Review modal activation function
  */
-function displayReviewModal() {
-  const reviewBackArrow = document.getElementById('modal-backarrow');
-  reviewBackArrow.classList.add("exit-button");
-  reviewBackArrow.innerHTML += "&larr;";
+function displayReviewModal(clickedFromMap) {
+  if(!clickedFromMap) {
+    // Enable modal back-arrow.
+    const reviewBackArrow = document.getElementById('modal-backarrow');
+    reviewBackArrow.innerHTML += "&larr;";
+    reviewBackArrow.style.display = "block"
+  }
+
+  // Enable sort options.
   const commentSortRelevant = document.getElementById("comment-sort-relevant");
-  commentSortRelevant.innerHTML += "Relevant";
+  commentSortRelevant.innerHTML = "Relevant";
   commentSortRelevant.style.display = "block";
   const commentSortRecent = document.getElementById("comment-sort-recent");
-  commentSortRecent.innerHTML += "Recent";
+  commentSortRecent.innerHTML = "Recent";
   commentSortRecent.style.display = "block";
 
-  document.getElementById("modal-backarrow").style.display = "block";
   document.getElementById('results-body').style.display = "none";
   document.getElementById('reviews-body').style.display = "block";
 }
