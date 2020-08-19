@@ -68,7 +68,9 @@ public class ReviewServlet extends HttpServlet {
       Comment com = new Comment(author, message, timestamp, positive, negative);
       com.setId(id);
       currentPlace.addReview(com);
-      addVote(id, com, currUser);
+      if (currUser != null){
+        addVote(id, com, currUser);
+      }
     }
     currentPlace.sortReviews(sortType);
 
