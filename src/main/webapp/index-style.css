@@ -6,6 +6,7 @@
   height: 100%;
   position: absolute;
   width: 100%;
+  top: 10%;
   z-index: -1;
 }
 
