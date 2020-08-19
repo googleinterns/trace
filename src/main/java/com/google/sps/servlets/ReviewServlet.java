@@ -112,14 +112,12 @@ public class ReviewServlet extends HttpServlet {
     addToDatastore(newReview, place_id);
 
     Entity curLocation = queryLocation(place_id, datastore);
-
     // Check if there is currently a location already in the datastore
     if (curLocation == null){
       curLocation = new Entity("Places", place_id); 
     }
     // Update datastore
     datastore.put(curLocation);
-    response.sendRedirect("/index.html");
   }
    
   // Adds each new review to the datastore. 

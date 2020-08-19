@@ -36,13 +36,7 @@ function loadMainButtons() {
 
   // Hide reviews page and display results page.
   modalBackArrow.addEventListener("click", () => {
-    hideBackArrow();
-    hideButton(commentSortRelevant);
-    hideButton(commentSortRecent);
-    document.getElementById('results-body').style.display = "block"; // Display results page.
-    document.getElementById('reviews-body').style.display = "none"; // Hide reviews page.
-    document.getElementById('reviews-list-container').innerHTML = ''; // Clean reviews wrapper of all DOM elements;
-    document.getElementById('rev-form-body').style.display = "none";
+    returnToResultsScreen();
   });
 
   commentSortRelevant.addEventListener("click", () => {
@@ -56,6 +50,20 @@ function loadMainButtons() {
     commentSortRelevant.classList.remove("active");
     resortReviews(prev_ID, 'recent');
   });
+}
+
+/** Clears top layers of modal and displays results page. */
+function returnToResultsScreen() {
+  const commentSortRelevant = document.getElementById("comment-sort-relevant");
+  const commentSortRecent = document.getElementById("comment-sort-recent");
+  const backArrow = document.getElementById("modal-backarrow");
+  hideButton(backArrow);
+  hideButton(commentSortRelevant);
+  hideButton(commentSortRecent);
+  document.getElementById('results-body').style.display = "block"; // Display results page.
+  document.getElementById('reviews-body').style.display = "none"; // Hide reviews page.
+  document.getElementById('reviews-list-container').innerHTML = ''; // Clean reviews wrapper of all DOM elements;
+  document.getElementById('rev-form-body').style.display = "none";
 }
 
 /* Adds mouse listeners to searchBar-related html items. */
@@ -144,13 +152,6 @@ function closeModal(modal) {
     item.style.display = "none";
   });
   hideBackArrow();
-}
-
-/** Hide modal-backarrow. */
-function hideBackArrow() {
-  const button = document.getElementById("modal-backarrow");
-  button.innerHTML = '';
-  button.style.display = "none";
 }
 
 /** Multi-purpose button hiding function */
@@ -437,7 +438,6 @@ function toggleBounce(marker) {
 function showReviews(placeID, clickedFromMap) {
   if(getURLParameter('testing') === 'true') {
     placeID = 'testReviews';
-    console.log(placeID);
   }
   fetchReviews(placeID);
   displayReviewModal(clickedFromMap);
@@ -535,6 +535,35 @@ function triggerNewReviewForm(place_id) {
   document.getElementById("place_id").value = place_id;
   document.getElementById("reviews-body").style.display = "none"; // Hide reviews page.
   document.getElementById("rev-form-body").style.display = "block";
+  document.getElementById("submit-new-review")
+    .addEventListener("click", () => {
+      postNewReview(place_id);
+    });
+}
+
+/** Function posts new review to datastore and updates modal reviews page with new review. */
+function postNewReview(place_id) {
+  const first = document.getElementById('fname').value;
+  const last = document.getElementById('lname').value;
+  const comment = document.getElementById('comment').value;
+  const rate = getRating();
+  const request = '/review?firstName=' + first + '&rate=' + rate +
+    '&lastName=' + last + '&comment=' + comment + '&place_id=' + place_id;
+  fetch(request, {method:"POST"}).then(() => {
+    returnToResultsScreen();
+    showReviews(place_id, false);
+  });
+}
+
+/** Finds which of the radio buttons is currently checked and returns that value. */
+function getRating() {
+  var radios = document.getElementsByName('rate');
+  for (var i = 0, length = radios.length; i < length; i++) {
+    if (radios[i].checked) {
+      return radios[i].value;
+    }
+  }
+  return 0;
 }
 
 /**
