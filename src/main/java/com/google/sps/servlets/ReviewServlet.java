@@ -76,7 +76,10 @@ public class ReviewServlet extends HttpServlet {
         addVote(id, com, currUser);
       }
     }
-    rating = rating / count;
+    
+    rating = rating / results.size();
+
+    currentPlace.sortReviews(sortType);
 
     currentPlace.setRating(rating);
     currentPlace.sortReviews(sortType);
