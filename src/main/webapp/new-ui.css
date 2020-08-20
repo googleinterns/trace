@@ -76,6 +76,15 @@
   max-width: 80px;
 }
 
+.navbar .button {
+  float: right;
+  display: block;
+  position: relative;
+  text-align: center;
+  padding: 1%;
+  border-radius: 3vw;
+}
+
 .navbar #bar-box {
   float: left;
   display: block;
