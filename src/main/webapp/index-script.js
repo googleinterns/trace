@@ -238,9 +238,9 @@ function searchByText(textQuery, textLocation, textRadius) {
     });
   }); 
   
-  // Checks if they set the radius, if not, automatically set it to be 5 miles. 
+  // Checks if they set the radius, if not, automatically set it to be 10 miles. 
   if (textRadius == 0){
-    textRadius = 5;
+    textRadius = 10;
   }
   // Convert from miles to meters
   var meters = textRadius * 1609;
@@ -248,13 +248,17 @@ function searchByText(textQuery, textLocation, textRadius) {
   locationPromise.then((locationRequest) => {
     console.log(meters);
     console.log(locationRequest);
-    var request = {
-      query: textQuery,
-      location: locationRequest,
-      radius: meters,
-      fields: ['place_id', 'geometry']
-    };
- 
+    var request;
+    if (locationRequest == null){
+      request = {query: textQuery};
+    } else {
+      request = {
+        query: textQuery,
+        location: locationRequest,
+        radius: meters,
+        fields: ['place_id', 'geometry']
+      };
+    }
     var service = new google.maps.places.PlacesService(map);
     service.textSearch(request, (results, status) => {
       if (status == google.maps.places.PlacesServiceStatus.OK) {
@@ -336,6 +340,9 @@ function setMapOnAllNull() {
 
 /** Check if coordinates are within the requested distance */
 function checkDistance(location1, location2, radius){
+  if (location1 == null || location2 == null){
+    return true;
+  }
   var earthRadius = 6371000; // in meters. 
   var dLat = degreesToRadians(location2.lat()-location1.lat());
   var dLng = degreesToRadians(location2.lng()-location1.lng());
