@@ -246,9 +246,8 @@ function searchByText(textQuery, textLocation, textRadius) {
   var meters = textRadius * 1609;
   // Waits for location to be chosen, then runs search
   locationPromise.then((locationRequest) => {
-    console.log(meters);
-    console.log(locationRequest);
     var request;
+    // If no location is given, automatically gives you results near you with no radius limitation. 
     if (locationRequest == null){
       request = {query: textQuery};
     } else {
@@ -283,6 +282,7 @@ function handleSearchResults(results, service, radius, location) {
     if (results[i] == null){
         break;
     } else {
+      // Check to make sure within specified distance (if one is specified)
       if (checkDistance(location, results[i].geometry.location, radius)){
         var request = {
             placeId: results[i].place_id,
@@ -340,6 +340,7 @@ function setMapOnAllNull() {
 
 /** Check if coordinates are within the requested distance */
 function checkDistance(location1, location2, radius){
+  // If no distance is given, returns true
   if (location1 == null || location2 == null){
     return true;
   }
