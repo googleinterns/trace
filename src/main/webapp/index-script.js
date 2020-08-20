@@ -237,7 +237,11 @@ function searchByText(textQuery, textLocation, textRadius) {
       }
     });
   }); 
-
+  
+  // Checks if they set the radius, if not, automatically set it to be 5 miles. 
+  if (textRadius == 0){
+    textRadius = 5;
+  }
   // Convert from miles to meters
   var meters = textRadius * 1609;
   // Waits for location to be chosen, then runs search
