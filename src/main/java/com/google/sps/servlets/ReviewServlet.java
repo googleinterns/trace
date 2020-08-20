@@ -78,6 +78,8 @@ public class ReviewServlet extends HttpServlet {
     }
     rating = rating / results.size();
 
+    currentPlace.setRating(rating);
+
     currentPlace.sortReviews(sortType);
 
     // Set the current user (even if it's null) 

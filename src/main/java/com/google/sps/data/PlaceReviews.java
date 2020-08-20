@@ -105,7 +105,7 @@ public class PlaceReviews {
    * This adds a rating to a given PlaceReviews aggregate rating
    * This does not permit a rating outside of [0, 10]
    */
-  public void addRating(double rating) {
+  public void setRating(double rating) {
     if (rating > 5) {
       addRating(5);
     } else if (rating < 0) {
