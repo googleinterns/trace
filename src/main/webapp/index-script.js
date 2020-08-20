@@ -238,9 +238,8 @@ function searchByText(textQuery, textLocation, textRadius) {
     });
   }); 
 
-  // Convert from standard meters to approximate miles
+  // Convert from miles to meters
   var meters = textRadius * 1609;
-  console.log("miles = " + textRadius + " or meters = " + textRadius*1609);
   // Waits for location to be chosen, then runs search
   locationPromise.then((locationRequest) => {
     var request = {
