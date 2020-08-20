@@ -37,7 +37,7 @@ public class ReviewServlet extends HttpServlet {
     // Get the requested place using it's ID. 
     String place_id = request.getParameter("place_id");
     // Defer to sort by recent if poor format
-    String sortType = (request.getParameter("sort").equals("relevant")) ? "relevant" : "recent"; 
+    String sortType = request.getParameter("sort");
     Filter placeFilter = new FilterPredicate("place_id", FilterOperator.EQUAL, place_id);
     Query query = new Query("Review").setFilter(placeFilter);
 
