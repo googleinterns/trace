@@ -274,7 +274,6 @@ function handleSearchResults(results, service, radius, location) {
     if (results[i] == null){
         break;
     } else {
-      console.log(location + " vs " + results[i].geometry.location + " in " + radius);
       if (checkDistance(location, results[i].geometry.location, radius)){
         var request = {
             placeId: results[i].place_id,
@@ -340,8 +339,6 @@ function checkDistance(location1, location2, radius){
             * Math.cos(degrees_to_radians(location1.lat())) * Math.cos(degrees_to_radians(location2.lat()));
   var c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1-a));
   var dist = earthRadius * c;
-  console.log(dist + " compared to " + radius);
-  console.log(dist<=radius);
   return (dist <= radius);
 }
 
