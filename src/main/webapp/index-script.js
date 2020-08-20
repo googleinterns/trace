@@ -99,7 +99,7 @@ function activateSearchBar() {
       var query = document.getElementById('searchForm').elements[0].value;
       var location = document.getElementById('searchForm').elements[1].value;
       var radius = document.getElementById('searchForm').elements[2].value;
-      searchByText(query, location, radius)
+      searchByText(query, location, radius);
     }
   });
 }
@@ -326,6 +326,7 @@ function setMapOnAllNull() {
   for (let i = 0; i < markers.length; i++) {
     markers[i].setMap(null);
   }
+}
 
 /** Check if coordinates are within the requested distance */
 function checkDistance(location1, location2, radius){
