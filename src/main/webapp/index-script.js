@@ -341,7 +341,8 @@ function checkDistance(location1, location2, radius){
   var c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1-a));
   var dist = earthRadius * c;
   console.log(dist + " compared to " + radius);
-  return (dist < radius);
+  console.log(dist<=radius);
+  return (dist <= radius);
 }
 
 function degrees_to_radians(degrees) {
