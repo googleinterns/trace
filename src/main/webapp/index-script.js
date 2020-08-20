@@ -627,13 +627,28 @@ function noReviews() {
  */
 function generateReview(review, currUser) {
   const reviewEntry = document.createElement('li');
+  reviewEntry.className = 'review-container';
+  reviewEntry.appendChild(addUserName(review));
+  reviewEntry.appendChild(addRating(review));
+  addVotingButtons(reviewEntry);
 
-  const reviewGrid = document.createElement('div');
-  reviewGrid.className += 'review-grid';
+  return reviewEntry;
+}
 
-  const reviewText = document.createElement('p');
-  reviewText.innerHTML += review.messageContent;
+function addRating(review) {
+  const ratingDiv = document.createElement('div');
+  const rate = review.rating;
   
+}
+function addUserName(review) {
+  const userName = document.createElement('p');
+  userName.className = 'username-display';
+  userName.innerHTML = review.author;
+  return userName;
+}
+
+/** Adds upvote/downvote button to each review. */
+function addVotingButtons(reviewEntry) {
   const upvoteButton = document.createElement('button');
   upvoteButton.innerHTML += '&#128077;' + review.positive;
   upvoteButton.id += "up" + review.id;
@@ -653,13 +668,7 @@ function generateReview(review, currUser) {
   downvoteButton.addEventListener("click", () => {
     downvoteClick(review, currUser);
   });
-
-  reviewGrid.appendChild(reviewText);
-  reviewEntry.appendChild(reviewGrid);
-  reviewEntry.appendChild(upvoteButton);
-  reviewEntry.appendChild(downvoteButton);
-  return reviewEntry;
-} 
+}
 
 /** Sends post request to VotingServlet.java and updates modal. */
 function voteOnReview(review) {

@@ -103,15 +103,13 @@ public class ReviewServlet extends HttpServlet {
     // Currently unused.
     String firstName = request.getParameter("firstName");
     String lastName = request.getParameter("lastName");
-
-    int rating = Integer.parseInt(request.getParameter("rate"));
-
     // Create new Comment instance.
     String userName = firstName.concat(" ".concat(lastName));
     String reviewText = request.getParameter("comment");
     Date time = new Date();
     long zero = 0; // 0 gets incorrectly cast as int if used directly.
-    Comment newReview = new Comment(userName, reviewText, time, zero, zero, rating);
+    Double rating = Double.parseDouble(request.getParameter("rate"));
+    Comment newReview = new Comment(userEmail, reviewText, time, zero, zero, rating);
     
     // Query for existing reviews from place_id.
     String place_id = request.getParameter("place_id");
