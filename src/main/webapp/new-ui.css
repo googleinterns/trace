@@ -65,12 +65,14 @@
 .navbar #icon-box {
   float: left;
   display: block;
+  position: relative;
   color: aliceblue;
   text-align: center;
   transition: all 0.3s ease;
   padding: 14px 32px;
   text-decoration: none;
-  max-height: 80px;
+  height: 80%;
+  max-height: 150px;
   max-width: 80px;
 }
 
