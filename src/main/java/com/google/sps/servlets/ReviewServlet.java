@@ -46,10 +46,8 @@ public class ReviewServlet extends HttpServlet {
     PreparedQuery results = datastore.prepare(query);
 
     // If no user logged in, sets to null. 
-    String currUser = null;
-    if (userService.getCurrentUser() != null){
-      currUser = userService.getCurrentUser().getEmail();
-    }
+    String currUser = (userService.getUserService.getCurrentUser() != null) 
+        ? userService.getCurrentUser().getEmail() : null;
     PlaceReviews currentPlace = new PlaceReviews(place_id);
     double rating = 0;
 
@@ -79,9 +77,7 @@ public class ReviewServlet extends HttpServlet {
     rating = rating / results.size();
 
     currentPlace.setRating(rating);
-
     currentPlace.sortReviews(sortType);
-
     // Set the current user (even if it's null) 
     currentPlace.setCurrentUser(currUser);
 
