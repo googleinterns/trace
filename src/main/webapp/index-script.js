@@ -239,7 +239,7 @@ function searchByText(textQuery, textLocation, textRadius) {
   }); 
 
   // Convert from standard meters to approximate miles
-  var miles = textRadius / 1609;
+  var miles = textRadius * 1609;
   // Waits for location to be chosen, then runs search
   locationPromise.then((locationRequest) => {
     var request = {
@@ -252,14 +252,14 @@ function searchByText(textQuery, textLocation, textRadius) {
     var service = new google.maps.places.PlacesService(map);
     service.textSearch(request, (results, status) => {
       if (status == google.maps.places.PlacesServiceStatus.OK) {
-        handleSearchResults(results, service);
+        handleSearchResults(results, service, miles, locationRequest);
       }
     });
   });
 }
 
 /* Accepts results from places query and returns array of details for nearby locations. */
-function handleSearchResults(results, service) {
+function handleSearchResults(results, service, radius, location) {
   // Center on the queried location
   if (results.length > 0) { 
     map.setCenter(results[0].geometry.location);
@@ -273,20 +273,25 @@ function handleSearchResults(results, service) {
     if (results[i] == null){
         break;
     } else {
-      var request = {
-        placeId: results[i].place_id,
-        fields: [
-          'name',
-          'vicinity',
-          'reviews',
-          'place_id',
-          'opening_hours',
-          'geometry',
-          'icon',
-          'international_phone_number',
-          'website'
-        ]
-      };
+      console.log(location + " vs " + results[i].geometry.location + " in " + radius);
+      if (checkDistance(location, results[i].geometry.location, radius)){
+        var request = {
+            placeId: results[i].place_id,
+            fields: [
+            'name',
+            'vicinity',
+            'reviews',
+            'place_id',
+            'opening_hours',
+            'geometry',
+            'icon',
+            'international_phone_number',
+            'website'
+            ]
+        };
+      } else {
+        break;
+      }
     }
 
     // Creates a promise to return details from places api request.
@@ -322,6 +327,25 @@ function setMapOnAllNull() {
   for (let i = 0; i < markers.length; i++) {
     markers[i].setMap(null);
   }
+
+/** Check if coordinates are within the requested distance */
+function checkDistance(location1, location2, radius){
+  var earthRadius = 6371.0; // (3958.75 miles == 6371.0 kilometers)
+  var dLat = degrees_to_radians(location2.lat()-location1.lat());
+  var dLng = degrees_to_radians(location2.lng()-location1.lng());
+  var sindLat = Math.sin(dLat / 2);
+  var sindLng = Math.sin(dLng / 2);
+  var a = Math.pow(sindLat, 2) + Math.pow(sindLng, 2)
+            * Math.cos(degrees_to_radians(location1.lat())) * Math.cos(degrees_to_radians(location2.lat()));
+  var c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1-a));
+  var dist = earthRadius * c;
+  console.log(dist + " or " + radius);
+  return (dist < radius);
+}
+
+function degrees_to_radians(degrees) {
+  var pi = Math.PI;
+  return degrees * (pi/180);
 }
 
 /* Fills out search results page. */
