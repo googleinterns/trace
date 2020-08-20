@@ -8,12 +8,18 @@
     <script src="index-script.js"></script>
     <script src="api.js"></script>
   </head>
+  <div class="navbar">
+    <div id="icon-box"><img class="logo" src="trace-logo.png"></img></div>
+    <div id="bar-box">Home2</div>
+    <div id="bar-box">Home3</div>
+    <div>Home4</div>
+  </div>
   <body onload="loadPage();">
     <div id="map"></div>
     <div class="loginButton">
       <button id="login" data-text-swap="Logout">Login</button>
-      <br><button id="heat-toggle">Open Heatmap</button>
       <br><button id="dark-toggle">Dark Mode</button>
+      <br><button id="heat-toggle">View recent covid outbreaks by population</button>
       <br><button id="gradient-toggle" class="heat-button">Change Gradient</button>
       <br><label for="heat-radius" class="heat-button">Radius</label>
       <input type="range" id="heat-radius" name="heat-radius"
@@ -55,8 +61,8 @@
           <div class="modal-title">Results</div>
           <button id="modal-backarrow"></button>
           <div class="button-group" id="comment-sorting" value="">
-            <button id="comment-sort-recent"></button>
-            <button id="comment-sort-relevant"></button>
+            <button id="comment-sort-recent">Recently Posted</button>
+            <button id="comment-sort-relevant">Highest Rated</button>
           </div>
           <button data-modal-close-button class="exit-button">&times;</button>
         </div>
