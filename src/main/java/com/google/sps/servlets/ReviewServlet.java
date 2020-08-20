@@ -51,12 +51,15 @@ public class ReviewServlet extends HttpServlet {
       currUser = userService.getCurrentUser().getEmail();
     }
     PlaceReviews currentPlace = new PlaceReviews(place_id);
+    double rating = 0;
 
     for (Entity review : results.asIterable()) {
       long id = review.getKey().getId();
       String message = (String) review.getProperty("message");
       Date timestamp = (Date) review.getProperty("timestamp");
       String author = (String) review.getProperty("author");
+      rating += (Double) review.getProperty("rating");
+
       Long positive = (long) 0;
       Long negative = (long) 0;
       if ((String) review.getProperty("positive") != null){
@@ -73,6 +76,8 @@ public class ReviewServlet extends HttpServlet {
         addVote(id, com, currUser);
       }
     }
+    rating = rating / results.size();
+
     currentPlace.sortReviews(sortType);
 
     // Set the current user (even if it's null) 
