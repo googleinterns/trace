@@ -249,7 +249,10 @@ function searchByText(textQuery, textLocation, textRadius) {
     var request;
     // If no location is given, automatically gives you results near you with no radius limitation. 
     if (locationRequest == null){
-      request = {query: textQuery};
+      request = {
+        query: textQuery, 
+        fields: ['place_id', 'geometry']
+      };
     } else {
       request = {
         query: textQuery,
