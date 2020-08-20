@@ -46,12 +46,14 @@ public class ReviewServlet extends HttpServlet {
     PreparedQuery results = datastore.prepare(query);
 
     // If no user logged in, sets to null. 
-    String currUser = (userService.getUserService.getCurrentUser() != null) 
+    String currUser = (UserService.getCurrentUser() != null) 
         ? userService.getCurrentUser().getEmail() : null;
     PlaceReviews currentPlace = new PlaceReviews(place_id);
     double rating = 0;
+    double count = 0;
 
     for (Entity review : results.asIterable()) {
+      count++;
       long id = review.getKey().getId();
       String message = (String) review.getProperty("message");
       Date timestamp = (Date) review.getProperty("timestamp");
@@ -74,7 +76,7 @@ public class ReviewServlet extends HttpServlet {
         addVote(id, com, currUser);
       }
     }
-    rating = rating / results.size();
+    rating = rating / count;
 
     currentPlace.setRating(rating);
     currentPlace.sortReviews(sortType);
