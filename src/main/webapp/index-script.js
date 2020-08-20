@@ -239,20 +239,21 @@ function searchByText(textQuery, textLocation, textRadius) {
   }); 
 
   // Convert from standard meters to approximate miles
-  var miles = textRadius * 1609;
+  var meters = textRadius * 1609;
+  console.log("miles = " + textRadius + " or meters = " + textRadius*1609);
   // Waits for location to be chosen, then runs search
   locationPromise.then((locationRequest) => {
     var request = {
       query: textQuery,
       location: locationRequest,
-      radius: miles,
+      radius: meters,
       fields: ['place_id', 'geometry']
     };
  
     var service = new google.maps.places.PlacesService(map);
     service.textSearch(request, (results, status) => {
       if (status == google.maps.places.PlacesServiceStatus.OK) {
-        handleSearchResults(results, service, miles, locationRequest);
+        handleSearchResults(results, service, meters, locationRequest);
       }
     });
   });
@@ -330,7 +331,7 @@ function setMapOnAllNull() {
 
 /** Check if coordinates are within the requested distance */
 function checkDistance(location1, location2, radius){
-  var earthRadius = 6371.0; // (3958.75 miles == 6371.0 kilometers)
+  var earthRadius = 6371000; // in meters. (3958.75 miles == 6371.0 kilometers)
   var dLat = degrees_to_radians(location2.lat()-location1.lat());
   var dLng = degrees_to_radians(location2.lng()-location1.lng());
   var sindLat = Math.sin(dLat / 2);
@@ -339,7 +340,7 @@ function checkDistance(location1, location2, radius){
             * Math.cos(degrees_to_radians(location1.lat())) * Math.cos(degrees_to_radians(location2.lat()));
   var c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1-a));
   var dist = earthRadius * c;
-  console.log(dist + " or " + radius);
+  console.log(dist + " compared to " + radius);
   return (dist < radius);
 }
 
