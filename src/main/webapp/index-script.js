@@ -343,7 +343,7 @@ function setMapOnAllNull() {
 
 /** Check if coordinates are within the requested distance */
 function checkDistance(location1, location2, radius){
-  // If no distance is given, returns true
+  // If no distance is given, automatically returns true. 
   if (location1 == null || location2 == null){
     return true;
   }
