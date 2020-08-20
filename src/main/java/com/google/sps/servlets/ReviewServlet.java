@@ -79,6 +79,8 @@ public class ReviewServlet extends HttpServlet {
     
     rating = rating / results.size();
 
+    currentPlace.setRating(rating);
+
     currentPlace.sortReviews(sortType);
 
     currentPlace.setRating(rating);
