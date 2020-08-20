@@ -106,8 +106,8 @@ public class PlaceReviews {
    * This does not permit a rating outside of [0, 10]
    */
   public void addRating(double rating) {
-    if (rating > 10) {
-      addRating(10);
+    if (rating > 5) {
+      addRating(5);
     } else if (rating < 0) {
       addRating(0);
     } else {
