@@ -330,19 +330,20 @@ function setMapOnAllNull() {
 
 /** Check if coordinates are within the requested distance */
 function checkDistance(location1, location2, radius){
-  var earthRadius = 6371000; // in meters. (3958.75 miles == 6371.0 kilometers)
-  var dLat = degrees_to_radians(location2.lat()-location1.lat());
-  var dLng = degrees_to_radians(location2.lng()-location1.lng());
+  var earthRadius = 6371000; // in meters. 
+  var dLat = degreesToRadians(location2.lat()-location1.lat());
+  var dLng = degreesToRadians(location2.lng()-location1.lng());
   var sindLat = Math.sin(dLat / 2);
   var sindLng = Math.sin(dLng / 2);
   var a = Math.pow(sindLat, 2) + Math.pow(sindLng, 2)
-            * Math.cos(degrees_to_radians(location1.lat())) * Math.cos(degrees_to_radians(location2.lat()));
+            * Math.cos(degreesToRadians(location1.lat())) * Math.cos(degreesToRadians(location2.lat()));
   var c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1-a));
   var dist = earthRadius * c;
   return (dist <= radius);
 }
 
-function degrees_to_radians(degrees) {
+/** Convert degrees to radians */
+function degreesToRadians(degrees) {
   var pi = Math.PI;
   return degrees * (pi/180);
 }
