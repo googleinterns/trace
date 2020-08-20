@@ -246,6 +246,8 @@ function searchByText(textQuery, textLocation, textRadius) {
   var meters = textRadius * 1609;
   // Waits for location to be chosen, then runs search
   locationPromise.then((locationRequest) => {
+    console.log(meters);
+    console.log(locationRequest);
     var request = {
       query: textQuery,
       location: locationRequest,
