@@ -58,7 +58,7 @@ public class ReviewServlet extends HttpServlet {
       String message = (String) review.getProperty("message");
       Date timestamp = (Date) review.getProperty("timestamp");
       String author = (String) review.getProperty("author");
-      int rate = review.getProperty("rate") == null ? 0 : ((Long) review.getProperty("rate")).intValue();
+      double rate = (review.getProperty("rate") == null) ? 0 : ((Long) review.getProperty("rate")).doubleValue();
       rating += rate;
       Long positive = 0L;
       Long negative = 0L;
