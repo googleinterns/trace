@@ -20,6 +20,7 @@ public class Comment {
   private Long positive;
   private String username;
   private String currUserVote;
+  private int rating;
 
   /**
    * Order Comparator
@@ -61,13 +62,14 @@ public class Comment {
    * @param message the content of the message
    * @param timestamp the time of writing
    */
-  public Comment(String author, String message, Date timestamp, Long pos, Long neg) {
+  public Comment(String author, String message, Date timestamp, Long pos, Long neg, int rate) {
     this.author = author;
     this.messageContent = message;
     this.timestamp = timestamp;
     this.positive = pos;
     this.negative = neg;
     this.currUserVote = null;
+    this.rating = rate;
   }
 
   /** 
@@ -143,6 +145,14 @@ public class Comment {
    */
   public Date getTime() {
     return this.timestamp;
+  }
+
+  /** 
+   * Rating Accessor method
+   * Accesses private variable
+   */
+  public int getRate() {
+    return this.rating;
   }
 
   /** 

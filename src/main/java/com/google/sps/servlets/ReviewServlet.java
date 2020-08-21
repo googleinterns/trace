@@ -58,19 +58,18 @@ public class ReviewServlet extends HttpServlet {
       String message = (String) review.getProperty("message");
       Date timestamp = (Date) review.getProperty("timestamp");
       String author = (String) review.getProperty("author");
-      if (review.getProperty("rate") != null) {
-        rating += (Double) review.getProperty("rate");
-      }
-
-      Long positive = (long) 0L;
-      Long negative = (long) 0L;
+      int rate = review.getProperty("rate") == null ? 0 : ((Long) review.getProperty("rate")).intValue();
+      rating += rate;
+      Long positive = (long) 0;
+      Long negative = (long) 0;
+      
       if ((String) review.getProperty("positive") != null){
         positive = Long.parseLong((String) review.getProperty("positive"));
       }
       if ((String) review.getProperty("negative") != null){
         negative = Long.parseLong((String) review.getProperty("negative"));
       }
-      Comment com = new Comment(author, message, timestamp, positive, negative);
+      Comment com = new Comment(author, message, timestamp, positive, negative, rate);
       com.setId(id);
       currentPlace.addReview(com);
       // If the user is logged in, add their voting status to the comment.
@@ -78,12 +77,10 @@ public class ReviewServlet extends HttpServlet {
         addVote(id, com, currUser);
       }
     }
-    count = (count == 0) ? 1 : 0;
-    rating = rating / count;
+    rating = (count == 0) ? 0 : rating/count;
 
     currentPlace.setRating(rating);
     currentPlace.sortReviews(sortType);
-    // Set the current user (even if it's null) 
     currentPlace.setCurrentUser(currUser);
 
     // Adds the review list to a GSON/JSON object so that can be used in Javascript code    
@@ -104,19 +101,20 @@ public class ReviewServlet extends HttpServlet {
     String firstName = request.getParameter("firstName");
     String lastName = request.getParameter("lastName");
 
-    Double rating = Double.parseDouble(request.getParameter("rate"));
+    int rating = Integer.parseInt(request.getParameter("rate"));
 
     // Create new Comment instance.
-    String userEmail = userService.getCurrentUser().getEmail(); // Used to restrict user to one review/location
+    String userName = firstName.concat(" ".concat(lastName));
     String reviewText = request.getParameter("comment");
     Date time = new Date();
-    Comment newReview = new Comment(userEmail, reviewText, time, rating);
+    long zero = 0; // 0 gets incorrectly cast as int if used directly.
+    Comment newReview = new Comment(userName, reviewText, time, zero, zero, rating);
     
     // Query for existing reviews from place_id.
     String place_id = request.getParameter("place_id");
 
     // Add new review to datastore with the place_id. 
-    addToDatastore(newReview, place_id);
+    addToDatastore(newReview, place_id, rating);
 
     Entity curLocation = queryLocation(place_id, datastore);
     // Check if there is currently a location already in the datastore
@@ -128,7 +126,7 @@ public class ReviewServlet extends HttpServlet {
   }
    
   // Adds each new review to the datastore. 
-  public void addToDatastore(Comment comment, String place_id){
+  public void addToDatastore(Comment comment, String place_id, int rate){
     String message = comment.getMessage();
     Date timestamp = comment.getTime();
     String author = comment.getAuthor();
@@ -140,6 +138,7 @@ public class ReviewServlet extends HttpServlet {
     reviewEntity.setProperty("place_id", place_id);
     reviewEntity.setProperty("positive", "0"); // Cast as string for easy typing.
     reviewEntity.setProperty("negative", "0");
+    reviewEntity.setProperty("rate", rate);
 
     DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
     datastore.put(reviewEntity);
