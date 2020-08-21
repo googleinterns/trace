@@ -514,13 +514,18 @@ function displayReviewModal(clickedFromMap) {
   }
 
   // Enable sort options.
+  enableSortOptions();
+
+  document.getElementById('results-body').style.display = "none";
+  document.getElementById('reviews-body').style.display = "block";
+}
+
+/** Displays sort options button. */
+function enableSortOptions() {
   const commentSortRelevant = document.getElementById("comment-sort-relevant");
   commentSortRelevant.style.display = "block";
   const commentSortRecent = document.getElementById("comment-sort-recent");
   commentSortRecent.style.display = "block";
-
-  document.getElementById('results-body').style.display = "none";
-  document.getElementById('reviews-body').style.display = "block";
 }
 
 /** Fetch Reviews
@@ -547,6 +552,7 @@ function populateReviews(reviewList, placeID, currUser) {
     entireList.appendChild(noReviews());
   } else { 
     reviewList.forEach((review) => {
+      console.log(review);
       entireList.appendChild(generateReview(review, currUser));
     });
   }
