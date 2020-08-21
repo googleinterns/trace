@@ -329,13 +329,8 @@ function deleteMarkers() {
   markers = [];
 }
 
-/** Removes the markers from the map, but keeps them in the array. */
-function clearMarkers() {
-  setMapOnAllNull();
-}
-
 /** Sets the map on all markers in the array. */
-function setMapOnAllNull() {
+function clearMarkers() {
   for (let i = 0; i < markers.length; i++) {
     markers[i].setMap(null);
   }
