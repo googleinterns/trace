@@ -103,7 +103,7 @@ public class PlaceReviews {
   /** 
    * Updater method
    * This adds a rating to a given PlaceReviews aggregate rating
-   * This does not permit a rating outside of [0, 10]
+   * This does not permit a rating outside of [0, 5]
    */
   public void setRating(double rating) {
     if (rating > 5) {
