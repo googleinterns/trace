@@ -76,7 +76,7 @@
   max-width: 80px;
 }
 
-.navbar .button {
+.navbar button {
   float: right;
   display: block;
   position: relative;
@@ -85,7 +85,7 @@
   border-radius: 3vw;
 }
 
-.navbar .button:hover {
+.navbar button:hover {
   background-color: rgb(180, 180, 180);
 }
 
