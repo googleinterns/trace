@@ -13,14 +13,16 @@
     <div id="bar-box">Home2</div>
     <button id="login" data-text-swap="Logout">Login</button>
     <button id="dark-toggle">Dark Mode</button>
-    <button id="heat-toggle">View recent covid outbreaks by population</button>
     <button id="gradient-toggle" class="heat-button">Change Gradient</button>
-    <label for="heat-radius" class="heat-button">Radius</label>
-    <input type="range" id="heat-radius" name="heat-radius" 
-        min="0" max="10" value="0" class="heat-button">
-    <label for="heat-opacity" class="heat-button">Opacity</label>
-    <input type="range" id="heat-opacity" name="heat-opacity" 
-        min="0" max="10" value="5" class="heat-button">
+    <button id="heat-toggle">View recent covid outbreaks by population</button>
+    <div id="bar-box">
+      <label for="heat-radius" class="heat-button">Radius</label>
+      <input type="range" id="heat-radius" name="heat-radius" 
+          min="0" max="10" value="0" class="heat-button">
+      <label for="heat-opacity" class="heat-button">Opacity</label>
+      <input type="range" id="heat-opacity" name="heat-opacity" 
+          min="0" max="10" value="5" class="heat-button">
+    </div>
   </div>
   <body onload="loadPage();">
     <div id="map"></div>
