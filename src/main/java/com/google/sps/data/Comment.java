@@ -84,6 +84,22 @@ public class Comment {
     negativeVoters.add(voter);
   }
 
+  /** 
+   * Constructor
+   * Overloaded constructor to include (new) rating field
+   * Old constructor to be deprecated code is updated
+   * Since this initializes a comment, the positive and negative longs can be set to 0
+   */
+  public Comment(String author, String message, Date timestamp, double rating) {
+    this.author = author;
+    this.messageContent = message;
+    this.timestamp = timestamp;
+    this.stars = rating;
+    this.positive = 0L;
+    this.negative = 0L;
+    this.currUserVote = null;
+  }
+
   /** Return the id of the comment */
   public long getId(){
     return this.id;
