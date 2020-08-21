@@ -89,7 +89,8 @@ function activateSearchBar() {
   searchIcon.addEventListener("click", () => {
     var query = document.getElementById('searchForm').elements[0].value;
     var location = document.getElementById('searchForm').elements[1].value;
-    searchByText(query, location);
+    var radius = document.getElementById('searchForm').elements[2].value;
+    searchByText(query, location, radius);
   });
 
   // Prevent page from refreshing when you submit the form
@@ -389,6 +390,9 @@ function triggerModal(modal) {
   overlay.classList.add('active');
   modal.classList.add('active');
   document.getElementById('results-body').style.display = "block";
+  hideButton(document.getElementById("modal-backarrow"));
+  hideButton(document.getElementById("comment-sort-relevant"));
+  hideButton(document.getElementById("comment-sort-recent"));
 }
 
 /* This function takes in an array of JS places and creates an unordered
@@ -804,7 +808,7 @@ function addHeatMapListeners(heatmap) {
       radiusSlider.style.display = disp;
       opacitySlider.style.display = disp;
       heatToggle.innerHTML = mapActive ? 
-        'View recent covid outbreaks by population' : 'Close dashboard';
+        'Open COVID Dashboard' : 'Close dashboard';
   });
 
   // Scale radius on zoom-in/out.
@@ -813,6 +817,7 @@ function addHeatMapListeners(heatmap) {
   });
 
   // Change heatmap gradient.
+  gradToggle.style.display = 'none';
   gradToggle.addEventListener("click", () => {
     heatmap.set("gradient", heatmap.get("gradient") ? null : darkGradient);
   });

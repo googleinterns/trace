@@ -19,6 +19,7 @@ public class Comment {
   private Long positive;
   private String username;
   private String currUserVote;
+  private double rating;
 
   /**
    * Order Comparator
@@ -52,35 +53,34 @@ public class Comment {
       return Long.compare((b.positive - b.negative), (a.positive - a.negative));
     }
   };
-  
+
   /** 
    * Constructor
-   * Creates a full Comment object, used when an author leaves a review for the first time
-   * @param author the message author
-   * @param message the content of the message
-   * @param timestamp the time of writing
+   * Overloaded constructor to include (new) rating field
+   * Old constructor to be deprecated code is updated
+   * Since this initializes a comment, the positive and negative longs can be set to 0
    */
-  public Comment(String author, String message, Date timestamp, Long pos, Long neg) {
+  public Comment(String author, String message, Date timestamp, Long positive, Long negative, double rating) {
     this.author = author;
     this.messageContent = message;
     this.timestamp = timestamp;
-    this.positive = pos;
-    this.negative = neg;
-    this.currUserVote = null;
+    this.rating = rating;
+    this.positive = 0L;
+    this.negative = 0L;
   }
 
   /** Return the id of the comment */
-  public long getId(){
+  public long getId() {
     return this.id;
   }
 
   /** Set the id of the comment */
-  public void setId(long id){
+  public void setId(long id) {
     this.id = id;
   }
 
   /** Sets the current user's vote */
-  public boolean setVote(String vote){
+  public boolean setVote(String vote) {
     // Limits what we can set the vote to in order to reduce malicious behavior
     if (vote.equals("negative") || vote.equals("positive") || vote == null){
       currUserVote = vote;
@@ -103,6 +103,22 @@ public class Comment {
    */
   public String getMessage() {
     return this.messageContent;
+  }
+
+  /**
+   * Rating Accessor Method
+   * Accesses private rating variable
+   */
+  public double getRating() {
+    return this.rating;
+  }
+
+  /**
+   * Rating updater method
+   * Updates private rating variable
+   */
+  private void updateRating(double newRating) {
+    this.rating = newRating;
   }
 
   /** 
@@ -131,5 +147,6 @@ public class Comment {
   public void updateComment(Comment newReview) {
     this.messageContent = newReview.messageContent;
     this.timestamp = newReview.timestamp;
+    this.rating = newReview.rating;
   }
 }
