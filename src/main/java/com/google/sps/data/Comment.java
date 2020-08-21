@@ -53,23 +53,6 @@ public class Comment {
       return Long.compare((b.positive - b.negative), (a.positive - a.negative));
     }
   };
-  
-  /** 
-   * Constructor
-   * Creates a full Comment object, used when an author leaves a review for the first time
-   * @param author the message author
-   * @param message the content of the message
-   * @param timestamp the time of writing
-   */
-  public Comment(String author, String message, Date timestamp, Long pos, Long neg, int rate) {
-    this.author = author;
-    this.messageContent = message;
-    this.timestamp = timestamp;
-    this.positive = pos;
-    this.negative = neg;
-    this.currUserVote = null;
-    this.rating = rate;
-  }
 
   /** 
    * Constructor
