@@ -808,7 +808,7 @@ function addHeatMapListeners(heatmap) {
       radiusSlider.style.display = disp;
       opacitySlider.style.display = disp;
       heatToggle.innerHTML = mapActive ? 
-        'View recent covid outbreaks by population' : 'Close dashboard';
+        'Open COVID Dashboard' : 'Close dashboard';
   });
 
   // Scale radius on zoom-in/out.
@@ -817,6 +817,7 @@ function addHeatMapListeners(heatmap) {
   });
 
   // Change heatmap gradient.
+  gradToggle.style.display = 'none';
   gradToggle.addEventListener("click", () => {
     heatmap.set("gradient", heatmap.get("gradient") ? null : darkGradient);
   });
