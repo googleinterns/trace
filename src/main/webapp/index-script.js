@@ -288,8 +288,8 @@ function handleSearchResults(results, service, radius, location) {
       // Check to make sure within specified distance (if one is specified)
       if (checkDistance(location, results[i].geometry.location, radius)){
         var request = {
-            placeId: results[i].place_id,
-            fields: [
+          placeId: results[i].place_id,
+          fields: [
             'name',
             'vicinity',
             'reviews',
@@ -299,7 +299,7 @@ function handleSearchResults(results, service, radius, location) {
             'icon',
             'international_phone_number',
             'website'
-            ]
+          ]
         };
       } else {
         break;
