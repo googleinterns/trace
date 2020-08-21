@@ -14,13 +14,12 @@ public class Comment {
   private final String author;
   private String messageContent;
   private Date timestamp;
-  private double stars;
   private long id;
   private Long negative;
   private Long positive;
   private String username;
   private String currUserVote;
-  private int rating;
+  private double rating;
 
   /**
    * Order Comparator
@@ -82,7 +81,7 @@ public class Comment {
     this.author = author;
     this.messageContent = message;
     this.timestamp = timestamp;
-    this.stars = rating;
+    this.rating = rating;
     this.positive = 0L;
     this.negative = 0L;
   }
@@ -128,7 +127,7 @@ public class Comment {
    * Accesses private rating variable
    */
   public double getRating() {
-    return this.stars;
+    return this.rating;
   }
 
   /**
@@ -136,7 +135,7 @@ public class Comment {
    * Updates private rating variable
    */
   private void updateRating(double newRating) {
-    this.stars = newRating;
+    this.rating = newRating;
   }
 
   /** 
@@ -173,6 +172,6 @@ public class Comment {
   public void updateComment(Comment newReview) {
     this.messageContent = newReview.messageContent;
     this.timestamp = newReview.timestamp;
-    this.stars = newReview.stars;
+    this.rating = newReview.rating;
   }
 }
