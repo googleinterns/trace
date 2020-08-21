@@ -69,7 +69,7 @@ public class ReviewServlet extends HttpServlet {
       if ((String) review.getProperty("negative") != null){
         negative = Long.parseLong((String) review.getProperty("negative"));
       }
-      Comment com = new Comment(author, message, timestamp, positive, negative, rate);
+      Comment com = new Comment(author, message, timestamp, rate);
       com.setId(id);
       currentPlace.addReview(com);
       // If the user is logged in, add their voting status to the comment.
