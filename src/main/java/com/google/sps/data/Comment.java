@@ -70,17 +70,17 @@ public class Comment {
   }
 
   /** Return the id of the comment */
-  public long getId(){
+  public long getId() {
     return this.id;
   }
 
   /** Set the id of the comment */
-  public void setId(long id){
+  public void setId(long id) {
     this.id = id;
   }
 
   /** Sets the current user's vote */
-  public boolean setVote(String vote){
+  public boolean setVote(String vote) {
     // Limits what we can set the vote to in order to reduce malicious behavior
     if (vote.equals("negative") || vote.equals("positive") || vote == null){
       currUserVote = vote;
