@@ -814,6 +814,7 @@ function addHeatMapListeners(heatmap) {
   });
 
   // Change heatmap gradient.
+  gradToggle.style.display = 'none';
   gradToggle.addEventListener("click", () => {
     heatmap.set("gradient", heatmap.get("gradient") ? null : darkGradient);
   });
