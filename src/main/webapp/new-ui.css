@@ -77,12 +77,14 @@
 }
 
 .navbar button {
-  float: right;
+  float: left;
   display: block;
-  position: relative;
+  color: black;
+  background-color: whitesmoke;
   text-align: center;
-  padding: 1%;
-  border-radius: 3vw;
+  transition: all 0.3s ease;
+  padding: 14px 16px;
+  text-decoration: none;
 }
 
 .navbar button:hover {
