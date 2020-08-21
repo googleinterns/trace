@@ -60,8 +60,8 @@ public class ReviewServlet extends HttpServlet {
       String author = (String) review.getProperty("author");
       int rate = review.getProperty("rate") == null ? 0 : ((Long) review.getProperty("rate")).intValue();
       rating += rate;
-      Long positive = (long) 0;
-      Long negative = (long) 0;
+      Long positive = 0L;
+      Long negative = 0L;
       
       if ((String) review.getProperty("positive") != null){
         positive = Long.parseLong((String) review.getProperty("positive"));
@@ -69,7 +69,7 @@ public class ReviewServlet extends HttpServlet {
       if ((String) review.getProperty("negative") != null){
         negative = Long.parseLong((String) review.getProperty("negative"));
       }
-      Comment com = new Comment(author, message, timestamp, rate);
+      Comment com = new Comment(author, message, timestamp, positive, negative, rate);
       com.setId(id);
       currentPlace.addReview(com);
       // If the user is logged in, add their voting status to the comment.
