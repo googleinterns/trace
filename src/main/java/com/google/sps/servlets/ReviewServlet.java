@@ -76,6 +76,7 @@ public class ReviewServlet extends HttpServlet {
         addVote(id, com, currUser);
       }
     }
+    count = (count == 0) ? 1 : 0;
     rating = rating / count;
 
     currentPlace.setRating(rating);
