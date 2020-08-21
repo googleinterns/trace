@@ -130,14 +130,6 @@ public class Comment {
   }
 
   /** 
-   * Rating Accessor method
-   * Accesses private variable
-   */
-  public int getRate() {
-    return this.rating;
-  }
-
-  /** 
    * Update Comment
    * This function is used when a author want's to submit a new comment for a location.
    * This prevents the 'double voting' or 'duplicate feedback' of certain patrons.
