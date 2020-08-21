@@ -76,6 +76,17 @@
   max-width: 80px;
 }
 
+.navbar div#bar-box {
+  float: right;
+  display: block;
+  color: green;
+  text-align: center;
+  transition: all 0.3s ease;
+  height: 100%;
+  width: 120px;
+  text-decoration: none;
+}
+
 .navbar button {
   float: left;
   display: block;
@@ -89,16 +100,6 @@
 
 .navbar button:hover {
   background-color: rgb(180, 180, 180);
-}
-
-.navbar #bar-box {
-  float: left;
-  display: block;
-  color: aliceblue;
-  text-align: center;
-  transition: all 0.3s ease;
-  padding: 14px 16px;
-  text-decoration: none;
 }
 
 .navbar .logo {
