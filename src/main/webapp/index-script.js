@@ -390,6 +390,9 @@ function triggerModal(modal) {
   overlay.classList.add('active');
   modal.classList.add('active');
   document.getElementById('results-body').style.display = "block";
+  hideButton(document.getElementById("modal-backarrow"));
+  hideButton(document.getElementById("comment-sort-relevant"));
+  hideButton(document.getElementById("comment-sort-recent"));
 }
 
 /* This function takes in an array of JS places and creates an unordered
