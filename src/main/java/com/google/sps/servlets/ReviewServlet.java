@@ -58,8 +58,13 @@ public class ReviewServlet extends HttpServlet {
       String message = (String) review.getProperty("message");
       Date timestamp = (Date) review.getProperty("timestamp");
       String author = (String) review.getProperty("author");
-      rating += (Double) review.getProperty("rating");
-
+      double currRating;
+      if(review.getProperty("rate") != null) {
+       currRating = (Double) review.getProperty("rate");  
+      } else {
+       currRating = 0;
+      }
+      rating += currRating;
       Long positive = (long) 0;
       Long negative = (long) 0;
       if ((String) review.getProperty("positive") != null){
@@ -68,7 +73,7 @@ public class ReviewServlet extends HttpServlet {
       if ((String) review.getProperty("negative") != null){
         negative = Long.parseLong((String) review.getProperty("negative"));
       }
-      Comment com = new Comment(author, message, timestamp, positive, negative);
+      Comment com = new Comment(author, message, timestamp, positive, negative, currRating);
       com.setId(id);
       currentPlace.addReview(com);
       // If the user is logged in, add their voting status to the comment.
@@ -76,13 +81,18 @@ public class ReviewServlet extends HttpServlet {
         addVote(id, com, currUser);
       }
     }
-    rating = rating / count;
+    if(count != 0) {
+      rating = rating / count;
+    } else {
+      rating = 0;
+    }
+
 
     currentPlace.setRating(rating);
     currentPlace.sortReviews(sortType);
     // Set the current user (even if it's null) 
     currentPlace.setCurrentUser(currUser);
-
+    System.out.println(currUser);
     // Adds the review list to a GSON/JSON object so that can be used in Javascript code    
     response.setContentType("application/json");
     String json = new Gson().toJson(currentPlace);
@@ -107,7 +117,7 @@ public class ReviewServlet extends HttpServlet {
     String userEmail = userService.getCurrentUser().getEmail(); // Used to restrict user to one review/location
     String reviewText = request.getParameter("message-text");
     Date time = new Date();
-    Comment newReview = new Comment(userEmail, reviewText, time, rating);
+    Comment newReview = new Comment(userEmail, reviewText, time, 0L, 0L, rating);
     
     // Query for existing reviews from place_id.
     String place_id = request.getParameter("place_id");

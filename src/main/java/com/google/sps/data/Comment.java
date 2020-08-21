@@ -20,6 +20,8 @@ public class Comment {
   private Long positive;
   private String username;
   private String currUserVote;
+  private Set positiveVoters;
+  private Set negativeVoters;
 
   /**
    * Order Comparator
@@ -60,7 +62,7 @@ public class Comment {
    * Old constructor to be deprecated code is updated
    * Since this initializes a comment, the positive and negative longs can be set to 0
    */
-  public Comment(String author, String message, Date timestamp, double rating) {
+  public Comment(String author, String message, Date timestamp, Long positive, Long negative, double rating) {
     this.author = author;
     this.messageContent = message;
     this.timestamp = timestamp;
