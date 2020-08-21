@@ -1,0 +1,61 @@
+
+/* New UI for overhaul */
+
+/* Navbar */
+.navbar {
+  overflow: hidden;
+  background-color: #3a3838;
+  max-width: 100%;
+  position: fixed;
+  top: 0;
+  height: 10%;
+  width: 100%;
+  min-height: 80px;
+}
+
+.navbar div#icon-box {
+  float: left;
+  display: block;
+  position: relative;
+  color: aliceblue;
+  text-align: center;
+  transition: all 0.3s ease;
+  padding: 1%;
+  text-decoration: none;
+  height: 80%;
+  max-height: 150px;
+  max-width: 80px;
+}
+
+.navbar div#bar-box {
+  float: right;
+  display: block;
+  color: white;
+  text-align: center;
+  transition: all 0.3s ease;
+  height: 100%;
+  width: 120px;
+  text-decoration: none;
+}
+
+.navbar button {
+  float: right;
+  display: inline-block;
+  color: whitesmoke;
+  background-color: #3a3838;
+  text-align: center;
+  transition: all 0.3s ease;
+  padding: 14px 16px;
+  height: 100%;
+  border: none;
+  text-decoration: none;
+}
+
+.navbar button:hover {
+  background-color: rgb(180, 180, 180);
+}
+
+.navbar .logo {
+  max-width: 100%;
+  max-height: 100%;
+}

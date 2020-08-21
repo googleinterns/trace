@@ -8,20 +8,23 @@
     <script src="index-script.js"></script>
     <script src="api.js"></script>
   </head>
+  <div class="navbar">
+    <div id="icon-box"><img class="logo" src="trace-logo.png"></img></div>
+    <button id="login" data-text-swap="Logout">Login</button>
+    <button id="dark-toggle">Dark Mode</button>
+    <button id="heat-toggle">Open COVID Dashboard</button>
+    <button id="gradient-toggle" class="heat-button">Change Gradient</button>
+    <div id="bar-box">
+      <label for="heat-radius" class="heat-button">Radius</label>
+      <input type="range" id="heat-radius" name="heat-radius" 
+          min="0" max="10" value="0" class="heat-button">
+      <label for="heat-opacity" class="heat-button">Opacity</label>
+      <input type="range" id="heat-opacity" name="heat-opacity" 
+          min="0" max="10" value="5" class="heat-button">
+    </div>
+  </div>
   <body onload="loadPage();">
     <div id="map"></div>
-    <div class="loginButton">
-      <button id="login" data-text-swap="Logout">Login</button>
-      <br><button id="dark-toggle">Dark Mode</button>
-      <br><button id="heat-toggle">View recent covid outbreaks by population</button>
-      <br><button id="gradient-toggle" class="heat-button">Change Gradient</button>
-      <br><label for="heat-radius" class="heat-button">Radius</label>
-      <input type="range" id="heat-radius" name="heat-radius"
-        min="0" max="10" value="0" class="heat-button">
-      <br><label for="heat-opacity" class="heat-button">Opacity</label>
-      <input type="range" id="heat-opacity" name="heat-opacity"
-        min="0" max="10" value="5" class="heat-button">
-    </div>
     <div class="mainButtonsWrapper">
       <div class="searchWrapper">
         <i id="search-icon" class="material-icons">search</i>
@@ -97,7 +100,7 @@
                       <label for="star3" title="text">3</label>
                       <input type="radio" id="star2" name="rate" value="2" />
                       <label for="star2" title="text">2</label>
-                      <input type="radio" id="star1" name="rate" value="1" />
+                      <input type="radio" id="star1" name="rate" value="1" required/>
                       <label for="star1" title="text">1</label>
                     </div>
                 </div>
