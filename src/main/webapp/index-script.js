@@ -644,12 +644,14 @@ function generateReview(review, currUser) {
   return reviewEntry;
 }
 
+/** Creates container to hold and style reviews. */
 function createReviewContainer() {
   const reviewEntry = document.createElement('li');
   reviewEntry.className = 'review-container';
   return reviewEntry;
 }
 
+/** Creates container to hold and style top elements of review. */
 function createBigFlexContainer(review) {
   const bigFlex = document.createElement('div');
   bigFlex.className = 'big-flex';
@@ -658,6 +660,14 @@ function createBigFlexContainer(review) {
   return bigFlex;
 }
 
+/** Creates container to hold a user's actual review. */
+function createReviewTextDiv(text) {
+  const div = document.createElement('div');
+  div.innerHTML = text;
+  return div;
+}
+
+/** Creates a container to hold leftmost elements of top elements of review. */
 function createLeftFlex(review) {
   const leftFlex = document.createElement('div');
   leftFlex.className = 'left-flex';
@@ -675,6 +685,7 @@ function createLeftFlex(review) {
   return leftFlex;
 }
 
+/** Adds stars to parent element in review modal for a given review. */
 function addStars(rate, parent) {
   const starClass = 'fa fa-star ';
   for(var i = 0; i < rate; i ++) {
@@ -689,12 +700,14 @@ function addStars(rate, parent) {
   }
 }
 
+/** Creates container to hold upvote/downvote buttons. */
 function createRightFlex() {
   const rightFlex = document.createElement('div');
   rightFlex.className = 'right-flex';
-  
-  const voteButtons = document.createL
+  addVotingButtons(rightFlex);
+  return rightFlex;
 }
+
 /** Adds upvote/downvote button to each review. */
 function addVotingButtons(parent) {
   const upvoteButton = document.createElement('button');
