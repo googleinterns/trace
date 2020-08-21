@@ -638,7 +638,7 @@ function noReviews() {
  */
 function generateReview(review, currUser) {
   const newReview = createReviewContainer();
-  newReview.appendChild(createBigFlexContainer(review));
+  newReview.appendChild(createBigFlexContainer(review, currUser));
   newReview.appendChild(createReviewTextDiv(review.messageContent));
   return newReview;
 }
@@ -651,11 +651,11 @@ function createReviewContainer() {
 }
 
 /** Creates container to hold and style top elements of review. */
-function createBigFlexContainer(review) {
+function createBigFlexContainer(review, currUser) {
   const bigFlex = document.createElement('div');
   bigFlex.className = 'big-flex';
   bigFlex.appendChild(createLeftFlex(review));
-  bigFlex.appendChild(createRightFlex(review));
+  bigFlex.appendChild(createRightFlex(review, currUser));
   return bigFlex;
 }
 
@@ -700,15 +700,15 @@ function addStars(rate, parent) {
 }
 
 /** Creates container to hold upvote/downvote buttons. */
-function createRightFlex(review) {
+function createRightFlex(review, currUser) {
   const rightFlex = document.createElement('div');
   rightFlex.className = 'right-flex';
-  addVotingButtons(rightFlex, review);
+  addVotingButtons(rightFlex, review, currUser);
   return rightFlex;
 }
 
 /** Adds upvote/downvote button to each review. */
-function addVotingButtons(parent, review) {
+function addVotingButtons(parent, review, currUser) {
   const upvoteButton = document.createElement('button');
   upvoteButton.innerHTML += '&#128077;' + review.positive;
   upvoteButton.id += "up" + review.id;
