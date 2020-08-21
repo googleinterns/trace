@@ -638,29 +638,65 @@ function noReviews() {
  * Puts the review text in a <p> element
  */
 function generateReview(review, currUser) {
-  const reviewEntry = document.createElement('li');
-  reviewEntry.className = 'review-container';
-  reviewEntry.appendChild(addUserName(review));
-  reviewEntry.appendChild(addRating(review));
-  addVotingButtons(reviewEntry);
-
+  const newReview = createReviewContainer();
+  newReview.appendChild(createBigFlexContainer(review));
+  newReview.appendChild(createReviewTextDiv(review.text));
   return reviewEntry;
 }
 
-function addRating(review) {
-  const ratingDiv = document.createElement('div');
-  const rate = review.rating;
-  
-}
-function addUserName(review) {
-  const userName = document.createElement('p');
-  userName.className = 'username-display';
-  userName.innerHTML = review.author;
-  return userName;
+function createReviewContainer() {
+  const reviewEntry = document.createElement('li');
+  reviewEntry.className = 'review-container';
+  return reviewEntry;
 }
 
+function createBigFlexContainer(review) {
+  const bigFlex = document.createElement('div');
+  bigFlex.className = 'big-flex';
+  bigFlex.appendChild(createLeftFlex(review));
+  bigFlex.appendChild(createRightFlex(review));
+  return bigFlex;
+}
+
+function createLeftFlex(review) {
+  const leftFlex = document.createElement('div');
+  leftFlex.className = 'left-flex';
+
+  const userName = document.createElement('div');
+  userName.className = 'userName';
+  userName.innerHTML = review.author;
+
+  const staticRating = document.createElement('div');
+  staticRating.className = 'static-rating';
+  addStars(review.rating, staticRating);
+
+  leftFlex.appendChild(userName);
+  leftFlex.appendChild(staticRating);
+  return leftFlex;
+}
+
+function addStars(rate, parent) {
+  const starClass = 'fa fa-star ';
+  for(var i = 0; i < rate; i ++) {
+    const star = document.createElement('span');
+    star.className = starClass + 'checked';
+    parent.appendChild(star);
+  }
+  for(var i = rate; i < 5; i++) {
+    const star = document.createElement('span');
+    star.className = starClass + 'unchecked';
+    parent.appendChild(star);
+  }
+}
+
+function createRightFlex() {
+  const rightFlex = document.createElement('div');
+  rightFlex.className = 'right-flex';
+  
+  const voteButtons = document.createL
+}
 /** Adds upvote/downvote button to each review. */
-function addVotingButtons(reviewEntry) {
+function addVotingButtons(parent) {
   const upvoteButton = document.createElement('button');
   upvoteButton.innerHTML += '&#128077;' + review.positive;
   upvoteButton.id += "up" + review.id;
@@ -680,6 +716,8 @@ function addVotingButtons(reviewEntry) {
   downvoteButton.addEventListener("click", () => {
     downvoteClick(review, currUser);
   });
+  parent.appendChild(upvoteButton);
+  parent.appendChild(downvoteButton);
 }
 
 /** Sends post request to VotingServlet.java and updates modal. */
