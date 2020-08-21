@@ -558,7 +558,6 @@ function populateReviews(reviewList, placeID, currUser) {
     entireList.appendChild(noReviews());
   } else { 
     reviewList.forEach((review) => {
-      console.log(review);
       entireList.appendChild(generateReview(review, currUser));
     });
   }
@@ -640,8 +639,8 @@ function noReviews() {
 function generateReview(review, currUser) {
   const newReview = createReviewContainer();
   newReview.appendChild(createBigFlexContainer(review));
-  newReview.appendChild(createReviewTextDiv(review.text));
-  return reviewEntry;
+  newReview.appendChild(createReviewTextDiv(review.messageContent));
+  return newReview;
 }
 
 /** Creates container to hold and style reviews. */
@@ -701,15 +700,15 @@ function addStars(rate, parent) {
 }
 
 /** Creates container to hold upvote/downvote buttons. */
-function createRightFlex() {
+function createRightFlex(review) {
   const rightFlex = document.createElement('div');
   rightFlex.className = 'right-flex';
-  addVotingButtons(rightFlex);
+  addVotingButtons(rightFlex, review);
   return rightFlex;
 }
 
 /** Adds upvote/downvote button to each review. */
-function addVotingButtons(parent) {
+function addVotingButtons(parent, review) {
   const upvoteButton = document.createElement('button');
   upvoteButton.innerHTML += '&#128077;' + review.positive;
   upvoteButton.id += "up" + review.id;
