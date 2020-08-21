@@ -498,8 +498,7 @@ function populateReviews(reviewList, placeID, currUser) {
     entireList.appendChild(noReviews());
   } else { 
     reviewList.forEach((review) => {
-      console.log(review.rating);
-      console.log(review.timestamp);
+      console.log(review.author);
       entireList.appendChild(generateReview(review, currUser));
     });
   }
