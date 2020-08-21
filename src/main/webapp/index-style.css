@@ -89,28 +89,6 @@
   z-index: 5;
 }
 
-/* Login Button Specs. */
-.loginButton {
-  height: 20%;
-  left: 50%;
-  top: 30%;
-  transform: translate(130%, -130%);
-  position: absolute;
-  width: 30%;
-}
-
-#login {
-  background-color: #f5f5f5;
-  border-radius: 3vw;
-  font-size: 100%;
-  height: inherit;
-  width: inherit;
-}
-
-#login:hover {
-  background-color: rgb(180, 180, 180);
-}
-
 /* Tutorial Pop-Up */
 #popUp {
   border-radius: 10%;
