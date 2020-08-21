@@ -57,7 +57,7 @@ public class ReviewServlet extends HttpServlet {
       String message = (String) review.getProperty("message");
       Date timestamp = (Date) review.getProperty("timestamp");
       String author = (String) review.getProperty("author");
-      int rate = Integer.parseInt((String) review.getProperty("rate"));
+      int rate = ((Long) review.getProperty("rate")).intValue();
       Long positive = (long) 0;
       Long negative = (long) 0;
       if ((String) review.getProperty("positive") != null){
@@ -104,13 +104,13 @@ public class ReviewServlet extends HttpServlet {
     String reviewText = request.getParameter("comment");
     Date time = new Date();
     long zero = 0; // 0 gets incorrectly cast as int if used directly.
-    Comment newReview = new Comment(userEmail, reviewText, time, zero, zero, rate);
+    Comment newReview = new Comment(userEmail, reviewText, time, zero, zero, rating);
     
     // Query for existing reviews from place_id.
     String place_id = request.getParameter("place_id");
 
     // Add new review to datastore with the place_id. 
-    addToDatastore(newReview, place_id, rate);
+    addToDatastore(newReview, place_id, rating);
 
     Entity curLocation = queryLocation(place_id, datastore);
     // Check if there is currently a location already in the datastore
@@ -122,7 +122,7 @@ public class ReviewServlet extends HttpServlet {
   }
    
   // Adds each new review to the datastore. 
-  public void addToDatastore(Comment comment, String place_id int rate){
+  public void addToDatastore(Comment comment, String place_id, int rate){
     String message = comment.getMessage();
     Date timestamp = comment.getTime();
     String author = comment.getAuthor();
