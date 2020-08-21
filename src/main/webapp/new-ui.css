@@ -39,13 +39,14 @@
 }
 
 .navbar button {
-  float: left;
-  display: block;
-  color: black;
-  background-color: whitesmoke;
+  float: right;
+  display: inline-block;
+  color: whitesmoke;
+  background-color: #3a3838;
   text-align: center;
   transition: all 0.3s ease;
   padding: 14px 16px;
+  height: 100%;
   text-decoration: none;
 }
 
