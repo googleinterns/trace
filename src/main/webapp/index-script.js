@@ -103,7 +103,8 @@ function activateSearchBar() {
     if (event.keyCode === 13) {
       var query = document.getElementById('searchForm').elements[0].value;
       var location = document.getElementById('searchForm').elements[1].value;
-      searchByText(query, location);
+      var radius = document.getElementById('searchForm').elements[2].value;
+      searchByText(query, location, radius);
     }
   });
 }
@@ -219,7 +220,7 @@ function searchByCoordinates(coordinate) {
 }
 
 /* Search Places API for relevant locations using text query. */
-function searchByText(textQuery, textLocation) {
+function searchByText(textQuery, textLocation, textRadius) {
   // Get the coordinates of a requested location. 
   const locationPromise = new Promise((resolve, reject) => {
     var geocoder = new google.maps.Geocoder();
@@ -234,26 +235,41 @@ function searchByText(textQuery, textLocation) {
       }
     });
   }); 
- 
+  
+  // Checks if they set the radius, if not, automatically set it to be 10 miles. 
+  if (textRadius == 0){
+    textRadius = 10;
+  }
+  // Convert from miles to meters
+  var meters = textRadius * 1609;
   // Waits for location to be chosen, then runs search
   locationPromise.then((locationRequest) => {
-    var request = {
-      query: textQuery,
-      location: locationRequest,
-      fields: ['place_id', 'geometry']
-    };
- 
+    var request;
+    // If no location is given, automatically gives you results near you with no radius limitation. 
+    if (locationRequest == null){
+      request = {
+        query: textQuery, 
+        fields: ['place_id', 'geometry']
+      };
+    } else {
+      request = {
+        query: textQuery,
+        location: locationRequest,
+        radius: meters,
+        fields: ['place_id', 'geometry']
+      };
+    }
     var service = new google.maps.places.PlacesService(map);
     service.textSearch(request, (results, status) => {
       if (status == google.maps.places.PlacesServiceStatus.OK) {
-        handleSearchResults(results, service);
+        handleSearchResults(results, service, meters, locationRequest);
       }
     });
   });
 }
 
 /* Accepts results from places query and returns array of details for nearby locations. */
-function handleSearchResults(results, service) {
+function handleSearchResults(results, service, radius, location) {
   // Center on the queried location
   if (results.length > 0) { 
     map.setCenter(results[0].geometry.location);
@@ -267,20 +283,25 @@ function handleSearchResults(results, service) {
     if (results[i] == null){
         break;
     } else {
-      var request = {
-        placeId: results[i].place_id,
-        fields: [
-          'name',
-          'vicinity',
-          'reviews',
-          'place_id',
-          'opening_hours',
-          'geometry',
-          'icon',
-          'international_phone_number',
-          'website'
-        ]
-      };
+      // Check to make sure within specified distance (if one is specified)
+      if (checkDistance(location, results[i].geometry.location, radius)){
+        var request = {
+          placeId: results[i].place_id,
+          fields: [
+            'name',
+            'vicinity',
+            'reviews',
+            'place_id',
+            'opening_hours',
+            'geometry',
+            'icon',
+            'international_phone_number',
+            'website'
+          ]
+        };
+      } else {
+        break;
+      }
     }
 
     // Creates a promise to return details from places api request.
@@ -316,6 +337,30 @@ function setMapOnAllNull() {
   for (let i = 0; i < markers.length; i++) {
     markers[i].setMap(null);
   }
+}
+
+/** Check if coordinates are within the requested distance */
+function checkDistance(location1, location2, radius){
+  // If no distance is given, automatically returns true. 
+  if (location1 == null || location2 == null){
+    return true;
+  }
+  var earthRadius = 6371000; // in meters. 
+  var dLat = degreesToRadians(location2.lat()-location1.lat());
+  var dLng = degreesToRadians(location2.lng()-location1.lng());
+  var sindLat = Math.sin(dLat / 2);
+  var sindLng = Math.sin(dLng / 2);
+  var a = Math.pow(sindLat, 2) + Math.pow(sindLng, 2)
+            * Math.cos(degreesToRadians(location1.lat())) * Math.cos(degreesToRadians(location2.lat()));
+  var c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1-a));
+  var dist = earthRadius * c;
+  return (dist <= radius);
+}
+
+/** Convert degrees to radians */
+function degreesToRadians(degrees) {
+  var pi = Math.PI;
+  return degrees * (pi/180);
 }
 
 /* Fills out search results page. */
