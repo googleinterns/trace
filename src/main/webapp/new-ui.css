@@ -47,6 +47,7 @@
   transition: all 0.3s ease;
   padding: 14px 16px;
   height: 100%;
+  border: none;
   text-decoration: none;
 }
 
