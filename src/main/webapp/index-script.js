@@ -89,7 +89,7 @@ function activateSearchBar() {
   searchIcon.addEventListener("click", () => {
     var query = document.getElementById('searchForm').elements[0].value;
     var location = document.getElementById('searchForm').elements[1].value;
-    searchByText(query, location);
+    searchByText(query, location, radius);
   });
 
   // Prevent page from refreshing when you submit the form
