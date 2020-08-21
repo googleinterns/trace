@@ -14,6 +14,7 @@ public class Comment {
   private final String author;
   private String messageContent;
   private Date timestamp;
+  private double stars;
   private long id;
   private Long negative;
   private Long positive;
@@ -71,6 +72,21 @@ public class Comment {
     this.rating = rate;
   }
 
+  /** 
+   * Constructor
+   * Overloaded constructor to include (new) rating field
+   * Old constructor to be deprecated code is updated
+   * Since this initializes a comment, the positive and negative longs can be set to 0
+   */
+  public Comment(String author, String message, Date timestamp, double rating) {
+    this.author = author;
+    this.messageContent = message;
+    this.timestamp = timestamp;
+    this.stars = rating;
+    this.positive = 0L;
+    this.negative = 0L;
+  }
+
   /** Return the id of the comment */
   public long getId(){
     return this.id;
@@ -107,6 +123,22 @@ public class Comment {
     return this.messageContent;
   }
 
+  /**
+   * Rating Accessor Method
+   * Accesses private rating variable
+   */
+  public double getRating() {
+    return this.stars;
+  }
+
+  /**
+   * Rating updater method
+   * Updates private rating variable
+   */
+  private void updateRating(double newRating) {
+    this.stars = newRating;
+  }
+
   /** 
    * Time Accessor method
    * Accesses private variable
@@ -141,5 +173,6 @@ public class Comment {
   public void updateComment(Comment newReview) {
     this.messageContent = newReview.messageContent;
     this.timestamp = newReview.timestamp;
+    this.stars = newReview.stars;
   }
 }

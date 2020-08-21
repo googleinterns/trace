@@ -37,7 +37,7 @@ public class ReviewServlet extends HttpServlet {
     // Get the requested place using it's ID. 
     String place_id = request.getParameter("place_id");
     // Defer to sort by recent if poor format
-    String sortType = (request.getParameter("sort").equals("relevant")) ? "relevant" : "recent"; 
+    String sortType = request.getParameter("sort");
     Filter placeFilter = new FilterPredicate("place_id", FilterOperator.EQUAL, place_id);
     Query query = new Query("Review").setFilter(placeFilter);
 
@@ -46,20 +46,23 @@ public class ReviewServlet extends HttpServlet {
     PreparedQuery results = datastore.prepare(query);
 
     // If no user logged in, sets to null. 
-    String currUser = null;
-    if (userService.getCurrentUser() != null){
-      currUser = userService.getCurrentUser().getEmail();
-    }
+    String currUser = (userService.getCurrentUser() != null) 
+        ? userService.getCurrentUser().getEmail() : null;
     PlaceReviews currentPlace = new PlaceReviews(place_id);
+    double rating = 0;
+    double count = 0;
 
     for (Entity review : results.asIterable()) {
+      count++;
       long id = review.getKey().getId();
       String message = (String) review.getProperty("message");
       Date timestamp = (Date) review.getProperty("timestamp");
       String author = (String) review.getProperty("author");
       int rate = review.getProperty("rate") == null ? 0 : ((Long) review.getProperty("rate")).intValue();
+      rating += rate;
       Long positive = (long) 0;
       Long negative = (long) 0;
+      
       if ((String) review.getProperty("positive") != null){
         positive = Long.parseLong((String) review.getProperty("positive"));
       }
@@ -74,9 +77,10 @@ public class ReviewServlet extends HttpServlet {
         addVote(id, com, currUser);
       }
     }
-    currentPlace.sortReviews(sortType);
+    rating = (count == 0) ? 0 : rating/count;
 
-    // Set the current user (even if it's null) 
+    currentPlace.setRating(rating);
+    currentPlace.sortReviews(sortType);
     currentPlace.setCurrentUser(currUser);
 
     // Adds the review list to a GSON/JSON object so that can be used in Javascript code    
