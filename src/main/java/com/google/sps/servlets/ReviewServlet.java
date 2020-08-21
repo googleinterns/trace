@@ -17,7 +17,7 @@ import com.google.sps.data.PlaceReviews;
 import com.google.sps.data.Comment;
 import com.google.sps.data.RatingHistory;
 import java.util.*;
-import java.lang.math;
+import java.lang.Math;
 import java.io.IOException;
 import com.google.gson.Gson;
 import javax.servlet.annotation.WebServlet;
