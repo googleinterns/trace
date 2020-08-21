@@ -507,17 +507,17 @@ function getURLParameter(sParam) {
  */
 function displayReviewModal(clickedFromMap) {
   if(!clickedFromMap) {
-    // Enable modal back-arrow.
-    const reviewBackArrow = document.getElementById('modal-backarrow');
-    reviewBackArrow.innerHTML = "&larr;";
-    reviewBackArrow.style.display = "block"
+    enableBackArrow();
   }
-
-  // Enable sort options.
   enableSortOptions();
+  displayReviewsBody();
+}
 
-  document.getElementById('results-body').style.display = "none";
-  document.getElementById('reviews-body').style.display = "block";
+/** Displays back-arrow button. */
+function enableBackArrow() {
+  const reviewBackArrow = document.getElementById('modal-backarrow');
+  reviewBackArrow.innerHTML = "&larr;";
+  reviewBackArrow.style.display = "block"
 }
 
 /** Displays sort options button. */
@@ -526,6 +526,12 @@ function enableSortOptions() {
   commentSortRelevant.style.display = "block";
   const commentSortRecent = document.getElementById("comment-sort-recent");
   commentSortRecent.style.display = "block";
+}
+
+/** Displays review-body and hides results-body. */
+function displayReviewsBody() {
+  document.getElementById('results-body').style.display = "none";
+  document.getElementById('reviews-body').style.display = "block";
 }
 
 /** Fetch Reviews
