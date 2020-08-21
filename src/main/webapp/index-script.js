@@ -502,18 +502,29 @@ function getURLParameter(sParam) {
  */
 function displayReviewModal(clickedFromMap) {
   if(!clickedFromMap) {
-    // Enable modal back-arrow.
-    const reviewBackArrow = document.getElementById('modal-backarrow');
-    reviewBackArrow.innerHTML = "&larr;";
-    reviewBackArrow.style.display = "block"
+    enableBackArrow();
   }
+  enableSortOptions();
+  displayReviewsBody();
+}
 
-  // Enable sort options.
+/** Displays back-arrow button. */
+function enableBackArrow() {
+  const reviewBackArrow = document.getElementById('modal-backarrow');
+  reviewBackArrow.innerHTML = "&larr;";
+  reviewBackArrow.style.display = "block"
+}
+
+/** Displays sort options button. */
+function enableSortOptions() {
   const commentSortRelevant = document.getElementById("comment-sort-relevant");
   commentSortRelevant.style.display = "block";
   const commentSortRecent = document.getElementById("comment-sort-recent");
   commentSortRecent.style.display = "block";
+}
 
+/** Displays review-body and hides results-body. */
+function displayReviewsBody() {
   document.getElementById('results-body').style.display = "none";
   document.getElementById('reviews-body').style.display = "block";
 }
@@ -621,14 +632,78 @@ function noReviews() {
  * Puts the review text in a <p> element
  */
 function generateReview(review, currUser) {
+  const newReview = createReviewContainer();
+  newReview.appendChild(createBigFlexContainer(review, currUser));
+  newReview.appendChild(createReviewTextDiv(review.messageContent));
+  return newReview;
+}
+
+/** Creates container to hold and style reviews. */
+function createReviewContainer() {
   const reviewEntry = document.createElement('li');
+  reviewEntry.className = 'review-container';
+  return reviewEntry;
+}
 
-  const reviewGrid = document.createElement('div');
-  reviewGrid.className += 'review-grid';
+/** Creates container to hold and style top elements of review. */
+function createBigFlexContainer(review, currUser) {
+  const bigFlex = document.createElement('div');
+  bigFlex.className = 'big-flex';
+  bigFlex.appendChild(createLeftFlex(review));
+  bigFlex.appendChild(createRightFlex(review, currUser));
+  return bigFlex;
+}
 
-  const reviewText = document.createElement('p');
-  reviewText.innerHTML += review.messageContent;
-  
+/** Creates container to hold a user's actual review. */
+function createReviewTextDiv(text) {
+  const div = document.createElement('div');
+  div.innerHTML = text;
+  return div;
+}
+
+/** Creates a container to hold leftmost elements of top elements of review. */
+function createLeftFlex(review) {
+  const leftFlex = document.createElement('div');
+  leftFlex.className = 'left-flex';
+
+  const userName = document.createElement('div');
+  userName.className = 'userName';
+  userName.innerHTML = review.author;
+
+  const staticRating = document.createElement('div');
+  staticRating.className = 'static-rating';
+  addStars(review.rating, staticRating);
+
+  leftFlex.appendChild(userName);
+  leftFlex.appendChild(staticRating);
+  return leftFlex;
+}
+
+/** Adds stars to parent element in review modal for a given review. */
+function addStars(rate, parent) {
+  const starClass = 'fa fa-star ';
+  for(var i = 0; i < rate; i ++) {
+    const star = document.createElement('span');
+    star.className = starClass + 'checked';
+    parent.appendChild(star);
+  }
+  for(var i = rate; i < 5; i++) {
+    const star = document.createElement('span');
+    star.className = starClass + 'unchecked';
+    parent.appendChild(star);
+  }
+}
+
+/** Creates container to hold upvote/downvote buttons. */
+function createRightFlex(review, currUser) {
+  const rightFlex = document.createElement('div');
+  rightFlex.className = 'right-flex';
+  addVotingButtons(rightFlex, review, currUser);
+  return rightFlex;
+}
+
+/** Adds upvote/downvote button to each review. */
+function addVotingButtons(parent, review, currUser) {
   const upvoteButton = document.createElement('button');
   upvoteButton.innerHTML += '&#128077;' + review.positive;
   upvoteButton.id += "up" + review.id;
@@ -648,13 +723,9 @@ function generateReview(review, currUser) {
   downvoteButton.addEventListener("click", () => {
     downvoteClick(review, currUser);
   });
-
-  reviewGrid.appendChild(reviewText);
-  reviewEntry.appendChild(reviewGrid);
-  reviewEntry.appendChild(upvoteButton);
-  reviewEntry.appendChild(downvoteButton);
-  return reviewEntry;
-} 
+  parent.appendChild(upvoteButton);
+  parent.appendChild(downvoteButton);
+}
 
 /** Sends post request to VotingServlet.java and updates modal. */
 function voteOnReview(review) {
