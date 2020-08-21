@@ -362,22 +362,41 @@ function degreesToRadians(degrees) {
 
 /* Fills out search results page. */
 function populateSearch(places) {
-  places = sortPlacesByRating(places);
+  places = sortPlacesByDistance(places);
   triggerModal(document.getElementById("results-popup"));
   populateResults(places);
 }
 
-/* Adds a field 'rating' to each place with a random integer to
- * simulate sorting locations by their ratings. */
+/** Sorts place options by rating */
 function sortPlacesByRating(places) {
-  places.forEach((place) => {
-    let rand = Math.floor(Math.random() * 10);
-    place.rating = rand;
-  });
+  console.log(places);
   places.sort((a, b) =>
     (a.rating > b.rating) ? 1 : -1);
+  console.log(places)
   return places;
 }
+
+/** Sorts place options by distance */
+function sortPlacesByDistance(places) {
+  console.log(places);
+  console.log(current);
+  places.sort((a, b) =>
+    (getDistance(current.geometry.location, a.geometry.location)
+      > getDistance(current.geometry.location, b.geometry.location)) ? 1 : -1);
+  console.log(places);
+  return places;
+}
+
+/** Returns the distance between two coordinates*/
+function getDistance(location1, location2){
+  if (location1.lat() == location2.lat() && location1.lng() == location2.lng()){
+    return 0;
+  }
+  var a = Math.pow((location1.lat() - location2.lat()), 2);
+  var b = Math.pow((location1.lng() - location2.lng()), 2);
+  return Math.sqrt(a + b);
+}
+
 
 /* Triggers the modal, and overlay, to follow the active CSS styling, making it appear. */
 function triggerModal(modal) {
