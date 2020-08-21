@@ -20,8 +20,6 @@ public class Comment {
   private Long positive;
   private String username;
   private String currUserVote;
-  private Set positiveVoters;
-  private Set negativeVoters;
 
   /**
    * Order Comparator
@@ -71,21 +69,8 @@ public class Comment {
     this.positive = 0L;
     this.negative = 0L;
     this.currUserVote = null;
-    this.positiveVoters = new HashSet<>();
-    this.negativeVoters = new HashSet<>();
   }
-
-  /* Add a voter to the positive voters set. */
-  public void addPositiveVoter(String voter){
-    positiveVoters.add(voter);
-  }  
   
-  /* Add a voter to the negative voters set. */
-  public void addNegativeVoter(String voter){
-    negativeVoters.add(voter);
-  }
-
->>>>>>> ca1ff7f52a7f98908d5fd085107bff008a2db5f8
   /** 
    * Constructor
    * Overloaded constructor to include (new) rating field
