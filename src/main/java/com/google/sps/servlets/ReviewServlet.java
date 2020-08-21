@@ -17,6 +17,7 @@ import com.google.sps.data.PlaceReviews;
 import com.google.sps.data.Comment;
 import com.google.sps.data.RatingHistory;
 import java.util.*;
+import java.lang.math;
 import java.io.IOException;
 import com.google.gson.Gson;
 import javax.servlet.annotation.WebServlet;
@@ -77,7 +78,9 @@ public class ReviewServlet extends HttpServlet {
         addVote(id, com, currUser);
       }
     }
+
     rating = (count == 0) ? 0 : rating/count;
+    rating = Math.round(rating * 10) / 10.0;
 
     currentPlace.setRating(rating);
     currentPlace.sortReviews(sortType);
