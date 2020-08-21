@@ -57,10 +57,10 @@ function returnToResultsScreen() {
   hideButton(document.getElementById("modal-backarrow"));
   hideButton(document.getElementById("comment-sort-relevant"));
   hideButton(document.getElementById("comment-sort-recent"));
+  hideButton(document.getElementById('reviews-body'));
+  hideButton(document.getElementById('rev-form-body'));
   document.getElementById('results-body').style.display = "block"; // Display results page.
-  document.getElementById('reviews-body').style.display = "none"; // Hide reviews page.
   document.getElementById('reviews-list-container').innerHTML = ''; // Clean reviews wrapper of all DOM elements;
-  document.getElementById('rev-form-body').style.display = "none";
 }
 
 /* Adds mouse listeners to searchBar-related html items. */
@@ -149,12 +149,13 @@ function closeModal(modal) {
   document.querySelectorAll('.modal-body').forEach((item) => {
     item.style.display = "none";
   });
-  hideBackArrow();
+  hideButton(document.getElementById("modal-backarrow"));
+  hideButton(document.getElementById("comment-sort-recent"));
+  hideButton(document.getElementById("comment-sort-relevant"));
 }
 
 /** Multi-purpose button hiding function */
 function hideButton(button) {
-  button.innerHTML = '';
   button.style.display = "none";
 }
 
@@ -388,7 +389,6 @@ function triggerModal(modal) {
   overlay.classList.add('active');
   modal.classList.add('active');
   document.getElementById('results-body').style.display = "block";
-  document.getElementById("modal-backarrow").style.display = "none";
 }
 
 /* This function takes in an array of JS places and creates an unordered
@@ -505,7 +505,7 @@ function displayReviewModal(clickedFromMap) {
   if(!clickedFromMap) {
     // Enable modal back-arrow.
     const reviewBackArrow = document.getElementById('modal-backarrow');
-    reviewBackArrow.innerHTML += "&larr;";
+    reviewBackArrow.innerHTML = "&larr;";
     reviewBackArrow.style.display = "block"
   }
 
