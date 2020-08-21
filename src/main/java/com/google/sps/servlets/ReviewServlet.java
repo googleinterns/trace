@@ -81,7 +81,6 @@ public class ReviewServlet extends HttpServlet {
         addVote(id, com, currUser);
       }
     }
-
     if(count != 0) {
       rating = rating / count;
     } else {

@@ -56,6 +56,7 @@ public class Comment {
     }
   };
 
+
   /** 
    * Constructor
    * Overloaded constructor to include (new) rating field
@@ -82,6 +83,23 @@ public class Comment {
   /* Add a voter to the negative voters set. */
   public void addNegativeVoter(String voter){
     negativeVoters.add(voter);
+  }
+
+>>>>>>> ca1ff7f52a7f98908d5fd085107bff008a2db5f8
+  /** 
+   * Constructor
+   * Overloaded constructor to include (new) rating field
+   * Old constructor to be deprecated code is updated
+   * Since this initializes a comment, the positive and negative longs can be set to 0
+   */
+  public Comment(String author, String message, Date timestamp, Long positive, Long negative, double rating) {
+    this.author = author;
+    this.messageContent = message;
+    this.timestamp = timestamp;
+    this.stars = rating;
+    this.positive = 0L;
+    this.negative = 0L;
+    this.currUserVote = null;
   }
 
   /** 
