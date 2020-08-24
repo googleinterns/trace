@@ -45,20 +45,22 @@ function loadMainButtons() {
     resortReviews(prev_ID, 'highest-rated');
   });
   
-  commentSortRecent.addEvzdsfsdfsdfsdfstener("click", () => {
+  commentSortRecent.addEventListener("click", () => {
     commentSortRecent.classList.add("active");
     commentSortHighestRated.classList.remove("active");
-    resortReviews(prev_ID, 'recent');
+    resortReviews(prev_ID, 'recent');fvotin
   });
 }
 
 /** Clears top layers of modal and displays results page. */
 function returnToResultsScreen() {
   hideButton(document.getElementById("modal-backarrow"));
-  hideButton(document.getElementById("comment-sort-relevant"));
+  hideButton(document.getElementById("comment-sort-highest-rated"));
   hideButton(document.getElementById("comment-sort-recent"));
   hideButton(document.getElementById('reviews-body'));
   hideButton(document.getElementById('rev-form-body'));
+  hideButton(document.getElementById("submit-new-review"));
+
   document.getElementById('results-body').style.display = "block"; // Display results page.
   document.getElementById('reviews-list-container').innerHTML = ''; // Clean reviews wrapper of all DOM elements;
 }
@@ -152,7 +154,7 @@ function closeModal(modal) {
   });
   hideButton(document.getElementById("modal-backarrow"));
   hideButton(document.getElementById("comment-sort-recent"));
-  hideButton(document.getElementById("comment-sort-relevant"));
+  hideButton(document.getElementById("comment-sort-highest-rated"));
 }
 
 /** Multi-purpose button hiding function */
@@ -386,7 +388,7 @@ function triggerModal(modal) {
   modal.classList.add('active');
   document.getElementById('results-body').style.display = "block";
   hideButton(document.getElementById("modal-backarrow"));
-  hideButton(document.getElementById("comment-sort-relevant"));
+  hideButton(document.getElementById("comment-sort-highest-rated"));
   hideButton(document.getElementById("comment-sort-recent"));
 }
 
@@ -517,7 +519,7 @@ function enableBackArrow() {
 
 /** Displays sort options button. */
 function enableSortOptions() {
-  const commentSortRelevant = document.getElementById("comment-sort-relevant");
+  const commentSortRelevant = document.getElementById("comment-sort-highest-rated");
   commentSortRelevant.style.display = "block";
   const commentSortRecent = document.getElementById("comment-sort-recent");
   commentSortRecent.style.display = "block";
@@ -599,6 +601,9 @@ function postNewReview(place_id) {
   const rate = getRating();
   const request = '/review?firstName=' + first + '&rate=' + rate +
     '&lastName=' + last + '&comment=' + comment + '&place_id=' + place_id;
+  document.getElementById('fname').value = '';
+  document.getElementById('lname').value = '';
+  document.getElementById('comment').value = '';
   fetch(request, {method:"POST"}).then(() => {
     returnToResultsScreen();
     showReviews(place_id, false);
@@ -610,8 +615,10 @@ function getRating() {
   var radios = document.getElementsByName('rate');
   for (var i = 0, length = radios.length; i < length; i++) {
     if (radios[i].checked) {
+      radios[i].style.color = "#ccc;"
       return radios[i].value;
     }
+    radios[i].style.color = "#ccc;"
   }
   return 0;
 }

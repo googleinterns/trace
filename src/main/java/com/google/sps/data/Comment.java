@@ -66,8 +66,8 @@ public class Comment {
     this.messageContent = message;
     this.timestamp = timestamp;
     this.rating = rating;
-    this.positive = 0L;
-    this.negative = 0L;
+    this.positive = positive;
+    this.negative = negative;
   }
 
   /** Return the id of the comment */
