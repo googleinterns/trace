@@ -364,8 +364,6 @@ function degreesToRadians(degrees) {
 function populateSearch(places, location) {
   const resultSortDistance = document.getElementById("sort-distance");
   const resultSortRating = document.getElementById("sort-rated");
-
-  console.log(places);
   triggerModal(document.getElementById("results-popup"));
   populateResults(places);
 
@@ -436,6 +434,17 @@ function sortPlacesByDistance(places, current) {
         > getDistance(locationResult, b.geometry.location)) ? 1 : -1);
     return places;
   });
+}
+
+/** Sorts place options by distance */
+function sortPlacesByDistance(places) {
+  console.log(places);
+  console.log(current);
+  places.sort((a, b) =>
+    (getDistance(current.geometry.location, a.geometry.location)
+      > getDistance(current.geometry.location, b.geometry.location)) ? 1 : -1);
+  console.log(places);
+  return places;
 }
 
 /** Returns the distance between two coordinates*/
