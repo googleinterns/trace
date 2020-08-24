@@ -27,12 +27,14 @@
   transform: translate(-50%, -50%);
   max-width: 34%;
   height: 100%;
+  min-width: 260px;
 }
 
 .navbar-right {
   float: right;
   max-width: 33%;
   height: 100%;
+  min-width: 350px;
 }
 
 .navbar div#icon-box {
