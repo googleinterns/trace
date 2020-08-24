@@ -20,31 +20,9 @@
   width: 30%;
 }
 
-/* Search Bar Specs. */
- .searchWrapper {
-  display: flex;
-  height: 40%;
-  width: 100%;
-  position: relative;
-}
-
-.search {
-  background-color: white;
-  border-radius: 3vw;
-  font-size: 150%;
-  height: 100%;
-  left: -7.5%;
-  min-width: 100px;
-  padding-left: 12.5%;
-  position: absolute;
-  width: 100%;
-}
-
 .search:hover, .search:focus {
   background-color: #f5f5f5; /* Grey. */
 }
-   
-
 
 .clear-icon {
   color: black;
