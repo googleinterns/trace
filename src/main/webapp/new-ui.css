@@ -14,12 +14,14 @@
 }
 
 .navbar-left {
+  display: block;
   float: left;
   max-width: 33%;
   height: 100%;
 }
 
 .navbar-center {
+  display: block;
   float: none;
   position: absolute;
   top: 50%;
@@ -31,6 +33,7 @@
 }
 
 .navbar-right {
+  display: block;
   float: right;
   max-width: 33%;
   height: 100%;
@@ -95,10 +98,10 @@
 
 /* Search Bar Specs. */
  .searchWrapper {
-  display: flex;
   height: 40%;
   width: 100%;
   position: relative;
+  display: grid;
 }
 
 .searchbar {
@@ -134,6 +137,8 @@
   min-width: 100px;
   position: relative;
   width: 50%;
+  padding-left: 3%;
+  float: left;
 }
 
 #radius {
@@ -142,4 +147,6 @@
   height: 50%;
   min-width: 100px;
   width: 40%;
+  padding-left: 3%;
+  float: right;
 }
