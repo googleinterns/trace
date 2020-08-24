@@ -11,10 +11,10 @@
 }
 
 .mainButtonsWrapper {
-  height: 40%;
+  height: 10%;
   left: 50%;
   position: fixed;
-  top: 40%;
+  top: 20%;
   transform: translate(-50%, -50%);
   width: 30%;
 }
@@ -22,7 +22,7 @@
 /* Search Bar Specs. */
  .searchWrapper {
   display: flex;
-  height: 12.5%;
+  height: 40%;
   width: 100%;
   position: relative;
 }
