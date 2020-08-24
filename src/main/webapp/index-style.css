@@ -22,7 +22,7 @@
 /* Search Bar Specs. */
  .searchWrapper {
   display: flex;
-  height: 12.5%;
+  height: 40%;
   width: 100%;
   position: relative;
 }
