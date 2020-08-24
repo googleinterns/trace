@@ -10,10 +10,21 @@
     <script src="api.js"></script>
   </head>
   <div class="navbar">
+    <div id="icon-box"><img class="logo" src="trace-logo.png"></img></div>
     <div class="navbar-left">
-      <div id="icon-box"><img class="logo" src="trace-logo.png"></img></div>
     </div>
     <div class="navbar-center">
+      <div class="searchButtonsWrapper">
+        <div class="searchWrapper">
+          <i id="search-icon" class="material-icons">search</i>
+          <form id="searchForm">
+            <input id="search" class="search" placeholder="Search" type="text" >
+            <input id="zipcode" placeholder="Located by..." type="text">
+            <input id="radius" placeholder="... miles away" type="text">
+          </form>
+          <div class="clear-icon">x</div>
+        </div>
+      </div> 
     </div>
     <div class="navbar-right">
       <button id="login" data-text-swap="Logout">Login</button>
@@ -31,17 +42,7 @@
     </div>
   </div>
   <div class="sidebar">
-    <div class="searchButtonsWrapper">
-        <div class="searchWrapper">
-          <i id="search-icon" class="material-icons">search</i>
-          <form id="searchForm">
-            <input id="search" class="search" placeholder="Search" type="text" >
-            <input id="zipcode" placeholder="Located by..." type="text">
-            <input id="radius" placeholder="... miles away" type="text">
-          </form>
-          <div class="clear-icon">x</div>
-        </div>
-      </div> 
+    
   </div>
   <body onload="loadPage();">
     <div id="map"></div>
