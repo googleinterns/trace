@@ -36,8 +36,8 @@ public class VotingServlet extends HttpServlet {
     DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
     UserService userService = UserServiceFactory.getUserService();
     Long comment_id = Long.parseLong(request.getParameter("comment_id"));
-    String upVotes = request.getParameter("up");
-    String downVotes = request.getParameter("down");
+    String upvotes = request.getParameter("up");
+    String downvotes = request.getParameter("down");
 
     // Gets the review itself from Datastore
     Entity review = retrieveReview(comment_id, datastore);
@@ -51,16 +51,31 @@ public class VotingServlet extends HttpServlet {
     PreparedQuery results = datastore.prepare(query);
 
     // Checks if a review exists, and if the current user has already voted on it. 
-    if(review != null && results.countEntities() < 1) {
+    // Also makes sure that input is not malicious.
+    if(review != null && isNumeric(upvotes) && isNumeric(downvotes)) {
+
+      String vote = "null";
+      // Check if the number of upvotes as changed, if so, the vote was positive.
+      if (Integer.parseInt(upvotes) > Integer.parseInt((String) review.getProperty("positive"))){
+        vote = "positive";
+      } else if (Integer.parseInt(downvotes) > Integer.parseInt((String) review.getProperty("negative"))){
+        vote = "negative";
+      }
+      
       // Updates the review's vote count
-      review.setProperty("positive", upVotes);
-      review.setProperty("negative", downVotes);
+      review.setProperty("positive", upvotes);
+      review.setProperty("negative", downvotes);
       datastore.put(review);
 
       // Adds the new review voter-pair
       Entity voterReview = new Entity("voter-review");
+      // Checks to see if we can adjust an old voter-review pair
+      if (results.countEntities() > 0){
+        voterReview = results.asSingleEntity();
+      } 
       voterReview.setProperty("voter", userService.getCurrentUser().getEmail());
       voterReview.setProperty("review_id", comment_id);
+      voterReview.setProperty("vote", vote);
       datastore.put(voterReview);
     }
   }
@@ -77,5 +92,21 @@ public class VotingServlet extends HttpServlet {
       System.out.println("No matching entity found.");
     }
     return review;
+  }
+
+  /** Check if a given string can be converted to a number 
+   * @param String takes a string to check 
+   * @return true if the String is a number.
+   */
+  public static boolean isNumeric(String str) {
+    if (str == null) {
+      return false;
+    }
+    try {
+      int i = Integer.parseInt(str);
+    } catch (NumberFormatException err) {
+      return false;
+    }
+    return true;
   }
 }

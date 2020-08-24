@@ -42,6 +42,7 @@ public class PlaceReviews {
     this.reviews.add(firstReview);
     this.rating = initialRating;
     this.reviewers = new HashSet<>();
+    this.currUser = null;
   }
 
   /* Keeps track of who is currently logged in */
@@ -102,13 +103,13 @@ public class PlaceReviews {
   /** 
    * Updater method
    * This adds a rating to a given PlaceReviews aggregate rating
-   * This does not permit a rating outside of [0, 10]
+   * This does not permit a rating outside of [0, 5]
    */
-  public void addRating(double rating) {
-    if (rating > 10) {
-      addRating(10);
+  public void setRating(double rating) {
+    if (rating > 5) {
+      setRating(5);
     } else if (rating < 0) {
-      addRating(0);
+      setRating(0);
     } else {
       this.rating += (rating);
     }
