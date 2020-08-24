@@ -31,7 +31,7 @@ function loadMainButtons() {
   });
   
   const modalBackArrow = document.getElementById("modal-backarrow");
-  const commentSortRelevant = document.getElementById("comment-sort-relevant");
+  const commentSortHighestRated = document.getElementById("comment-sort-highest-rated");
   const commentSortRecent = document.getElementById("comment-sort-recent");
 
   // Hide reviews page and display results page.
@@ -39,15 +39,15 @@ function loadMainButtons() {
     returnToResultsScreen();
   });
 
-  commentSortRelevant.addEventListener("click", () => {
-    commentSortRelevant.classList.add("active");
+  commentSortHighestRated.addEventListener("click", () => {
+    commentSortHighestRated.classList.add("active");
     commentSortRecent.classList.remove("active");
-    resortReviews(prev_ID, 'relevant');
+    resortReviews(prev_ID, 'highest-rated');
   });
   
-  commentSortRecent.addEventListener("click", () => {
+  commentSortRecent.addEvzdsfsdfsdfsdfstener("click", () => {
     commentSortRecent.classList.add("active");
-    commentSortRelevant.classList.remove("active");
+    commentSortHighestRated.classList.remove("active");
     resortReviews(prev_ID, 'recent');
   });
 }

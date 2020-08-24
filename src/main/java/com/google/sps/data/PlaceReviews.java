@@ -90,13 +90,17 @@ public class PlaceReviews {
 
   /**
    * Public sorting method
-   * Sorts the internal Comment list to the type requested
+   * Sorts the internal Comment list by their voter rating, recency,
+   * or "relevancy" where "relevancy" is defined as the scores
+   * they gave a location weighted by their recency.
    */
   public void sortReviews(String sortType) {
-    if (sortType == "relevant") {
+    if (sortType == "highest-rated") {
       Collections.sort(this.reviews, Comment.ORDER_BY_SCORE);
-    } else {
+    } else if(sortType == "recent") {
       Collections.sort(this.reviews, Comment.ORDER_BY_DATE);
+    } else {
+      Collections.sort(this.reviews, Comment.ORDER_BY_SCORE);
     }
   }
 

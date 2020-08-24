@@ -20,6 +20,7 @@ public class Comment {
   private String username;
   private String currUserVote;
   private double rating;
+  private double weightedRating;
 
   /**
    * Order Comparator
