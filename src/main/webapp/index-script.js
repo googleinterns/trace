@@ -341,7 +341,7 @@ function handleSearchResults(results, service, radius, location) {
   };
   // Waits on all promises to complete before passing the results into the next function.
   Promise.all(promises).then(places => {
-    populateSearch(places); // Placeholder
+    populateSearch(places, location);
   });
 }
 
@@ -383,14 +383,16 @@ function degreesToRadians(degrees) {
 }
 
 /* Fills out search results page. */
-function populateSearch(places) {
-  places = sortPlacesByDistance(places);
+function populateSearch(places, location) {
+  //places = sortPlacesByDistance(places, location);
+  places = sortPlacesByRating(places);
   triggerModal(document.getElementById("results-popup"));
   populateResults(places);
 }
 
 /** Sorts place options by rating */
 function sortPlacesByRating(places) {
+  // TODO: Fix rating system based on where that information is stored.
   console.log(places);
   places.sort((a, b) =>
     (a.rating > b.rating) ? 1 : -1);
@@ -399,14 +401,35 @@ function sortPlacesByRating(places) {
 }
 
 /** Sorts place options by distance */
-function sortPlacesByDistance(places) {
-  console.log(places);
-  console.log(current);
-  places.sort((a, b) =>
-    (getDistance(current.geometry.location, a.geometry.location)
-      > getDistance(current.geometry.location, b.geometry.location)) ? 1 : -1);
-  console.log(places);
-  return places;
+function sortPlacesByDistance(places, current) {
+  const locationPromise = new Promise((resolve, reject) => {
+    if (current == null) {
+      // Check if can search by user's current location
+      if (navigator.geolocation) {
+        navigator.geolocation.getCurrentPosition(
+          position => {
+            const pos = {
+              lat: position.coords.latitude,
+              lng: position.coords.longitude
+            };
+          current = new google.maps.LatLng(pos.lat, pos.lng)
+          resolve(current);
+          }
+        );
+      } else {
+      // Can't sort by location
+      reject();
+      }
+    } else {
+      resolve(current);
+    }
+  }).then((locationResult) => {
+    console.log("Entered promise.then()...")
+    places.sort((a, b) => ( 
+      getDistance(current, a.geometry.location)
+        > getDistance(current, b.geometry.location)) ? 1 : -1);
+    return places;
+  });
 }
 
 /** Returns the distance between two coordinates*/
