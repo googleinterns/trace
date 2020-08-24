@@ -141,7 +141,6 @@
   border-radius: 3vw;
   height: 50%;
   min-width: 100px;
-  top: 60%;
   position: relative;
   width: 50%;
 }
@@ -150,8 +149,6 @@
   background-color: white;
   border-radius: 3vw;
   height: 50%;
-  left: 50%;
   min-width: 100px;
-  transform: translate(-50%, 120%);
-  width: 55%;
+  width: 40%;
 }
