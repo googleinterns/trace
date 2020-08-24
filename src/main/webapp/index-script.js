@@ -1,13 +1,13 @@
 /* Class Variables. */
 var map;
-var currentLocation = "newID";
+var markers;
 var prev_ID;
 
 /* Loads page and main buttons. */
 function loadPage() {
-    loadMainButtons();
-    createMap();
-    toggleLoginLogout();
+  loadMainButtons();
+  createMap();
+  toggleLoginLogout();
 }
 
 /* Activates functionality for search bar and log-in button. */
@@ -36,13 +36,7 @@ function loadMainButtons() {
 
   // Hide reviews page and display results page.
   modalBackArrow.addEventListener("click", () => {
-    hideBackArrow();
-    hideButton(commentSortRelevant);
-    hideButton(commentSortRecent);
-    document.getElementById('results-body').style.display = "block"; // Display results page.
-    document.getElementById('reviews-body').style.display = "none"; // Hide reviews page.
-    document.getElementById('reviews-list-container').innerHTML = ''; // Clean reviews wrapper of all DOM elements;
-    document.getElementById('rev-form-body').style.display = "none";
+    returnToResultsScreen();
   });
 
   commentSortRelevant.addEventListener("click", () => {
@@ -56,6 +50,17 @@ function loadMainButtons() {
     commentSortRelevant.classList.remove("active");
     resortReviews(prev_ID, 'recent');
   });
+}
+
+/** Clears top layers of modal and displays results page. */
+function returnToResultsScreen() {
+  hideButton(document.getElementById("modal-backarrow"));
+  hideButton(document.getElementById("comment-sort-relevant"));
+  hideButton(document.getElementById("comment-sort-recent"));
+  hideButton(document.getElementById('reviews-body'));
+  hideButton(document.getElementById('rev-form-body'));
+  document.getElementById('results-body').style.display = "block"; // Display results page.
+  document.getElementById('reviews-list-container').innerHTML = ''; // Clean reviews wrapper of all DOM elements;
 }
 
 /* Adds mouse listeners to searchBar-related html items. */
@@ -84,7 +89,8 @@ function activateSearchBar() {
   searchIcon.addEventListener("click", () => {
     var query = document.getElementById('searchForm').elements[0].value;
     var location = document.getElementById('searchForm').elements[1].value;
-    searchByText(query, location);
+    var radius = document.getElementById('searchForm').elements[2].value;
+    searchByText(query, location, radius);
   });
 
   // Prevent page from refreshing when you submit the form
@@ -98,7 +104,8 @@ function activateSearchBar() {
     if (event.keyCode === 13) {
       var query = document.getElementById('searchForm').elements[0].value;
       var location = document.getElementById('searchForm').elements[1].value;
-      searchByText(query, location);
+      var radius = document.getElementById('searchForm').elements[2].value;
+      searchByText(query, location, radius);
     }
   });
 }
@@ -143,19 +150,13 @@ function closeModal(modal) {
   document.querySelectorAll('.modal-body').forEach((item) => {
     item.style.display = "none";
   });
-  hideBackArrow();
-}
-
-/** Hide modal-backarrow. */
-function hideBackArrow() {
-  const button = document.getElementById("modal-backarrow");
-  button.innerHTML = '';
-  button.style.display = "none";
+  hideButton(document.getElementById("modal-backarrow"));
+  hideButton(document.getElementById("comment-sort-recent"));
+  hideButton(document.getElementById("comment-sort-relevant"));
 }
 
 /** Multi-purpose button hiding function */
 function hideButton(button) {
-  button.innerHTML = '';
   button.style.display = "none";
 }
 
@@ -169,9 +170,6 @@ function toggleLoginLogout(){
     // then a user is logged in and we can display the 'Logout' button
       if (split.length > 0){
         logInButton.innerHTML = logInButton.getAttribute("data-text-swap");
-      } else {     
-        // If a user is not logged in, also display the tutorial
-        document.getElementById("popUp").style.display = "block";
       }
   });
 }
@@ -181,7 +179,7 @@ function createMap() {
   const googleplex = {lat: 37.422, lng: -122.0841};
   map = new google.maps.Map(
     document.getElementById('map'),
-    {center: googleplex, zoom: 9,
+    {center: googleplex, zoom: 14, // Set default zoom to allow proper spacing of markers on-search.
     mapTypeControlOptions: {mapTypeIds: ['roadmap']}});
 
   // Checks to see if browser has enabled location sharing.
@@ -197,8 +195,9 @@ function createMap() {
       }
     );
   }
+  markers = [];
+  initializeHeatMap();
 
-  initializeHeatMap(map);
   // Search by coordinates on map click.
   map.addListener('click', function(mapsMouseEvent) {
     searchByCoordinates(mapsMouseEvent.latLng);
@@ -223,7 +222,7 @@ function searchByCoordinates(coordinate) {
 }
 
 /* Search Places API for relevant locations using text query. */
-function searchByText(textQuery, textLocation) {
+function searchByText(textQuery, textLocation, textRadius) {
   // Get the coordinates of a requested location. 
   const locationPromise = new Promise((resolve, reject) => {
     var geocoder = new google.maps.Geocoder();
@@ -238,31 +237,47 @@ function searchByText(textQuery, textLocation) {
       }
     });
   }); 
- 
+  
+  // Checks if they set the radius, if not, automatically set it to be 10 miles. 
+  if (textRadius == 0){
+    textRadius = 10;
+  }
+  // Convert from miles to meters
+  var meters = textRadius * 1609;
   // Waits for location to be chosen, then runs search
   locationPromise.then((locationRequest) => {
-    var request = {
-      query: textQuery,
-      location: locationRequest,
-      fields: ['place_id', 'geometry']
-    };
- 
+    var request;
+    // If no location is given, automatically gives you results near you with no radius limitation. 
+    if (locationRequest == null){
+      request = {
+        query: textQuery, 
+        fields: ['place_id', 'geometry']
+      };
+    } else {
+      request = {
+        query: textQuery,
+        location: locationRequest,
+        radius: meters,
+        fields: ['place_id', 'geometry']
+      };
+    }
     var service = new google.maps.places.PlacesService(map);
     service.textSearch(request, (results, status) => {
       if (status == google.maps.places.PlacesServiceStatus.OK) {
-        handleSearchResults(results, service);
+        handleSearchResults(results, service, meters, locationRequest);
       }
     });
   });
 }
 
 /* Accepts results from places query and returns array of details for nearby locations. */
-function handleSearchResults(results, service) {
+function handleSearchResults(results, service, radius, location) {
   // Center on the queried location
   if (results.length > 0) { 
     map.setCenter(results[0].geometry.location);
+    map.setZoom(14); // Ensure map is sufficiently zoomed in to appropriately space results.
   }
-  
+  deleteMarkers();
   var promises = [];
 
   // Modal can handle up to 9 results only
@@ -270,20 +285,25 @@ function handleSearchResults(results, service) {
     if (results[i] == null){
         break;
     } else {
-      var request = {
-        placeId: results[i].place_id,
-        fields: [
-          'name',
-          'vicinity',
-          'reviews',
-          'place_id',
-          'opening_hours',
-          'geometry',
-          'icon',
-          'international_phone_number',
-          'website'
-        ]
-      };
+      // Check to make sure within specified distance (if one is specified)
+      if (checkDistance(location, results[i].geometry.location, radius)){
+        var request = {
+          placeId: results[i].place_id,
+          fields: [
+            'name',
+            'vicinity',
+            'reviews',
+            'place_id',
+            'opening_hours',
+            'geometry',
+            'icon',
+            'international_phone_number',
+            'website'
+          ]
+        };
+      } else {
+        break;
+      }
     }
 
     // Creates a promise to return details from places api request.
@@ -301,6 +321,43 @@ function handleSearchResults(results, service) {
   Promise.all(promises).then(places => {
     populateSearch(places); // Placeholder
   });
+}
+
+/** Deletes all markers in the array by removing references to them. */
+function deleteMarkers() {
+  clearMarkers();
+  markers = [];
+}
+
+/** Sets the map on all markers in the array. */
+function clearMarkers() {
+  for (let i = 0; i < markers.length; i++) {
+    markers[i].setMap(null);
+  }
+}
+
+/** Check if coordinates are within the requested distance */
+function checkDistance(location1, location2, radius){
+  // If no distance is given, automatically returns true. 
+  if (location1 == null || location2 == null){
+    return true;
+  }
+  var earthRadius = 6371000; // in meters. 
+  var dLat = degreesToRadians(location2.lat()-location1.lat());
+  var dLng = degreesToRadians(location2.lng()-location1.lng());
+  var sindLat = Math.sin(dLat / 2);
+  var sindLng = Math.sin(dLng / 2);
+  var a = Math.pow(sindLat, 2) + Math.pow(sindLng, 2)
+            * Math.cos(degreesToRadians(location1.lat())) * Math.cos(degreesToRadians(location2.lat()));
+  var c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1-a));
+  var dist = earthRadius * c;
+  return (dist <= radius);
+}
+
+/** Convert degrees to radians */
+function degreesToRadians(degrees) {
+  var pi = Math.PI;
+  return degrees * (pi/180);
 }
 
 /* Fills out search results page. */
@@ -328,7 +385,9 @@ function triggerModal(modal) {
   overlay.classList.add('active');
   modal.classList.add('active');
   document.getElementById('results-body').style.display = "block";
-  document.getElementById("modal-backarrow").style.display = "none";
+  hideButton(document.getElementById("modal-backarrow"));
+  hideButton(document.getElementById("comment-sort-relevant"));
+  hideButton(document.getElementById("comment-sort-recent"));
 }
 
 /* This function takes in an array of JS places and creates an unordered
@@ -339,6 +398,14 @@ function populateResults(places) {
   entireList.id += "results-list";
   places.forEach(place => {
     entireList.appendChild(generateResult(place));
+    var marker = new google.maps.Marker({
+      position: place.geometry.location,
+      map: map,
+      animation: google.maps.Animation.DROP,
+      title: 'Hello World!'
+    });
+    addMarkerListeners(marker, place.place_id);
+    markers.push(marker);
   });
   listContainer.appendChild(entireList);
 }
@@ -366,7 +433,7 @@ function generateResult(place) {
   
   // Relevant information to be displayed
   var tidbits = [
-    "<a onclick=\"showReviews(\'" + place.place_id + "\');\">" + place.name + "</a>",
+    "<a onclick=\"showReviews(\'" + place.place_id + "\', false);\">" + place.name + "</a>",
     place.international_phone_number,
     "<a href=\"" + place.website + "\">Site</a>",
     place.vicinity
@@ -387,29 +454,77 @@ function generateResult(place) {
   return resultEntry;
 }
 
+/** Add event listeners to markers. */
+function addMarkerListeners(marker, placeID) {
+  marker.addListener('mouseover', () => toggleBounce(marker));
+  marker.addListener('mouseout', () => toggleBounce(marker));
+  marker.addListener('click', () => {
+    triggerModal(document.getElementById("results-popup"));
+    showReviews(placeID, true);
+  });
+}
+
+/** Enable markers to bounce when hovered over. */
+function toggleBounce(marker) {
+  if (marker.getAnimation() !== null) {
+    marker.setAnimation(null);
+  } else {
+    marker.setAnimation(google.maps.Animation.BOUNCE);
+  }
+}
+
 /** Pseudomaster Review Function
  * One central function that is called to trigger entire review interface
  */
-function showReviews(placeID) {
+function showReviews(placeID, clickedFromMap) {
+  if(getURLParameter('testing') === 'true') {
+    placeID = 'testReviews';
+  }
   fetchReviews(placeID);
-  displayReviewModal();
+  displayReviewModal(clickedFromMap);
+}
+
+/** Retrieve url parameters from the site's url. */
+function getURLParameter(sParam) {
+  var sPageURL = window.location.search.substring(1);
+  var sURLVariables = sPageURL.split('&');
+  for (var i = 0; i < sURLVariables.length; i++) {
+    var sParameterName = sURLVariables[i].split('=');
+    if (sParameterName[0] == sParam) {
+      return sParameterName[1];
+    }
+  }
+  return null;
 }
 
 /**
  * Review modal activation function
  */
-function displayReviewModal() {
+function displayReviewModal(clickedFromMap) {
+  if(!clickedFromMap) {
+    enableBackArrow();
+  }
+  enableSortOptions();
+  displayReviewsBody();
+}
+
+/** Displays back-arrow button. */
+function enableBackArrow() {
   const reviewBackArrow = document.getElementById('modal-backarrow');
-  reviewBackArrow.classList.add("exit-button");
-  reviewBackArrow.innerHTML += "&larr;";
+  reviewBackArrow.innerHTML = "&larr;";
+  reviewBackArrow.style.display = "block"
+}
+
+/** Displays sort options button. */
+function enableSortOptions() {
   const commentSortRelevant = document.getElementById("comment-sort-relevant");
-  commentSortRelevant.innerHTML += "Relevant";
   commentSortRelevant.style.display = "block";
   const commentSortRecent = document.getElementById("comment-sort-recent");
-  commentSortRecent.innerHTML += "Recent";
   commentSortRecent.style.display = "block";
+}
 
-  document.getElementById("modal-backarrow").style.display = "block";
+/** Displays review-body and hides results-body. */
+function displayReviewsBody() {
   document.getElementById('results-body').style.display = "none";
   document.getElementById('reviews-body').style.display = "block";
 }
@@ -470,6 +585,35 @@ function triggerNewReviewForm(place_id) {
   document.getElementById("place_id").value = place_id;
   document.getElementById("reviews-body").style.display = "none"; // Hide reviews page.
   document.getElementById("rev-form-body").style.display = "block";
+  document.getElementById("submit-new-review")
+    .addEventListener("click", () => {
+      postNewReview(place_id);
+    });
+}
+
+/** Function posts new review to datastore and updates modal reviews page with new review. */
+function postNewReview(place_id) {
+  const first = document.getElementById('fname').value;
+  const last = document.getElementById('lname').value;
+  const comment = document.getElementById('comment').value;
+  const rate = getRating();
+  const request = '/review?firstName=' + first + '&rate=' + rate +
+    '&lastName=' + last + '&comment=' + comment + '&place_id=' + place_id;
+  fetch(request, {method:"POST"}).then(() => {
+    returnToResultsScreen();
+    showReviews(place_id, false);
+  });
+}
+
+/** Finds which of the radio buttons is currently checked and returns that value. */
+function getRating() {
+  var radios = document.getElementsByName('rate');
+  for (var i = 0, length = radios.length; i < length; i++) {
+    if (radios[i].checked) {
+      return radios[i].value;
+    }
+  }
+  return 0;
 }
 
 /**
@@ -488,14 +632,78 @@ function noReviews() {
  * Puts the review text in a <p> element
  */
 function generateReview(review, currUser) {
+  const newReview = createReviewContainer();
+  newReview.appendChild(createBigFlexContainer(review, currUser));
+  newReview.appendChild(createReviewTextDiv(review.messageContent));
+  return newReview;
+}
+
+/** Creates container to hold and style reviews. */
+function createReviewContainer() {
   const reviewEntry = document.createElement('li');
+  reviewEntry.className = 'review-container';
+  return reviewEntry;
+}
 
-  const reviewGrid = document.createElement('div');
-  reviewGrid.className += 'review-grid';
+/** Creates container to hold and style top elements of review. */
+function createBigFlexContainer(review, currUser) {
+  const bigFlex = document.createElement('div');
+  bigFlex.className = 'big-flex';
+  bigFlex.appendChild(createLeftFlex(review));
+  bigFlex.appendChild(createRightFlex(review, currUser));
+  return bigFlex;
+}
 
-  const reviewText = document.createElement('p');
-  reviewText.innerHTML += review.messageContent;
-  
+/** Creates container to hold a user's actual review. */
+function createReviewTextDiv(text) {
+  const div = document.createElement('div');
+  div.innerHTML = text;
+  return div;
+}
+
+/** Creates a container to hold leftmost elements of top elements of review. */
+function createLeftFlex(review) {
+  const leftFlex = document.createElement('div');
+  leftFlex.className = 'left-flex';
+
+  const userName = document.createElement('div');
+  userName.className = 'userName';
+  userName.innerHTML = review.author;
+
+  const staticRating = document.createElement('div');
+  staticRating.className = 'static-rating';
+  addStars(review.rating, staticRating);
+
+  leftFlex.appendChild(userName);
+  leftFlex.appendChild(staticRating);
+  return leftFlex;
+}
+
+/** Adds stars to parent element in review modal for a given review. */
+function addStars(rate, parent) {
+  const starClass = 'fa fa-star ';
+  for(var i = 0; i < rate; i ++) {
+    const star = document.createElement('span');
+    star.className = starClass + 'checked';
+    parent.appendChild(star);
+  }
+  for(var i = rate; i < 5; i++) {
+    const star = document.createElement('span');
+    star.className = starClass + 'unchecked';
+    parent.appendChild(star);
+  }
+}
+
+/** Creates container to hold upvote/downvote buttons. */
+function createRightFlex(review, currUser) {
+  const rightFlex = document.createElement('div');
+  rightFlex.className = 'right-flex';
+  addVotingButtons(rightFlex, review, currUser);
+  return rightFlex;
+}
+
+/** Adds upvote/downvote button to each review. */
+function addVotingButtons(parent, review, currUser) {
   const upvoteButton = document.createElement('button');
   upvoteButton.innerHTML += '&#128077;' + review.positive;
   upvoteButton.id += "up" + review.id;
@@ -515,13 +723,9 @@ function generateReview(review, currUser) {
   downvoteButton.addEventListener("click", () => {
     downvoteClick(review, currUser);
   });
-
-  reviewGrid.appendChild(reviewText);
-  reviewEntry.appendChild(reviewGrid);
-  reviewEntry.appendChild(upvoteButton);
-  reviewEntry.appendChild(downvoteButton);
-  return reviewEntry;
-} 
+  parent.appendChild(upvoteButton);
+  parent.appendChild(downvoteButton);
+}
 
 /** Sends post request to VotingServlet.java and updates modal. */
 function voteOnReview(review) {
@@ -598,13 +802,13 @@ function toggleColor(review){
 
 /** Function reads heatWeights.txt and parses it as a JSON object
   * in order to populate heatMap in helperfunction. */
-function initializeHeatMap(map) {
+function initializeHeatMap() {
   var heatWeights = null
   fetch('heatWeights.txt').then(response => response.text())
     .then(text => {
       heatWeights = JSON.parse(text);
       const heatMapData = createHeatMapData(heatWeights);
-      populateHeatMap(heatMapData, map)
+      populateHeatMap(heatMapData)
     });
 }
 
@@ -626,63 +830,67 @@ function createHeatMapData(heatWeights) {
 }
 
 /** Uses heatMapData object to populate heatMap. */
-function populateHeatMap(heatMapData, map) {
+function populateHeatMap(heatMapData) {
   var heatmap = new google.maps.visualization.HeatmapLayer({
     data: heatMapData
   });
   heatmap.set("radius", 150);
-  map.setZoom(9);
-  addHeatMapListeners(map, heatmap); 
+  addHeatMapListeners(heatmap); 
 }
 
 /** Adds functionality for heatmap related buttons/toggles. */
-function addHeatMapListeners(map, heatmap) {
+function addHeatMapListeners(heatmap) {
   const heatToggle = document.getElementById("heat-toggle");
   const gradToggle = document.getElementById("gradient-toggle");
   const radiusSlider = document.getElementById("heat-radius");
   const opacitySlider = document.getElementById("heat-opacity");
   const darkMode = document.getElementById("dark-toggle");
   const darkGradient = [
-      "rgba(0, 255, 255, 0)",
-      "rgba(0, 255, 255, 1)",
-      "rgba(0, 191, 255, 1)",
-      "rgba(0, 127, 255, 1)",
-      "rgba(0, 63, 255, 1)",
-      "rgba(0, 0, 255, 1)",
-      "rgba(0, 0, 223, 1)",
-      "rgba(0, 0, 191, 1)",
-      "rgba(0, 0, 159, 1)",
-      "rgba(0, 0, 127, 1)",
-      "rgba(63, 0, 91, 1)",
-      "rgba(127, 0, 63, 1)",
-      "rgba(191, 0, 31, 1)",
-      "rgba(255, 0, 0, 1)"
-    ];
-  // Scale radius on zoom-in/out.
-  map.addListener("zoom_changed", () => {
-    changeRadius(map, heatmap, radiusSlider);
-  });
+    "rgba(0, 255, 255, 0)",
+    "rgba(0, 255, 255, 1)",
+    "rgba(0, 191, 255, 1)",
+    "rgba(0, 127, 255, 1)",
+    "rgba(0, 63, 255, 1)",
+    "rgba(0, 0, 255, 1)",
+    "rgba(0, 0, 223, 1)",
+    "rgba(0, 0, 191, 1)",
+    "rgba(0, 0, 159, 1)",
+    "rgba(0, 0, 127, 1)",
+    "rgba(63, 0, 91, 1)",
+    "rgba(127, 0, 63, 1)",
+    "rgba(191, 0, 31, 1)",
+    "rgba(255, 0, 0, 1)"
+  ];
 
   // Activate heatmap and display heatmap buttons.
   heatToggle.addEventListener("click", () => {
-    const mapActive = heatmap.getMap();
-    heatmap.setMap(mapActive ? null : map);
+      const mapActive = heatmap.getMap();
+      heatmap.setMap(mapActive ? null : map);
+      map.setZoom(8); // Zoom out when heatmap is activated.
 
-    // Activate buttons.
-    const disp = mapActive ? 'none' : 'block';
-    heatToggle.innerHTML = mapActive ? 'Open Heatmap' : 'Close Heatmap';
-    gradToggle.style.display = disp;
-    radiusSlider.style.display = disp;
-    opacitySlider.style.display = disp;
+      // Activate buttons.
+      const disp = mapActive ? 'none' : 'block';
+      gradToggle.style.display = disp;
+      radiusSlider.style.display = disp;
+      opacitySlider.style.display = disp;
+      heatToggle.innerHTML = mapActive ? 
+        'Open COVID Dashboard' : 'Close dashboard';
+  });
+
+  // Scale radius on zoom-in/out.
+  map.addListener("zoom_changed", () => {
+    changeRadius(heatmap, radiusSlider);
   });
 
   // Change heatmap gradient.
+  gradToggle.style.display = 'none';
   gradToggle.addEventListener("click", () => {
     heatmap.set("gradient", heatmap.get("gradient") ? null : darkGradient);
   });
+  
   // Grow/shrink heatmap data radius.
   radiusSlider.oninput = function() {
-    changeRadius(map, heatmap, radiusSlider);
+    changeRadius(heatmap, radiusSlider);
   }
 
   // Changes heatmap data opacity.
@@ -699,7 +907,7 @@ function addHeatMapListeners(map, heatmap) {
   * or manually changes the radius of the heatmap data.
   * Sets the heatmap radius based on radius slider and current
   * zoom level. */
-function changeRadius(map, heatmap, slider) {
+function changeRadius(heatmap, slider) {
   const zoom = map.getZoom();
   const factor = parseInt(slider.value)/5; // Ranges from 0 to 2.
   heatmap.set("radius", Math.pow(1.75, zoom + factor));
@@ -787,6 +995,7 @@ function toggleDarkMode(map, heatmap, gradient, mode) {
       stylers: [{color: '#17263c'}]
     }
   ];
+
   if(mode === "Light Mode") {
     map.set("styles", null);
     heatmap.set("gradient", null);

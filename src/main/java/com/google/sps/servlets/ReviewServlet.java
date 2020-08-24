@@ -17,6 +17,7 @@ import com.google.sps.data.PlaceReviews;
 import com.google.sps.data.Comment;
 import com.google.sps.data.RatingHistory;
 import java.util.*;
+import java.lang.Math;
 import java.io.IOException;
 import com.google.gson.Gson;
 import javax.servlet.annotation.WebServlet;
@@ -37,7 +38,7 @@ public class ReviewServlet extends HttpServlet {
     // Get the requested place using it's ID. 
     String place_id = request.getParameter("place_id");
     // Defer to sort by recent if poor format
-    String sortType = (request.getParameter("sort").equals("relevant")) ? "relevant" : "recent"; 
+    String sortType = request.getParameter("sort");
     Filter placeFilter = new FilterPredicate("place_id", FilterOperator.EQUAL, place_id);
     Query query = new Query("Review").setFilter(placeFilter);
 
@@ -46,33 +47,43 @@ public class ReviewServlet extends HttpServlet {
     PreparedQuery results = datastore.prepare(query);
 
     // If no user logged in, sets to null. 
-    String currUser = null;
-    if (userService.getCurrentUser() != null){
-      currUser = userService.getCurrentUser().getEmail();
-    }
+    String currUser = (userService.getCurrentUser() != null) 
+        ? userService.getCurrentUser().getEmail() : null;
     PlaceReviews currentPlace = new PlaceReviews(place_id);
+    double rating = 0;
+    double count = 0;
 
     for (Entity review : results.asIterable()) {
+      count++;
       long id = review.getKey().getId();
       String message = (String) review.getProperty("message");
       Date timestamp = (Date) review.getProperty("timestamp");
       String author = (String) review.getProperty("author");
-      Long positive = (long) 0;
-      Long negative = (long) 0;
+      double rate = (review.getProperty("rate") == null) ? 0 : ((Long) review.getProperty("rate")).doubleValue();
+      rating += rate;
+      Long positive = 0L;
+      Long negative = 0L;
+      
       if ((String) review.getProperty("positive") != null){
         positive = Long.parseLong((String) review.getProperty("positive"));
       }
       if ((String) review.getProperty("negative") != null){
         negative = Long.parseLong((String) review.getProperty("negative"));
       }
-      Comment com = new Comment(author, message, timestamp, positive, negative);
+      Comment com = new Comment(author, message, timestamp, positive, negative, rate);
       com.setId(id);
       currentPlace.addReview(com);
-      addVote(id, com, currUser);
+      // If the user is logged in, add their voting status to the comment.
+      if (currUser != null){
+        addVote(id, com, currUser);
+      }
     }
-    currentPlace.sortReviews(sortType);
 
-    // Set the current user (even if it's null) 
+    rating = (count == 0) ? 0 : rating/count;
+    rating = Math.round(rating * 10) / 10.0;
+
+    currentPlace.setRating(rating);
+    currentPlace.sortReviews(sortType);
     currentPlace.setCurrentUser(currUser);
 
     // Adds the review list to a GSON/JSON object so that can be used in Javascript code    
@@ -89,43 +100,34 @@ public class ReviewServlet extends HttpServlet {
     UserService userService = UserServiceFactory.getUserService();
     DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
 
-    // Currently unused.
     String firstName = request.getParameter("firstName");
     String lastName = request.getParameter("lastName");
-
-    Double rating = Double.parseDouble(request.getParameter("rate"));
+    int rating = Integer.parseInt(request.getParameter("rate"));
+    String reviewText = request.getParameter("comment");
 
     // Create new Comment instance.
-    String userEmail = userService.getCurrentUser().getEmail(); // Used to restrict user to one review/location
-    String reviewText = request.getParameter("comment");
+    String userName = firstName.concat(" ".concat(lastName));
     Date time = new Date();
     long zero = 0; // 0 gets incorrectly cast as int if used directly.
-    Comment newReview = new Comment(userEmail, reviewText, time, zero, zero);
+    Comment newReview = new Comment(userName, reviewText, time, zero, zero, rating);
     
     // Query for existing reviews from place_id.
     String place_id = request.getParameter("place_id");
 
     // Add new review to datastore with the place_id. 
-    addToDatastore(newReview, place_id);
+    addToDatastore(newReview, place_id, rating);
 
     Entity curLocation = queryLocation(place_id, datastore);
-
     // Check if there is currently a location already in the datastore
     if (curLocation == null){
       curLocation = new Entity("Places", place_id); 
     }
     // Update datastore
     datastore.put(curLocation);
-
-    /* Currently redirects back
-     * We should modify this so that the screen doesn't completely refresh as then they would
-     * have to go back and search the place again to see their review. 
-     */
-    response.sendRedirect("/index.html");
   }
    
   // Adds each new review to the datastore. 
-  public void addToDatastore(Comment comment, String place_id){
+  public void addToDatastore(Comment comment, String place_id, int rate){
     String message = comment.getMessage();
     Date timestamp = comment.getTime();
     String author = comment.getAuthor();
@@ -137,6 +139,7 @@ public class ReviewServlet extends HttpServlet {
     reviewEntity.setProperty("place_id", place_id);
     reviewEntity.setProperty("positive", "0"); // Cast as string for easy typing.
     reviewEntity.setProperty("negative", "0");
+    reviewEntity.setProperty("rate", rate);
 
     DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
     datastore.put(reviewEntity);
