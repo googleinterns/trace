@@ -91,17 +91,6 @@
   background-color: #3a3838;
 }
 
-.sidebar div#header {
-
-}
-
-.searchButtonsWrapper {
-  position: relative;
-  height: 100%;
-  background-color: white;
-  width: 100%;
-}
-
 /* Search Bar Specs. */
  .searchWrapper {
   display: flex;
