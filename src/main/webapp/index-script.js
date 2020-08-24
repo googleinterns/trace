@@ -280,7 +280,7 @@ function handleSearchResults(results, service, radius, location) {
   deleteMarkers();
   var promises = [];
 
-  // Modal can handle up to 9 results only
+  // Modal can handle up to 9 results only due to Google API restrictions
   for (var i = 0; i < 9; i++) {
     if (results[i] == null){
         break;
