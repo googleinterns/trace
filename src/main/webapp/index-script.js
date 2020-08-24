@@ -362,25 +362,52 @@ function degreesToRadians(degrees) {
 
 /* Fills out search results page. */
 function populateSearch(places, location) {
-  //places = sortPlacesByDistance(places, location);
-  places = sortPlacesByRating(places);
+  const resultSortDistance = document.getElementById("sort-distance");
+  const resultSortRating = document.getElementById("sort-rated");
+
+  console.log(places);
   triggerModal(document.getElementById("results-popup"));
   populateResults(places);
+
+  resultSortDistance.addEventListener("click", () => {
+    console.log("Clicked!!");
+    console.log(places);
+    closeModal(document.getElementById("results-popup"));
+    const placePromise = new Promise((resolve, reject) => async function () {
+      places = await sortPlacesByDistance(places, location);
+      console.log("In the promise...");
+      resolve(places);
+    });
+    placePromise.then((places) => {
+      console.log("In the .then....");
+      console.log(places);
+      triggerModal(document.getElementById("results-popup"));
+      populateResults(places);
+    });
+  });
+  
+  resultSortRating.addEventListener("click", () => { 
+    console.log(places);
+    closeModal(document.getElementById("results-popup"));
+    places = sortPlacesByRating(places);
+    console.log(places);
+    triggerModal(document.getElementById("results-popup"));
+    populateResults(places);
+  });
 }
 
 /** Sorts place options by rating */
 function sortPlacesByRating(places) {
   // TODO: Fix rating system based on where that information is stored.
-  console.log(places);
   places.sort((a, b) =>
     (a.rating > b.rating) ? 1 : -1);
-  console.log(places)
   return places;
 }
 
 /** Sorts place options by distance */
 function sortPlacesByDistance(places, current) {
-  const locationPromise = new Promise((resolve, reject) => {
+  console.log("Sorting in the distance...");
+  return new Promise((resolve, reject) => {
     if (current == null) {
       // Check if can search by user's current location
       if (navigator.geolocation) {
@@ -395,17 +422,18 @@ function sortPlacesByDistance(places, current) {
           }
         );
       } else {
-      // Can't sort by location
-      reject();
+        // Can't sort by location
+        reject();
+        return places;
       }
     } else {
       resolve(current);
     }
   }).then((locationResult) => {
-    console.log("Entered promise.then()...")
+    console.log("Entered promise.then()...");
     places.sort((a, b) => ( 
-      getDistance(current, a.geometry.location)
-        > getDistance(current, b.geometry.location)) ? 1 : -1);
+      getDistance(locationResult, a.geometry.location)
+        > getDistance(locationResult, b.geometry.location)) ? 1 : -1);
     return places;
   });
 }
