@@ -86,9 +86,9 @@ function returnToReviewScreen() {
 
 /* Adds mouse listeners to searchBar-related html items. */
 function activateSearchBar() {
-  const searchIcon = document.getElementbyID("search-icon");
-  const searchBar = document.getElementbyID("search");
-  const searchForm = document.getElementbyID("searchForm");
+  const searchIcon = document.getElementbyId("search-icon");
+  const searchBar = document.getElementbyId("search");
+  const searchForm = document.getElementbyId("searchForm");
   const clearIcon = document.querySelector(".clear-icon");
 
   // Make 'clear-icon' visible when user starts typing.
