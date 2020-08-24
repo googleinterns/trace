@@ -13,6 +13,21 @@
   min-height: 80px;
 }
 
+.navbar .left {
+  float: left;
+  width: 33%
+}
+
+.navbar center {
+  float: none;
+  width: 34%;
+}
+
+.navbar right {
+  float: right;
+  width: 33%;
+}
+
 .navbar div#icon-box {
   float: left;
   display: block;
