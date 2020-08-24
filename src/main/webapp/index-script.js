@@ -465,7 +465,6 @@ function sortPlacesByDistance(places, current) {
   });
 }
 
->>>>>>> Added distance method
 /** Returns the distance between two coordinates*/
 function getDistance(location1, location2){
   if (location1.lat() == location2.lat() && location1.lng() == location2.lng()){
