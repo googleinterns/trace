@@ -436,17 +436,6 @@ function sortPlacesByDistance(places, current) {
   });
 }
 
-/** Sorts place options by distance */
-function sortPlacesByDistance(places) {
-  console.log(places);
-  console.log(current);
-  places.sort((a, b) =>
-    (getDistance(current.geometry.location, a.geometry.location)
-      > getDistance(current.geometry.location, b.geometry.location)) ? 1 : -1);
-  console.log(places);
-  return places;
-}
-
 /** Returns the distance between two coordinates*/
 function getDistance(location1, location2){
   if (location1.lat() == location2.lat() && location1.lng() == location2.lng()){
