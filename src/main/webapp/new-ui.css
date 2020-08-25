@@ -25,7 +25,7 @@
   float: none;
   position: absolute;
   top: 50%;
-  left: 50%;
+  left: 35%;
   transform: translate(-50%, -50%);
   max-width: 34%;
   height: 100%;
@@ -38,6 +38,7 @@
   max-width: 33%;
   height: 100%;
   min-width: 350px;
+  margin-right: 10%;
 }
 
 .navbar div#icon-box {
@@ -66,7 +67,6 @@
 }
 
 .navbar button {
-  float: right;
   display: inline-block;
   color: whitesmoke;
   background-color: #3a3838;
@@ -74,6 +74,7 @@
   transition: all 0.3s ease;
   padding: 14px 16px;
   height: 100%;
+  max-width: 150px;
   border: none;
   text-decoration: none;
 }
