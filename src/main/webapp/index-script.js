@@ -48,21 +48,29 @@ function loadMainButtons() {
   commentSortRecent.addEventListener("click", () => {
     commentSortRecent.classList.add("active");
     commentSortHighestRated.classList.remove("active");
-    resortReviews(prev_ID, 'recent');fvotin
+    resortReviews(prev_ID, 'recent');
   });
 }
 
 /** Clears top layers of modal and displays results page. */
 function returnToResultsScreen() {
+  returnToReviewScreen();
   hideButton(document.getElementById("modal-backarrow"));
   hideButton(document.getElementById("comment-sort-highest-rated"));
   hideButton(document.getElementById("comment-sort-recent"));
   hideButton(document.getElementById('reviews-body'));
-  hideButton(document.getElementById('rev-form-body'));
-  hideButton(document.getElementById("submit-new-review"));
 
   document.getElementById('results-body').style.display = "block"; // Display results page.
   document.getElementById('reviews-list-container').innerHTML = ''; // Clean reviews wrapper of all DOM elements;
+}
+
+/** Wipes review form from page. */
+function returnToReviewScreen() {
+  document.getElementById('fname').value = '';
+  document.getElementById('lname').value = '';
+  document.getElementById('comment').value = '';
+  hideButton(document.getElementById('rev-form-body'));
+  document.querySelector('#submit-button').innerHTML = '';
 }
 
 /* Adds mouse listeners to searchBar-related html items. */
@@ -587,10 +595,15 @@ function triggerNewReviewForm(place_id) {
   document.getElementById("place_id").value = place_id;
   document.getElementById("reviews-body").style.display = "none"; // Hide reviews page.
   document.getElementById("rev-form-body").style.display = "block";
-  document.getElementById("submit-new-review")
-    .addEventListener("click", () => {
-      postNewReview(place_id);
-    });
+  hideButton(document.getElementById('comment-sort-highest-rated'));
+  hideButton(document.getElementById('comment-sort-recent'));
+  const newReviewSubmit = document.createElement('button');
+  newReviewSubmit.innerHTML = 'Submit';
+  newReviewSubmit.id = 'submit-new-review';
+  newReviewSubmit.addEventListener("click", () => {
+    postNewReview(place_id);
+  });
+  document.getElementById('submit-button').appendChild(newReviewSubmit);
 }
 
 /** Function posts new review to datastore and updates modal reviews page with new review. */
@@ -601,12 +614,10 @@ function postNewReview(place_id) {
   const rate = getRating();
   const request = '/review?firstName=' + first + '&rate=' + rate +
     '&lastName=' + last + '&comment=' + comment + '&place_id=' + place_id;
-  document.getElementById('fname').value = '';
-  document.getElementById('lname').value = '';
-  document.getElementById('comment').value = '';
   fetch(request, {method:"POST"}).then(() => {
+    returnToReviewScreen();
     returnToResultsScreen();
-    showReviews(place_id, false);
+    //showReviews(place_id, false);
   });
 }
 
