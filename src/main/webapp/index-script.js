@@ -412,7 +412,7 @@ function populateSearch(places, location) {
     const placePromise = new Promise((resolve, reject) => {
       places = sortPlacesByRating(places, location);
       console.log("In the promise...");
-      resolve(places);
+      setTimeout(resolve(places), 3000);
     });
     placePromise.then((places) => {
       console.log("In the .then....");
