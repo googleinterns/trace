@@ -394,43 +394,46 @@ function populateSearch(places, location) {
   resultSortDistance.addEventListener("click", () => {
     console.log("Clicked!!");
     console.log(places);
-    const placePromise = new Promise((resolve, reject) => {
+    //const placePromise = new Promise((resolve, reject) => {
       if (location == null) {
-        reject(); // TODO: Add geolocator code. 
+       // reject(); // TODO: Add geolocator code. 
+       return;
       }
-
+      console.log(places);
       places.sort(function(a, b){ 
         (getDistance(location, a.geometry.location)
           > getDistance(location, b.geometry.location)) ? 1 : -1});
-      resolve(places);
-    });
-    placePromise.then((places) => {
-      console.log("In the .then....");
+      //resolve(places);
+    //});
+    //placePromise.then((places) => {
       console.log(places);
       closeModal(document.getElementById("results-popup"));
       triggerModal(document.getElementById("results-popup"));
       populateResults(places);
-    });
+    //});
   });
   
   // Adds an event listener for the rating sort button
   resultSortRating.addEventListener("click", () => { 
     console.log("Clicked!!");
     console.log(places);
-    const placePromise = new Promise((resolve, reject) => {
-      places = sortPlacesByRating(places, location);
+    //const placePromise = new Promise((resolve, reject) => {
+     // var newplaces = sortPlacesByRating(places, location);
       console.log(places);
-      console.log("In the promise...");
+    //  console.log("In the promise...");
       // Timeout required to allow sortPlacesByRating to finish. 
-      setTimeout(function run() {resolve(places)}, 2000);
-    }).then((places) => {
-      console.log("In the .then....");
+    //setTimeout(function run() {resolve(places)}, 2000);
+   // }).then((places) => {
+   //   console.log("In the .then....");
+   //   console.log(places);
+     places.sort(function(a, b){
+      (getPlaceRating(a.place_id) > getPlaceRating(b.place_id)) ? 1 : -1});
       console.log(places);
       closeModal(document.getElementById("results-popup"));
       triggerModal(document.getElementById("results-popup"));
       populateResults(places);
     });
-  });
+  //});
 }
 
 /** Sorts place options by rating */
