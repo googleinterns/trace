@@ -395,10 +395,14 @@ function populateSearch(places, location) {
     console.log("Clicked!!");
     console.log(places);
     const placePromise = new Promise((resolve, reject) => {
-      places = sortPlacesByDistance(places, location);
-      console.log("In the promise...");
-      // Timeout required to allow sortPlacesByDistance to finish.
-      setTimeout(function run() {resolve(places)}, 2000);
+      if (location == null) {
+        reject(); // TODO: Add geolocator code. 
+      }
+
+      places.sort(function(a, b){ 
+        (getDistance(location, a.geometry.location)
+          > getDistance(location, b.geometry.location)) ? 1 : -1});
+      resolve(places);
     });
     placePromise.then((places) => {
       console.log("In the .then....");
@@ -437,7 +441,7 @@ function sortPlacesByRating(places) {
 }
 
 /** Sorts place options by distance */
-function sortPlacesByDistance(places, current) {
+/*function sortPlacesByDistance(places, current) {
   const locationPromise = new Promise((resolve, reject) => {
     // Check if they gave us a location to prioritize places near
     if (current == null) {
@@ -470,12 +474,13 @@ function sortPlacesByDistance(places, current) {
   });
   // If I don't return here, I get type errors later on (line 511: can't read foreach of undefined)
   return places;
-}
+}*/
 
 /** Returns the overall rating of a place */
 function getPlaceRating(placeID){
   const request = '/review?place_id=' + placeID + '&sort=recent';
   fetch(request).then(response => response.json()).then((place) => {
+    console.log(placeID + " : " + place.rating);
     return place.rating;
   });
 }
@@ -487,6 +492,7 @@ function getDistance(location1, location2){
   }
   var a = Math.pow((location1.lat() - location2.lat()), 2);
   var b = Math.pow((location1.lng() - location2.lng()), 2);
+  console.log(Math.sqrt(a+b));
   return Math.sqrt(a + b);
 }
 
