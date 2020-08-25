@@ -396,11 +396,11 @@ function populateSearch(places, location) {
        // TODO: Add geolocator code. 
        return;
       }
-      console.log("before: " + places[0]);
+      console.log("before: " + places[0].vicinity);
       places.sort(function(a, b){ 
         (getDistance(location, a.geometry.location)
           > getDistance(location, b.geometry.location)) ? 1 : -1});
-      console.log("after: " + places[0]);
+      console.log("after: " + places[0].vicinity);
       closeModal(document.getElementById("results-popup"));
       triggerModal(document.getElementById("results-popup"));
       populateResults(places);
@@ -408,13 +408,16 @@ function populateSearch(places, location) {
   
   // Adds an event listener for the rating sort button
   resultSortRating.addEventListener("click", () => { 
-    console.log("before: " + places[0]);
+    console.log("before: " + places[0].vicinity);
     const placeRatingPromise = new Promise((resolve, reject) => {
-      places.sort(function(a, b){
-        (getPlaceRating(a.place_id) > getPlaceRating(b.place_id)) ? 1 : -1});
-        resolve(places);
+      places.forEach(place => {
+        place.rating = getPlaceRating(place.place_id);
+      });
+      resolve(places);
     }).then((places) => {
-      console.log("after: " + places[0]);
+
+      places.sort(function(a, b){a.rating > b.rating ? 1 : -1});
+      console.log("after: " + places[0].vicinity);
       closeModal(document.getElementById("results-popup"));
       triggerModal(document.getElementById("results-popup"));
       populateResults(places);
