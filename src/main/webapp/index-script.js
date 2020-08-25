@@ -392,17 +392,12 @@ function populateSearch(places, location) {
 
   // Adds an event listener for the distance sort button
   resultSortDistance.addEventListener("click", () => {
-    console.log("Clicked!!");
-    console.log(places);
     const placePromise = new Promise((resolve, reject) => {
       places = sortPlacesByDistance(places, location);
-      console.log("In the promise...");
       // Timeout required to allow sortPlacesByDistance to finish.
       setTimeout(function run() {resolve(places)}, 2000);
     });
     placePromise.then((places) => {
-      console.log("In the .then....");
-      console.log(places);
       closeModal(document.getElementById("results-popup"));
       triggerModal(document.getElementById("results-popup"));
       populateResults(places);
@@ -410,18 +405,11 @@ function populateSearch(places, location) {
   });
   
   // Adds an event listener for the rating sort button
-  resultSortRating.addEventListener("click", () => { 
-    console.log("Clicked!!");
-    console.log(places);
     const placePromise = new Promise((resolve, reject) => {
       places = sortPlacesByRating(places, location);
-      console.log(places);
-      console.log("In the promise...");
       // Timeout required to allow sortPlacesByRating to finish. 
       setTimeout(function run() {resolve(places)}, 2000);
     }).then((places) => {
-      console.log("In the .then....");
-      console.log(places);
       closeModal(document.getElementById("results-popup"));
       triggerModal(document.getElementById("results-popup"));
       populateResults(places);
@@ -461,11 +449,9 @@ function sortPlacesByDistance(places, current) {
       resolve(current);
     }
   }).then((locationResult) => {
-    console.log("Entered distance promise.then()...");
     places.sort(function(a, b){ 
       (getDistance(locationResult, a.geometry.location)
         > getDistance(locationResult, b.geometry.location)) ? 1 : -1});
-    console.log("Sorted..");
     return places;
   });
   // If I don't return here, I get type errors later on (line 511: can't read foreach of undefined)
