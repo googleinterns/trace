@@ -479,40 +479,6 @@ function getPlaceRating(placeID){
   });
 }
 
-/** Sorts place options by distance */
-function sortPlacesByDistance(places, current) {
-  console.log("Sorting in the distance...");
-  return new Promise((resolve, reject) => {
-    if (current == null) {
-      // Check if can search by user's current location
-      if (navigator.geolocation) {
-        navigator.geolocation.getCurrentPosition(
-          position => {
-            const pos = {
-              lat: position.coords.latitude,
-              lng: position.coords.longitude
-            };
-          current = new google.maps.LatLng(pos.lat, pos.lng)
-          resolve(current);
-          }
-        );
-      } else {
-        // Can't sort by location
-        reject();
-        return places;
-      }
-    } else {
-      resolve(current);
-    }
-  }).then((locationResult) => {
-    console.log("Entered promise.then()...");
-    places.sort((a, b) => ( 
-      getDistance(locationResult, a.geometry.location)
-        > getDistance(locationResult, b.geometry.location)) ? 1 : -1);
-    return places;
-  });
-}
-
 /** Returns the distance between two coordinates*/
 function getDistance(location1, location2){
   if (location1.lat() == location2.lat() && location1.lng() == location2.lng()){
