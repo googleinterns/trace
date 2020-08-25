@@ -476,7 +476,6 @@ function sortPlacesByDistance(places, current) {
 function getPlaceRating(placeID){
   const request = '/review?place_id=' + placeID + '&sort=recent';
   fetch(request).then(response => response.json()).then((place) => {
-    console.log(place.rating);
     return place.rating;
   });
 }
