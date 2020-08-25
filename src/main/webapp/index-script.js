@@ -387,6 +387,40 @@ function populateSearch(places, location) {
 
   triggerModal(document.getElementById("results-popup"));
   populateResults(places);
+
+  resultSortDistance.addEventListener("click", () => {
+    console.log("Clicked!!");
+    console.log(places);
+    closeModal(document.getElementById("results-popup"));
+    const placePromise = new Promise((resolve, reject) => async function () {
+      places = await sortPlacesByDistance(places, location);
+      console.log("In the promise...");
+      resolve(places);
+    });
+    placePromise.then((places) => {
+      console.log("In the .then....");
+      console.log(places);
+      triggerModal(document.getElementById("results-popup"));
+      populateResults(places);
+    });
+  });
+  
+  resultSortRating.addEventListener("click", () => { 
+    console.log("Clicked!!");
+    console.log(places);
+    closeModal(document.getElementById("results-popup"));
+    const placePromise = new Promise((resolve, reject) => {
+      places = sortPlacesByRating(places, location);
+      console.log("In the promise...");
+      resolve(places);
+    });
+    placePromise.then((places) => {
+      console.log("In the .then....");
+      console.log(places);
+      triggerModal(document.getElementById("results-popup"));
+      populateResults(places);
+    });
+  });
 }
 
 /** Sorts place options by rating */
@@ -430,6 +464,9 @@ function sortPlacesByDistance(places, current) {
     return places;
   });
 
+  places.sort((a, b) =>
+    (getPlaceRating(a.place_id) > getPlaceRating(b.place_id)) ? 1 : -1);
+  console.log(places);
   return places;
 }
 
@@ -462,6 +499,14 @@ function sortPlacesByDistance(places, current) {
       getDistance(current, a.geometry.location)
         > getDistance(current, b.geometry.location)) ? 1 : -1);
     return places;
+  });
+}
+
+function getPlaceRating(placeID){
+  const request = '/review?place_id=' + placeID + '&sort=recent';
+  fetch(request).then(response => response.json()).then((place) => {
+    console.log(place.rating);
+    return place.rating;
   });
 }
 
@@ -528,7 +573,7 @@ function generateResult(place) {
   imagePreview.appendChild(suggestedIcon);
   resultGrid.appendChild(imagePreview);
   const infoText = document.createElement('ul'); // Tidbits ul
-  
+
   // Relevant information to be displayed
   var tidbits = [
     "<a onclick=\"showReviews(\'" + place.place_id + "\', false);\">" + place.name + "</a>",
