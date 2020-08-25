@@ -434,7 +434,10 @@ function sortPlacesByRating(places) {
 
 /** Sorts place options by distance */
 function sortPlacesByDistance(places, current) {
-  const locationPromise = new Promise((resolve, reject) => {
+
+  console.log("Sorting in the distance...");
+  return new Promise((resolve, reject) => {
+
     if (current == null) {
       // Check if can search by user's current location
       if (navigator.geolocation) {
@@ -493,10 +496,10 @@ function sortPlacesByDistance(places, current) {
       resolve(current);
     }
   }).then((locationResult) => {
-    console.log("Entered promise.then()...")
-    places.sort((a, b) => ( 
-      getDistance(current, a.geometry.location)
-        > getDistance(current, b.geometry.location)) ? 1 : -1);
+    console.log("Entered distance promise.then()...");
+    places.sort(function(a, b){ 
+      (getDistance(locationResult, a.geometry.location)
+        > getDistance(locationResult, b.geometry.location)) ? 1 : -1});
     return places;
   });
 }
