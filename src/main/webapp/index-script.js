@@ -384,6 +384,8 @@ function degreesToRadians(degrees) {
 
 /* Fills out search results page. */
 function populateSearch(places, location) {
+  const resultSortDistance = document.getElementById("sort-distance");
+  const resultSortRating = document.getElementById("sort-rated");
 
   triggerModal(document.getElementById("results-popup"));
   populateResults(places);
@@ -391,7 +393,6 @@ function populateSearch(places, location) {
   resultSortDistance.addEventListener("click", () => {
     console.log("Clicked!!");
     console.log(places);
-    closeModal(document.getElementById("results-popup"));
     const placePromise = new Promise((resolve, reject) => {
       places = sortPlacesByDistance(places, location);
       console.log("In the promise...");
@@ -400,6 +401,7 @@ function populateSearch(places, location) {
     placePromise.then((places) => {
       console.log("In the .then....");
       console.log(places);
+      closeModal(document.getElementById("results-popup"));
       triggerModal(document.getElementById("results-popup"));
       populateResults(places);
     });
@@ -408,7 +410,6 @@ function populateSearch(places, location) {
   resultSortRating.addEventListener("click", () => { 
     console.log("Clicked!!");
     console.log(places);
-    closeModal(document.getElementById("results-popup"));
     const placePromise = new Promise((resolve, reject) => {
       places = sortPlacesByRating(places, location);
       console.log(places);
@@ -417,6 +418,7 @@ function populateSearch(places, location) {
     }).then((places) => {
       console.log("In the .then....");
       console.log(places);
+      closeModal(document.getElementById("results-popup"));
       triggerModal(document.getElementById("results-popup"));
       populateResults(places);
     });
@@ -474,6 +476,40 @@ function getPlaceRating(placeID){
   fetch(request).then(response => response.json()).then((place) => {
     console.log(place.rating);
     return place.rating;
+  });
+}
+
+/** Sorts place options by distance */
+function sortPlacesByDistance(places, current) {
+  console.log("Sorting in the distance...");
+  return new Promise((resolve, reject) => {
+    if (current == null) {
+      // Check if can search by user's current location
+      if (navigator.geolocation) {
+        navigator.geolocation.getCurrentPosition(
+          position => {
+            const pos = {
+              lat: position.coords.latitude,
+              lng: position.coords.longitude
+            };
+          current = new google.maps.LatLng(pos.lat, pos.lng)
+          resolve(current);
+          }
+        );
+      } else {
+        // Can't sort by location
+        reject();
+        return places;
+      }
+    } else {
+      resolve(current);
+    }
+  }).then((locationResult) => {
+    console.log("Entered promise.then()...");
+    places.sort((a, b) => ( 
+      getDistance(locationResult, a.geometry.location)
+        > getDistance(locationResult, b.geometry.location)) ? 1 : -1);
+    return places;
   });
 }
 
