@@ -100,7 +100,14 @@ public class PlaceReviews {
     } else if(sortType.equals("recent")) {
       Collections.sort(this.reviews, Comment.ORDER_BY_DATE);
     } else {
-      Collections.sort(this.reviews, Comment.ORDER_BY_SCORE);
+      Collections.sort(this.reviews, Comment.ORDER_BY_DATE);
+      List<Comment> weightedSorting = new ArrayList<Comment>(this.reviews);
+      for(int i = 0; i < this.reviews.size(); i++) {
+        weightedSorting.get(i).setWeightedRating(this.reviews.get(i).getRating() * (this.reviews.size() - i));
+      }
+      Collections.sort(weightedSorting, Comment.ORDER_BY_WEIGHTED_RATING);
+      this.reviews.clear();
+      this.reviews.addAll(weightedSorting);
     }
   }
 

@@ -33,6 +33,7 @@ function loadMainButtons() {
   const modalBackArrow = document.getElementById("modal-backarrow");
   const commentSortHighestRated = document.getElementById("comment-sort-highest-rated");
   const commentSortRecent = document.getElementById("comment-sort-recent");
+  const commentSortRelevant = document.getElementById("comment-sort-relevant");
 
   // Hide reviews page and display results page.
   modalBackArrow.addEventListener("click", () => {
@@ -42,14 +43,23 @@ function loadMainButtons() {
   commentSortHighestRated.addEventListener("click", () => {
     commentSortHighestRated.classList.add("active");
     commentSortRecent.classList.remove("active");
+    commentSortRelevant.classList.remove("active");
     resortReviews(prev_ID, 'highest-rated');
   });
   
   commentSortRecent.addEventListener("click", () => {
     commentSortRecent.classList.add("active");
     commentSortHighestRated.classList.remove("active");
+    commentSortRelevant.classList.remove("active");
     resortReviews(prev_ID, 'recent');
   });
+
+  commentSortRelevant.addEventListener("click", () => {
+    commentSortRelevant.classList.add("active");
+    commentSortHighestRated.classList.remove("active");
+    commentSortRecent.classList.remove("active");
+    resortReviews(prev_ID, 'relevant');
+  })
 }
 
 /** Clears top layers of modal and displays results page. */
@@ -58,6 +68,7 @@ function returnToResultsScreen() {
   hideButton(document.getElementById("modal-backarrow"));
   hideButton(document.getElementById("comment-sort-highest-rated"));
   hideButton(document.getElementById("comment-sort-recent"));
+  hideButton(document.getElementById("comment-sort-relevant"));
   hideButton(document.getElementById('reviews-body'));
 
   document.getElementById('results-body').style.display = "block"; // Display results page.
@@ -163,6 +174,7 @@ function closeModal(modal) {
   hideButton(document.getElementById("modal-backarrow"));
   hideButton(document.getElementById("comment-sort-recent"));
   hideButton(document.getElementById("comment-sort-highest-rated"));
+  hideButton(document.getElementById("comment-sort-relevant"));
 }
 
 /** Multi-purpose button hiding function */
@@ -398,6 +410,7 @@ function triggerModal(modal) {
   hideButton(document.getElementById("modal-backarrow"));
   hideButton(document.getElementById("comment-sort-highest-rated"));
   hideButton(document.getElementById("comment-sort-recent"));
+  hideButton(document.getElementById("comment-sort-relevant"));
 }
 
 /* This function takes in an array of JS places and creates an unordered
@@ -527,10 +540,12 @@ function enableBackArrow() {
 
 /** Displays sort options button. */
 function enableSortOptions() {
-  const commentSortRelevant = document.getElementById("comment-sort-highest-rated");
-  commentSortRelevant.style.display = "block";
+  const commentSortHighestRated = document.getElementById("comment-sort-highest-rated");
+  commentSortHighestRated.style.display = "block";
   const commentSortRecent = document.getElementById("comment-sort-recent");
   commentSortRecent.style.display = "block";
+  const commentSortRelevant = document.getElementById("comment-sort-relevant");
+  commentSortRelevant.style.display = "block";
 }
 
 /** Displays review-body and hides results-body. */
@@ -597,6 +612,7 @@ function triggerNewReviewForm(place_id) {
   document.getElementById("rev-form-body").style.display = "block";
   hideButton(document.getElementById('comment-sort-highest-rated'));
   hideButton(document.getElementById('comment-sort-recent'));
+  hideButton(document.getElementById('comment-sort-relevant'));
   const newReviewSubmit = document.createElement('button');
   newReviewSubmit.innerHTML = 'Submit';
   newReviewSubmit.id = 'submit-new-review';

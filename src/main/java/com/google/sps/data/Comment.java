@@ -45,8 +45,19 @@ public class Comment {
   };
 
   /**
+   * Order Comparator by weightedRating
+   * This comparator orders the comments by their weightedRating.
+   */
+  public static final Comparator<Comment> ORDER_BY_WEIGHTED_RATING = new Comparator<Comment>() {
+    @Override
+    public int compare(Comment a, Comment b) {
+      return Double.compare(b.getWeightedRating(), a.getWeightedRating());
+    }
+  };
+
+  /**
    * Order Comparator by MetaScore
-   * This comparator orders the comments by their score
+   * This comparator orders the comments by their net votes.
    */
   public static final Comparator<Comment> ORDER_BY_SCORE = new Comparator<Comment>() {
     @Override
@@ -130,6 +141,20 @@ public class Comment {
     return this.timestamp;
   }
 
+  /** 
+   * weightedRating Setter method
+   * Updates private variable
+   */
+  public void setWeightedRating(double rating) {
+    this.weightedRating = rating;
+  }
+
+  /** 
+   * Retrieves private variable weightedRating
+   */
+  public double getWeightedRating() {
+    return this.weightedRating;
+  }
   /** 
    * Update Comment
    * This function is used when a author want's to submit a new comment for a location.
