@@ -396,36 +396,23 @@ function populateSearch(places, location) {
     console.log(places);
     //const placePromise = new Promise((resolve, reject) => {
       if (location == null) {
-       // reject(); // TODO: Add geolocator code. 
+       // TODO: Add geolocator code. 
        return;
       }
       console.log(places);
       places.sort(function(a, b){ 
         (getDistance(location, a.geometry.location)
           > getDistance(location, b.geometry.location)) ? 1 : -1});
-      //resolve(places);
-    //});
-    //placePromise.then((places) => {
       console.log(places);
       closeModal(document.getElementById("results-popup"));
       triggerModal(document.getElementById("results-popup"));
       populateResults(places);
-    //});
   });
   
   // Adds an event listener for the rating sort button
   resultSortRating.addEventListener("click", () => { 
     console.log("Clicked!!");
     console.log(places);
-    //const placePromise = new Promise((resolve, reject) => {
-     // var newplaces = sortPlacesByRating(places, location);
-      console.log(places);
-    //  console.log("In the promise...");
-      // Timeout required to allow sortPlacesByRating to finish. 
-    //setTimeout(function run() {resolve(places)}, 2000);
-   // }).then((places) => {
-   //   console.log("In the .then....");
-   //   console.log(places);
      places.sort(function(a, b){
       (getPlaceRating(a.place_id) > getPlaceRating(b.place_id)) ? 1 : -1});
       console.log(places);
@@ -433,51 +420,7 @@ function populateSearch(places, location) {
       triggerModal(document.getElementById("results-popup"));
       populateResults(places);
     });
-  //});
 }
-
-/** Sorts place options by rating */
-function sortPlacesByRating(places) {
-  places.sort(function(a, b){
-    (getPlaceRating(a.place_id) > getPlaceRating(b.place_id)) ? 1 : -1});
-  return places;
-}
-
-/** Sorts place options by distance */
-/*function sortPlacesByDistance(places, current) {
-  const locationPromise = new Promise((resolve, reject) => {
-    // Check if they gave us a location to prioritize places near
-    if (current == null) {
-      // If not, check if we can rate by user's current location
-      if (navigator.geolocation) {
-        navigator.geolocation.getCurrentPosition(
-          position => {
-            const pos = {
-              lat: position.coords.latitude,
-              lng: position.coords.longitude
-            };
-          current = new google.maps.LatLng(pos.lat, pos.lng)
-          resolve(current);
-          }
-        );
-      } else {
-        // No location given, no sorting possible.
-        reject();
-      }
-    } else {
-      resolve(current);
-    }
-  }).then((locationResult) => {
-    console.log("Entered distance promise.then()...");
-    places.sort(function(a, b){ 
-      (getDistance(locationResult, a.geometry.location)
-        > getDistance(locationResult, b.geometry.location)) ? 1 : -1});
-    console.log("Sorted..");
-    return places;
-  });
-  // If I don't return here, I get type errors later on (line 511: can't read foreach of undefined)
-  return places;
-}*/
 
 /** Returns the overall rating of a place */
 function getPlaceRating(placeID){
