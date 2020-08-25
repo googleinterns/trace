@@ -1,6 +1,7 @@
 @import url(modal-overlay.css);
 @import url(newReview.css);
 @import url(new-ui.css);
+@import url(sidebar.css);
 
 #map {
   height: 90%;

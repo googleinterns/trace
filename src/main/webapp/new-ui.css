@@ -89,15 +89,6 @@
   max-height: 100%;
 }
 
-.sidebar {
-  height: 100%;
-  position: fixed;
-  width: 15%;
-  top: 10%;
-  z-index: 1;
-  background-color: #3a3838;
-}
-
 /* Search Bar Specs. */
  .searchWrapper {
   height: 40%;
