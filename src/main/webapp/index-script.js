@@ -390,12 +390,14 @@ function populateSearch(places, location) {
   triggerModal(document.getElementById("results-popup"));
   populateResults(places);
 
+  // Adds an event listener for the distance sort button
   resultSortDistance.addEventListener("click", () => {
     console.log("Clicked!!");
     console.log(places);
     const placePromise = new Promise((resolve, reject) => {
       places = sortPlacesByDistance(places, location);
       console.log("In the promise...");
+      // Timeout required to allow sortPlacesByDistance to finish.
       setTimeout(function run() {resolve(places)}, 2000);
     });
     placePromise.then((places) => {
@@ -407,6 +409,7 @@ function populateSearch(places, location) {
     });
   });
   
+  // Adds an event listener for the rating sort button
   resultSortRating.addEventListener("click", () => { 
     console.log("Clicked!!");
     console.log(places);
@@ -414,6 +417,7 @@ function populateSearch(places, location) {
       places = sortPlacesByRating(places, location);
       console.log(places);
       console.log("In the promise...");
+      // Timeout required to allow sortPlacesByRating to finish. 
       setTimeout(function run() {resolve(places)}, 2000);
     }).then((places) => {
       console.log("In the .then....");
@@ -427,19 +431,17 @@ function populateSearch(places, location) {
 
 /** Sorts place options by rating */
 function sortPlacesByRating(places) {
-  console.log(places);
-  console.log(typeof places);
   places.sort(function(a, b){
     (getPlaceRating(a.place_id) > getPlaceRating(b.place_id)) ? 1 : -1});
-  console.log(places);
   return places;
 }
 
 /** Sorts place options by distance */
 function sortPlacesByDistance(places, current) {
   const locationPromise = new Promise((resolve, reject) => {
+    // Check if they gave us a location to prioritize places near
     if (current == null) {
-      // Check if can search by user's current location
+      // If not, check if we can rate by user's current location
       if (navigator.geolocation) {
         navigator.geolocation.getCurrentPosition(
           position => {
@@ -452,7 +454,7 @@ function sortPlacesByDistance(places, current) {
           }
         );
       } else {
-        // Can't sort by location
+        // No location given, no sorting possible.
         reject();
       }
     } else {
@@ -466,7 +468,7 @@ function sortPlacesByDistance(places, current) {
     console.log("Sorted..");
     return places;
   });
-
+  // If I don't return here, I get type errors later on (line 511: can't read foreach of undefined)
   return places;
 }
 
