@@ -31,36 +31,57 @@ function loadMainButtons() {
   });
   
   const modalBackArrow = document.getElementById("modal-backarrow");
-  const commentSortRelevant = document.getElementById("comment-sort-relevant");
+  const commentSortHighestRated = document.getElementById("comment-sort-highest-rated");
   const commentSortRecent = document.getElementById("comment-sort-recent");
+  const commentSortRelevant = document.getElementById("comment-sort-relevant");
 
   // Hide reviews page and display results page.
   modalBackArrow.addEventListener("click", () => {
     returnToResultsScreen();
   });
 
-  commentSortRelevant.addEventListener("click", () => {
-    commentSortRelevant.classList.add("active");
+  commentSortHighestRated.addEventListener("click", () => {
+    commentSortHighestRated.classList.add("active");
     commentSortRecent.classList.remove("active");
-    resortReviews(prev_ID, 'relevant');
+    commentSortRelevant.classList.remove("active");
+    resortReviews(prev_ID, 'highest-rated');
   });
   
   commentSortRecent.addEventListener("click", () => {
     commentSortRecent.classList.add("active");
+    commentSortHighestRated.classList.remove("active");
     commentSortRelevant.classList.remove("active");
     resortReviews(prev_ID, 'recent');
   });
+
+  commentSortRelevant.addEventListener("click", () => {
+    commentSortRelevant.classList.add("active");
+    commentSortHighestRated.classList.remove("active");
+    commentSortRecent.classList.remove("active");
+    resortReviews(prev_ID, 'relevant');
+  })
 }
 
 /** Clears top layers of modal and displays results page. */
 function returnToResultsScreen() {
+  returnToReviewScreen();
   hideButton(document.getElementById("modal-backarrow"));
-  hideButton(document.getElementById("comment-sort-relevant"));
+  hideButton(document.getElementById("comment-sort-highest-rated"));
   hideButton(document.getElementById("comment-sort-recent"));
+  hideButton(document.getElementById("comment-sort-relevant"));
   hideButton(document.getElementById('reviews-body'));
-  hideButton(document.getElementById('rev-form-body'));
+
   document.getElementById('results-body').style.display = "block"; // Display results page.
   document.getElementById('reviews-list-container').innerHTML = ''; // Clean reviews wrapper of all DOM elements;
+}
+
+/** Wipes review form from page. */
+function returnToReviewScreen() {
+  document.getElementById('fname').value = '';
+  document.getElementById('lname').value = '';
+  document.getElementById('comment').value = '';
+  hideButton(document.getElementById('rev-form-body'));
+  document.querySelector('#submit-button').innerHTML = '';
 }
 
 /* Adds mouse listeners to searchBar-related html items. */
@@ -152,6 +173,7 @@ function closeModal(modal) {
   });
   hideButton(document.getElementById("modal-backarrow"));
   hideButton(document.getElementById("comment-sort-recent"));
+  hideButton(document.getElementById("comment-sort-highest-rated"));
   hideButton(document.getElementById("comment-sort-relevant"));
 }
 
@@ -386,8 +408,9 @@ function triggerModal(modal) {
   modal.classList.add('active');
   document.getElementById('results-body').style.display = "block";
   hideButton(document.getElementById("modal-backarrow"));
-  hideButton(document.getElementById("comment-sort-relevant"));
+  hideButton(document.getElementById("comment-sort-highest-rated"));
   hideButton(document.getElementById("comment-sort-recent"));
+  hideButton(document.getElementById("comment-sort-relevant"));
 }
 
 /* This function takes in an array of JS places and creates an unordered
@@ -517,10 +540,12 @@ function enableBackArrow() {
 
 /** Displays sort options button. */
 function enableSortOptions() {
-  const commentSortRelevant = document.getElementById("comment-sort-relevant");
-  commentSortRelevant.style.display = "block";
+  const commentSortHighestRated = document.getElementById("comment-sort-highest-rated");
+  commentSortHighestRated.style.display = "block";
   const commentSortRecent = document.getElementById("comment-sort-recent");
   commentSortRecent.style.display = "block";
+  const commentSortRelevant = document.getElementById("comment-sort-relevant");
+  commentSortRelevant.style.display = "block";
 }
 
 /** Displays review-body and hides results-body. */
@@ -585,10 +610,16 @@ function triggerNewReviewForm(place_id) {
   document.getElementById("place_id").value = place_id;
   document.getElementById("reviews-body").style.display = "none"; // Hide reviews page.
   document.getElementById("rev-form-body").style.display = "block";
-  document.getElementById("submit-new-review")
-    .addEventListener("click", () => {
-      postNewReview(place_id);
-    });
+  hideButton(document.getElementById('comment-sort-highest-rated'));
+  hideButton(document.getElementById('comment-sort-recent'));
+  hideButton(document.getElementById('comment-sort-relevant'));
+  const newReviewSubmit = document.createElement('button');
+  newReviewSubmit.innerHTML = 'Submit';
+  newReviewSubmit.id = 'submit-new-review';
+  newReviewSubmit.addEventListener("click", () => {
+    postNewReview(place_id);
+  });
+  document.getElementById('submit-button').appendChild(newReviewSubmit);
 }
 
 /** Function posts new review to datastore and updates modal reviews page with new review. */
@@ -600,8 +631,9 @@ function postNewReview(place_id) {
   const request = '/review?firstName=' + first + '&rate=' + rate +
     '&lastName=' + last + '&comment=' + comment + '&place_id=' + place_id;
   fetch(request, {method:"POST"}).then(() => {
+    returnToReviewScreen();
     returnToResultsScreen();
-    showReviews(place_id, false);
+    //showReviews(place_id, false);
   });
 }
 
@@ -610,8 +642,10 @@ function getRating() {
   var radios = document.getElementsByName('rate');
   for (var i = 0, length = radios.length; i < length; i++) {
     if (radios[i].checked) {
+      radios[i].style.color = "#ccc;"
       return radios[i].value;
     }
+    radios[i].style.color = "#ccc;"
   }
   return 0;
 }

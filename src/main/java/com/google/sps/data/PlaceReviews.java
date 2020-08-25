@@ -90,13 +90,24 @@ public class PlaceReviews {
 
   /**
    * Public sorting method
-   * Sorts the internal Comment list to the type requested
+   * Sorts the internal Comment list by their voter rating, recency,
+   * or "relevancy" where "relevancy" is defined as the scores
+   * they gave a location weighted by their recency.
    */
   public void sortReviews(String sortType) {
-    if (sortType == "relevant") {
+    if (sortType.equals("highest-rated")) {
       Collections.sort(this.reviews, Comment.ORDER_BY_SCORE);
+    } else if(sortType.equals("recent")) {
+      Collections.sort(this.reviews, Comment.ORDER_BY_DATE);
     } else {
       Collections.sort(this.reviews, Comment.ORDER_BY_DATE);
+      List<Comment> weightedSorting = new ArrayList<Comment>(this.reviews);
+      for(int i = 0; i < this.reviews.size(); i++) {
+        weightedSorting.get(i).setWeightedRating(this.reviews.get(i).getRating() * (this.reviews.size() - i));
+      }
+      Collections.sort(weightedSorting, Comment.ORDER_BY_WEIGHTED_RATING);
+      this.reviews.clear();
+      this.reviews.addAll(weightedSorting);
     }
   }
 
