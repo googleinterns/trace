@@ -302,7 +302,7 @@ function handleSearchResults(results, service, radius, location) {
   deleteMarkers();
   var promises = [];
 
-  // Modal can handle up to 9 results only
+  // Modal can handle up to 9 results only due to Google API restrictions
   for (var i = 0; i < 9; i++) {
     if (results[i] == null){
         break;
@@ -337,11 +337,10 @@ function handleSearchResults(results, service, radius, location) {
       });
     });
     promises.push(promise);
-    
   };
   // Waits on all promises to complete before passing the results into the next function.
   Promise.all(promises).then(places => {
-    populateSearch(places); // Placeholder
+    populateSearch(places, location);
   });
 }
 
@@ -383,23 +382,100 @@ function degreesToRadians(degrees) {
 }
 
 /* Fills out search results page. */
-function populateSearch(places) {
-  places = sortPlacesByRating(places);
+function populateSearch(places, location) {
+  const resultSortDistance = document.getElementById("sort-distance");
+  const resultSortRating = document.getElementById("sort-rated");
+
   triggerModal(document.getElementById("results-popup"));
   populateResults(places);
+
+  // Adds an event listener for the distance sort button
+  resultSortDistance.addEventListener("click", () => {
+    const placePromise = new Promise((resolve, reject) => {
+      places = sortPlacesByDistance(places, location);
+      // Timeout required to allow sortPlacesByDistance to finish.
+      setTimeout(function run() {resolve(places)}, 2000);
+    });
+    placePromise.then((places) => {
+      closeModal(document.getElementById("results-popup"));
+      triggerModal(document.getElementById("results-popup"));
+      populateResults(places);
+    });
+  });
+  
+  // Adds an event listener for the rating sort button
+  resultSortRating.addEventListener("click", () => { 
+    const placePromise = new Promise((resolve, reject) => {
+      places = sortPlacesByRating(places, location);
+      // Timeout required to allow sortPlacesByRating to finish. 
+      setTimeout(function run() {resolve(places)}, 2000);
+    }).then((places) => {
+      closeModal(document.getElementById("results-popup"));
+      triggerModal(document.getElementById("results-popup"));
+      populateResults(places);
+    });
+  });
 }
 
-/* Adds a field 'rating' to each place with a random integer to
- * simulate sorting locations by their ratings. */
+/** Sorts place options by rating */
 function sortPlacesByRating(places) {
-  places.forEach((place) => {
-    let rand = Math.floor(Math.random() * 10);
-    place.rating = rand;
-  });
-  places.sort((a, b) =>
-    (a.rating > b.rating) ? 1 : -1);
+  places.sort(function(a, b){
+    (getPlaceRating(a.place_id) > getPlaceRating(b.place_id)) ? 1 : -1});
   return places;
 }
+
+/** Sorts place options by distance */
+function sortPlacesByDistance(places, current) {
+  const locationPromise = new Promise((resolve, reject) => {
+    // Check if they gave us a location to prioritize places near
+    if (current == null) {
+      // If not, check if we can rate by user's current location
+      if (navigator.geolocation) {
+        navigator.geolocation.getCurrentPosition(
+          position => {
+            const pos = {
+              lat: position.coords.latitude,
+              lng: position.coords.longitude
+            };
+          current = new google.maps.LatLng(pos.lat, pos.lng)
+          resolve(current);
+          }
+        );
+      } else {
+        // No location given, no sorting possible.
+        reject();
+      }
+    } else {
+      resolve(current);
+    }
+  }).then((locationResult) => {
+    places.sort(function(a, b){ 
+      (getDistance(locationResult, a.geometry.location)
+        > getDistance(locationResult, b.geometry.location)) ? 1 : -1});
+    return places;
+  });
+  // If I don't return here, I get type errors later on (line 511: can't read foreach of undefined)
+  return places;
+}
+
+/** Returns the overall rating of a place */
+function getPlaceRating(placeID){
+  const request = '/review?place_id=' + placeID + '&sort=recent';
+  fetch(request).then(response => response.json()).then((place) => {
+    return place.rating;
+  });
+}
+
+/** Returns the distance between two coordinates*/
+function getDistance(location1, location2){
+  if (location1.lat() == location2.lat() && location1.lng() == location2.lng()){
+    return 0;
+  }
+  var a = Math.pow((location1.lat() - location2.lat()), 2);
+  var b = Math.pow((location1.lng() - location2.lng()), 2);
+  return Math.sqrt(a + b);
+}
+
 
 /* Triggers the modal, and overlay, to follow the active CSS styling, making it appear. */
 function triggerModal(modal) {
@@ -453,7 +529,7 @@ function generateResult(place) {
   imagePreview.appendChild(suggestedIcon);
   resultGrid.appendChild(imagePreview);
   const infoText = document.createElement('ul'); // Tidbits ul
-  
+
   // Relevant information to be displayed
   var tidbits = [
     "<a onclick=\"showReviews(\'" + place.place_id + "\', false);\">" + place.name + "</a>",
