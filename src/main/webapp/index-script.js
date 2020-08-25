@@ -337,7 +337,6 @@ function handleSearchResults(results, service, radius, location) {
       });
     });
     promises.push(promise);
-    
   };
   // Waits on all promises to complete before passing the results into the next function.
   Promise.all(promises).then(places => {
@@ -405,6 +404,7 @@ function populateSearch(places, location) {
   });
   
   // Adds an event listener for the rating sort button
+  resultSortRating.addEventListener("click", () => { 
     const placePromise = new Promise((resolve, reject) => {
       places = sortPlacesByRating(places, location);
       // Timeout required to allow sortPlacesByRating to finish. 
