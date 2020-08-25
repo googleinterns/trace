@@ -392,10 +392,10 @@ function populateSearch(places, location) {
     console.log("Clicked!!");
     console.log(places);
     closeModal(document.getElementById("results-popup"));
-    const placePromise = new Promise((resolve, reject) => async function () {
-      places = await sortPlacesByDistance(places, location);
+    const placePromise = new Promise((resolve, reject) => {
+      places = sortPlacesByDistance(places, location);
       console.log("In the promise...");
-      resolve(places);
+      setTimeout(resolve(places), 10000);
     });
     placePromise.then((places) => {
       console.log("In the .then....");
@@ -412,9 +412,8 @@ function populateSearch(places, location) {
     const placePromise = new Promise((resolve, reject) => {
       places = sortPlacesByRating(places, location);
       console.log("In the promise...");
-      setTimeout(resolve(places), 3000);
-    });
-    placePromise.then((places) => {
+      setTimeout(resolve(places), 10000);
+    }).then((places) => {
       console.log("In the .then....");
       console.log(places);
       triggerModal(document.getElementById("results-popup"));
