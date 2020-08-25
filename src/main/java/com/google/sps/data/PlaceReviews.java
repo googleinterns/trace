@@ -95,9 +95,9 @@ public class PlaceReviews {
    * they gave a location weighted by their recency.
    */
   public void sortReviews(String sortType) {
-    if (sortType == "highest-rated") {
+    if (sortType.equals("highest-rated")) {
       Collections.sort(this.reviews, Comment.ORDER_BY_SCORE);
-    } else if(sortType == "recent") {
+    } else if(sortType.equals("recent")) {
       Collections.sort(this.reviews, Comment.ORDER_BY_DATE);
     } else {
       Collections.sort(this.reviews, Comment.ORDER_BY_SCORE);
