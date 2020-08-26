@@ -84,7 +84,7 @@
   text-align: center;
   transition: all 0.3s ease;
   height: 100%;
-  width: 120px;
+  width: auto;
   text-decoration: none;
 }
 
