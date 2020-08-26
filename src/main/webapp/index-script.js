@@ -356,6 +356,12 @@ function degreesToRadians(degrees) {
   return degrees * (pi/180);
 }
 
+/* Clears Sidebar results */
+function clearSidebarResults() {
+  const sidebarUl = document.getElementById('results-container');
+  sidebarUl.innerHTML = '';
+}
+
 /* Fills out search results page. */
 function populateSearch(places, location) {
   const resultSortDistance = document.getElementById("sort-distance");
@@ -467,6 +473,7 @@ function triggerModal(modal) {
 /* This function takes in an array of JS places and creates an ordered
  * list container to be populated and put into the sidebar */
 function populateResults(places) {
+  clearSidebarResults();
   const resultsContainer = document.getElementById('results-container');
   const resultsList = document.createElement('ul'); // Results ul
   resultsList.className += 'results';
