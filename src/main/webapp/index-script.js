@@ -31,36 +31,57 @@ function loadMainButtons() {
   });
   
   const modalBackArrow = document.getElementById("modal-backarrow");
-  const commentSortRelevant = document.getElementById("comment-sort-relevant");
+  const commentSortHighestRated = document.getElementById("comment-sort-highest-rated");
   const commentSortRecent = document.getElementById("comment-sort-recent");
+  const commentSortRelevant = document.getElementById("comment-sort-relevant");
 
   // Hide reviews page and display results page.
   modalBackArrow.addEventListener("click", () => {
     returnToResultsScreen();
   });
 
-  commentSortRelevant.addEventListener("click", () => {
-    commentSortRelevant.classList.add("active");
+  commentSortHighestRated.addEventListener("click", () => {
+    commentSortHighestRated.classList.add("active");
     commentSortRecent.classList.remove("active");
-    resortReviews(prev_ID, 'relevant');
+    commentSortRelevant.classList.remove("active");
+    resortReviews(prev_ID, 'highest-rated');
   });
   
   commentSortRecent.addEventListener("click", () => {
     commentSortRecent.classList.add("active");
+    commentSortHighestRated.classList.remove("active");
     commentSortRelevant.classList.remove("active");
     resortReviews(prev_ID, 'recent');
   });
+
+  commentSortRelevant.addEventListener("click", () => {
+    commentSortRelevant.classList.add("active");
+    commentSortHighestRated.classList.remove("active");
+    commentSortRecent.classList.remove("active");
+    resortReviews(prev_ID, 'relevant');
+  })
 }
 
 /** Clears top layers of modal and displays results page. */
 function returnToResultsScreen() {
+  returnToReviewScreen();
   hideButton(document.getElementById("modal-backarrow"));
-  hideButton(document.getElementById("comment-sort-relevant"));
+  hideButton(document.getElementById("comment-sort-highest-rated"));
   hideButton(document.getElementById("comment-sort-recent"));
+  hideButton(document.getElementById("comment-sort-relevant"));
   hideButton(document.getElementById('reviews-body'));
-  hideButton(document.getElementById('rev-form-body'));
+
   document.getElementById('results-body').style.display = "block"; // Display results page.
   document.getElementById('reviews-list-container').innerHTML = ''; // Clean reviews wrapper of all DOM elements;
+}
+
+/** Wipes review form from page. */
+function returnToReviewScreen() {
+  document.getElementById('fname').value = '';
+  document.getElementById('lname').value = '';
+  document.getElementById('comment').value = '';
+  hideButton(document.getElementById('rev-form-body'));
+  document.querySelector('#submit-button').innerHTML = '';
 }
 
 /* Adds mouse listeners to searchBar-related html items. */
@@ -152,6 +173,7 @@ function closeModal(modal) {
   });
   hideButton(document.getElementById("modal-backarrow"));
   hideButton(document.getElementById("comment-sort-recent"));
+  hideButton(document.getElementById("comment-sort-highest-rated"));
   hideButton(document.getElementById("comment-sort-relevant"));
 }
 
@@ -280,7 +302,7 @@ function handleSearchResults(results, service, radius, location) {
   deleteMarkers();
   var promises = [];
 
-  // Modal can handle up to 9 results only
+  // Modal can handle up to 9 results only due to Google API restrictions
   for (var i = 0; i < 9; i++) {
     if (results[i] == null){
         break;
@@ -315,11 +337,10 @@ function handleSearchResults(results, service, radius, location) {
       });
     });
     promises.push(promise);
-    
   };
   // Waits on all promises to complete before passing the results into the next function.
   Promise.all(promises).then(places => {
-    populateSearch(places); // Placeholder
+    populateSearch(places, location);
   });
 }
 
@@ -361,23 +382,100 @@ function degreesToRadians(degrees) {
 }
 
 /* Fills out search results page. */
-function populateSearch(places) {
-  places = sortPlacesByRating(places);
+function populateSearch(places, location) {
+  const resultSortDistance = document.getElementById("sort-distance");
+  const resultSortRating = document.getElementById("sort-rated");
+
   triggerModal(document.getElementById("results-popup"));
   populateResults(places);
+
+  // Adds an event listener for the distance sort button
+  resultSortDistance.addEventListener("click", () => {
+    const placePromise = new Promise((resolve, reject) => {
+      places = sortPlacesByDistance(places, location);
+      // Timeout required to allow sortPlacesByDistance to finish.
+      setTimeout(function run() {resolve(places)}, 2000);
+    });
+    placePromise.then((places) => {
+      closeModal(document.getElementById("results-popup"));
+      triggerModal(document.getElementById("results-popup"));
+      populateResults(places);
+    });
+  });
+  
+  // Adds an event listener for the rating sort button
+  resultSortRating.addEventListener("click", () => { 
+    const placePromise = new Promise((resolve, reject) => {
+      places = sortPlacesByRating(places, location);
+      // Timeout required to allow sortPlacesByRating to finish. 
+      setTimeout(function run() {resolve(places)}, 2000);
+    }).then((places) => {
+      closeModal(document.getElementById("results-popup"));
+      triggerModal(document.getElementById("results-popup"));
+      populateResults(places);
+    });
+  });
 }
 
-/* Adds a field 'rating' to each place with a random integer to
- * simulate sorting locations by their ratings. */
+/** Sorts place options by rating */
 function sortPlacesByRating(places) {
-  places.forEach((place) => {
-    let rand = Math.floor(Math.random() * 10);
-    place.rating = rand;
-  });
-  places.sort((a, b) =>
-    (a.rating > b.rating) ? 1 : -1);
+  places.sort(function(a, b){
+    (getPlaceRating(a.place_id) > getPlaceRating(b.place_id)) ? 1 : -1});
   return places;
 }
+
+/** Sorts place options by distance */
+function sortPlacesByDistance(places, current) {
+  const locationPromise = new Promise((resolve, reject) => {
+    // Check if they gave us a location to prioritize places near
+    if (current == null) {
+      // If not, check if we can rate by user's current location
+      if (navigator.geolocation) {
+        navigator.geolocation.getCurrentPosition(
+          position => {
+            const pos = {
+              lat: position.coords.latitude,
+              lng: position.coords.longitude
+            };
+          current = new google.maps.LatLng(pos.lat, pos.lng)
+          resolve(current);
+          }
+        );
+      } else {
+        // No location given, no sorting possible.
+        reject();
+      }
+    } else {
+      resolve(current);
+    }
+  }).then((locationResult) => {
+    places.sort(function(a, b){ 
+      (getDistance(locationResult, a.geometry.location)
+        > getDistance(locationResult, b.geometry.location)) ? 1 : -1});
+    return places;
+  });
+  // If I don't return here, I get type errors later on (line 511: can't read foreach of undefined)
+  return places;
+}
+
+/** Returns the overall rating of a place */
+function getPlaceRating(placeID){
+  const request = '/review?place_id=' + placeID + '&sort=recent';
+  fetch(request).then(response => response.json()).then((place) => {
+    return place.rating;
+  });
+}
+
+/** Returns the distance between two coordinates*/
+function getDistance(location1, location2){
+  if (location1.lat() == location2.lat() && location1.lng() == location2.lng()){
+    return 0;
+  }
+  var a = Math.pow((location1.lat() - location2.lat()), 2);
+  var b = Math.pow((location1.lng() - location2.lng()), 2);
+  return Math.sqrt(a + b);
+}
+
 
 /* Triggers the modal, and overlay, to follow the active CSS styling, making it appear. */
 function triggerModal(modal) {
@@ -386,8 +484,9 @@ function triggerModal(modal) {
   modal.classList.add('active');
   document.getElementById('results-body').style.display = "block";
   hideButton(document.getElementById("modal-backarrow"));
-  hideButton(document.getElementById("comment-sort-relevant"));
+  hideButton(document.getElementById("comment-sort-highest-rated"));
   hideButton(document.getElementById("comment-sort-recent"));
+  hideButton(document.getElementById("comment-sort-relevant"));
 }
 
 /* This function takes in an array of JS places and creates an unordered
@@ -430,7 +529,7 @@ function generateResult(place) {
   imagePreview.appendChild(suggestedIcon);
   resultGrid.appendChild(imagePreview);
   const infoText = document.createElement('ul'); // Tidbits ul
-  
+
   // Relevant information to be displayed
   var tidbits = [
     "<a onclick=\"showReviews(\'" + place.place_id + "\', false);\">" + place.name + "</a>",
@@ -517,10 +616,12 @@ function enableBackArrow() {
 
 /** Displays sort options button. */
 function enableSortOptions() {
-  const commentSortRelevant = document.getElementById("comment-sort-relevant");
-  commentSortRelevant.style.display = "block";
+  const commentSortHighestRated = document.getElementById("comment-sort-highest-rated");
+  commentSortHighestRated.style.display = "block";
   const commentSortRecent = document.getElementById("comment-sort-recent");
   commentSortRecent.style.display = "block";
+  const commentSortRelevant = document.getElementById("comment-sort-relevant");
+  commentSortRelevant.style.display = "block";
 }
 
 /** Displays review-body and hides results-body. */
@@ -585,10 +686,16 @@ function triggerNewReviewForm(place_id) {
   document.getElementById("place_id").value = place_id;
   document.getElementById("reviews-body").style.display = "none"; // Hide reviews page.
   document.getElementById("rev-form-body").style.display = "block";
-  document.getElementById("submit-new-review")
-    .addEventListener("click", () => {
-      postNewReview(place_id);
-    });
+  hideButton(document.getElementById('comment-sort-highest-rated'));
+  hideButton(document.getElementById('comment-sort-recent'));
+  hideButton(document.getElementById('comment-sort-relevant'));
+  const newReviewSubmit = document.createElement('button');
+  newReviewSubmit.innerHTML = 'Submit';
+  newReviewSubmit.id = 'submit-new-review';
+  newReviewSubmit.addEventListener("click", () => {
+    postNewReview(place_id);
+  });
+  document.getElementById('submit-button').appendChild(newReviewSubmit);
 }
 
 /** Function posts new review to datastore and updates modal reviews page with new review. */
@@ -600,8 +707,9 @@ function postNewReview(place_id) {
   const request = '/review?firstName=' + first + '&rate=' + rate +
     '&lastName=' + last + '&comment=' + comment + '&place_id=' + place_id;
   fetch(request, {method:"POST"}).then(() => {
+    returnToReviewScreen();
     returnToResultsScreen();
-    showReviews(place_id, false);
+    //showReviews(place_id, false);
   });
 }
 
@@ -610,8 +718,10 @@ function getRating() {
   var radios = document.getElementsByName('rate');
   for (var i = 0, length = radios.length; i < length; i++) {
     if (radios[i].checked) {
+      radios[i].style.color = "#ccc;"
       return radios[i].value;
     }
+    radios[i].style.color = "#ccc;"
   }
   return 0;
 }
