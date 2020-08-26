@@ -22,7 +22,7 @@
 .sidebar-body {
   height: 90%;
   top: 10%;
-  background-color: #ccc;
+  background-color: white;
 }
 
 .results {
@@ -36,7 +36,6 @@
   overflow: scroll;
   margin: 0;
   padding: 0;
-  border: 2px solid #ccc;
   max-height: inherit;
   font-size: 16px;
   font-family: Arial, sans-serif;
@@ -83,6 +82,6 @@
 }
 
 .results li:nth-child(even) {
-  background: #f8f8f8;
+  background: lightgray;
 }
 
