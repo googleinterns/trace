@@ -1,0 +1,65 @@
+.review-container {
+  align-items: center;
+  border-color: black;
+  border-style: solid;
+  border-width: 2px;
+  border-radius: 5px;
+  height: 100%;
+  left: 0;
+  position: relative;
+  top: 0;
+  margin: auto;
+  width: 95%;
+}
+
+.big-flex {
+  align-items: center;
+  display:flex;
+  justify-content: space-between;
+}
+
+.left-flex {
+  display: flex;
+  justify-content: space-around;
+  width: 40%;
+}
+
+.right-flex {
+ justify-content: right;
+ width: 30%;
+}
+
+.review-text {
+  margin:auto;
+  text-align: center;
+  width:90%;
+}
+
+a.vote-button {
+  background-color:#3a3838;
+  border-width: 1px;
+  border-style: solid;
+  border-color: grey;
+  color:#FFFFFF;
+  display: inline-block;
+  padding:0.3em 1.2em;
+  margin:0 0.3em 0.3em 0;
+  border-radius:2em;
+  box-sizing: border-box;
+  text-decoration:none;
+  font-family:'Roboto',sans-serif;
+  font-weight:900;
+  text-align:center;
+  transition: all 0.2s;
+}
+
+a.vote-button:hover {
+  background-color:grey;
+}
+
+@media all and (max-width:30em) {
+ a.vote-button {
+   display:block;
+   margin:0.2em auto;
+ }
+}
