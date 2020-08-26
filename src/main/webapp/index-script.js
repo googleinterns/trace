@@ -52,7 +52,7 @@ function loadMainButtons() {
     commentSortHighestRated.classList.remove("active");
     commentSortRecent.classList.remove("active");
     resortReviews(prev_ID, 'relevant');
-  })
+  });
 }
 
 /** Wipes review form from page. */
