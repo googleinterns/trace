@@ -388,48 +388,48 @@ function populateSearch(places, location) {
   const resultSortRating = document.getElementById("sort-rated");
   var promises = [];
     // Give each place a rating field based on the information from our datastore.
-    places.forEach(place => {
-      const placeRatingPromise = new Promise((resolve, reject) => {
-        const request = '/review?place_id=' + place.place_id + '&sort=recent';
-        fetch(request).then(response => response.json()).then((p) => {
-          place.rating = p.rating;
-          resolve(place);
-        });
+  places.forEach(place => {
+    const placeRatingPromise = new Promise((resolve, reject) => {
+      const request = '/review?place_id=' + place.place_id + '&sort=recent';
+      fetch(request).then(response => response.json()).then((p) => {
+        place.rating = p.rating;
+        resolve(place);
       });
-      promises.push(placeRatingPromise);
     });
+    promises.push(placeRatingPromise);
+  });
 
     // Make sure each place has a rating, then allow search results to pop up. 
-    Promise.all(promises).then(() => {
-      closeModal(document.getElementById("results-popup"));
-      triggerModal(document.getElementById("results-popup"));
-      populateResults(places);
-    });
+  Promise.all(promises).then(() => {
+    closeModal(document.getElementById("results-popup"));
+    triggerModal(document.getElementById("results-popup"));
+    populateResults(places);
+  });
 
   // Adds an event listener for the distance sort button
   resultSortDistance.addEventListener("click", () => {
-      if (location == null) {
-       // TODO: Add geolocator code. 
-       return;
-      }
-      places.sort(function(a, b){ 
-        return getDistance(location, a.geometry.location)
-          - getDistance(location, b.geometry.location);
-      });
-      closeModal(document.getElementById("results-popup"));
-      triggerModal(document.getElementById("results-popup"));
-      populateResults(places);
+    if (location == null) {
+      // TODO: Add geolocator code. 
+      return;
+    }
+    places.sort(function(a, b){ 
+      return getDistance(location, a.geometry.location)
+        - getDistance(location, b.geometry.location);
+    });
+    closeModal(document.getElementById("results-popup"));
+    triggerModal(document.getElementById("results-popup"));
+    populateResults(places);
   });
 
   // Adds an event listener for the rating sort button
   resultSortRating.addEventListener("click", () => {
-     places.sort(function(a, b){
-        // Top ratings on top of the list
-        return b.rating - a.rating;
-       });
-      closeModal(document.getElementById("results-popup"));
-      triggerModal(document.getElementById("results-popup"));
-      populateResults(places);
+    places.sort(function(a, b){
+      // Top ratings on top of the list
+      return b.rating - a.rating;
+    });
+    closeModal(document.getElementById("results-popup"));
+    triggerModal(document.getElementById("results-popup"));
+    populateResults(places);
   });
 }
 
