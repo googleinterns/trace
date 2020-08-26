@@ -409,15 +409,23 @@ function populateSearch(places, location) {
   // Adds an event listener for the rating sort button
   resultSortRating.addEventListener("click", () => { 
     console.log("before: " + places[0].vicinity);
-    const placeRatingPromise = new Promise((resolve, reject) => {
-      places.forEach(place => {
-        place.rating = getPlaceRating(place.place_id);
+    var promises = [];
+    places.forEach(place => {
+      const placeRatingPromise = new Promise((resolve, reject) => {
+        const request = '/review?place_id=' + place.place_id + '&sort=recent';
+        fetch(request).then(response => response.json()).then((p) => {
+          console.log(place.place_id + " : " + p.rating);
+          place.rating = p.rating;
+          resolve(place);
+        });
       });
-      resolve(places);
-    }).then((places) => {
-
+      promises.push(placeRatingPromise);
+    });
+    
+    Promise.all(promises).then(() => {
+      console.log(places);
       places.sort(function(a, b){a.rating > b.rating ? 1 : -1});
-      console.log("after: " + places[0].vicinity);
+      console.log("after: " + places[0].vicinity + places[0].rating);
       closeModal(document.getElementById("results-popup"));
       triggerModal(document.getElementById("results-popup"));
       populateResults(places);
