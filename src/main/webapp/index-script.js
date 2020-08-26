@@ -592,6 +592,7 @@ function postNewReview(place_id) {
     '&lastName=' + last + '&comment=' + comment + '&place_id=' + place_id;
   fetch(request, {method:"POST"}).then(() => {
     returnToReviewScreen();
+    showReviews(place_id, false);
   });
 }
 
