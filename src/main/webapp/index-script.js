@@ -424,7 +424,7 @@ function populateResults(places) {
       position: place.geometry.location,
       map: map,
       animation: google.maps.Animation.DROP,
-      title: place.name + ':' place.rating
+      title: place.name + ':' + place.rating,
     });
     addMarkerListeners(marker, place.place_id);
     markers.push(marker);
