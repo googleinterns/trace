@@ -46,10 +46,10 @@
 .results li {
   height: 120px;;
   width: 100%;
-  padding: 0px;
   display: grid;
   grid-template-columns: auto auto auto auto;
   grid-template-rows: auto auto auto;
+  padding: 10px 0px 0px 10px;
 }
 
 .results p#name {
