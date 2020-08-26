@@ -29,15 +29,9 @@ function loadMainButtons() {
     });
   });
   
-  const modalBackArrow = document.getElementById("modal-backarrow");
   const commentSortHighestRated = document.getElementById("comment-sort-highest-rated");
   const commentSortRecent = document.getElementById("comment-sort-recent");
   const commentSortRelevant = document.getElementById("comment-sort-relevant");
-
-  // Hide reviews page and display results page.
-  modalBackArrow.addEventListener("click", () => {
-    returnToResultsScreen();
-  });
 
   commentSortHighestRated.addEventListener("click", () => {
     commentSortHighestRated.classList.add("active");
@@ -133,7 +127,6 @@ function closeModal(modal) {
   document.querySelectorAll('.modal-body').forEach((item) => {
     item.style.display = "none";
   });
-  hideButton(document.getElementById("modal-backarrow"));
   hideButton(document.getElementById("comment-sort-recent"));
   hideButton(document.getElementById("comment-sort-highest-rated"));
   hideButton(document.getElementById("comment-sort-relevant"));
@@ -448,7 +441,6 @@ function triggerModal(modal) {
   overlay.classList.add('active');
   modal.classList.add('active');
   document.getElementById('results-body').style.display = "block";
-  hideButton(document.getElementById("modal-backarrow"));
   hideButton(document.getElementById("comment-sort-highest-rated"));
   hideButton(document.getElementById("comment-sort-recent"));
   hideButton(document.getElementById("comment-sort-relevant"));
@@ -544,9 +536,6 @@ function showReviews(placeID, clickedFromMap) {
  * Review modal activation function
  */
 function displayReviewModal(clickedFromMap) {
-  if(!clickedFromMap) {
-    enableBackArrow();
-  }
   enableSortOptions();
   displayReviewsBody();
 }
