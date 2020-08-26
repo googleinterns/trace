@@ -396,13 +396,15 @@ function populateSearch(places, location) {
        return;
       }
       places.sort(function(a, b){ 
-        (getDistance(location, a.geometry.location)
-          > getDistance(location, b.geometry.location)) ? 1 : -1});
+        return getDistance(location, a.geometry.location)
+          - getDistance(location, b.geometry.location);
+      });
       closeModal(document.getElementById("results-popup"));
       triggerModal(document.getElementById("results-popup"));
       populateResults(places);
   });
-  
+
+  console.log(places);
   // Adds an event listener for the rating sort button
   resultSortRating.addEventListener("click", () => {
     var promises = [];
@@ -420,7 +422,11 @@ function populateSearch(places, location) {
     
     // Once each place has a rating field, sort by it. 
     Promise.all(promises).then(() => {
-      places.sort(function(a, b){a.rating > b.rating ? 1 : -1});
+      places.sort(function(a, b){
+        // Top ratings on top of the list
+        return b.rating - a.rating;
+       });
+      console.log(places);
       closeModal(document.getElementById("results-popup"));
       triggerModal(document.getElementById("results-popup"));
       populateResults(places);
@@ -505,7 +511,8 @@ function generateResult(place) {
     "<a onclick=\"showReviews(\'" + place.place_id + "\', false);\">" + place.name + "</a>",
     place.international_phone_number,
     "<a href=\"" + place.website + "\">Site</a>",
-    place.vicinity
+    place.vicinity,
+    place.rating
   ];
 
   tidbits = tidbits.filter(function (element) {
