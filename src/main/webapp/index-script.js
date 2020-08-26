@@ -489,15 +489,15 @@ function triggerModal(modal) {
   hideButton(document.getElementById("comment-sort-relevant"));
 }
 
-/* This function takes in an array of JS places and creates an unordered
- * list container to be populated. */
+/* This function takes in an array of JS places and creates an ordered
+ * list container to be populated and put into the sidebar */
 function populateResults(places) {
-  populateResults2(places);
-  const listContainer = document.getElementById('results-list-container');
-  const entireList = document.createElement('ul'); // Results ul
-  entireList.id += "results-list";
+  const resultsContainer = document.getElementById('results-container');
+  const resultsList = document.createElement('ul'); // Results ul
+  resultsList.className += 'results';
+  
   places.forEach(place => {
-    entireList.appendChild(generateResult(place));
+    resultsList.appendChild(generateResult(place));
     var marker = new google.maps.Marker({
       position: place.geometry.location,
       map: map,
@@ -507,64 +507,15 @@ function populateResults(places) {
     addMarkerListeners(marker, place.place_id);
     markers.push(marker);
   });
-  listContainer.appendChild(entireList);
-}
-
-function populateResults2(places) {
-  const resultsContainer = document.getElementById('results-container');
-  const resultsList = document.createElement('ul'); // Results ul
-  
-  places.forEach(place => {
-    resultsList.appendChild(generateResult2(place));
-  });
   resultsContainer.appendChild(resultsList);
 }
 
-/* create result element function
- * This function takes in a JavaScript place object and populates a list entry of its information.
- *    ___________________________________
- *   |       |  Relevant information   |_|
- *   | icon  |  Relevant information   |_|
- *   |       |  Relevant information   |_|
- *   |_______|__Relevant information___|_|
+/** atomic result generator function
+ * This function takes in a result JS object and converts it into an HTML element
+ * These objects are mounted in the sidebar results class ul object
+ * This returns the HTML <li> element
  */
 function generateResult(place) {
-  const resultEntry = document.createElement('li');
-  const resultGrid = document.createElement('div');
-  resultGrid.className += 'result-grid';
-
-  const imagePreview = document.createElement('div'); // Wrapper for icon
-  imagePreview.className += 'prvw-img';
-  const suggestedIcon = document.createElement('img');
-  suggestedIcon.src = place.icon;
-  imagePreview.appendChild(suggestedIcon);
-  resultGrid.appendChild(imagePreview);
-  const infoText = document.createElement('ul'); // Tidbits ul
-
-  // Relevant information to be displayed
-  var tidbits = [
-    "<a onclick=\"showReviews(\'" + place.place_id + "\', false);\">" + place.name + "</a>",
-    place.international_phone_number,
-    "<a href=\"" + place.website + "\">Site</a>",
-    place.vicinity
-  ];
-
-  tidbits = tidbits.filter(function (element) {
-    return element != null;
-  });
-
-  tidbits.forEach(fact => {
-    const infoEntry = document.createElement('li');
-    infoEntry.innerHTML = fact;
-    infoText.appendChild(infoEntry);
-  });
-
-  resultGrid.appendChild(infoText);
-  resultEntry.appendChild(resultGrid);
-  return resultEntry;
-}
-
-function generateResult2(place) {
   const result = document.createElement('li');
   result.className += 'results';
   const name = document.createElement('p');
