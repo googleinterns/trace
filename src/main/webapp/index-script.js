@@ -553,6 +553,32 @@ function generateResult(place) {
   return resultEntry;
 }
 
+function generateResult2(place) {
+  const result = document.createElement('li');
+  result.className += 'results';
+  const name = document.createElement('p');
+  name.id += 'name';
+  const score = document.createElement('p');
+  score.id += 'score';
+  const site = document.createElement('p');
+  site.id += 'site';
+  const phone = document.createElement('p');
+  phone.id += 'phone';
+  const address = document.createElement('p');
+  address.id += 'address';
+
+  name.innerHTML += 
+      "<a onclick=\"showReviews(\'" + place.place_id + "\', false);\">" + place.name + "</a>";
+  score.innerHTML += "4.0";
+  site.innerHTML += "<a href=\"" + place.website + "\">Site</a>";
+  address.innerHTML += place.vicinity;
+  result.appendChild(name);
+  result.appendChild(score);
+  result.appendChild(site);
+  result.appendChild(phone);
+  result.appendChild(address);
+}
+
 /** Add event listeners to markers. */
 function addMarkerListeners(marker, placeID) {
   marker.addListener('mouseover', () => toggleBounce(marker));
