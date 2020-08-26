@@ -410,9 +410,6 @@ function triggerModal(modal) {
   if (modal == null) return;
   overlay.classList.add('active');
   modal.classList.add('active');
-  hideButton(document.getElementById("comment-sort-highest-rated"));
-  hideButton(document.getElementById("comment-sort-recent"));
-  hideButton(document.getElementById("comment-sort-relevant"));
 }
 
 /* This function takes in an array of JS places and creates an ordered
