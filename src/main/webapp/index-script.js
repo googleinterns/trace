@@ -711,6 +711,7 @@ function noReviews() {
 function generateReview(review, currUser) {
   const newReview = createReviewContainer();
   newReview.appendChild(createBigFlexContainer(review, currUser));
+  newReview.appendChild(document.createElement('br'));
   newReview.appendChild(createReviewTextDiv(review.messageContent));
   return newReview;
 }
@@ -735,6 +736,7 @@ function createBigFlexContainer(review, currUser) {
 function createReviewTextDiv(text) {
   const div = document.createElement('div');
   div.innerHTML = text;
+  div.className = 'review-text';
   return div;
 }
 
@@ -781,9 +783,10 @@ function createRightFlex(review, currUser) {
 
 /** Adds upvote/downvote button to each review. */
 function addVotingButtons(parent, review, currUser) {
-  const upvoteButton = document.createElement('button');
+  const upvoteButton = document.createElement('a');
   upvoteButton.innerHTML += '&#128077;' + review.positive;
   upvoteButton.id += "up" + review.id;
+  upvoteButton.className = 'vote-button';
   if (review.currUserVote == "positive"){
     upvoteButton.style.color = "red";
   }
@@ -791,9 +794,10 @@ function addVotingButtons(parent, review, currUser) {
     upvoteClick(review, currUser);
   });
 
-  const downvoteButton = document.createElement('button');
+  const downvoteButton = document.createElement('a');
   downvoteButton.innerHTML += '&#128078;' + review.negative;
   downvoteButton.id += "down" + review.id;
+  downvoteButton.className = 'vote-button';
   if (review.currUserVote == "negative"){
     downvoteButton.style.color = "red";
   }
