@@ -510,11 +510,6 @@ function displayReviewModal(clickedFromMap) {
   document.getElementById('reviews-body').style.display = "block";
 }
 
-/** Displays review-body and hides results-body. */
-function displayReviewsBody() {
-  
-}
-
 /** Displays sort options button. */
 function enableSortOptions() {
   const commentSortHighestRated = document.getElementById("comment-sort-highest-rated");
@@ -603,7 +598,6 @@ function postNewReview(place_id) {
     '&lastName=' + last + '&comment=' + comment + '&place_id=' + place_id;
   fetch(request, {method:"POST"}).then(() => {
     returnToReviewScreen();
-    //showReviews(place_id, false);
   });
 }
 
