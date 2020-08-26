@@ -61,19 +61,6 @@ function loadMainButtons() {
   })
 }
 
-/** Clears top layers of modal and displays results page. */
-function returnToResultsScreen() {
-  returnToReviewScreen();
-  hideButton(document.getElementById("modal-backarrow"));
-  hideButton(document.getElementById("comment-sort-highest-rated"));
-  hideButton(document.getElementById("comment-sort-recent"));
-  hideButton(document.getElementById("comment-sort-relevant"));
-  hideButton(document.getElementById('reviews-body'));
-
-  document.getElementById('results-body').style.display = "block"; // Display results page.
-  document.getElementById('reviews-list-container').innerHTML = ''; // Clean reviews wrapper of all DOM elements;
-}
-
 /** Wipes review form from page. */
 function returnToReviewScreen() {
   document.getElementById('fname').value = '';
@@ -658,7 +645,6 @@ function postNewReview(place_id) {
     '&lastName=' + last + '&comment=' + comment + '&place_id=' + place_id;
   fetch(request, {method:"POST"}).then(() => {
     returnToReviewScreen();
-    returnToResultsScreen();
     //showReviews(place_id, false);
   });
 }
