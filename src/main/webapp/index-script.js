@@ -511,21 +511,13 @@ function populateResults(places) {
 }
 
 function populateResults2(places) {
-  const listContainer = document.getElementById('results-container');
-  const entireList = document.createElement('ul'); // Results ul
-  entireList.className += "results";
+  const resultsContainer = document.getElementById('results-container');
+  const resultsList = document.createElement('ul'); // Results ul
+  
   places.forEach(place => {
-    entireList.appendChild(generateResult2(place));
-    var marker = new google.maps.Marker({
-      position: place.geometry.location,
-      map: map,
-      animation: google.maps.Animation.DROP,
-      title: 'Hello World!'
-    });
-    addMarkerListeners(marker, place.place_id);
-    markers.push(marker);
+    resultsList.appendChild(generateResult2(place));
   });
-  listContainer.appendChild(entireList);
+  resultsContainer.appendChild(resultsList);
 }
 
 /* create result element function
@@ -596,6 +588,7 @@ function generateResult2(place) {
   result.appendChild(site);
   result.appendChild(phone);
   result.appendChild(address);
+  return result;
 }
 
 /** Add event listeners to markers. */
