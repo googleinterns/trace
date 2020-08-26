@@ -106,6 +106,7 @@
 .results p#address {
   grid-row: 3/4;
   grid-column: 1/5;
+  padding-right: 5px;
 }
 
 
