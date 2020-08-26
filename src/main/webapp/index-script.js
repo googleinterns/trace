@@ -337,7 +337,6 @@ function handleSearchResults(results, service, radius, location) {
       });
     });
     promises.push(promise);
-    
   };
   // Waits on all promises to complete before passing the results into the next function.
   Promise.all(promises).then(places => {
@@ -430,14 +429,6 @@ function populateSearch(places, location) {
     closeModal(document.getElementById("results-popup"));
     triggerModal(document.getElementById("results-popup"));
     populateResults(places);
-  });
-}
-
-/** Returns the overall rating of a place */
-function getPlaceRating(placeID){
-  const request = '/review?place_id=' + placeID + '&sort=recent';
-  fetch(request).then(response => response.json()).then((place) => {
-    return place.rating;
   });
 }
 
