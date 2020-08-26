@@ -61,11 +61,14 @@
           <button id="modal-backarrow"></button>
           <div class="button-group" id="comment-sorting" value="">
             <button id="comment-sort-recent">Recently Posted</button>
-            <button id="comment-sort-relevant">Highest Rated</button>
+            <button id="comment-sort-highest-rated">Highest Rated</button>
+            <button id="comment-sort-relevant">Relevant</button>
           </div>
           <button data-modal-close-button class="exit-button">&times;</button>
         </div>
         <div class="modal-body" id="results-body">
+          <button id="sort-distance">Shortest Distance</button>
+          <button id="sort-rated">Highest Rated</button>
           <div class="list" id="results-list-container"></div>
         </div>
         <div class="modal-body" id="reviews-body">
@@ -112,8 +115,7 @@
                   <textarea id="comment" name="comment" placeholder="Please be as specific as possible..." style="height:200px"></textarea>
                 </div>
               </div>
-              <div class="review-row">
-                <button id="submit-new-review">Submit</button>
+              <div id="submit-button" class="review-row">
               </div>
           </div>
         </div>
