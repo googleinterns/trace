@@ -13,6 +13,28 @@
   min-height: 80px;
 }
 
+.navbar:before {
+  position: absolute;
+  background: linear-gradient(to right, #EA4235 50%, #4286F5 50%);
+  width: 50%;
+  height: 5px;
+  content: '';
+  bottom: 0;
+  right: 0;
+  left: 0;
+}
+
+.navbar:after {
+  position: absolute;
+  background: linear-gradient(to right, #35A853 50%, #FABC02 50%);
+  height: 5px;
+  content: '';
+  bottom: 0;
+  right: 0;
+  width: 50%;
+  float: right;
+}
+
 .navbar-left {
   display: block;
   float: left;
