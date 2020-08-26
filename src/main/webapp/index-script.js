@@ -553,19 +553,6 @@ function showReviews(placeID, clickedFromMap) {
   displayReviewModal(clickedFromMap);
 }
 
-/** Retrieve url parameters from the site's url. */
-function getURLParameter(sParam) {
-  var sPageURL = window.location.search.substring(1);
-  var sURLVariables = sPageURL.split('&');
-  for (var i = 0; i < sURLVariables.length; i++) {
-    var sParameterName = sURLVariables[i].split('=');
-    if (sParameterName[0] == sParam) {
-      return sParameterName[1];
-    }
-  }
-  return null;
-}
-
 /**
  * Review modal activation function
  */
@@ -577,11 +564,10 @@ function displayReviewModal(clickedFromMap) {
   displayReviewsBody();
 }
 
-/** Displays back-arrow button. */
-function enableBackArrow() {
-  const reviewBackArrow = document.getElementById('modal-backarrow');
-  reviewBackArrow.innerHTML = "&larr;";
-  reviewBackArrow.style.display = "block"
+/** Displays review-body and hides results-body. */
+function displayReviewsBody() {
+  document.getElementById('results-body').style.display = "none";
+  document.getElementById('reviews-body').style.display = "block";
 }
 
 /** Displays sort options button. */
@@ -592,12 +578,6 @@ function enableSortOptions() {
   commentSortRecent.style.display = "block";
   const commentSortRelevant = document.getElementById("comment-sort-relevant");
   commentSortRelevant.style.display = "block";
-}
-
-/** Displays review-body and hides results-body. */
-function displayReviewsBody() {
-  document.getElementById('results-body').style.display = "none";
-  document.getElementById('reviews-body').style.display = "block";
 }
 
 /** Fetch Reviews
@@ -681,6 +661,19 @@ function postNewReview(place_id) {
     returnToResultsScreen();
     //showReviews(place_id, false);
   });
+}
+
+/** Retrieve url parameters from the site's url. */
+function getURLParameter(sParam) {
+  var sPageURL = window.location.search.substring(1);
+  var sURLVariables = sPageURL.split('&');
+  for (var i = 0; i < sURLVariables.length; i++) {
+    var sParameterName = sURLVariables[i].split('=');
+    if (sParameterName[0] == sParam) {
+      return sParameterName[1];
+    }
+  }
+  return null;
 }
 
 /** Finds which of the radio buttons is currently checked and returns that value. */
