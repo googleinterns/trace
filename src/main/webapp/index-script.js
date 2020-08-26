@@ -346,6 +346,7 @@ function clearSidebarResults() {
 function populateSearch(places, location) {
   const resultSortDistance = document.getElementById("sort-distance");
   const resultSortRating = document.getElementById("sort-rated");
+<<<<<<< HEAD
 
   populateResults(places);
 
@@ -371,56 +372,52 @@ function populateSearch(places, location) {
     }).then((places) => {
       closeModal(document.getElementById("results-popup"));
       populateResults(places);
+=======
+  var promises = [];
+    // Give each place a rating field based on the information from our datastore.
+  places.forEach(place => {
+    const placeRatingPromise = new Promise((resolve, reject) => {
+      const request = '/review?place_id=' + place.place_id + '&sort=recent';
+      fetch(request).then(response => response.json()).then((p) => {
+        place.rating = p.rating;
+        resolve(place);
+      });
+>>>>>>> dev
     });
+    promises.push(placeRatingPromise);
   });
-}
 
-/** Sorts place options by rating */
-function sortPlacesByRating(places) {
-  places.sort(function(a, b){
-    (getPlaceRating(a.place_id) > getPlaceRating(b.place_id)) ? 1 : -1});
-  return places;
-}
+    // Make sure each place has a rating, then allow search results to pop up. 
+  Promise.all(promises).then(() => {
+    closeModal(document.getElementById("results-popup"));
+    triggerModal(document.getElementById("results-popup"));
+    populateResults(places);
+  });
 
-/** Sorts place options by distance */
-function sortPlacesByDistance(places, current) {
-  const locationPromise = new Promise((resolve, reject) => {
-    // Check if they gave us a location to prioritize places near
-    if (current == null) {
-      // If not, check if we can rate by user's current location
-      if (navigator.geolocation) {
-        navigator.geolocation.getCurrentPosition(
-          position => {
-            const pos = {
-              lat: position.coords.latitude,
-              lng: position.coords.longitude
-            };
-          current = new google.maps.LatLng(pos.lat, pos.lng)
-          resolve(current);
-          }
-        );
-      } else {
-        // No location given, no sorting possible.
-        reject();
-      }
-    } else {
-      resolve(current);
+  // Adds an event listener for the distance sort button
+  resultSortDistance.addEventListener("click", () => {
+    if (location == null) {
+      // TODO: Add geolocator code. 
+      return;
     }
-  }).then((locationResult) => {
     places.sort(function(a, b){ 
-      (getDistance(locationResult, a.geometry.location)
-        > getDistance(locationResult, b.geometry.location)) ? 1 : -1});
-    return places;
+      return getDistance(location, a.geometry.location)
+        - getDistance(location, b.geometry.location);
+    });
+    closeModal(document.getElementById("results-popup"));
+    triggerModal(document.getElementById("results-popup"));
+    populateResults(places);
   });
-  // If I don't return here, I get type errors later on (line 511: can't read foreach of undefined)
-  return places;
-}
 
-/** Returns the overall rating of a place */
-function getPlaceRating(placeID){
-  const request = '/review?place_id=' + placeID + '&sort=recent';
-  fetch(request).then(response => response.json()).then((place) => {
-    return place.rating;
+  // Adds an event listener for the rating sort button
+  resultSortRating.addEventListener("click", () => {
+    places.sort(function(a, b){
+      // Top ratings on top of the list
+      return b.rating - a.rating;
+    });
+    closeModal(document.getElementById("results-popup"));
+    triggerModal(document.getElementById("results-popup"));
+    populateResults(places);
   });
 }
 
@@ -474,6 +471,7 @@ function populateResults(places) {
  * This returns the HTML <li> element
  */
 function generateResult(place) {
+<<<<<<< HEAD
   const result = document.createElement('li');
   result.className += 'results';
   const name = document.createElement('p');
@@ -489,7 +487,7 @@ function generateResult(place) {
 
   name.innerHTML += 
       "<a onclick=\"showReviews(\'" + place.place_id + "\', false);\">" + place.name + "</a>";
-  const calculatedScore = getPlaceRating(place.place_id);
+  const calculatedScore = place.rating;
   score.innerHTML += (calculatedScore) ? calculatedScore : 'N/A' ;
   site.innerHTML += "<a href=\"" + place.website + "\">Site</a>";
   phone.innerHTML += (place.international_phone_number) ? place.international_phone_number : '';
@@ -683,6 +681,7 @@ function noReviews() {
 function generateReview(review, currUser) {
   const newReview = createReviewContainer();
   newReview.appendChild(createBigFlexContainer(review, currUser));
+  newReview.appendChild(document.createElement('br'));
   newReview.appendChild(createReviewTextDiv(review.messageContent));
   return newReview;
 }
@@ -707,6 +706,7 @@ function createBigFlexContainer(review, currUser) {
 function createReviewTextDiv(text) {
   const div = document.createElement('div');
   div.innerHTML = text;
+  div.className = 'review-text';
   return div;
 }
 
@@ -753,9 +753,10 @@ function createRightFlex(review, currUser) {
 
 /** Adds upvote/downvote button to each review. */
 function addVotingButtons(parent, review, currUser) {
-  const upvoteButton = document.createElement('button');
+  const upvoteButton = document.createElement('a');
   upvoteButton.innerHTML += '&#128077;' + review.positive;
   upvoteButton.id += "up" + review.id;
+  upvoteButton.className = 'vote-button';
   if (review.currUserVote == "positive"){
     upvoteButton.style.color = "red";
   }
@@ -763,9 +764,10 @@ function addVotingButtons(parent, review, currUser) {
     upvoteClick(review, currUser);
   });
 
-  const downvoteButton = document.createElement('button');
+  const downvoteButton = document.createElement('a');
   downvoteButton.innerHTML += '&#128078;' + review.negative;
   downvoteButton.id += "down" + review.id;
+  downvoteButton.className = 'vote-button';
   if (review.currUserVote == "negative"){
     downvoteButton.style.color = "red";
   }

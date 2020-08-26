@@ -2,6 +2,7 @@
 @import url(newReview.css);
 @import url(new-ui.css);
 @import url(sidebar.css);
+@import url(reviewModal.css);
 
 #map {
   height: 90%;
