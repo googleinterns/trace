@@ -853,6 +853,7 @@ function addHeatMapListeners(heatmap) {
   const gradToggle = document.getElementById("gradient-toggle");
   const radiusSlider = document.getElementById("heat-radius");
   const opacitySlider = document.getElementById("heat-opacity");
+  const heatButtons = document.querySelectorAll(".heat-button");
   const darkMode = document.getElementById("dark-toggle");
   const darkGradient = [
     "rgba(0, 255, 255, 0)",
@@ -879,9 +880,9 @@ function addHeatMapListeners(heatmap) {
 
       // Activate buttons.
       const disp = mapActive ? 'none' : 'block';
-      gradToggle.style.display = disp;
-      radiusSlider.style.display = disp;
-      opacitySlider.style.display = disp;
+      heatButtons.forEach(button => {
+        button.style.display = disp;
+      });
       heatToggle.innerHTML = mapActive ? 
         'Open COVID Dashboard' : 'Close dashboard';
   });
