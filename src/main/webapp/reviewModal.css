@@ -10,12 +10,15 @@
   top: 0;
   margin: auto;
   width: 95%;
+  font-family:'Roboto',sans-serif;
+  font-weight:900;
 }
 
 .big-flex {
   align-items: center;
   display:flex;
   justify-content: space-between;
+  font-weight: 900;
 }
 
 .left-flex {
@@ -33,6 +36,8 @@
   margin:auto;
   text-align: center;
   width:90%;
+  font-family:'Roboto',sans-serif;
+  font-weight:400;
 }
 
 a.vote-button {
@@ -47,8 +52,6 @@ a.vote-button {
   border-radius:2em;
   box-sizing: border-box;
   text-decoration:none;
-  font-family:'Roboto',sans-serif;
-  font-weight:900;
   text-align:center;
   transition: all 0.2s;
 }
