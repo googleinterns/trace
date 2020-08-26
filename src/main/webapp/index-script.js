@@ -410,7 +410,6 @@ function triggerModal(modal) {
   if (modal == null) return;
   overlay.classList.add('active');
   modal.classList.add('active');
-  document.getElementById('results-body').style.display = "block";
   hideButton(document.getElementById("comment-sort-highest-rated"));
   hideButton(document.getElementById("comment-sort-recent"));
   hideButton(document.getElementById("comment-sort-relevant"));
@@ -508,13 +507,12 @@ function showReviews(placeID, clickedFromMap) {
  */
 function displayReviewModal(clickedFromMap) {
   enableSortOptions();
-  displayReviewsBody();
+  document.getElementById('reviews-body').style.display = "block";
 }
 
 /** Displays review-body and hides results-body. */
 function displayReviewsBody() {
-  document.getElementById('results-body').style.display = "none";
-  document.getElementById('reviews-body').style.display = "block";
+  
 }
 
 /** Displays sort options button. */
