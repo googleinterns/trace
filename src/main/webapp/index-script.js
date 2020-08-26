@@ -492,11 +492,30 @@ function triggerModal(modal) {
 /* This function takes in an array of JS places and creates an unordered
  * list container to be populated. */
 function populateResults(places) {
+  populateResults2(places);
   const listContainer = document.getElementById('results-list-container');
   const entireList = document.createElement('ul'); // Results ul
   entireList.id += "results-list";
   places.forEach(place => {
     entireList.appendChild(generateResult(place));
+    var marker = new google.maps.Marker({
+      position: place.geometry.location,
+      map: map,
+      animation: google.maps.Animation.DROP,
+      title: 'Hello World!'
+    });
+    addMarkerListeners(marker, place.place_id);
+    markers.push(marker);
+  });
+  listContainer.appendChild(entireList);
+}
+
+function populateResults2(places) {
+  const listContainer = document.getElementById('results-container');
+  const entireList = document.createElement('ul'); // Results ul
+  entireList.className += "results";
+  places.forEach(place => {
+    entireList.appendChild(generateResult2(place));
     var marker = new google.maps.Marker({
       position: place.geometry.location,
       map: map,
