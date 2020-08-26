@@ -418,11 +418,12 @@ function populateSearch(places, location) {
       promises.push(placeRatingPromise);
     });
     
+    // Once each place has a rating field, sort by it. 
     Promise.all(promises).then(() => {
       places.sort(function(a, b){a.rating > b.rating ? 1 : -1});
       closeModal(document.getElementById("results-popup"));
       triggerModal(document.getElementById("results-popup"));
-      populateResults(p);
+      populateResults(places);
     });
   });
 }
