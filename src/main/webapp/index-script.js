@@ -515,7 +515,7 @@ function generateResult(place) {
       "<a onclick=\"showReviews(\'" + place.place_id + "\', false);\">" + place.name + "</a>";
   score.innerHTML += "4.0";
   site.innerHTML += "<a href=\"" + place.website + "\">Site</a>";
-  phone.innerHTML += place.international_phone_number;
+  phone.innerHTML += (place.international_phone_number) ? place.international_phone_number : '';
   address.innerHTML += place.vicinity;
   result.appendChild(name);
   result.appendChild(score);
