@@ -13,7 +13,6 @@ function loadPage() {
 /* Activates functionality for search bar and log-in button. */
 function loadMainButtons() {
   activateSearchBar();
-  activateTutorial();
 
   const logInButton = document.querySelector("#login");
   // Calls login servlet onclick.
@@ -128,30 +127,6 @@ function activateSearchBar() {
       var radius = document.getElementById('searchForm').elements[2].value;
       searchByText(query, location, radius);
     }
-  });
-}
-
-/* Adds mouse listeners to tutorial-related html items. */
-function activateTutorial() {
-  const closeTutorial = document.querySelector("#exit");
-  const prev = document.querySelector(".prev");
-  const next = document.querySelector(".next");
-  const tutorialText = document.getElementById("centralText");
-
-  // Stub for previous button.
-  prev.addEventListener("click", () => {
-    tutorialText.innerHTML = "This button will take you to the previous page.";
-  });
-
-  // Stub for next button.
-  next.addEventListener("click", () => {
-    tutorialText.innerHTML = "This button will take you to the next page.";
-  });
-
-  // Close tutorial window on exit click. Remove popUp listeners.
-  closeTutorial.addEventListener("click", function close() {
-    document.getElementById("popUp").style.display = "none";
-    closeTutorial.removeEventListener("click", close);
   });
 }
 
