@@ -367,7 +367,6 @@ function populateSearch(places, location) {
   const resultSortDistance = document.getElementById("sort-distance");
   const resultSortRating = document.getElementById("sort-rated");
 
-  triggerModal(document.getElementById("results-popup"));
   populateResults(places);
 
   // Adds an event listener for the distance sort button
@@ -379,7 +378,6 @@ function populateSearch(places, location) {
     });
     placePromise.then((places) => {
       closeModal(document.getElementById("results-popup"));
-      triggerModal(document.getElementById("results-popup"));
       populateResults(places);
     });
   });
@@ -392,7 +390,6 @@ function populateSearch(places, location) {
       setTimeout(function run() {resolve(places)}, 2000);
     }).then((places) => {
       closeModal(document.getElementById("results-popup"));
-      triggerModal(document.getElementById("results-popup"));
       populateResults(places);
     });
   });
