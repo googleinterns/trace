@@ -346,33 +346,7 @@ function clearSidebarResults() {
 function populateSearch(places, location) {
   const resultSortDistance = document.getElementById("sort-distance");
   const resultSortRating = document.getElementById("sort-rated");
-<<<<<<< HEAD
 
-  populateResults(places);
-
-  // Adds an event listener for the distance sort button
-  resultSortDistance.addEventListener("click", () => {
-    const placePromise = new Promise((resolve, reject) => {
-      places = sortPlacesByDistance(places, location);
-      // Timeout required to allow sortPlacesByDistance to finish.
-      setTimeout(function run() {resolve(places)}, 2000);
-    });
-    placePromise.then((places) => {
-      closeModal(document.getElementById("results-popup"));
-      populateResults(places);
-    });
-  });
-  
-  // Adds an event listener for the rating sort button
-  resultSortRating.addEventListener("click", () => { 
-    const placePromise = new Promise((resolve, reject) => {
-      places = sortPlacesByRating(places, location);
-      // Timeout required to allow sortPlacesByRating to finish. 
-      setTimeout(function run() {resolve(places)}, 2000);
-    }).then((places) => {
-      closeModal(document.getElementById("results-popup"));
-      populateResults(places);
-=======
   var promises = [];
     // Give each place a rating field based on the information from our datastore.
   places.forEach(place => {
@@ -382,12 +356,11 @@ function populateSearch(places, location) {
         place.rating = p.rating;
         resolve(place);
       });
->>>>>>> dev
     });
     promises.push(placeRatingPromise);
-  });
+  });   
 
-    // Make sure each place has a rating, then allow search results to pop up. 
+  // Make sure each place has a rating, then allow search results to pop up. 
   Promise.all(promises).then(() => {
     closeModal(document.getElementById("results-popup"));
     triggerModal(document.getElementById("results-popup"));
@@ -471,7 +444,6 @@ function populateResults(places) {
  * This returns the HTML <li> element
  */
 function generateResult(place) {
-<<<<<<< HEAD
   const result = document.createElement('li');
   result.className += 'results';
   const name = document.createElement('p');
