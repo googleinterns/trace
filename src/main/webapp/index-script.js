@@ -404,6 +404,7 @@ function getDistance(location1, location2){
 
 /* Triggers the modal, and overlay, to follow the active CSS styling, making it appear. */
 function triggerModal(modal) {
+  closeModal(modal);
   if (modal == null) return;
   overlay.classList.add('active');
   modal.classList.add('active');
