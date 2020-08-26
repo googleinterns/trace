@@ -496,7 +496,7 @@ function toggleBounce(marker) {
  */
 function showReviews(placeID, clickedFromMap) {
   triggerModal(document.getElementById('results-popup'));
-  if(getURLParameter('testing') === 'true') {
+  if (getURLParameter('testing') === 'true') {
     placeID = 'testReviews';
   }
   fetchReviews(placeID);
