@@ -389,32 +389,28 @@ function populateSearch(places, location) {
 
   triggerModal(document.getElementById("results-popup"));
   populateResults(places);
-  console.log(places);
   // Adds an event listener for the distance sort button
   resultSortDistance.addEventListener("click", () => {
       if (location == null) {
        // TODO: Add geolocator code. 
        return;
       }
-      console.log("before: " + places[0].vicinity);
       places.sort(function(a, b){ 
         (getDistance(location, a.geometry.location)
           > getDistance(location, b.geometry.location)) ? 1 : -1});
-      console.log("after: " + places[0].vicinity);
       closeModal(document.getElementById("results-popup"));
       triggerModal(document.getElementById("results-popup"));
       populateResults(places);
   });
   
   // Adds an event listener for the rating sort button
-  resultSortRating.addEventListener("click", () => { 
-    console.log("before: " + places[0].vicinity);
+  resultSortRating.addEventListener("click", () => {
     var promises = [];
+    // Give each place a rating field based on the information from our datastore.
     places.forEach(place => {
       const placeRatingPromise = new Promise((resolve, reject) => {
         const request = '/review?place_id=' + place.place_id + '&sort=recent';
         fetch(request).then(response => response.json()).then((p) => {
-          console.log(place.place_id + " : " + p.rating);
           place.rating = p.rating;
           resolve(place);
         });
@@ -423,12 +419,10 @@ function populateSearch(places, location) {
     });
     
     Promise.all(promises).then(() => {
-      console.log(places);
       places.sort(function(a, b){a.rating > b.rating ? 1 : -1});
-      console.log("after: " + places[0].vicinity + places[0].rating);
       closeModal(document.getElementById("results-popup"));
       triggerModal(document.getElementById("results-popup"));
-      populateResults(places);
+      populateResults(p);
     });
   });
 }
@@ -437,7 +431,6 @@ function populateSearch(places, location) {
 function getPlaceRating(placeID){
   const request = '/review?place_id=' + placeID + '&sort=recent';
   fetch(request).then(response => response.json()).then((place) => {
-    console.log(placeID + " : " + place.rating);
     return place.rating;
   });
 }
@@ -449,7 +442,6 @@ function getDistance(location1, location2){
   }
   var a = Math.pow((location1.lat() - location2.lat()), 2);
   var b = Math.pow((location1.lng() - location2.lng()), 2);
-  console.log(Math.sqrt(a+b));
   return Math.sqrt(a + b);
 }
 
