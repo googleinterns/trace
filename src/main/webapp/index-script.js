@@ -3,18 +3,6 @@ var map;
 var markers;
 var prev_ID;
 
-
-/** Roadmap
- * Page Loading Functions
- * Search Functions
- * Map Functions
- * Results Functions
- * Modal Functions
- * Reviews Functions
- * Utility
- */
-/****************************************************PAGE LOADING **************************/
-
 /* Loads page and main buttons. */
 function loadPage() {
   loadMainButtons();
@@ -74,34 +62,26 @@ function loadMainButtons() {
   })
 }
 
-/* Creates a map centered at the Googleplex! .*/
-function createMap() {
-  const googleplex = {lat: 37.422, lng: -122.0841};
-  map = new google.maps.Map(
-    document.getElementById('map'),
-    {center: googleplex, zoom: 14, // Set default zoom to allow proper spacing of markers on-search.
-    mapTypeControlOptions: {mapTypeIds: ['roadmap']}});
+/** Clears top layers of modal and displays results page. */
+function returnToResultsScreen() {
+  returnToReviewScreen();
+  hideButton(document.getElementById("modal-backarrow"));
+  hideButton(document.getElementById("comment-sort-highest-rated"));
+  hideButton(document.getElementById("comment-sort-recent"));
+  hideButton(document.getElementById("comment-sort-relevant"));
+  hideButton(document.getElementById('reviews-body'));
 
-  // Checks to see if browser has enabled location sharing.
-  if (navigator.geolocation) {
-    // If so, sets the center of the map at the user's current position. 
-    navigator.geolocation.getCurrentPosition(
-      position => {
-        const pos = {
-          lat: position.coords.latitude,
-          lng: position.coords.longitude
-        };
-        map.setCenter(pos);
-      }
-    );
-  }
-  markers = [];
-  initializeHeatMap();
+  document.getElementById('results-body').style.display = "block"; // Display results page.
+  document.getElementById('reviews-list-container').innerHTML = ''; // Clean reviews wrapper of all DOM elements;
+}
 
-  // Search by coordinates on map click.
-  map.addListener('click', function(mapsMouseEvent) {
-    searchByCoordinates(mapsMouseEvent.latLng);
-  });
+/** Wipes review form from page. */
+function returnToReviewScreen() {
+  document.getElementById('fname').value = '';
+  document.getElementById('lname').value = '';
+  document.getElementById('comment').value = '';
+  hideButton(document.getElementById('rev-form-body'));
+  document.querySelector('#submit-button').innerHTML = '';
 }
 
 /* Adds mouse listeners to searchBar-related html items. */
@@ -175,31 +155,76 @@ function activateTutorial() {
   });
 }
 
-/** Clears top layers of modal and displays results page. */
-function returnToResultsScreen() {
-  returnToReviewScreen();
+/* close modal
+ * Undoes the modal opening, by removing the active classifier.
+ */
+function closeModal(modal) {
+  if (modal == null) return;
+  overlay.classList.remove('active'); // Removes overlay and click blocker
+  modal.classList.remove('active'); // Hides modal
+
+  // Clean reviews and results.
+  document.querySelectorAll('.list').forEach((item) => {
+    item.innerHTML = "";
+  });
+  // Hide modal content.
+  document.querySelectorAll('.modal-body').forEach((item) => {
+    item.style.display = "none";
+  });
   hideButton(document.getElementById("modal-backarrow"));
-  hideButton(document.getElementById("comment-sort-highest-rated"));
   hideButton(document.getElementById("comment-sort-recent"));
+  hideButton(document.getElementById("comment-sort-highest-rated"));
   hideButton(document.getElementById("comment-sort-relevant"));
-  hideButton(document.getElementById('reviews-body'));
-
-  document.getElementById('results-body').style.display = "block"; // Display results page.
-  document.getElementById('reviews-list-container').innerHTML = ''; // Clean reviews wrapper of all DOM elements;
 }
 
-/** Wipes review form from page. */
-function returnToReviewScreen() {
-  document.getElementById('fname').value = '';
-  document.getElementById('lname').value = '';
-  document.getElementById('comment').value = '';
-  hideButton(document.getElementById('rev-form-body'));
-  document.querySelector('#submit-button').innerHTML = '';
+/** Multi-purpose button hiding function */
+function hideButton(button) {
+  button.style.display = "none";
 }
 
+// Chooses whether to display 'Login' or 'Logout' button.
+function toggleLoginLogout(){
+  const logInButton = document.querySelector("#login");
+  fetch('/login').then(response => response.text()).then(data => {
+    // Fetches the first line of the /login file and splits it based on the dot symbol.
+    const split = data.split(".")[0];
+    // If the split contains a user email, 
+    // then a user is logged in and we can display the 'Logout' button
+      if (split.length > 0){
+        logInButton.innerHTML = logInButton.getAttribute("data-text-swap");
+      }
+  });
+}
 
+/* Creates a map centered at the Googleplex! .*/
+function createMap() {
+  const googleplex = {lat: 37.422, lng: -122.0841};
+  map = new google.maps.Map(
+    document.getElementById('map'),
+    {center: googleplex, zoom: 14, // Set default zoom to allow proper spacing of markers on-search.
+    mapTypeControlOptions: {mapTypeIds: ['roadmap']}});
 
-/****************************************************SEARCH**************************/
+  // Checks to see if browser has enabled location sharing.
+  if (navigator.geolocation) {
+    // If so, sets the center of the map at the user's current position. 
+    navigator.geolocation.getCurrentPosition(
+      position => {
+        const pos = {
+          lat: position.coords.latitude,
+          lng: position.coords.longitude
+        };
+        map.setCenter(pos);
+      }
+    );
+  }
+  markers = [];
+  initializeHeatMap();
+
+  // Search by coordinates on map click.
+  map.addListener('click', function(mapsMouseEvent) {
+    searchByCoordinates(mapsMouseEvent.latLng);
+  });
+}
 
 /* Takes coordinates from mouseclick and searches for locations within a given radius of those coordinates. */
 function searchByCoordinates(coordinate) {
@@ -319,8 +344,6 @@ function handleSearchResults(results, service, radius, location) {
   });
 }
 
-/****************************************************MAP**************************/
-
 /** Deletes all markers in the array by removing references to them. */
 function deleteMarkers() {
   clearMarkers();
@@ -435,6 +458,14 @@ function sortPlacesByDistance(places, current) {
   return places;
 }
 
+/** Returns the overall rating of a place */
+function getPlaceRating(placeID){
+  const request = '/review?place_id=' + placeID + '&sort=recent';
+  fetch(request).then(response => response.json()).then((place) => {
+    return place.rating;
+  });
+}
+
 /** Returns the distance between two coordinates*/
 function getDistance(location1, location2){
   if (location1.lat() == location2.lat() && location1.lng() == location2.lng()){
@@ -445,7 +476,18 @@ function getDistance(location1, location2){
   return Math.sqrt(a + b);
 }
 
-/****************************************************RESULTS**************************/
+
+/* Triggers the modal, and overlay, to follow the active CSS styling, making it appear. */
+function triggerModal(modal) {
+  if (modal == null) return;
+  overlay.classList.add('active');
+  modal.classList.add('active');
+  document.getElementById('results-body').style.display = "block";
+  hideButton(document.getElementById("modal-backarrow"));
+  hideButton(document.getElementById("comment-sort-highest-rated"));
+  hideButton(document.getElementById("comment-sort-recent"));
+  hideButton(document.getElementById("comment-sort-relevant"));
+}
 
 /* This function takes in an array of JS places and creates an ordered
  * list container to be populated and put into the sidebar */
@@ -499,79 +541,6 @@ function generateResult(place) {
   result.appendChild(address);
   return result;
 }
-
-
-/****************************************************MODAL**************************/
-
-/* Triggers the modal, and overlay, to follow the active CSS styling, making it appear. */
-function triggerModal(modal) {
-  if (modal == null) return;
-  overlay.classList.add('active');
-  modal.classList.add('active');
-  document.getElementById('results-body').style.display = "block";
-  hideButton(document.getElementById("modal-backarrow"));
-  hideButton(document.getElementById("comment-sort-highest-rated"));
-  hideButton(document.getElementById("comment-sort-recent"));
-  hideButton(document.getElementById("comment-sort-relevant"));
-}
-
-/* close modal
- * Undoes the modal opening, by removing the active classifier.
- */
-function closeModal(modal) {
-  if (modal == null) return;
-  overlay.classList.remove('active'); // Removes overlay and click blocker
-  modal.classList.remove('active'); // Hides modal
-
-  // Clean reviews and results.
-  document.querySelectorAll('.list').forEach((item) => {
-    item.innerHTML = "";
-  });
-  // Hide modal content.
-  document.querySelectorAll('.modal-body').forEach((item) => {
-    item.style.display = "none";
-  });
-  hideButton(document.getElementById("modal-backarrow"));
-  hideButton(document.getElementById("comment-sort-recent"));
-  hideButton(document.getElementById("comment-sort-highest-rated"));
-  hideButton(document.getElementById("comment-sort-relevant"));
-}
-
-
-
-/****************************************************REVIEWS**************************/
-
-/****************************************************UTILITIES**************************/
-
-/** Multi-purpose button hiding function */
-function hideButton(button) {
-  button.style.display = "none";
-}
-
-// Chooses whether to display 'Login' or 'Logout' button.
-function toggleLoginLogout(){
-  const logInButton = document.querySelector("#login");
-  fetch('/login').then(response => response.text()).then(data => {
-    // Fetches the first line of the /login file and splits it based on the dot symbol.
-    const split = data.split(".")[0];
-    // If the split contains a user email, 
-    // then a user is logged in and we can display the 'Logout' button
-      if (split.length > 0){
-        logInButton.innerHTML = logInButton.getAttribute("data-text-swap");
-      }
-  });
-}
-
-/** Returns the overall rating of a place */
-function getPlaceRating(placeID){
-  const request = '/review?place_id=' + placeID + '&sort=recent';
-  fetch(request).then(response => response.json()).then((place) => {
-    return place.rating;
-  });
-}
-
-
-
 
 /** Add event listeners to markers. */
 function addMarkerListeners(marker, placeID) {
