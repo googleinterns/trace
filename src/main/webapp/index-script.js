@@ -363,7 +363,6 @@ function populateSearch(places, location) {
   // Make sure each place has a rating, then allow search results to pop up. 
   Promise.all(promises).then(() => {
     closeModal(document.getElementById("results-popup"));
-    triggerModal(document.getElementById("results-popup"));
     populateResults(places);
   });
 
@@ -378,7 +377,6 @@ function populateSearch(places, location) {
         - getDistance(location, b.geometry.location);
     });
     closeModal(document.getElementById("results-popup"));
-    triggerModal(document.getElementById("results-popup"));
     populateResults(places);
   });
 
@@ -389,7 +387,6 @@ function populateSearch(places, location) {
       return b.rating - a.rating;
     });
     closeModal(document.getElementById("results-popup"));
-    triggerModal(document.getElementById("results-popup"));
     populateResults(places);
   });
 }
@@ -473,7 +470,6 @@ function addMarkerListeners(marker, placeID) {
   marker.addListener('mouseover', () => toggleBounce(marker));
   marker.addListener('mouseout', () => toggleBounce(marker));
   marker.addListener('click', () => {
-    triggerModal(document.getElementById("results-popup"));
     showReviews(placeID, true);
   });
 }
