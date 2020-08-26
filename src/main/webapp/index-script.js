@@ -525,6 +525,7 @@ function toggleBounce(marker) {
  * One central function that is called to trigger entire review interface
  */
 function showReviews(placeID, clickedFromMap) {
+  triggerModal(document.getElementById('results-popup'));
   if(getURLParameter('testing') === 'true') {
     placeID = 'testReviews';
   }
