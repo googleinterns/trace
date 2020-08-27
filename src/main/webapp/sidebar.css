@@ -16,7 +16,6 @@
   align-items: center;
   border-bottom: 1px solid black;
   display: grid;
-  height: 10%;
   justify-content: space-between;
   grid-template-columns: 1fr 1fr;
   grid-template-rows: 1fr 1fr;
