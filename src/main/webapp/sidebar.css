@@ -2,7 +2,7 @@
 
 /* Bottom level container */
 .sidebar {
-  height: 100%;
+  height: 90%;
   position: fixed;
   width: 15%;
   top: 10%;
@@ -16,6 +16,7 @@
   align-items: center;
   border-bottom: 1px solid black;
   display: grid;
+  height: 100px;
   justify-content: space-between;
   grid-template-columns: 1fr 1fr;
   grid-template-rows: 1fr 1fr;
