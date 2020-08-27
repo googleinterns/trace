@@ -1,7 +1,7 @@
 
 /* New UI for overhaul */
 
-/* Navbar */
+/* Navbar - the top static ribbon */
 .navbar {
   overflow: hidden;
   background-color: #3a3838;
@@ -13,9 +13,10 @@
   min-height: 80px;
 }
 
+/* Used to create first half of lower border */
 .navbar:before {
   position: absolute;
-  background: linear-gradient(to right, #EA4235 50%, #4286F5 50%);
+  background: linear-gradient(to right, #EA4235 50%, #4286F5 50%); /* Google Red and Blue */
   width: 50%;
   height: 5px;
   content: '';
@@ -24,9 +25,10 @@
   left: 0;
 }
 
+/* Used to create second half of lower border */
 .navbar:after {
   position: absolute;
-  background: linear-gradient(to right, #35A853 50%, #FABC02 50%);
+  background: linear-gradient(to right, #35A853 50%, #FABC02 50%); /* Google Green and Yellow */
   height: 5px;
   content: '';
   bottom: 0;
@@ -35,6 +37,7 @@
   float: right;
 }
 
+/* Left container of navbar elements */
 .navbar-left {
   display: block;
   float: left;
@@ -42,6 +45,7 @@
   height: 100%;
 }
 
+/* Center container of navbar elements */
 .navbar-center {
   display: flex;
   float: none;
@@ -54,6 +58,7 @@
   min-width: 260px;
 }
 
+/* Right container of navbar elements */
 .navbar-right {
   display: block;
   float: right;
@@ -63,6 +68,7 @@
   margin-right: 2%;
 }
 
+/* Wrapper element for the Trace T */
 .navbar div#icon-box {
   float: left;
   display: block;
@@ -77,6 +83,7 @@
   max-width: 80px;
 }
 
+/* Wrapper element for sliders, mimics button styling */
 .navbar div#bar-box {
   float: right;
   display: block;
@@ -90,7 +97,6 @@
 
 .navbar button {
   float: right;
-  display: inline-block;
   color: whitesmoke;
   background-color: #3a3838;
   text-align: center;
@@ -111,7 +117,7 @@
   max-height: 100%;
 }
 
-/* Search Bar Specs. */
+/* Search Bar class and stylings */
  .searchWrapper {
   height: 40%;
   width: 100%;
@@ -145,6 +151,7 @@
   background-color: #f5f5f5; /* Grey. */
 }
 
+/* Area to search */
 #zipcode {
   background-color: white;
   border-radius: 3vw;
@@ -156,6 +163,7 @@
   float: left;
 }
 
+/* Search distance */
 #radius {
   background-color: white;
   border-radius: 3vw;
