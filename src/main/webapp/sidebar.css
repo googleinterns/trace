@@ -63,7 +63,7 @@
 .sidebar-body {
   height: 90%;
   top: 10%;
-  background-color: white;
+  background-color: #3a3838;
 }
 
 /* Results wrapper, nested in body */
@@ -131,5 +131,9 @@
 
 .results li:nth-child(even) {
   background: lightgray;
+}
+
+.results li:nth-child(odd) {
+  background: white;
 }
 
