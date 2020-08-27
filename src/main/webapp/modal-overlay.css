@@ -27,6 +27,8 @@
   display: flex;
   justify-content: space-between;
   padding: 15px 25px;
+  font: 400 13.3333px Arial;
+  font-size: 150%;
 }
 
 .modal-header .title {
