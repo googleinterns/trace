@@ -1,5 +1,6 @@
 /* Styling for sidebar and its contents */
 
+/* Bottom level container */
 .sidebar {
   height: 100%;
   position: fixed;
@@ -10,6 +11,7 @@
   background-color: #3a3838;
 }
 
+/* Header container, holding title and buttons */
 .sidebar-header {
   align-items: center;
   border-bottom: 1px solid black;
@@ -21,6 +23,7 @@
   overflow: hidden;
 }
 
+/* Title styling */
 .sidebar-header p {
   color: white;
   align-content: center;
@@ -44,28 +47,33 @@
   background-color: #3a3838;
 }
 
+/* Styling for first button */
 .sidebar-header #sort-distance {
   grid-row: 2/3;
   grid-column: 1/2;
 }
 
+/* Styling for second button */
 .sidebar-header #sort-rated {
   grid-row: 2/3;
   grid-column: 2/3;
 }
 
+/* Container for body portion of sidebar */
 .sidebar-body {
   height: 90%;
   top: 10%;
   background-color: white;
 }
 
+/* Results wrapper, nested in body */
 .results {
   height: 100%;
   width: 100%;
   min-width: 190px;
 }
 
+/* List container */
 .results ul {
   position: static;
   overflow: scroll;
