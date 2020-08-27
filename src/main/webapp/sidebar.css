@@ -85,10 +85,16 @@
 }
 
 .results li {
-  height: 120px;;
+  height: 120px;
   display: grid;
   grid-template-columns: 1fr 1fr 1fr 1fr;
   grid-template-rows: 1fr 1fr 1fr;
+  padding: 10px 0px 0px 10px;
+}
+
+.results li#intro {
+  height: auto;
+  display: flex;
   padding: 10px 0px 0px 10px;
 }
 
