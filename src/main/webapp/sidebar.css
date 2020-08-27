@@ -76,7 +76,7 @@
 /* List container */
 .results ul {
   position: static;
-  overflow: scroll;
+  overflow-y: scroll;
   margin: 0;
   padding: 0;
   height: 100%;
@@ -96,12 +96,13 @@
 .results li#intro {
   height: auto;
   display: flex;
-  padding: 10px 0px 0px 10px;
+  padding: 10px 5px 0px 10px;
 }
 
 .results p#name {
   grid-row: 1/2;
   grid-column: 1/4;
+  overflow: hidden;
 }
 
 .results p#score {
@@ -132,6 +133,7 @@
 
 .results li:last-child {
   border-bottom: none;
+  padding-bottom: 10px;
 }
 
 .results li:nth-child(even) {
