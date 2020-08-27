@@ -13,6 +13,34 @@
   min-height: 80px;
 }
 
+.navbar-left {
+  display: block;
+  float: left;
+  max-width: 33%;
+  height: 100%;
+}
+
+.navbar-center {
+  display: flex;
+  float: none;
+  position: absolute;
+  top: 50%;
+  left: 35%;
+  transform: translate(-50%, -50%);
+  max-width: 34%;
+  height: 100%;
+  min-width: 260px;
+}
+
+.navbar-right {
+  display: block;
+  float: right;
+  max-width: 33%;
+  height: 100%;
+  min-width: 350px;
+  margin-right: 10%;
+}
+
 .navbar div#icon-box {
   float: left;
   display: block;
@@ -47,6 +75,7 @@
   transition: all 0.3s ease;
   padding: 14px 16px;
   height: 100%;
+  max-width: 150px;
   border: none;
   text-decoration: none;
 }
@@ -58,4 +87,68 @@
 .navbar .logo {
   max-width: 100%;
   max-height: 100%;
+}
+
+.sidebar {
+  height: 100%;
+  position: fixed;
+  width: 15%;
+  top: 10%;
+  z-index: 1;
+  background-color: #3a3838;
+}
+
+/* Search Bar Specs. */
+ .searchWrapper {
+  height: 40%;
+  width: 100%;
+  position: relative;
+  display: grid;
+}
+
+.searchbar {
+  background-color: white;
+  border-radius: 3vw;
+  font-size: 150%;
+  height: 50%;
+  min-width: 100px;
+  padding-left: 10%;
+  position: relative;
+  max-width: 100%;
+  width: 89%;
+}
+
+#search-icon {
+  font-size: 2.5vw;
+  height: 100%;
+  left: 2.5%;
+  position: absolute;
+  top: 10%;
+  width: 10%;
+  z-index: 3;
+}
+
+.searchbar:hover, .searchbar:focus {
+  background-color: #f5f5f5; /* Grey. */
+}
+
+#zipcode {
+  background-color: white;
+  border-radius: 3vw;
+  height: 30%;
+  min-width: 100px;
+  position: relative;
+  width: 50%;
+  padding-left: 3%;
+  float: left;
+}
+
+#radius {
+  background-color: white;
+  border-radius: 3vw;
+  height: 30%;
+  min-width: 100px;
+  width: 40%;
+  padding-left: 3%;
+  float: right;
 }

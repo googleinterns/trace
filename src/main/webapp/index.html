@@ -11,32 +11,38 @@
   </head>
   <div class="navbar">
     <div id="icon-box"><img class="logo" src="trace-logo.png"></img></div>
-    <button id="login" data-text-swap="Logout">Login</button>
-    <button id="dark-toggle">Dark Mode</button>
-    <button id="heat-toggle">Open COVID Dashboard</button>
-    <button id="gradient-toggle" class="heat-button">Change Gradient</button>
-    <div id="bar-box">
-      <label for="heat-radius" class="heat-button">Radius</label>
-      <input type="range" id="heat-radius" name="heat-radius" 
-          min="0" max="10" value="0" class="heat-button">
-      <label for="heat-opacity" class="heat-button">Opacity</label>
-      <input type="range" id="heat-opacity" name="heat-opacity" 
-          min="0" max="10" value="5" class="heat-button">
+    <div class="navbar-left">
     </div>
-  </div>
-  <body onload="loadPage();">
-    <div id="map"></div>
-    <div class="mainButtonsWrapper">
-      <div class="searchWrapper">
+    <div class="navbar-center">
         <i id="search-icon" class="material-icons">search</i>
         <form id="searchForm">
-          <input id="search" class="search" placeholder="Search" type="text" >
+          <input id="search" class="searchbar" placeholder="Search" type="text" >
           <input id="zipcode" placeholder="Located by..." type="text">
           <input id="radius" placeholder="... miles away" type="text">
         </form>
         <div class="clear-icon">x</div>
+    </div>
+    <div class="navbar-right">
+      <button id="login" data-text-swap="Logout">Login</button>
+      <button id="dark-toggle">Dark Mode</button>
+      <button id="heat-toggle">Open COVID Dashboard</button>
+      <button id="gradient-toggle" class="heat-button">Change Gradient Color</button>
+      <div id="bar-box">
+        <label for="heat-radius" class="heat-button">Radius</label>
+        <input type="range" id="heat-radius" name="heat-radius" 
+            min="0" max="10" value="0" class="heat-button">
+        <label for="heat-opacity" class="heat-button">Opacity</label>
+        <input type="range" id="heat-opacity" name="heat-opacity" 
+            min="0" max="10" value="5" class="heat-button">
       </div>
-    </div> 
+    </div>
+  </div>
+  <div class="sidebar">
+    
+  </div>
+  <body onload="loadPage();">
+    <div id="map"></div>
+    
     <div id="popUp">
       <div id="header">
         <p id="headerText">Welcome To TRACE</p>
