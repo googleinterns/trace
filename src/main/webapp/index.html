@@ -38,44 +38,61 @@
     </div>
   </div>
   <div class="sidebar">
-    
+    <div class="sidebar-header">
+      <p>Results</p>
+      <button id="sort-distance">Shortest Distance</button>
+      <button id="sort-rated">Highest Rated</button>
+    </div>
+    <div class="sidebar-body">
+      <div class="results" id="results-container">
+        <ul>
+          <li>
+            <p id="sample"> 
+               Welcome to TRACE, a Tangible Risk Assessment Calculator for your Environment!
+                Search for locations via the map or search bar and see what other users have to say about its COVID precautions!
+            </p>
+          </li>
+          <li>
+            <p id="sample"> 
+               This area will be populated with results from your search! 
+               These will contain a name, phone number, address, website, and score.
+               
+            </p>
+          </li>
+          <li>
+            <p id="sample"> 
+               Scores are presented on a 5 point scale, aggregated from all reviews left by previous visitors.
+               Your reviews will affect these scores.
+            </p>
+          </li>
+          <li>
+            <p id="name">Location Name</p>
+            <p id="score">Rating /5</p>
+            <p id="phone">Phone Number</p>
+            <p id="address">Address</p>
+            <p id="site">Link</p>
+          </li>
+          <li>
+            <p id="sample"> 
+               Project TRACE was designed and developed by ccjeane@, dterr@, and erickez@
+               for their 2020 Google STEP Capstone Project, overseen by hosts fyordan@ and mwo@.
+            </p>
+          </li>
+      </div>
+    </div>
   </div>
   <body onload="loadPage();">
     <div id="map"></div>
-    
-    <div id="popUp">
-      <div id="header">
-        <p id="headerText">Welcome To TRACE</p>
-        <div id="exit">x</div>
-      </div>
-      <div id="lower">
-        <div id="lowerCenter">
-          <div id="centralDiv"> 
-            <p id="centralText">Scroll through this tutorial to learn how to explore our site.</p>
-          </div>
-          <div class="float-container" id="navButtons">
-            <a class="prev" onclick="">&#10094;</a>
-            <a class="next" onclick="">&#10095;</a>
-          </div>
-        </div>
-      </div>
-    </div>
     <div name="results-overlay"> 
       <div class="modal" id="results-popup">
         <div class="modal-header"> 
-          <div class="modal-title">Results</div>
-          <button id="modal-backarrow"></button>
+          <div class="modal-title">Reviews</div>
           <div class="button-group" id="comment-sorting" value="">
             <button id="comment-sort-recent">Recently Posted</button>
             <button id="comment-sort-highest-rated">Highest Rated</button>
             <button id="comment-sort-relevant">Relevant</button>
           </div>
           <button data-modal-close-button class="exit-button">&times;</button>
-        </div>
-        <div class="modal-body" id="results-body">
-          <button id="sort-distance">Shortest Distance</button>
-          <button id="sort-rated">Highest Rated</button>
-          <div class="list" id="results-list-container"></div>
         </div>
         <div class="modal-body" id="reviews-body">
           <div class="list" id="reviews-list-container"></div>

@@ -1,6 +1,7 @@
 @import url(modal-overlay.css);
 @import url(newReview.css);
 @import url(new-ui.css);
+@import url(sidebar.css);
 @import url(reviewModal.css);
 
 #map {
@@ -160,4 +161,6 @@
 
 .heat-button {
   display: none;
+  font: 400 13.3333px Arial;
+  padding: 1px;
 }

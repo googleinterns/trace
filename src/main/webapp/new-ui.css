@@ -13,6 +13,28 @@
   min-height: 80px;
 }
 
+.navbar:before {
+  position: absolute;
+  background: linear-gradient(to right, #EA4235 50%, #4286F5 50%);
+  width: 50%;
+  height: 5px;
+  content: '';
+  bottom: 0;
+  right: 0;
+  left: 0;
+}
+
+.navbar:after {
+  position: absolute;
+  background: linear-gradient(to right, #35A853 50%, #FABC02 50%);
+  height: 5px;
+  content: '';
+  bottom: 0;
+  right: 0;
+  width: 50%;
+  float: right;
+}
+
 .navbar-left {
   display: block;
   float: left;
@@ -35,10 +57,10 @@
 .navbar-right {
   display: block;
   float: right;
-  max-width: 33%;
+  max-width: 49%;
   height: 100%;
   min-width: 350px;
-  margin-right: 10%;
+  margin-right: 2%;
 }
 
 .navbar div#icon-box {
@@ -48,7 +70,7 @@
   color: aliceblue;
   text-align: center;
   transition: all 0.3s ease;
-  padding: 1%;
+  padding: 10px 0px 0px 10px;
   text-decoration: none;
   height: 80%;
   max-height: 150px;
@@ -62,7 +84,7 @@
   text-align: center;
   transition: all 0.3s ease;
   height: 100%;
-  width: 120px;
+  width: auto;
   text-decoration: none;
 }
 
@@ -87,15 +109,6 @@
 .navbar .logo {
   max-width: 100%;
   max-height: 100%;
-}
-
-.sidebar {
-  height: 100%;
-  position: fixed;
-  width: 15%;
-  top: 10%;
-  z-index: 1;
-  background-color: #3a3838;
 }
 
 /* Search Bar Specs. */

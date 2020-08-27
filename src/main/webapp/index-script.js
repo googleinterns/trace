@@ -13,7 +13,6 @@ function loadPage() {
 /* Activates functionality for search bar and log-in button. */
 function loadMainButtons() {
   activateSearchBar();
-  activateTutorial();
 
   const logInButton = document.querySelector("#login");
   // Calls login servlet onclick.
@@ -30,15 +29,9 @@ function loadMainButtons() {
     });
   });
   
-  const modalBackArrow = document.getElementById("modal-backarrow");
   const commentSortHighestRated = document.getElementById("comment-sort-highest-rated");
   const commentSortRecent = document.getElementById("comment-sort-recent");
   const commentSortRelevant = document.getElementById("comment-sort-relevant");
-
-  // Hide reviews page and display results page.
-  modalBackArrow.addEventListener("click", () => {
-    returnToResultsScreen();
-  });
 
   commentSortHighestRated.addEventListener("click", () => {
     commentSortHighestRated.classList.add("active");
@@ -59,20 +52,7 @@ function loadMainButtons() {
     commentSortHighestRated.classList.remove("active");
     commentSortRecent.classList.remove("active");
     resortReviews(prev_ID, 'relevant');
-  })
-}
-
-/** Clears top layers of modal and displays results page. */
-function returnToResultsScreen() {
-  returnToReviewScreen();
-  hideButton(document.getElementById("modal-backarrow"));
-  hideButton(document.getElementById("comment-sort-highest-rated"));
-  hideButton(document.getElementById("comment-sort-recent"));
-  hideButton(document.getElementById("comment-sort-relevant"));
-  hideButton(document.getElementById('reviews-body'));
-
-  document.getElementById('results-body').style.display = "block"; // Display results page.
-  document.getElementById('reviews-list-container').innerHTML = ''; // Clean reviews wrapper of all DOM elements;
+  });
 }
 
 /** Wipes review form from page. */
@@ -131,30 +111,6 @@ function activateSearchBar() {
   });
 }
 
-/* Adds mouse listeners to tutorial-related html items. */
-function activateTutorial() {
-  const closeTutorial = document.querySelector("#exit");
-  const prev = document.querySelector(".prev");
-  const next = document.querySelector(".next");
-  const tutorialText = document.getElementById("centralText");
-
-  // Stub for previous button.
-  prev.addEventListener("click", () => {
-    tutorialText.innerHTML = "This button will take you to the previous page.";
-  });
-
-  // Stub for next button.
-  next.addEventListener("click", () => {
-    tutorialText.innerHTML = "This button will take you to the next page.";
-  });
-
-  // Close tutorial window on exit click. Remove popUp listeners.
-  closeTutorial.addEventListener("click", function close() {
-    document.getElementById("popUp").style.display = "none";
-    closeTutorial.removeEventListener("click", close);
-  });
-}
-
 /* close modal
  * Undoes the modal opening, by removing the active classifier.
  */
@@ -171,7 +127,6 @@ function closeModal(modal) {
   document.querySelectorAll('.modal-body').forEach((item) => {
     item.style.display = "none";
   });
-  hideButton(document.getElementById("modal-backarrow"));
   hideButton(document.getElementById("comment-sort-recent"));
   hideButton(document.getElementById("comment-sort-highest-rated"));
   hideButton(document.getElementById("comment-sort-relevant"));
@@ -381,10 +336,17 @@ function degreesToRadians(degrees) {
   return degrees * (pi/180);
 }
 
+/* Clears Sidebar results */
+function clearSidebarResults() {
+  const sidebarUl = document.getElementById('results-container');
+  sidebarUl.innerHTML = '';
+}
+
 /* Fills out search results page. */
 function populateSearch(places, location) {
   const resultSortDistance = document.getElementById("sort-distance");
   const resultSortRating = document.getElementById("sort-rated");
+
   var promises = [];
     // Give each place a rating field based on the information from our datastore.
   places.forEach(place => {
@@ -396,12 +358,11 @@ function populateSearch(places, location) {
       });
     });
     promises.push(placeRatingPromise);
-  });
+  });   
 
-    // Make sure each place has a rating, then allow search results to pop up. 
+  // Make sure each place has a rating, then allow search results to pop up. 
   Promise.all(promises).then(() => {
     closeModal(document.getElementById("results-popup"));
-    triggerModal(document.getElementById("results-popup"));
     populateResults(places);
   });
 
@@ -416,7 +377,6 @@ function populateSearch(places, location) {
         - getDistance(location, b.geometry.location);
     });
     closeModal(document.getElementById("results-popup"));
-    triggerModal(document.getElementById("results-popup"));
     populateResults(places);
   });
 
@@ -427,7 +387,6 @@ function populateSearch(places, location) {
       return b.rating - a.rating;
     });
     closeModal(document.getElementById("results-popup"));
-    triggerModal(document.getElementById("results-popup"));
     populateResults(places);
   });
 }
@@ -445,79 +404,66 @@ function getDistance(location1, location2){
 
 /* Triggers the modal, and overlay, to follow the active CSS styling, making it appear. */
 function triggerModal(modal) {
+  closeModal(modal);
   if (modal == null) return;
   overlay.classList.add('active');
   modal.classList.add('active');
-  document.getElementById('results-body').style.display = "block";
-  hideButton(document.getElementById("modal-backarrow"));
-  hideButton(document.getElementById("comment-sort-highest-rated"));
-  hideButton(document.getElementById("comment-sort-recent"));
-  hideButton(document.getElementById("comment-sort-relevant"));
 }
 
-/* This function takes in an array of JS places and creates an unordered
- * list container to be populated. */
+/* This function takes in an array of JS places and creates an ordered
+ * list container to be populated and put into the sidebar */
 function populateResults(places) {
-  const listContainer = document.getElementById('results-list-container');
-  const entireList = document.createElement('ul'); // Results ul
-  entireList.id += "results-list";
+  clearSidebarResults();
+  const resultsContainer = document.getElementById('results-container');
+  const resultsList = document.createElement('ul'); // Results ul
+  resultsList.className += 'results';
+  
   places.forEach(place => {
-    entireList.appendChild(generateResult(place));
+    resultsList.appendChild(generateResult(place));
     var marker = new google.maps.Marker({
       position: place.geometry.location,
       map: map,
       animation: google.maps.Animation.DROP,
-      title: 'Hello World!'
+      title: place.name + ':' + place.rating,
     });
     addMarkerListeners(marker, place.place_id);
     markers.push(marker);
   });
-  listContainer.appendChild(entireList);
+  resultsContainer.appendChild(resultsList);
 }
 
-/* create result element function
- * This function takes in a JavaScript place object and populates a list entry of its information.
- *    ___________________________________
- *   |       |  Relevant information   |_|
- *   | icon  |  Relevant information   |_|
- *   |       |  Relevant information   |_|
- *   |_______|__Relevant information___|_|
+/** atomic result generator function
+ * This function takes in a result JS object and converts it into an HTML element
+ * These objects are mounted in the sidebar results class ul object
+ * This returns the HTML <li> element
  */
 function generateResult(place) {
-  const resultEntry = document.createElement('li');
-  const resultGrid = document.createElement('div');
-  resultGrid.className += 'result-grid';
+  const result = document.createElement('li');
+  result.className += 'results';
+  const name = document.createElement('p');
+  name.id += 'name';
+  const score = document.createElement('p');
+  score.id += 'score';
+  const site = document.createElement('p');
+  site.id += 'site';
+  const phone = document.createElement('p');
+  phone.id += 'phone';
+  const address = document.createElement('p');
+  address.id += 'address';
 
-  const imagePreview = document.createElement('div'); // Wrapper for icon
-  imagePreview.className += 'prvw-img';
-  const suggestedIcon = document.createElement('img');
-  suggestedIcon.src = place.icon;
-  imagePreview.appendChild(suggestedIcon);
-  resultGrid.appendChild(imagePreview);
-  const infoText = document.createElement('ul'); // Tidbits ul
-
-  // Relevant information to be displayed
-  var tidbits = [
-    "<a onclick=\"showReviews(\'" + place.place_id + "\', false);\">" + place.name + "</a>",
-    place.international_phone_number,
-    "<a href=\"" + place.website + "\">Site</a>",
-    place.vicinity,
-    place.rating
-  ];
-
-  tidbits = tidbits.filter(function (element) {
-    return element != null;
-  });
-
-  tidbits.forEach(fact => {
-    const infoEntry = document.createElement('li');
-    infoEntry.innerHTML = fact;
-    infoText.appendChild(infoEntry);
-  });
-
-  resultGrid.appendChild(infoText);
-  resultEntry.appendChild(resultGrid);
-  return resultEntry;
+  name.innerHTML += 
+      "<a onclick=\"showReviews(\'" + place.place_id + "\', false);\">" + place.name + "</a>";
+  const calculatedScore = (place.rating == 0) ? 'N/A' : place.rating;
+  score.innerHTML += calculatedScore;
+  site.innerHTML += "<a href=\"" + place.website + "\">Site</a>";
+  phone.innerHTML += (place.international_phone_number) ? place.international_phone_number : '';
+  address.innerHTML += place.vicinity;
+  result.appendChild(name);
+  result.appendChild(score);
+  result.appendChild(site);
+  result.appendChild(phone);
+  result.appendChild(address);
+  return result;
 }
 
 /** Add event listeners to markers. */
@@ -525,7 +471,6 @@ function addMarkerListeners(marker, placeID) {
   marker.addListener('mouseover', () => toggleBounce(marker));
   marker.addListener('mouseout', () => toggleBounce(marker));
   marker.addListener('click', () => {
-    triggerModal(document.getElementById("results-popup"));
     showReviews(placeID, true);
   });
 }
@@ -543,42 +488,20 @@ function toggleBounce(marker) {
  * One central function that is called to trigger entire review interface
  */
 function showReviews(placeID, clickedFromMap) {
-  if(getURLParameter('testing') === 'true') {
+  triggerModal(document.getElementById('results-popup'));
+  if (getURLParameter('testing') === 'true') {
     placeID = 'testReviews';
   }
   fetchReviews(placeID);
   displayReviewModal(clickedFromMap);
 }
 
-/** Retrieve url parameters from the site's url. */
-function getURLParameter(sParam) {
-  var sPageURL = window.location.search.substring(1);
-  var sURLVariables = sPageURL.split('&');
-  for (var i = 0; i < sURLVariables.length; i++) {
-    var sParameterName = sURLVariables[i].split('=');
-    if (sParameterName[0] == sParam) {
-      return sParameterName[1];
-    }
-  }
-  return null;
-}
-
 /**
  * Review modal activation function
  */
 function displayReviewModal(clickedFromMap) {
-  if(!clickedFromMap) {
-    enableBackArrow();
-  }
   enableSortOptions();
-  displayReviewsBody();
-}
-
-/** Displays back-arrow button. */
-function enableBackArrow() {
-  const reviewBackArrow = document.getElementById('modal-backarrow');
-  reviewBackArrow.innerHTML = "&larr;";
-  reviewBackArrow.style.display = "block"
+  document.getElementById('reviews-body').style.display = "block";
 }
 
 /** Displays sort options button. */
@@ -589,12 +512,6 @@ function enableSortOptions() {
   commentSortRecent.style.display = "block";
   const commentSortRelevant = document.getElementById("comment-sort-relevant");
   commentSortRelevant.style.display = "block";
-}
-
-/** Displays review-body and hides results-body. */
-function displayReviewsBody() {
-  document.getElementById('results-body').style.display = "none";
-  document.getElementById('reviews-body').style.display = "block";
 }
 
 /** Fetch Reviews
@@ -675,9 +592,21 @@ function postNewReview(place_id) {
     '&lastName=' + last + '&comment=' + comment + '&place_id=' + place_id;
   fetch(request, {method:"POST"}).then(() => {
     returnToReviewScreen();
-    returnToResultsScreen();
-    //showReviews(place_id, false);
+    showReviews(place_id, false);
   });
+}
+
+/** Retrieve url parameters from the site's url. */
+function getURLParameter(sParam) {
+  var sPageURL = window.location.search.substring(1);
+  var sURLVariables = sPageURL.split('&');
+  for (var i = 0; i < sURLVariables.length; i++) {
+    var sParameterName = sURLVariables[i].split('=');
+    if (sParameterName[0] == sParam) {
+      return sParameterName[1];
+    }
+  }
+  return null;
 }
 
 /** Finds which of the radio buttons is currently checked and returns that value. */
@@ -925,6 +854,7 @@ function addHeatMapListeners(heatmap) {
   const gradToggle = document.getElementById("gradient-toggle");
   const radiusSlider = document.getElementById("heat-radius");
   const opacitySlider = document.getElementById("heat-opacity");
+  const heatButtons = document.querySelectorAll(".heat-button");
   const darkMode = document.getElementById("dark-toggle");
   const darkGradient = [
     "rgba(0, 255, 255, 0)",
@@ -951,9 +881,9 @@ function addHeatMapListeners(heatmap) {
 
       // Activate buttons.
       const disp = mapActive ? 'none' : 'block';
-      gradToggle.style.display = disp;
-      radiusSlider.style.display = disp;
-      opacitySlider.style.display = disp;
+      heatButtons.forEach(button => {
+        button.style.display = disp;
+      });
       heatToggle.innerHTML = mapActive ? 
         'Open COVID Dashboard' : 'Close dashboard';
   });
