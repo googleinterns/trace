@@ -346,9 +346,8 @@ function clearSidebarResults() {
 function populateSearch(places, location) {
   const resultSortDistance = document.getElementById("sort-distance");
   const resultSortRating = document.getElementById("sort-rated");
-
   var promises = [];
-    // Give each place a rating field based on the information from our datastore.
+  // Give each place a rating field based on the information from our datastore.
   places.forEach(place => {
     const placeRatingPromise = new Promise((resolve, reject) => {
       const request = '/review?place_id=' + place.place_id + '&sort=recent';
@@ -359,13 +358,11 @@ function populateSearch(places, location) {
     });
     promises.push(placeRatingPromise);
   });   
-
   // Make sure each place has a rating, then allow search results to pop up. 
   Promise.all(promises).then(() => {
     closeModal(document.getElementById("results-popup"));
     populateResults(places);
   });
-
   // Adds an event listener for the distance sort button
   resultSortDistance.addEventListener("click", () => {
     if (location == null) {
@@ -379,7 +376,6 @@ function populateSearch(places, location) {
     closeModal(document.getElementById("results-popup"));
     populateResults(places);
   });
-
   // Adds an event listener for the rating sort button
   resultSortRating.addEventListener("click", () => {
     places.sort(function(a, b){
