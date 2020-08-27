@@ -61,8 +61,8 @@
 
 /* Container for body portion of sidebar */
 .sidebar-body {
-  height: 90%;
-  top: 10%;
+  height: calc(100% - 101px);
+  top: 100px;
   background-color: #3a3838;
 }
 
@@ -79,7 +79,7 @@
   overflow: scroll;
   margin: 0;
   padding: 0;
-  max-height: inherit;
+  height: 100%;
   font-size: 16px;
   font-family: Arial, sans-serif;
   -webkit-overflow-scrolling: touch;
