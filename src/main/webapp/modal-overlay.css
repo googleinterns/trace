@@ -22,9 +22,13 @@
 .modal-header {
   align-items: center;
   border-bottom: 1px solid black;
+  background-color: #3a3838;
+  color: white;
   display: flex;
   justify-content: space-between;
   padding: 15px 25px;
+  font: 400 13.3333px Arial;
+  font-size: 150%;
 }
 
 .modal-header .title {
@@ -153,8 +157,8 @@ a:hover {
 
 .button-group button {
   border: 1px;
-  color: black;
-  background-color: aliceblue;
+  color: #3a3838;
+  background-color: white;
   cursor: pointer;
   float: left;
   padding: 10px 24px;
@@ -165,7 +169,7 @@ a:hover {
 }
 
 .button-group button.active {
-  background-color: rgb(243, 240, 255);
+  background-color: yellow;
 }
 
 .button-group button:hover {

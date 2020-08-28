@@ -1,7 +1,7 @@
 
 /* New UI for overhaul */
 
-/* Navbar */
+/* Navbar - the top static ribbon */
 .navbar {
   overflow: hidden;
   background-color: #3a3838;
@@ -13,6 +13,62 @@
   min-height: 80px;
 }
 
+/* Used to create first half of lower border */
+.navbar:before {
+  position: absolute;
+  background: linear-gradient(to right, #EA4235 50%, #4286F5 50%); /* Google Red and Blue */
+  width: 50%;
+  height: 5px;
+  content: '';
+  bottom: 0;
+  right: 0;
+  left: 0;
+}
+
+/* Used to create second half of lower border */
+.navbar:after {
+  position: absolute;
+  background: linear-gradient(to right, #35A853 50%, #FABC02 50%); /* Google Green and Yellow */
+  height: 5px;
+  content: '';
+  bottom: 0;
+  right: 0;
+  width: 50%;
+  float: right;
+}
+
+/* Left container of navbar elements */
+.navbar-left {
+  display: block;
+  float: left;
+  max-width: 33%;
+  height: 100%;
+}
+
+/* Center container of navbar elements */
+.navbar-center {
+  display: flex;
+  float: none;
+  position: absolute;
+  top: 50%;
+  left: 35%;
+  transform: translate(-50%, -50%);
+  max-width: 34%;
+  height: 100%;
+  min-width: 260px;
+}
+
+/* Right container of navbar elements */
+.navbar-right {
+  display: block;
+  float: right;
+  max-width: 49%;
+  height: 100%;
+  min-width: 350px;
+  margin-right: 2%;
+}
+
+/* Wrapper element for the Trace T */
 .navbar div#icon-box {
   float: left;
   display: block;
@@ -20,13 +76,14 @@
   color: aliceblue;
   text-align: center;
   transition: all 0.3s ease;
-  padding: 1%;
+  padding: 10px 0px 0px 10px;
   text-decoration: none;
   height: 80%;
   max-height: 150px;
   max-width: 80px;
 }
 
+/* Wrapper element for sliders, mimics button styling */
 .navbar div#bar-box {
   float: right;
   display: block;
@@ -34,19 +91,19 @@
   text-align: center;
   transition: all 0.3s ease;
   height: 100%;
-  width: 120px;
+  width: auto;
   text-decoration: none;
 }
 
 .navbar button {
   float: right;
-  display: inline-block;
   color: whitesmoke;
   background-color: #3a3838;
   text-align: center;
   transition: all 0.3s ease;
   padding: 14px 16px;
   height: 100%;
+  max-width: 150px;
   border: none;
   text-decoration: none;
 }
@@ -58,4 +115,61 @@
 .navbar .logo {
   max-width: 100%;
   max-height: 100%;
+}
+
+/* Search Bar class and stylings */
+ .searchWrapper {
+  height: 40%;
+  width: 100%;
+  position: relative;
+  display: grid;
+}
+
+.searchbar {
+  background-color: white;
+  border-radius: 3vw;
+  font-size: 150%;
+  height: 50%;
+  min-width: 100px;
+  padding-left: 10%;
+  position: relative;
+  max-width: 100%;
+  width: 89%;
+}
+
+#search-icon {
+  font-size: 2.5vw;
+  height: 100%;
+  left: 2.5%;
+  position: absolute;
+  top: 10%;
+  width: 10%;
+  z-index: 3;
+}
+
+.searchbar:hover, .searchbar:focus {
+  background-color: #f5f5f5; /* Grey. */
+}
+
+/* Area to search */
+#zipcode {
+  background-color: white;
+  border-radius: 3vw;
+  height: 30%;
+  min-width: 100px;
+  position: relative;
+  width: 50%;
+  padding-left: 3%;
+  float: left;
+}
+
+/* Search distance */
+#radius {
+  background-color: white;
+  border-radius: 3vw;
+  height: 30%;
+  min-width: 100px;
+  width: 40%;
+  padding-left: 3%;
+  float: right;
 }
