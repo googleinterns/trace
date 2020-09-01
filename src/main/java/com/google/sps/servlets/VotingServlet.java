@@ -17,7 +17,6 @@ import com.google.appengine.api.users.UserService;
 import com.google.appengine.api.users.UserServiceFactory;
 import com.google.sps.data.PlaceReviews;
 import com.google.sps.data.Comment;
-import com.google.sps.data.RatingHistory;
 import java.util.*;
 import java.io.IOException;
 import com.google.gson.Gson;
